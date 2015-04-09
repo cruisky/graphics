@@ -1,11 +1,9 @@
 #pragma once
 
-#include "core.h"
 #include "math.h"
 
-namespace Core {
+namespace Cruisky {
 	namespace Math {
-
 		class Vector3{
 		public:
 			float x, y, z;

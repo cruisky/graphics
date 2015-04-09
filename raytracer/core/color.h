@@ -1,9 +1,8 @@
 #pragma once
 
-#include "core.h"
 #include "math.h"
 
-namespace Core{
+namespace Cruisky{
 	class Color {
 	public:
 		float r, g, b, a;
@@ -32,4 +31,9 @@ namespace Core{
 			return *this;
 		}
 	};
+
+	namespace Math{
+		inline Color Exp(Color c) { return Color(Exp(c.r), Exp(c.g), Exp(c.g), c.a); }
+		inline Color Log(Color c) { return Color(Log(c.r), Log(c.g), Log(c.b), c.a); }
+	}
 }

@@ -65,10 +65,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="core\color.h" />
-    <ClInclude Include="core\core.h" />
     <ClInclude Include="core\math.h" />
     <ClInclude Include="core\matrix.h" />
     <ClInclude Include="core\vector.h" />
+    <ClInclude Include="tracer\material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\matrix.cpp" />

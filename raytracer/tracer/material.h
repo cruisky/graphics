@@ -1,0 +1,46 @@
+#pragma once
+
+#include "../core/math.h"
+#include "../core/color.h"
+
+namespace Cruisky{
+	class Ray;
+	class Material{
+	public:
+		static const float NOT_REFRACTIVE;
+		static const float NOT_REFLECTVIE;
+	public:
+		Material(Color ambient, Color diffuse, Color specular, double shininess, double reflection) :
+			ambient_(ambient), diffuse_(diffuse), specular_(specular), shininess_(shininess), reflection_(reflection){}
+		inline Color GetAmbient(){ return ambient_; }
+		inline Color GetDiffuse(){ return diffuse_; }
+		inline Color GetSpecular(){ return specular_; }
+		inline Color GetShininess(){ return shininess_; }
+
+		virtual float GetReflection(float cos_incidence){ return reflection_; }
+		virtual float GetRefractiveIndex(){ return NOT_REFRACTIVE; }
+		virtual float GetRefractiveIndexInv(){ return NOT_REFRACTIVE; }
+		virtual Color GetAttenuation(float ray_distance){ return Color(); }
+	protected:
+		Color ambient_, diffuse_, specular_;
+		float shininess_, reflection_;
+	};
+
+	class Dielectric : protected Material{
+	public:
+		Dielectric(Color ambient, Color diffuse, Color specular, float shininess, float refractive_index, Color attenuation) :
+			Material(ambient, diffuse, specular, shininess, NOT_REFLECTVIE), refr_index_(refractive_index){
+			refr_index_inv_ = 1.f / refractive_index;
+			refl_ = Math::Pow((refractive_index - 1.f) / (refractive_index + 1.f), 2.f);
+			refl_c_ = 1.f - refl_;
+			att_log_ = Math::Log(attenuation);
+		}
+		float GetReflection(float cos_incidence) override { return (refl_ + refl_c_ * Math::Pow(1.f - cos_incidence, 5.f)); }
+		float GetRefractiveIndex() override { return refr_index_; }
+		float GetRefractiveIndexInv() override { return refr_index_inv_; }
+		Color GetAttenuation(float ray_distance) override { return Math::Exp(att_log_ * -ray_distance); }
+	private:
+		float refr_index_, refr_index_inv_, refl_, refl_c_;
+		Color att_log_;
+	};
+}

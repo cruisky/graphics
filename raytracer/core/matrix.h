@@ -1,9 +1,8 @@
 #pragma once
 
-#include "core.h"
 #include "vector.h"
 
-namespace Core{
+namespace Cruisky{
 	namespace Math{
 
 		// 4x4 row-major matrix using right-handed coordinate system

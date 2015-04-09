@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core.h"
+#include <cmath>
 
-namespace Core {
+namespace Cruisky {
 	namespace Math {
 		static const float EPSILON = 1e-6f;
 		static const float PI = 3.14159265358979323846f;

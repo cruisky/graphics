@@ -18,9 +18,6 @@
     <ClInclude Include="core\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="core\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -28,6 +25,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tracer\material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
