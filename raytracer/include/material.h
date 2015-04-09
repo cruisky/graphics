@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../core/math.h"
-#include "../core/color.h"
+#include "core/math.h"
+#include "core/color.h"
 
 namespace Cruisky{
-	class Ray;
 	class Material{
 	public:
 		static const float NOT_REFRACTIVE;

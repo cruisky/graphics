@@ -30,10 +30,16 @@
     <ClInclude Include="tracer\material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\ray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\intersection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\matrix.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

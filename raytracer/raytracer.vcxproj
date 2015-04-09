@@ -65,8 +65,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="core\color.h" />
+    <ClInclude Include="core\intersection.h" />
     <ClInclude Include="core\math.h" />
     <ClInclude Include="core\matrix.h" />
+    <ClInclude Include="core\ray.h" />
     <ClInclude Include="core\vector.h" />
     <ClInclude Include="tracer\material.h" />
   </ItemGroup>
