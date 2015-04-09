@@ -83,7 +83,7 @@ namespace Cruisky{
 			0.f,	0.f,			0.f,			0.f);
 	}
 
-	inline Matrix4x4 Matrix4x4::Rotate(Vector3 angle){
+	inline Matrix4x4 Matrix4x4::Rotate(const Vector3& angle){
 		return Rotate(angle.x, angle.y, angle.z);
 	}
 
@@ -140,7 +140,7 @@ namespace Cruisky{
 		cf[1][1] = m[0][0] * m[2][2] - m[2][0] * m[0][2];
 		cf[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
 		det = m[0][0] * cf[0][0] + m[1][1] * cf[1][1] + m[2][2] * cf[2][2];
-		if (Math::Abs(det) < Math::EPSILON){
+		if (Math::Abs(det) < 0.f){
 			return Matrix4x4();		// not invertible
 		} else {
 			cf[0][1] = m[2][0] * m[1][2] - m[1][0] * m[2][2];

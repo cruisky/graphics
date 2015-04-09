@@ -11,6 +11,8 @@ namespace Cruisky{
 		Color(float gray, float a = 1.f) :
 			r(gray), g(gray), b(gray), a(a) {}
 		Color(float r, float g, float b, float a = 1.f);
+		Color(const Color& ot) :
+			r(ot.r), g(ot.g), b(ot.b), a(ot.a){}
 		~Color(){}
 
 		Color operator + (const Color& ot) const { return Color(r + ot.r, g + ot.g, b + ot.b).Clamp(); }
@@ -33,7 +35,7 @@ namespace Cruisky{
 	};
 
 	namespace Math{
-		inline Color Exp(Color c) { return Color(Exp(c.r), Exp(c.g), Exp(c.g), c.a); }
-		inline Color Log(Color c) { return Color(Log(c.r), Log(c.g), Log(c.b), c.a); }
+		inline Color Exp(const Color& c) { return Color(Exp(c.r), Exp(c.g), Exp(c.g), c.a); }
+		inline Color Log(const Color& c) { return Color(Log(c.r), Log(c.g), Log(c.b), c.a); }
 	}
 }

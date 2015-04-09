@@ -8,6 +8,8 @@ namespace Cruisky{
 	public:
 		Intersection() : 
 			exist(false), t(1.f), material(nullptr){}
+		~Intersection(){}
+
 		Vector3 point;
 		Vector3 normal;
 		Material* material;

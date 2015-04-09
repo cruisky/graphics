@@ -11,6 +11,8 @@ namespace Cruisky{
 	public:
 		Material(Color ambient, Color diffuse, Color specular, double shininess, double reflection) :
 			ambient_(ambient), diffuse_(diffuse), specular_(specular), shininess_(shininess), reflection_(reflection){}
+		~Material(){}
+
 		inline Color GetAmbient(){ return ambient_; }
 		inline Color GetDiffuse(){ return diffuse_; }
 		inline Color GetSpecular(){ return specular_; }
@@ -34,6 +36,8 @@ namespace Cruisky{
 			refl_c_ = 1.f - refl_;
 			att_log_ = Math::Log(attenuation);
 		}
+		~Dielectric(){}
+
 		float GetReflection(float cos_incidence) override { return (refl_ + refl_c_ * Math::Pow(1.f - cos_incidence, 5.f)); }
 		float GetRefractiveIndex() override { return refr_index_; }
 		float GetRefractiveIndexInv() override { return refr_index_inv_; }

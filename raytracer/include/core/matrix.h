@@ -28,7 +28,7 @@ namespace Cruisky{
 		// Construct a yaw-pitch-row rotation matrix 
 		static Matrix4x4 Rotate(float x_angle, float y_angle, float z_angle);
 		// Construct a yaw-pitch-row rotation matrix 
-		static inline Matrix4x4 Rotate(Vector3 angle);
+		static inline Matrix4x4 Rotate(const Vector3& angle);
 		// Construct a scale matrix
 		static Matrix4x4 Scale(const Vector3& s);
 		// Construct a look-at matrix

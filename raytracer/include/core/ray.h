@@ -12,9 +12,10 @@ namespace Cruisky{
 		Color color;
 	public:
 		Ray();
-		Ray(Vector3 pOrigin, Vector3 vDir) : origin(pOrigin), dir(vDir){
+		Ray(const Vector3& pOrigin, const Vector3& vDir) : origin(pOrigin), dir(vDir){
 			dir.Normalize();
 		}
+		~Ray(){}
 	};
 
 	const float Ray::EPSILON = 1e-6f;
