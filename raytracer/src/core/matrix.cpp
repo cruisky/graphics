@@ -30,6 +30,30 @@ namespace Cruisky{
 		m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 	}
 
+	inline Matrix4x4 Matrix4x4::operator * (const Matrix4x4& ot) const {
+		Matrix4x4 result;
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				result.m[i][j] =
+				m[i][0] * ot.m[0][j] +
+				m[i][1] * ot.m[1][j] +
+				m[i][2] * ot.m[2][j] +
+				m[i][3] * ot.m[3][j];
+		return result;
+	}
+
+	inline const Matrix4x4& Matrix4x4::operator *= (const Matrix4x4 ot){
+		float result[4][4];
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				result[i][j] =
+				m[i][0] * ot.m[0][j] +
+				m[i][1] * ot.m[1][j] +
+				m[i][2] * ot.m[2][j] +
+				m[i][3] * ot.m[3][j];
+		memcpy(m, result, 16 * sizeof(float));
+	}
+
 	Matrix4x4 Matrix4x4::Transpose(){
 		return Matrix4x4(
 			m[0][0], m[1][0], m[2][0], m[3][0],
@@ -83,7 +107,7 @@ namespace Cruisky{
 			0.f,	0.f,			0.f,			0.f);
 	}
 
-	inline Matrix4x4 Matrix4x4::Rotate(const Vector3& angle){
+	Matrix4x4 Matrix4x4::Rotate(const Vector3& angle){
 		return Rotate(angle.x, angle.y, angle.z);
 	}
 
@@ -107,21 +131,21 @@ namespace Cruisky{
 			Dot(xaxis, pEye),	Dot(yaxis, pEye),	Dot(zaxis, pEye),	1.f);
 	}
 
-	inline Vector3 Matrix4x4::TPoint(const Matrix4x4& m, const Vector3& p){
+	Vector3 Matrix4x4::TPoint(const Matrix4x4& m, const Vector3& p){
 		return Vector3(
 			p.x * m.m[0][0] + p.y * m.m[0][1] + p.z * m.m[0][2] + m.m[0][3],
 			p.x * m.m[1][0] + p.y * m.m[1][1] + p.z * m.m[1][2] + m.m[1][3],
 			p.x * m.m[2][0] + p.y * m.m[2][1] + p.z * m.m[2][2] + m.m[2][3]);
 	}
 
-	inline Vector3 Matrix4x4::TVector(const Matrix4x4& m, const Vector3& v){
+	Vector3 Matrix4x4::TVector(const Matrix4x4& m, const Vector3& v){
 		return Vector3(
 			v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
 			v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
 			v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2]);
 	}
 
-	inline Vector3 Matrix4x4::TNormal(const Matrix4x4& m_inv, const Vector3& n){
+	Vector3 Matrix4x4::TNormal(const Matrix4x4& m_inv, const Vector3& n){
 		return Vector3(
 			m_inv.m[0][0] * n.x + m_inv.m[1][0] * n.y + m_inv.m[2][0] * n.z,
 			m_inv.m[0][1] * n.x + m_inv.m[1][1] * n.y + m_inv.m[2][1] * n.z,

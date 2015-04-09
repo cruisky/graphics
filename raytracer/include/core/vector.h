@@ -12,9 +12,7 @@ namespace Cruisky {
 		__forceinline Vector3(const Vector3& ot) : x(ot.x), y(ot.y), z(ot.z) {}
 		~Vector3(){}
 
-		__forceinline Vector3& operator = (const Vector3& ot){
-			x = ot.x; y = ot.y; z = ot.z;
-		}
+		__forceinline Vector3& operator = (const Vector3& ot){ x = ot.x; y = ot.y; z = ot.z; return *this; }
 
 		__forceinline Vector3 operator + () const { return Vector3(+x, +y, +z); }
 		__forceinline Vector3 operator - () const { return Vector3(-x, -y, -z); }
@@ -31,6 +29,8 @@ namespace Cruisky {
 
 		__forceinline Vector3& Normalize();
 	}; 
+
+	__forceinline Vector3 operator * (float r, const Vector3& v) { return Vector3(v.x * r, v.y * r, v.z * r); }
 
 	__forceinline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y * v.y + u.z * v.z; }
 	__forceinline Vector3 Cross(const Vector3& u, const Vector3& v){

@@ -9,7 +9,7 @@ namespace Cruisky{
 		static const float NOT_REFRACTIVE;
 		static const float NOT_REFLECTVIE;
 	public:
-		Material(Color ambient, Color diffuse, Color specular, double shininess, double reflection) :
+		Material(Color ambient, Color diffuse, Color specular, float shininess, float reflection) :
 			ambient_(ambient), diffuse_(diffuse), specular_(specular), shininess_(shininess), reflection_(reflection){}
 		~Material(){}
 

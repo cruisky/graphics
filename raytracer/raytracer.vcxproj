@@ -10,6 +10,21 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\core\color.h" />
+    <ClInclude Include="include\core\math.h" />
+    <ClInclude Include="include\core\matrix.h" />
+    <ClInclude Include="include\core\ray.h" />
+    <ClInclude Include="include\core\vector.h" />
+    <ClInclude Include="include\intersection.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\primitive.h" />
+    <ClInclude Include="include\scene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\matrix.cpp" />
+    <ClCompile Include="src\primitive.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AA8FDED1-49CA-4DE4-B304-960A9B373B55}</ProjectGuid>
     <RootNamespace>raytracer</RootNamespace>
@@ -44,6 +59,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\workspace\raytracer\raytracer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -63,18 +79,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="core\color.h" />
-    <ClInclude Include="core\intersection.h" />
-    <ClInclude Include="core\math.h" />
-    <ClInclude Include="core\matrix.h" />
-    <ClInclude Include="core\ray.h" />
-    <ClInclude Include="core\vector.h" />
-    <ClInclude Include="tracer\material.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="core\matrix.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
