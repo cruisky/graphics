@@ -1,6 +1,7 @@
 #pragma once
 
-#include "vector.h"
+#include "fwddecl.h"
+
 
 namespace Cruisky{
 	// 4x4 row-major matrix using right-handed coordinate system
@@ -26,24 +27,24 @@ namespace Cruisky{
 		Matrix4x4 Transpose();
 		Matrix4x4 Inverse();
 
-		// Construct a translation matrix
+		// Constructs a translation matrix
 		static Matrix4x4 Translate(const Vector3& v);
-		// Construct a rotation matrix along arbitray axis
+		// Constructs a rotation matrix along arbitray axis
 		static Matrix4x4 Rotate(float angle, const Vector3& axis);
-		// Construct a yaw-pitch-row rotation matrix 
+		// Constructs a yaw-pitch-row rotation matrix 
 		static Matrix4x4 Rotate(float x_angle, float y_angle, float z_angle);
-		// Construct a yaw-pitch-row rotation matrix 
+		// Constructs a yaw-pitch-row rotation matrix 
 		static Matrix4x4 Rotate(const Vector3& angle);
-		// Construct a scale matrix
+		// Constructs a scale matrix
 		static Matrix4x4 Scale(const Vector3& s);
-		// Construct a look-at matrix
+		// Constructs a look-at matrix
 		static Matrix4x4 LookAt(const Vector3& pt, const Vector3& dir, const Vector3& up);
 
-		// Transform a point
+		// Transforms a point
 		static Vector3 TPoint(const Matrix4x4& m, const Vector3& v);
-		// Transform a vector
+		// Transforms a vector
 		static Vector3 TVector(const Matrix4x4& m, const Vector3& v);
-		// Transform a normal vector with an already inverted matrix, the result is not normalized
+		// Transforms a normal vector with an already inverted matrix, the result is not normalized
 		static Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n);
 
 	private:

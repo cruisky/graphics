@@ -1,10 +1,12 @@
 #pragma once
 
 #include <cmath>
+#include <limits>
 
 namespace Cruisky {
 	namespace Math {
 		static const float PI = 3.14159265358979323846f;
+		static const float INF = FLT_MAX;
 
 		inline float Abs(float n) { return fabsf(n); }
 		inline float Pow(float n, float e) { return powf(n, e); }

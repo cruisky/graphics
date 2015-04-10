@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/math.h"
 #include "core/color.h"
 
 namespace Cruisky{
@@ -26,6 +25,7 @@ namespace Cruisky{
 		Color ambient_, diffuse_, specular_;
 		float shininess_, reflection_;
 	};
+
 
 	class Dielectric : protected Material{
 	public:

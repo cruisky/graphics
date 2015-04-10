@@ -1,37 +1,34 @@
 #pragma once
 
-#include "core/matrix.h"
-#include "core/ray.h"
-#include "intersection.h"
+#include "fwddecl.h"
+#include "transform.h"
 
 namespace Cruisky {
 	class Primitive{
 	public:
-		Primitive(){};
+		Primitive(Material* material) : material(material){};
 		~Primitive(){};
+		
+		Material* GetMaterial(){ return material; }
 
-		inline void Translate(const Vector3& translation);
-		inline void Rotate(const Vector3& rotation);
-		inline void Rotate(float x, float y, float z);
-		inline void Rotate(float angle, const Vector3& axis);
-		inline void Scale(const Vector3& scale);
-
+		// Check if the global ray intersects this primitive, if so
+		// set geo info and material in the intersection, and return true.
 		virtual bool Intersect(const Ray& ray, Intersection& intersection) = 0;
+		virtual bool Intersect(const Ray& ray) = 0;
 	protected:
-		Matrix4x4 local_world_;
-		Matrix4x4 world_local_;
+		Transform transform;
+		Material* material;
 	};
 
 
-	class UnitSphere : protected Primitive{
+	class GeometricPrimitive : protected Primitive {
 	public:
-		UnitSphere(){}
-		bool Intersect(const Ray& ray, Intersection& intersection);
-	};
+		GeometricPrimitive(Material* material, Shape* shape):Primitive(material), shape(shape){};
+		~GeometricPrimitive(){}
 
-	class UnitPlane : protected Primitive{
-	public:
-		UnitPlane(){}
 		bool Intersect(const Ray& ray, Intersection& intersection);
+		bool Intersect(const Ray& ray);
+	protected:
+		Shape* shape;
 	};
 }

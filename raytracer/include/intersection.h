@@ -1,19 +1,16 @@
 #pragma once
 
-#include "core/vector.h"
-#include "material.h"
+#include "fwddecl.h"
+#include "rayhit.h"
 
 namespace Cruisky{
 	class Intersection{
 	public:
-		Intersection() : 
-			exist(false), t(1.f), material(nullptr){}
+		Intersection() : material(nullptr){}
 		~Intersection(){}
 
-		Vector3 point;
-		Vector3 normal;
+	public:
+		RayHit hit;
 		Material* material;
-		float t;
-		bool exist;
 	};
 }
