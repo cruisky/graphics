@@ -9,14 +9,15 @@ namespace Cruisky{
 
 	namespace RayTracer
 	{
-		bool GeometricPrimitive::Intersect(const Ray& ray, Intersection& intxn){
+		bool GeometricPrimitive::Intersect(Ray& ray, Intersection& intxn){
 			// transform the ray into local space
 			Ray localRay = transform.ToLocal(ray);
-			RayHit hit(ray.t_max);	// set to max length of the ray
+			RayHit hit;
 
 			if (shape->Intersect(localRay, hit)) return false;
 			intxn.hit = transform.ToWorld(hit);
 			intxn.material = material;
+			ray.t_max = localRay.t_max;
 			return true;
 		}
 
