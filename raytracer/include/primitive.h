@@ -6,7 +6,7 @@
 namespace Cruisky {
 	namespace RayTracer
 	{
-		class Primitive{
+		class Primitive {
 		public:
 			Primitive(Material* material) : material(material){};
 			~Primitive(){};

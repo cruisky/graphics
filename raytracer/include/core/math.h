@@ -7,6 +7,7 @@ namespace Cruisky {
 	namespace Math {
 		static const float PI = 3.14159265358979323846f;
 		static const float INF = FLT_MAX;
+		static const float EPSILON = FLT_EPSILON;
 
 		inline float Abs(float n) { return fabsf(n); }
 		inline float Pow(float n, float e) { return powf(n, e); }
