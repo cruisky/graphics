@@ -15,6 +15,8 @@ namespace Cruisky{
 			r(ot.r), g(ot.g), b(ot.b), a(ot.a){}
 		~Color(){}
 
+		Color& operator = (const Color& ot) { r = ot.r, g = ot.g, b = ot.b, a = ot.a; return *this; }
+
 		Color operator + (const Color& ot) const { return Color(r + ot.r, g + ot.g, b + ot.b).Clamp(); }
 		Color operator - (const Color& ot) const { return Color(r - ot.r, g - ot.g, b - ot.b).Clamp(); }
 		Color operator * (const Color& ot) const { return Color(r * ot.r, g * ot.g, b * ot.b).Clamp(); }

@@ -32,6 +32,11 @@ namespace Cruisky{
 		m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 	}
 
+	inline Matrix4x4& Matrix4x4::operator = (const Matrix4x4& ot){
+		memcpy(m, ot.m, 16 * sizeof(float));
+		return *this;
+	}
+
 	inline Matrix4x4 Matrix4x4::operator * (const Matrix4x4& ot) const {
 		Matrix4x4 result;
 		for (int i = 0; i < 4; i++)

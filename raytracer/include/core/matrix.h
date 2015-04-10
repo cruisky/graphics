@@ -20,6 +20,8 @@ namespace Cruisky{
 			float m30, float m31, float m32, float m33);
 		~Matrix4x4(){}
 
+		inline Matrix4x4& operator = (const Matrix4x4& ot);
+
 		inline Matrix4x4 operator * (const Matrix4x4& ot) const;
 		inline const Matrix4x4& operator *= (const Matrix4x4 ot);
 
