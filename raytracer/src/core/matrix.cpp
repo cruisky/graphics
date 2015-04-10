@@ -1,6 +1,7 @@
 #include "core/matrix.h"
 #include "core/vector.h"
 #include "core/ray.h"
+#include <iostream>
 #include <string>
 
 namespace Cruisky{
@@ -153,8 +154,17 @@ namespace Cruisky{
 			m_inv.m[0][2] * n.x + m_inv.m[1][2] * n.y + m_inv.m[2][2] * n.z);
 	}
 
+	std::ostream& operator << (std::ostream& os, const Matrix4x4& m){
+		for (int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++)
+				os << m.m[i][j] << "\t";
+			os << std::endl;
+		}
+		return os;
+	}
+
 	inline bool Matrix4x4::IsAffine(){
-		return m[3][0] == 0.f && m[3][1] == 0.f && m[3][2] == 0.f && m[3][3] == 0.f;
+		return m[3][0] == 0.f && m[3][1] == 0.f && m[3][2] == 0.f && m[3][3] == 1.f;
 	}
 
 	inline Matrix4x4 Matrix4x4::InverseAffine(){
@@ -162,25 +172,26 @@ namespace Cruisky{
 		float det, det_inv;
 		// find 3x3 matrix inverse
 		cf[0][0] = m[1][1] * m[2][2] - m[2][1] * m[1][2];
-		cf[1][1] = m[0][0] * m[2][2] - m[2][0] * m[0][2];
-		cf[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
-		det = m[0][0] * cf[0][0] + m[1][1] * cf[1][1] + m[2][2] * cf[2][2];
-		if (Math::Abs(det) < 0.f){
+		cf[0][1] = m[0][2] * m[2][0] - m[2][2] * m[0][1];
+		cf[0][2] = m[0][1] * m[1][2] - m[1][1] * m[0][2];
+		det = m[0][0] * cf[0][0] + m[0][1] * cf[0][1] + m[0][2] * cf[0][2];
+		if (Math::Abs(det) < Math::EPSILON){
+			std::cerr << "not invertible:\n" << *this << std::endl;
 			return Matrix4x4();		// not invertible
 		} else {
-			cf[0][1] = m[2][0] * m[1][2] - m[1][0] * m[2][2];
-			cf[0][2] = m[1][0] * m[2][1] - m[2][0] * m[1][1];
-			cf[1][0] = m[2][1] * m[0][2] - m[0][1] * m[2][2];
-			cf[1][2] = m[2][0] * m[0][1] - m[0][0] * m[2][1];
-			cf[2][0] = m[0][1] * m[1][2] - m[1][1] * m[0][2];
-			cf[2][1] = m[1][0] * m[0][2] - m[0][0] * m[1][2];
+			cf[1][0] = m[2][0] * m[1][2] - m[1][0] * m[2][2];
+			cf[1][1] = m[0][0] * m[2][2] - m[2][0] * m[0][2];
+			cf[1][2] = m[1][0] * m[0][2] - m[0][0] * m[1][2];
+			cf[2][0] = m[1][0] * m[2][1] - m[2][0] * m[1][1];
+			cf[2][1] = m[2][0] * m[0][1] - m[0][0] * m[2][1];
+			cf[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
 			det_inv = 1.f / det;
 			for (int i = 0; i < 3; i++){
 				for (int j = 0; j < 3; j++)
 					cf[i][j] *= det_inv;
-				cf[i][3] = m[i][3];
+				cf[i][3] = -m[i][3];	// invert the translation
 			}
-			cf[3][0] = cf[3][1] = cf[3][2] = 1.f;
+			cf[3][0] = cf[3][1] = cf[3][2] = 0.f;
 			cf[3][3] = 1.f;
 			return Matrix4x4(cf);
 		}
