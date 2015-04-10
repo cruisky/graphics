@@ -32,7 +32,7 @@ namespace Cruisky{
 		m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 	}
 
-	Matrix4x4 Matrix4x4::Transpose(){
+	Matrix4x4 Matrix4x4::Transpose() const {
 		return Matrix4x4(
 			m[0][0], m[1][0], m[2][0], m[3][0],
 			m[0][1], m[1][1], m[2][1], m[3][1],
@@ -41,7 +41,7 @@ namespace Cruisky{
 			);
 	}
 		
-	Matrix4x4 Matrix4x4::Inverse(){
+	Matrix4x4 Matrix4x4::Inverse() const {
 		if (IsAffine())
 			return InverseAffine();
 		else

@@ -27,8 +27,8 @@ namespace Cruisky{
 		Matrix4x4 operator * (const Matrix4x4& ot) const;
 		const Matrix4x4& operator *= (const Matrix4x4 ot);
 
-		Matrix4x4 Transpose();
-		Matrix4x4 Inverse();
+		Matrix4x4 Transpose() const;
+		Matrix4x4 Inverse() const;
 
 		static Matrix4x4 Translate(const Vector3& v);
 		static Matrix4x4 Translate(float x, float y, float z);
@@ -51,9 +51,9 @@ namespace Cruisky{
 	private:
 		friend std::ostream& operator << (std::ostream& os, const Matrix4x4& M);
 
-		inline bool IsAffine();
-		inline Matrix4x4 InverseAffine();
-		inline Matrix4x4 InverseGeneral();
+		inline bool IsAffine() const;
+		inline Matrix4x4 InverseAffine() const;
+		inline Matrix4x4 InverseGeneral() const;
 
 		float m[4][4];
 	};
@@ -95,11 +95,11 @@ namespace Cruisky{
 		}
 		return os;
 	}
-	inline bool Matrix4x4::IsAffine(){
+	inline bool Matrix4x4::IsAffine() const {
 		return m[3][0] == 0.f && m[3][1] == 0.f && m[3][2] == 0.f && m[3][3] == 1.f;
 	}
 
-	inline Matrix4x4 Matrix4x4::InverseAffine(){
+	inline Matrix4x4 Matrix4x4::InverseAffine() const {
 		float cf[4][4];
 		float det, det_inv;
 		// find 3x3 matrix inverse
@@ -130,9 +130,10 @@ namespace Cruisky{
 		}
 	}
 
-	inline Matrix4x4 Matrix4x4::InverseGeneral(){
+	inline Matrix4x4 Matrix4x4::InverseGeneral() const {
 		float res[4][4];
-		float *src = *m, *dst = *res;
+		const float *src = *m;
+		float *dst = *res;
 		// Intel AP-928
 		__m128 minor0, minor1, minor2, minor3;
 		__m128 row0, row1, row2, row3;
