@@ -1,32 +1,33 @@
 #include "primitive.h"
-#include "core/matrix.h"
 #include "core/ray.h"
 #include "shape.h"
 #include "rayhit.h"
 #include "intersection.h"
+#include "material.h"
 
 namespace Cruisky{
 
 	namespace RayTracer
 	{
-		bool GeometricPrimitive::Intersect(Ray& ray, Intersection& intxn){
+		bool GeometricPrimitive::Intersect(Ray& ray, Intersection& intxn) {
 			// transform the ray into local space
 			Ray localRay = transform.ToLocal(ray);
 			RayHit hit;
 
 			if (shape->Intersect(localRay, hit)) return false;
 			intxn.hit = transform.ToWorld(hit);
-			intxn.material = material;
+			intxn.prim = this;
 			ray.t_max = localRay.t_max;
 			return true;
 		}
 
-		bool GeometricPrimitive::Intersect(const Ray& ray){
-			const Matrix4x4& world_to_local = transform.GetWorldToLocal();
-			const Matrix4x4& local_to_world = transform.GetLocalToWorld();
-			Ray localRay = transform.ToLocal(ray);
-			return shape->Intersect(localRay);
+		bool GeometricPrimitive::Intersect(const Ray& ray) {
+			return shape->Intersect(transform.ToLocal(ray));
 		}
+
+		/*void GeometricPrimitive::GetBRDF(RayHit& hit, BRDF* out) const {
+			material->GetBRDF(hit, out);
+		}*/
 	}
 
 }

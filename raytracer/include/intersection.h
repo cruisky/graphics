@@ -7,12 +7,12 @@ namespace Cruisky{
 	namespace RayTracer{
 		class Intersection{
 		public:
-			Intersection() : material(nullptr){}
+			Intersection(){}
 			~Intersection(){}
 
 		public:
 			RayHit hit;
-			Material* material;
+			Primitive *prim;
 		};
 	}
 }

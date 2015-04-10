@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\bsdf.h" />
     <ClInclude Include="include\core\color.h" />
     <ClInclude Include="include\core\math.h" />
     <ClInclude Include="include\core\matrix.h" />

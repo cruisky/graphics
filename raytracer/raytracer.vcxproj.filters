@@ -60,6 +60,9 @@
     <ClInclude Include="include\fwddecl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\bsdf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\matrix.cpp">
