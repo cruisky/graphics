@@ -12,15 +12,16 @@ namespace Cruisky {
 		inline float Abs(float n) { return fabsf(n); }
 		inline float Pow(float n, float e) { return powf(n, e); }
 		inline float Sqrt(float n) { return sqrtf(n); }
-		inline float Rsqrt(const float n) {
-			//const float threehalfs = 1.5f;
-			//float x2 = n * 0.5f, y = n;
-			//long& i = *reinterpret_cast<long *>(&y);
-			//i = 0x5f375a86 - (i >> 1);
-			//y *= (threehalfs - (x2 * y * y));
-			//return y * (threehalfs - (x2 * y * y));
-			return 1.0f / Math::Sqrt(n);
+		inline float Rsqrt(float n) {
+			const float threehalfs = 1.5f;
+			float x2 = n * 0.5f, y = n;
+			long& i = *reinterpret_cast<long *>(&y);
+			i = 0x5f375a86 - (i >> 1);
+			y *= (threehalfs - (x2 * y * y));
+			return y * (threehalfs - (x2 * y * y));
+			//return 1.0f / Math::Sqrt(n);
 		}
+
 		inline float Sin(float r) { return sinf(r); }
 		inline float Cos(float r) { return cosf(r); }
 		inline float Tan(float r) { return tanf(r); }

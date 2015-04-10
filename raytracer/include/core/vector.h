@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math.h"
+#include <iostream>
 
 namespace Cruisky {
 	class Vector3{
@@ -31,6 +32,9 @@ namespace Cruisky {
 	}; 
 
 	__forceinline Vector3 operator * (float r, const Vector3& v) { return Vector3(v.x * r, v.y * r, v.z * r); }
+	__forceinline std::ostream& operator << (std::ostream& os, const Vector3& v) { 
+		return os << "(" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
+	}
 
 	__forceinline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y * v.y + u.z * v.z; }
 	__forceinline Vector3 Cross(const Vector3& u, const Vector3& v){

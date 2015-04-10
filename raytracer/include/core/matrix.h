@@ -47,7 +47,8 @@ namespace Cruisky{
 		static Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n);
 		
 	private:
-		friend std::ostream& operator << (std::ostream& os, const Matrix4x4& M);
+		friend inline std::ostream& operator << (std::ostream& os, const Matrix4x4& M);
+
 		inline bool IsAffine();
 		inline Matrix4x4 InverseAffine();
 		inline Matrix4x4 InverseGeneral();

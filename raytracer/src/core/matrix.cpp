@@ -154,7 +154,7 @@ namespace Cruisky{
 			m_inv.m[0][2] * n.x + m_inv.m[1][2] * n.y + m_inv.m[2][2] * n.z);
 	}
 
-	std::ostream& operator << (std::ostream& os, const Matrix4x4& m){
+	inline std::ostream& operator << (std::ostream& os, const Matrix4x4& m){
 		for (int i = 0; i < 4; i++){
 			for (int j = 0; j < 4; j++)
 				os << m.m[i][j] << "\t";
