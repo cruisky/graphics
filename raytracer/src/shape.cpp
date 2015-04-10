@@ -6,45 +6,36 @@
 namespace Cruisky{
 	namespace RayTracer
 	{
-		bool UnitSphere::Intersect(const Ray& ray, RayHit& geo) {
-			Vector3 e = ray.origin;
-			Vector3 d = ray.dir;
-			float e2 = LengthSqr(e);
-			float d2 = LengthSqr(d);
-			float de = Dot(d, e);
+		bool UnitSphere::Intersect(const Ray& ray, RayHit& hit) {
+			float e2 = LengthSqr(ray.origin);
+			float d2 = LengthSqr(ray.dir);
+			float de = Dot(ray.dir, ray.origin);
 			float delta_quarter = de * de - d2 * (e2 - 1);
 			float t = -(de + Math::Sqrt(delta_quarter)) / d2;
-			if (geo.t > t &&
-				delta_quarter > 0 &&
-				Math::InBounds(t, ray.t_min, ray.t_max)){
-				geo.t = t;
-				geo.point = e + t * d;
-				geo.normal = Normalized(geo.point);
+			if (Math::InBounds(t, ray.t_min, hit.t) && delta_quarter > 0){
+				hit.t = t;
+				hit.point = ray.origin + t * ray.dir;
+				hit.normal = Normalized(hit.point);
 				return true;
 			}
 			return false;
 		}
 
 		bool UnitSphere::Intersect(const Ray& ray) {
-			Vector3 e = ray.origin;
-			Vector3 d = ray.dir;
-			float e2 = LengthSqr(e);
-			float d2 = LengthSqr(d);
-			float de = Dot(d, e);
+			float e2 = LengthSqr(ray.origin);
+			float d2 = LengthSqr(ray.dir);
+			float de = Dot(ray.dir, ray.origin);
 			float delta_quarter = de * de - d2 * (e2 - 1);
 			float t = -(de + Math::Sqrt(delta_quarter)) / d2;
 			return delta_quarter > 0.f && Math::InBounds(t, ray.t_min, ray.t_max);
 		}
 
 		bool UnitPlane::Intersect(const Ray& ray, RayHit& hit) {
-			Vector3 e = ray.origin;
-			Vector3 d = ray.dir;
-			float t = -e.z / d.z;
-			Vector3 point = e + t * d;
-			if (hit.t > t &&
+			float t = -ray.origin.z / ray.dir.z;
+			Vector3 point = ray.origin + t * ray.dir;
+			if (Math::InBounds(t, ray.t_min, hit.t) &&
 				Math::InBounds(point.x, -0.5f, 0.5f) &&
-				Math::InBounds(point.y, -0.5f, 0.5f) &&
-				Math::InBounds(t, ray.t_min, ray.t_max)) {
+				Math::InBounds(point.y, -0.5f, 0.5f)) {
 				hit.t = t;
 				hit.point = point;
 				hit.normal = point.Normalize();
@@ -55,7 +46,7 @@ namespace Cruisky{
 
 		bool UnitPlane::Intersect(const Ray& ray) {
 			float t = -ray.origin.z / ray.dir.z;
-			return t > 0.f && Math::InBounds(t, ray.t_min, ray.t_max);
+			return Math::InBounds(t, ray.t_min, ray.t_max);
 		}
 	}
 }

@@ -44,29 +44,27 @@ namespace Cruisky{
 			inline Ray ToWorld(const Ray& ray) const{
 				return Ray(
 					Matrix4x4::TPoint(local_world_, ray.origin),
-					Matrix4x4::TVector(local_world_, ray.dir),
+					Matrix4x4::TVector(local_world_, ray.dir).Normalize(),
 					ray.t_min, ray.t_max);
 			}
 
 			inline RayHit ToWorld(const RayHit& hit) const{
 				return RayHit(
 					Matrix4x4::TPoint(local_world_, hit.point),
-					Matrix4x4::TNormal(local_world_, hit.normal),
-					hit.t);
+					Matrix4x4::TNormal(local_world_, hit.normal).Normalize());
 			}
 
 			inline Ray ToLocal(const Ray& ray) const{
 				return Ray(
 					Matrix4x4::TPoint(world_local_, ray.origin),
-					Matrix4x4::TVector(world_local_, ray.dir),
+					Matrix4x4::TVector(world_local_, ray.dir).Normalize(),
 					ray.t_min, ray.t_max);
 			}
 
 			inline RayHit ToLocal(const RayHit& hit) const{
 				return RayHit(
 					Matrix4x4::TPoint(world_local_, hit.point),
-					Matrix4x4::TNormal(world_local_, hit.normal),
-					hit.t);
+					Matrix4x4::TNormal(world_local_, hit.normal).Normalize());
 			}
 
 		private:
