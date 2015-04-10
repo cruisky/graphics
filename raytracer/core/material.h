@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/color.h"
+#include "util/color.h"
 
 namespace Cruisky{
 	namespace RayTracer

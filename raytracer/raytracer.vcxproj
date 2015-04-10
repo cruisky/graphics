@@ -11,28 +11,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\bsdf.h" />
-    <ClInclude Include="include\core\color.h" />
-    <ClInclude Include="include\core\math.h" />
-    <ClInclude Include="include\core\matrix.h" />
-    <ClInclude Include="include\core\ray.h" />
-    <ClInclude Include="include\core\vector.h" />
-    <ClInclude Include="include\fwddecl.h" />
-    <ClInclude Include="include\intersection.h" />
-    <ClInclude Include="include\rayhit.h" />
-    <ClInclude Include="include\material.h" />
-    <ClInclude Include="include\primitive.h" />
-    <ClInclude Include="include\scene.h" />
-    <ClInclude Include="include\shape.h" />
-    <ClInclude Include="include\transform.h" />
+    <ClInclude Include="core\bsdf.h" />
+    <ClInclude Include="core\intersection.h" />
+    <ClInclude Include="core\light.h" />
+    <ClInclude Include="core\material.h" />
+    <ClInclude Include="core\prim.h" />
+    <ClInclude Include="core\primmgr.h" />
+    <ClInclude Include="core\rayhit.h" />
+    <ClInclude Include="core\scene.h" />
+    <ClInclude Include="core\shape.h" />
+    <ClInclude Include="core\transform.h" />
+    <ClInclude Include="dependency.h" />
+    <ClInclude Include="fwddecl.h" />
+    <ClInclude Include="util\color.h" />
+    <ClInclude Include="util\math.h" />
+    <ClInclude Include="util\matrix.h" />
+    <ClInclude Include="util\ray.h" />
+    <ClInclude Include="util\vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\matrix.cpp" />
-    <ClCompile Include="src\core\ray.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\material.cpp" />
-    <ClCompile Include="src\primitive.cpp" />
-    <ClCompile Include="src\shape.cpp" />
+    <ClCompile Include="core\main.cpp" />
+    <ClCompile Include="core\material.cpp" />
+    <ClCompile Include="core\prim.cpp" />
+    <ClCompile Include="core\shape.cpp" />
+    <ClCompile Include="core\transform.cpp" />
+    <ClCompile Include="util\matrix.cpp" />
+    <ClCompile Include="util\ray.cpp" />
+    <ClCompile Include="util\vector.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AA8FDED1-49CA-4DE4-B304-960A9B373B55}</ProjectGuid>
@@ -68,7 +73,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\workspace\raytracer\raytracer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\workspace\raytracer\raytracer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

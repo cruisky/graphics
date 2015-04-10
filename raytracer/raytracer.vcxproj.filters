@@ -19,68 +19,89 @@
     <Filter Include="Source Files\core">
       <UniqueIdentifier>{701d65e1-cea2-4d6d-975c-d97c0a2368d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{c4763fd9-5653-4871-b2d4-0a1cf6fe391f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{9a01b050-d805-4262-a4a5-14bb1f716e95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\intersection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\color.h">
+    <ClInclude Include="core\bsdf.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\math.h">
+    <ClInclude Include="core\intersection.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\matrix.h">
+    <ClInclude Include="core\material.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\ray.h">
+    <ClInclude Include="core\rayhit.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\vector.h">
+    <ClInclude Include="core\scene.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
-    <ClInclude Include="include\scene.h">
+    <ClInclude Include="core\shape.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\transform.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="dependency.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\primitive.h">
+    <ClInclude Include="fwddecl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\shape.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="util\color.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="include\transform.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="util\math.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="include\rayhit.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="util\matrix.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="include\fwddecl.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="util\ray.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="include\bsdf.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="util\vector.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="core\prim.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\light.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\primmgr.h">
+      <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\matrix.cpp">
+    <ClCompile Include="core\main.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\primitive.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="core\material.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\shape.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="core\shape.cpp">
+      <Filter>Source Files\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\material.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="util\matrix.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="util\ray.cpp">
+      <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\ray.cpp">
+    <ClCompile Include="core\prim.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="util\vector.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="core\transform.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
   </ItemGroup>

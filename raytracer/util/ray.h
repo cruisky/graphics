@@ -16,7 +16,7 @@ namespace Cruisky{
 			origin(ot.origin), dir(ot.dir), t_min(ot.t_min), t_max(ot.t_max){}
 		~Ray(){}
 
-		inline Ray& operator = (const Ray& ot);
+		Ray& operator = (const Ray& ot);
 
 	public:
 		Vector3 origin;
@@ -24,4 +24,11 @@ namespace Cruisky{
 		float t_min;
 		float t_max;
 	};
+
+	inline Ray& Ray::operator = (const Ray& ot){
+		origin = ot.origin;
+		dir = ot.dir;
+		t_min = ot.t_min;
+		t_max = ot.t_max;
+	}
 }

@@ -1,12 +1,12 @@
-#include "core/math.h"
-#include "core/ray.h"
+#include "util/math.h"
+#include "util/ray.h"
 #include "rayhit.h"
 #include "shape.h"
 
 namespace Cruisky{
 	namespace RayTracer
 	{
-		bool UnitSphere::Intersect(Ray& lcr, RayHit& hit) {
+		bool UnitSphere::Intersect(Ray& lcr, RayHit& hit) const {
 			float e2 = LengthSqr(lcr.origin);
 			float d2 = LengthSqr(lcr.dir);
 			float de = Dot(lcr.dir, lcr.origin);
@@ -21,7 +21,7 @@ namespace Cruisky{
 			return false;
 		}
 
-		bool UnitSphere::Intersect(Ray& lcr) {
+		bool UnitSphere::Occlude(Ray& lcr) const {
 			float e2 = LengthSqr(lcr.origin);
 			float d2 = LengthSqr(lcr.dir);
 			float de = Dot(lcr.dir, lcr.origin);
@@ -30,7 +30,7 @@ namespace Cruisky{
 			return delta_quarter > 0.f && Math::InBounds(t, lcr.t_min, lcr.t_max);
 		}
 
-		bool UnitPlane::Intersect(Ray& lcr, RayHit& hit) {
+		bool UnitPlane::Intersect(Ray& lcr, RayHit& hit) const {
 			float t = -lcr.origin.z / lcr.dir.z;
 			Vector3 point = lcr.origin + t * lcr.dir;
 			if (Math::InBounds(t, lcr.t_min, lcr.t_max) &&
@@ -44,7 +44,7 @@ namespace Cruisky{
 			return false;
 		}
 
-		bool UnitPlane::Intersect(Ray& lcr) {
+		bool UnitPlane::Occlude(Ray& lcr) const {
 			float t = -lcr.origin.z / lcr.dir.z;
 			return Math::InBounds(t, lcr.t_min, lcr.t_max);
 		}

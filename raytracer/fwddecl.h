@@ -9,15 +9,15 @@ namespace Cruisky{
 
 	namespace RayTracer
 	{
+		class BSDF;
 		class Intersection;
-		class RayHit;
+		class Light;
 		class Material;
 		class Primitive;
-		class GeometricPrimitive;
+		class PrimitiveManager;
+		class RayHit;
 		class Scene;
 		class Shape;
-		class UnitSphere;
-		class UnitPlane;
 		class Transform;
 	}
 }

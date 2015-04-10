@@ -1,10 +1,13 @@
 #pragma once
 
 #include "math.h"
-#include <iostream>
+#include "dependency.h"
 
 namespace Cruisky {
 	class Vector3{
+	public:
+		static const Vector3 ZERO;
+		static const Vector3 ONE;
 	public:
 		float x, y, z;
 	public:
@@ -28,6 +31,9 @@ namespace Cruisky {
 		__forceinline const Vector3& operator *= (float s){ x *= s; y *= s; z *= s; return *this; }
 		__forceinline const Vector3& operator /= (float d){ x /= d; y /= d; z /= d; return *this; }
 
+		__forceinline bool operator == (const Vector3 ot) const { return x == ot.x && y == ot.y && z == ot.z; }
+		__forceinline bool operator != (const Vector3 ot) const { return x != ot.x || y != ot.y || z != ot.z; }
+		
 		__forceinline Vector3& Normalize();
 	}; 
 

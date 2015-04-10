@@ -1,8 +1,8 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "core/matrix.h"
-#include "core/ray.h"
+#include "util/matrix.h"
+#include "util/ray.h"
 #include "rayhit.h"
 
 namespace Cruisky{
@@ -11,35 +11,25 @@ namespace Cruisky{
 		class Transform {
 		public:
 			Transform(){}
+			Transform(Vector3 position, Vector3 rotation = Vector3::ZERO, Vector3 scale = Vector3::ONE){
+				if(position != Vector3::ZERO) Translate(position);
+				if(rotation != Vector3::ZERO) Rotate(rotation);
+				if(scale != Vector3::ONE) Scale(scale);
+			}
 			~Transform(){}
 
+			const Vector3& GetPosition() const { return position_; }
 			const Matrix4x4& GetWorldToLocal() const { return world_local_; }
 			const Matrix4x4& GetLocalToWorld() const { return local_world_; }
 
-			inline void Translate(const Vector3& translation){
-				local_world_ = local_world_ * Matrix4x4::Translate(translation);
-				world_local_ = Matrix4x4::Translate(-translation) * world_local_;
-			}
-
-			inline void Rotate(const Vector3& rotation){
-				local_world_ = local_world_ * Matrix4x4::Rotate(rotation);
-				world_local_ = Matrix4x4::Rotate(-rotation) * world_local_;
-			}
-
-			inline void Rotate(float x, float y, float z){
-				local_world_ = local_world_ * Matrix4x4::Rotate(x, y, z);
-				world_local_ = Matrix4x4::Rotate(-x, -y, -z) * world_local_;
-			}
-
-			inline void Rotate(float angle, const Vector3& axis){
-				local_world_ = local_world_ * Matrix4x4::Rotate(angle, axis);
-				world_local_ = Matrix4x4::Rotate(-angle, axis) * world_local_;
-			}
-
-			inline void Scale(const Vector3& scale){
-				local_world_ = local_world_ * Matrix4x4::Rotate(scale);
-				world_local_ = Matrix4x4::Rotate(Vector3(1.f / scale.x, 1.f / scale.y, 1.f / scale.z)) * world_local_;
-			}
+			Transform& Translate(const Vector3& translation);
+			Transform& Rotate(const Vector3& rotation);
+			Transform& Rotate(float angle, const Vector3& axis);
+			Transform& Scale(const Vector3& scale);
+			
+			inline Transform& Translate(float x, float y, float z){ return Translate(Vector3(x, y, z)); }
+			inline Transform& Rotate(float x, float y, float z){ return Rotate(Vector3(x, y, z)); }
+			inline Transform& Scale(float x, float y, float z){ return Scale(Vector3(x, y, z)); }
 
 			inline Ray ToWorld(const Ray& ray) const{
 				return Ray(
@@ -68,6 +58,7 @@ namespace Cruisky{
 			}
 
 		private:
+			Vector3 position_;
 			Matrix4x4 local_world_;
 			Matrix4x4 world_local_;
 		};

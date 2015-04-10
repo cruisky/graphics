@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/vector.h"
+#include "util/vector.h"
 
 namespace Cruisky {
 	namespace RayTracer {
@@ -11,6 +11,7 @@ namespace Cruisky {
 			RayHit(Vector3 point, Vector3 normal) :
 				point(point), normal(normal){}
 			~RayHit(){}
+
 		public:
 			Vector3 point;
 			Vector3 normal;

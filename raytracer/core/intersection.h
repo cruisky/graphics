@@ -8,11 +8,10 @@ namespace Cruisky{
 		class Intersection{
 		public:
 			Intersection(){}
-			~Intersection(){}
 
 		public:
 			RayHit hit;
-			Primitive *prim;
+			const Primitive *prim;
 		};
 	}
 }

@@ -1,5 +1,5 @@
-#include "primitive.h"
-#include "core/ray.h"
+#include "prim.h"
+#include "util/ray.h"
 #include "shape.h"
 #include "rayhit.h"
 #include "intersection.h"
@@ -9,7 +9,7 @@ namespace Cruisky{
 
 	namespace RayTracer
 	{
-		bool GeometricPrimitive::Intersect(Ray& ray, Intersection& intxn) {
+		bool GeometricPrimitive::Intersect(Ray& ray, Intersection& intxn) const {
 			// transform the ray into local space
 			Ray localRay = transform.ToLocal(ray);
 			RayHit hit;
@@ -21,13 +21,14 @@ namespace Cruisky{
 			return true;
 		}
 
-		bool GeometricPrimitive::Intersect(const Ray& ray) {
-			return shape->Intersect(transform.ToLocal(ray));
+		bool GeometricPrimitive::Occlude(const Ray& ray) const {
+			return shape->Occlude(transform.ToLocal(ray));
 		}
 
 		/*void GeometricPrimitive::GetBRDF(RayHit& hit, BRDF* out) const {
 			material->GetBRDF(hit, out);
 		}*/
+
 	}
 
 }
