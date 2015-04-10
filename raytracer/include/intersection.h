@@ -4,13 +4,15 @@
 #include "rayhit.h"
 
 namespace Cruisky{
-	class Intersection{
-	public:
-		Intersection() : material(nullptr){}
-		~Intersection(){}
+	namespace RayTracer{
+		class Intersection{
+		public:
+			Intersection() : material(nullptr){}
+			~Intersection(){}
 
-	public:
-		RayHit hit;
-		Material* material;
-	};
+		public:
+			RayHit hit;
+			Material* material;
+		};
+	}
 }
