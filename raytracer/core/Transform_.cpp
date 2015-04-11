@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "transform.h"
+#include "Transform.h"
 
 namespace Cruisky{
 	namespace RayTracer {

@@ -8,7 +8,7 @@
 
 #include "fwddecl.h"
 #include "stdafx.h"
-#include "mathutil.h"
+#include "MathUtil.h"
 
 namespace Cruisky{
 	// 4x4 row-major matrix using right-handed coordinate system

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "rayhit.h"
+#include "Rayhit.h"
 
 namespace Cruisky{
 	namespace RayTracer{

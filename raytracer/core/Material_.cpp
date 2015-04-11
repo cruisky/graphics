@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "material.h"
+#include "Material.h"
 
 namespace Cruisky{
 	namespace RayTracer

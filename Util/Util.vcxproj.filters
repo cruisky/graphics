@@ -30,19 +30,19 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\matrix.h">
+    <ClInclude Include="include\Color.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ray.h">
+    <ClInclude Include="include\Matrix.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\vector.h">
+    <ClInclude Include="include\Ray.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\mathutil.h">
+    <ClInclude Include="include\Vector.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\color.h">
+    <ClInclude Include="include\MathUtil.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,16 +53,16 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\matrix.cpp">
+    <ClCompile Include="src\Vector.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ray.cpp">
+    <ClCompile Include="src\Ray.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\vector.cpp">
+    <ClCompile Include="src\Matrix.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\mathutil.cpp">
+    <ClCompile Include="src\MathUtil.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>

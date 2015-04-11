@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "include/mathutil.h"
+#include "include/MathUtil.h"
 #include <limits>
 
 namespace Cruisky{

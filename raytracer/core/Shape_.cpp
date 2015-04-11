@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "mathutil.h"
-#include "ray.h"
-#include "rayhit.h"
-#include "shape.h"
+#include "Math.h"
+#include "Ray.h"
+#include "RayHit.h"
+#include "Shape.h"
 
 namespace Cruisky{
 	namespace RayTracer

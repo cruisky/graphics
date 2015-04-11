@@ -12,20 +12,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fwddecl.h" />
-    <ClInclude Include="include\color.h" />
-    <ClInclude Include="include\mathutil.h" />
-    <ClInclude Include="include\matrix.h" />
-    <ClInclude Include="include\ray.h" />
-    <ClInclude Include="include\vector.h" />
+    <ClInclude Include="include\Color.h" />
+    <ClInclude Include="include\MathUtil.h" />
+    <ClInclude Include="include\Matrix.h" />
+    <ClInclude Include="include\Ray.h" />
+    <ClInclude Include="include\Vector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="src\mathutil.cpp" />
-    <ClCompile Include="src\matrix.cpp" />
-    <ClCompile Include="src\ray.cpp" />
-    <ClCompile Include="src\vector.cpp" />
+    <ClCompile Include="src\MathUtil.cpp" />
+    <ClCompile Include="src\Matrix.cpp" />
+    <ClCompile Include="src\Ray.cpp" />
+    <ClCompile Include="src\Vector.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

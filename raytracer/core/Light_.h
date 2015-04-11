@@ -1,6 +1,6 @@
 #pragma once
 
-#include "transform.h"
+#include "Transform.h"
 
 namespace Cruisky {
 	namespace RayTracer {

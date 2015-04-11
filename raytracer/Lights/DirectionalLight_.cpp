@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "directional_light.h"
-#include "color.h"
+#include "DirectionalLight.h"
+#include "Color.h"
 
 namespace Cruisky {
 	namespace RayTracer {

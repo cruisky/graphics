@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "prim.h"
-#include "ray.h"
-#include "shape.h"
-#include "rayhit.h"
-#include "intersection.h"
-#include "material.h"
+#include "Primitive.h"
+#include "Ray.h"
+#include "Shape.h"
+#include "RayHit.h"
+#include "Intersection.h"
+#include "Material.h"
 
 namespace Cruisky{
 

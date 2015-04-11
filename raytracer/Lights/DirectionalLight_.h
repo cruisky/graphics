@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/light.h"
-#include "color.h"
+#include "Core/Light.h"
+#include "Color.h"
 
 namespace Cruisky{
 	namespace RayTracer{

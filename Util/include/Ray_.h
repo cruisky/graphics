@@ -7,7 +7,7 @@
 #endif
 
 #include "fwddecl.h"
-#include "vector.h"
+#include "Vector.h"
 
 namespace Cruisky{
 

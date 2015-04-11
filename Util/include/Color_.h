@@ -6,7 +6,7 @@
 #define UTIL_API __declspec(dllimport) 
 #endif
 
-#include "mathutil.h"
+#include "MathUtil.h"
 
 namespace Cruisky{
 	// This class has only inline functions so don't export

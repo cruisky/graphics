@@ -1,9 +1,9 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "matrix.h"
-#include "ray.h"
-#include "rayhit.h"
+#include "Matrix.h"
+#include "Ray.h"
+#include "RayHit.h"
 
 namespace Cruisky{
 	namespace RayTracer

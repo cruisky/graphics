@@ -11,26 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\bsdf.h" />
-    <ClInclude Include="core\intersection.h" />
-    <ClInclude Include="core\light.h" />
-    <ClInclude Include="core\material.h" />
-    <ClInclude Include="core\prim.h" />
-    <ClInclude Include="core\primmgr.h" />
-    <ClInclude Include="core\rayhit.h" />
-    <ClInclude Include="core\scene.h" />
-    <ClInclude Include="core\shape.h" />
-    <ClInclude Include="core\transform.h" />
+    <ClInclude Include="Core\BSDF.h" />
+    <ClInclude Include="Core\Intersection.h" />
+    <ClInclude Include="Core\Light.h" />
+    <ClInclude Include="Core\Material.h" />
+    <ClInclude Include="Core\Primitive.h" />
+    <ClInclude Include="Core\PrimitiveManager.h" />
+    <ClInclude Include="Core\RayHit.h" />
+    <ClInclude Include="Core\Scene.h" />
+    <ClInclude Include="Core\Shape.h" />
+    <ClInclude Include="Core\Transform.h" />
     <ClInclude Include="fwddecl.h" />
-    <ClInclude Include="lights\directional_light.h" />
+    <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\material.cpp" />
-    <ClCompile Include="core\prim.cpp" />
-    <ClCompile Include="core\shape.cpp" />
-    <ClCompile Include="core\transform.cpp" />
-    <ClCompile Include="lights\directional_light.cpp" />
+    <ClCompile Include="Core\Material.cpp" />
+    <ClCompile Include="Core\Primitive.cpp" />
+    <ClCompile Include="Core\Shape.cpp" />
+    <ClCompile Include="Core\Transform.cpp" />
+    <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
