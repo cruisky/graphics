@@ -1,4 +1,5 @@
-#include "vector.h"
+#include "stdafx.h"
+#include "include/vector.h"
 
 namespace Cruisky{
 	const Vector3 Vector3::ZERO(0.f, 0.f, 0.f);

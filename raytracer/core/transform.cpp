@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "transform.h"
 
 namespace Cruisky{

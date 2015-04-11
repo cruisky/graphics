@@ -1,11 +1,17 @@
 #pragma once
 
+#ifdef UTIL_EXPORTS
+#define UTIL_API __declspec(dllexport) 
+#else
+#define UTIL_API __declspec(dllimport) 
+#endif
+
 #include "fwddecl.h"
 #include "vector.h"
 
 namespace Cruisky{
 
-	class Ray{
+	class UTIL_API Ray{
 	public:
 		static const float EPSILON;
 	public:
@@ -30,5 +36,6 @@ namespace Cruisky{
 		dir = ot.dir;
 		t_min = ot.t_min;
 		t_max = ot.t_max;
+		return *this;
 	}
 }

@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "raytracer", "raytracer\raytracer.vcxproj", "{AA8FDED1-49CA-4DE4-B304-960A9B373B55}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util\Util.vcxproj", "{59725663-4E3E-4AAD-8CA6-65F72CFA6895}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +17,10 @@ Global
 		{AA8FDED1-49CA-4DE4-B304-960A9B373B55}.Debug|Win32.Build.0 = Debug|Win32
 		{AA8FDED1-49CA-4DE4-B304-960A9B373B55}.Release|Win32.ActiveCfg = Release|Win32
 		{AA8FDED1-49CA-4DE4-B304-960A9B373B55}.Release|Win32.Build.0 = Release|Win32
+		{59725663-4E3E-4AAD-8CA6-65F72CFA6895}.Debug|Win32.ActiveCfg = Debug|Win32
+		{59725663-4E3E-4AAD-8CA6-65F72CFA6895}.Debug|Win32.Build.0 = Debug|Win32
+		{59725663-4E3E-4AAD-8CA6-65F72CFA6895}.Release|Win32.ActiveCfg = Release|Win32
+		{59725663-4E3E-4AAD-8CA6-65F72CFA6895}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

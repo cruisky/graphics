@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "dependency.h"
+#include "stdafx.h"
 
 namespace Cruisky
 {

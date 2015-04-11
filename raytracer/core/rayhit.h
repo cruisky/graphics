@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/vector.h"
+#include "vector.h"
 
 namespace Cruisky {
 	namespace RayTracer {

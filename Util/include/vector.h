@@ -1,10 +1,16 @@
 #pragma once
 
-#include "math.h"
-#include "dependency.h"
+#ifdef UTIL_EXPORTS
+#define UTIL_API __declspec(dllexport) 
+#else
+#define UTIL_API __declspec(dllimport) 
+#endif
+
+#include "mathutil.h"
+#include "stdafx.h"
 
 namespace Cruisky {
-	class Vector3{
+	class UTIL_API Vector3{
 	public:
 		static const Vector3 ZERO;
 		static const Vector3 ONE;
@@ -44,16 +50,16 @@ namespace Cruisky {
 		return os << "(" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
 	}
 
-	__forceinline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y * v.y + u.z * v.z; }
-	__forceinline Vector3 Cross(const Vector3& u, const Vector3& v){
+	UTIL_API __forceinline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y * v.y + u.z * v.z; }
+	UTIL_API __forceinline Vector3 Cross(const Vector3& u, const Vector3& v){
 		return Vector3(
 			u.y * v.z - u.z * v.y,
 			u.z * v.x - u.x * v.z,
 			u.x * v.y - u.y * v.x);
 	}
-	__forceinline float LengthSqr(const Vector3& v) { return Dot(v, v); }
-	__forceinline float Length(const Vector3& v) { return Math::Sqrt(LengthSqr(v)); }
-	__forceinline Vector3 Normalized(const Vector3& v) { return v * Math::Rsqrt(LengthSqr(v)); }
+	UTIL_API __forceinline float LengthSqr(const Vector3& v) { return Dot(v, v); }
+	UTIL_API __forceinline float Length(const Vector3& v) { return Math::Sqrt(LengthSqr(v)); }
+	UTIL_API __forceinline Vector3 Normalized(const Vector3& v) { return v * Math::Rsqrt(LengthSqr(v)); }
 
-	__forceinline Vector3& Vector3::Normalize() { (*this) *= Math::Rsqrt(LengthSqr(*this)); return *this; }
+	UTIL_API __forceinline Vector3& Vector3::Normalize() { (*this) *= Math::Rsqrt(LengthSqr(*this)); return *this; }
 }

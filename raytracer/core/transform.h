@@ -1,8 +1,8 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "util/matrix.h"
-#include "util/ray.h"
+#include "matrix.h"
+#include "ray.h"
 #include "rayhit.h"
 
 namespace Cruisky{

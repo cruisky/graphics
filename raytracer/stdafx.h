@@ -1,7 +1,7 @@
 #pragma once
+#pragma warning(disable: 4800)
 
 #include <cmath>
-#include <cfloat>
 #include <cassert>
 #include <iostream>
 #include <cstring>

@@ -1,5 +1,6 @@
-#include "util/math.h"
-#include "util/ray.h"
+#include "stdafx.h"
+#include "mathutil.h"
+#include "ray.h"
 #include "rayhit.h"
 #include "shape.h"
 

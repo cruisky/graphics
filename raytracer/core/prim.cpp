@@ -1,5 +1,6 @@
+#include "stdafx.h"
 #include "prim.h"
-#include "util/ray.h"
+#include "ray.h"
 #include "shape.h"
 #include "rayhit.h"
 #include "intersection.h"

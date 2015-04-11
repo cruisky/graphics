@@ -1,13 +1,18 @@
 #pragma once
 
-#include "fwddecl.h"
-#include "dependency.h"
+#ifdef UTIL_EXPORTS
+#define UTIL_API __declspec(dllexport) 
+#else
+#define UTIL_API __declspec(dllimport) 
+#endif
 
-#include "math.h"
+#include "fwddecl.h"
+#include "stdafx.h"
+#include "mathutil.h"
 
 namespace Cruisky{
 	// 4x4 row-major matrix using right-handed coordinate system
-	class Matrix4x4{
+	class UTIL_API Matrix4x4{
 	public: 
 		static const Matrix4x4 IDENTITY;
 
@@ -96,6 +101,7 @@ namespace Cruisky{
 				m[i][2] * ot.m[2][j] +
 				m[i][3] * ot.m[3][j];
 		memcpy(m, result, 16 * sizeof(float));
+		return *this;
 	}
 
 	inline std::ostream& operator << (std::ostream& os, const Matrix4x4& m){

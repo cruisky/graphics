@@ -1,8 +1,7 @@
-#include "util/matrix.h"
-#include "util/vector.h"
-#include "util/ray.h"
-#include <iostream>
-#include <string>
+#include "stdafx.h"
+#include "include/matrix.h"
+#include "include/vector.h"
+#include "include/ray.h"
 
 namespace Cruisky{
 	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4();
