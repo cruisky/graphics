@@ -9,6 +9,13 @@ namespace Cruisky {
 		static const float INF = FLT_MAX;
 		static const float EPSILON = FLT_EPSILON;
 
+		template <typename T>
+		inline bool IsNAN(const T& num) { return _isnan(num); }
+		template <typename T>
+		inline bool IsINF(const T& num) { return !_finite(num); }
+		template <typename T>
+		inline bool Valid(const T& num) { return !_isnan(num) && _finite(num); }
+
 		inline float Abs(float n) { return fabsf(n); }
 		inline float Pow(float n, float e) { return powf(n, e); }
 		inline float Sqrt(float n) { return sqrtf(n); }

@@ -27,8 +27,15 @@ namespace Cruisky{
 		Matrix4x4 operator * (const Matrix4x4& ot) const;
 		const Matrix4x4& operator *= (const Matrix4x4 ot);
 
+		float *operator[](int row){ return m[row]; }
+		const float *operator[](int row) const { return m[row]; }
+
+		//int &operator()(int row, int col);
+
 		Matrix4x4 Transpose() const;
 		Matrix4x4 Inverse() const;
+		// Returns the inverse of a rotation matrix
+		Matrix4x4 InverseRotation() const;
 
 		static Matrix4x4 Translate(const Vector3& v);
 		static Matrix4x4 Translate(float x, float y, float z);
@@ -36,7 +43,7 @@ namespace Cruisky{
 		static Matrix4x4 Rotate(const Vector3& angle);
 		static Matrix4x4 Rotate(float x, float y, float z);
 		static Matrix4x4 Rotate(float angle, const Vector3& axis);
-		static Matrix4x4 LookAt(const Vector3& pt, const Vector3& dir, const Vector3& up);
+		static Matrix4x4 LookAt(const Vector3& pEye, const Vector3& pTarget, const Vector3& up);
 
 		static Matrix4x4 Scale(const Vector3& s);
 		static Matrix4x4 Scale(float x, float y, float z);
@@ -48,12 +55,16 @@ namespace Cruisky{
 		// Transforms a normal vector with an already inverted matrix, the result is not normalized
 		static Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n);
 		
+		bool IsAffine() const;
+		Matrix4x4 InverseAffine() const;
+		Matrix4x4 InverseGeneral() const;
 	private:
 		friend std::ostream& operator << (std::ostream& os, const Matrix4x4& M);
-
-		inline bool IsAffine() const;
-		inline Matrix4x4 InverseAffine() const;
-		inline Matrix4x4 InverseGeneral() const;
+		
+		// Apply the 3x3 part to the translation part
+		Matrix4x4& InternalApplyTranslation();
+		Matrix4x4& InternalTranspose();
+		Matrix4x4& InternalInverse();
 
 		float m[4][4];
 	};
@@ -95,39 +106,57 @@ namespace Cruisky{
 		}
 		return os;
 	}
-	inline bool Matrix4x4::IsAffine() const {
-		return m[3][0] == 0.f && m[3][1] == 0.f && m[3][2] == 0.f && m[3][3] == 1.f;
+
+	inline Matrix4x4& Matrix4x4::InternalApplyTranslation(){
+		float v[3];
+		v[0] = m[0][3] * m[0][0] + m[1][3] * m[0][1] + m[2][3] * m[0][2];
+		v[1] = m[0][3] * m[1][0] + m[1][3] * m[1][1] + m[2][3] * m[1][2];
+		v[2] = m[0][3] * m[2][0] + m[1][3] * m[2][1] + m[2][3] * m[2][2];
+		m[0][3] = -v[0];
+		m[1][3] = -v[1];
+		m[2][3] = -v[2];
+		return *this;
 	}
 
-	inline Matrix4x4 Matrix4x4::InverseAffine() const {
-		float cf[4][4];
+	inline Matrix4x4& Matrix4x4::InternalTranspose(){
+		float temp;
+		temp = m[0][1]; m[0][1] = m[1][0]; m[1][0] = temp;
+		temp = m[0][2]; m[0][2] = m[2][0]; m[2][0] = temp;
+		temp = m[1][2]; m[1][2] = m[2][1]; m[2][1] = temp;
+		return *this;
+	}
+
+	inline Matrix4x4& Matrix4x4::InternalInverse(){
+		float cf[3][3];
 		float det, det_inv;
 		// find 3x3 matrix inverse
 		cf[0][0] = m[1][1] * m[2][2] - m[2][1] * m[1][2];
 		cf[0][1] = m[0][2] * m[2][0] - m[2][2] * m[0][1];
 		cf[0][2] = m[0][1] * m[1][2] - m[1][1] * m[0][2];
 		det = m[0][0] * cf[0][0] + m[0][1] * cf[0][1] + m[0][2] * cf[0][2];
-		if (Math::Abs(det) < Math::EPSILON){
-			std::cerr << "not invertible:\n" << *this << std::endl;
-			return Matrix4x4();		// not invertible
+		assert(Math::Abs(det) > Math::EPSILON);		// check if it's invertible
+		cf[1][0] = m[2][0] * m[1][2] - m[1][0] * m[2][2];
+		cf[1][1] = m[0][0] * m[2][2] - m[2][0] * m[0][2];
+		cf[1][2] = m[1][0] * m[0][2] - m[0][0] * m[1][2];
+		cf[2][0] = m[1][0] * m[2][1] - m[2][0] * m[1][1];
+		cf[2][1] = m[2][0] * m[0][1] - m[0][0] * m[2][1];
+		cf[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
+		det_inv = 1.f / det;
+		for (int i = 0; i < 3; i++){
+			for (int j = 0; j < 3; j++)
+				m[i][j] *= cf[i][j] * det_inv;
 		}
-		else {
-			cf[1][0] = m[2][0] * m[1][2] - m[1][0] * m[2][2];
-			cf[1][1] = m[0][0] * m[2][2] - m[2][0] * m[0][2];
-			cf[1][2] = m[1][0] * m[0][2] - m[0][0] * m[1][2];
-			cf[2][0] = m[1][0] * m[2][1] - m[2][0] * m[1][1];
-			cf[2][1] = m[2][0] * m[0][1] - m[0][0] * m[2][1];
-			cf[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
-			det_inv = 1.f / det;
-			for (int i = 0; i < 3; i++){
-				for (int j = 0; j < 3; j++)
-					cf[i][j] *= det_inv;
-				cf[i][3] = -m[i][3];	// invert the translation
-			}
-			cf[3][0] = cf[3][1] = cf[3][2] = 0.f;
-			cf[3][3] = 1.f;
-			return Matrix4x4(cf);
-		}
+		return *this;
+	}
+
+	inline bool Matrix4x4::IsAffine() const {
+		return m[3][0] == 0.f && m[3][1] == 0.f && m[3][2] == 0.f && m[3][3] == 1.f;
+	}
+
+	inline Matrix4x4 Matrix4x4::InverseAffine() const {
+		Matrix4x4 result(*this);
+		result.InternalInverse();
+		return result.InternalApplyTranslation();
 	}
 
 	inline Matrix4x4 Matrix4x4::InverseGeneral() const {

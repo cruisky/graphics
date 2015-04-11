@@ -26,7 +26,10 @@ namespace Cruisky{
 			Transform& Rotate(const Vector3& rotation);
 			Transform& Rotate(float angle, const Vector3& axis);
 			Transform& Scale(const Vector3& scale);
-			
+			Transform& LookAt(const Vector3& dir);
+			Transform& LookAt(const Vector3& dir, const Vector3& up);
+			//Transform& LookAt(const Vector3& pt_eye, const Vector3& pt_target, const Vector3& up);
+
 			inline Transform& Translate(float x, float y, float z){ return Translate(Vector3(x, y, z)); }
 			inline Transform& Rotate(float x, float y, float z){ return Rotate(Vector3(x, y, z)); }
 			inline Transform& Scale(float x, float y, float z){ return Scale(Vector3(x, y, z)); }

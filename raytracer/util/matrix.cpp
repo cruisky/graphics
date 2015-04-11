@@ -42,10 +42,18 @@ namespace Cruisky{
 	}
 		
 	Matrix4x4 Matrix4x4::Inverse() const {
-		if (IsAffine())
+		if (IsAffine()){
 			return InverseAffine();
-		else
+		} else {
 			return InverseGeneral();
+		}
+	}
+
+	Matrix4x4 Matrix4x4::InverseRotation() const {
+		Matrix4x4 result(*this);
+		// the inverse of rotation matrix is the same as the transpose
+		result.InternalTranspose();
+		return result.InternalApplyTranslation();
 	}
 
 	Matrix4x4 Matrix4x4::Translate(const Vector3& v){
@@ -95,14 +103,15 @@ namespace Cruisky{
 	}
 
 	Matrix4x4 Matrix4x4::LookAt(const Vector3& pEye, const Vector3& pTarget, const Vector3& up){
+		assert(pEye != pTarget);
 		Vector3 zaxis = (pEye - pTarget).Normalize();	// -z is the viewing direction in this coord system
 		Vector3 xaxis = Cross(up, zaxis).Normalize();
 		Vector3 yaxis = Cross(zaxis, xaxis);
 		return Matrix4x4(
-			xaxis.x, yaxis.x, zaxis.x, 0.f,
-			xaxis.y, yaxis.y, zaxis.y, 0.f,
-			xaxis.z, yaxis.z, zaxis.z, 0.f,
-			Dot(xaxis, pEye), Dot(yaxis, pEye), Dot(zaxis, pEye), 1.f);
+			xaxis.x, xaxis.y, xaxis.z, Dot(xaxis, pEye),
+			yaxis.x, yaxis.y, yaxis.z, Dot(yaxis, pEye),
+			zaxis.x, zaxis.y, zaxis.z, Dot(zaxis, pEye),
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Scale(const Vector3& s){

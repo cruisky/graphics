@@ -11,14 +11,27 @@ namespace Cruisky{
 		}
 
 		Transform& Transform::Rotate(const Vector3& rotation){
-			local_world_ = local_world_ * Matrix4x4::Rotate(rotation);
-			world_local_ = Matrix4x4::Rotate(-rotation) * world_local_;
+			Matrix4x4 mrot = Matrix4x4::Rotate(rotation);
+			local_world_ = local_world_ * mrot;
+			world_local_ = mrot.Transpose() * world_local_;
 			return *this;
 		}
 
 		Transform& Transform::Rotate(float angle, const Vector3& axis){
-			local_world_ = local_world_ * Matrix4x4::Rotate(angle, axis);
-			world_local_ = Matrix4x4::Rotate(-angle, axis) * world_local_;
+			Matrix4x4 mrot = Matrix4x4::Rotate(angle, axis);
+			local_world_ = local_world_ * mrot;
+			world_local_ = mrot.Transpose() * world_local_;
+			return *this;
+		}
+
+		Transform& Transform::LookAt(const Vector3& dir){
+			// find arbitrary vector that's perp to dir
+			return LookAt(dir, Vector3(-1.f, -1.f, dir.x + dir.y));
+		}
+
+		Transform& Transform::LookAt(const Vector3& dir, const Vector3& up){
+			local_world_ = Matrix4x4::LookAt(position_, position_ + dir, up);
+			world_local_ = local_world_.InverseRotation();
 			return *this;
 		}
 
