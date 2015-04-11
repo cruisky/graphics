@@ -23,6 +23,7 @@
     <ClInclude Include="core\transform.h" />
     <ClInclude Include="dependency.h" />
     <ClInclude Include="fwddecl.h" />
+    <ClInclude Include="lights\directional_light.h" />
     <ClInclude Include="util\color.h" />
     <ClInclude Include="util\math.h" />
     <ClInclude Include="util\matrix.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="core\prim.cpp" />
     <ClCompile Include="core\shape.cpp" />
     <ClCompile Include="core\transform.cpp" />
+    <ClCompile Include="lights\directional_light.cpp" />
     <ClCompile Include="util\matrix.cpp" />
     <ClCompile Include="util\ray.cpp" />
     <ClCompile Include="util\vector.cpp" />

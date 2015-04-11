@@ -25,6 +25,12 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{9a01b050-d805-4262-a4a5-14bb1f716e95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\lights">
+      <UniqueIdentifier>{c705b53e-e89c-437a-839f-de93c7069ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lights">
+      <UniqueIdentifier>{1b9e70f2-0877-467b-a878-09f9c094311c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\bsdf.h">
@@ -78,6 +84,9 @@
     <ClInclude Include="core\primmgr.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="lights\directional_light.h">
+      <Filter>Header Files\lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\main.cpp">
@@ -103,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="core\transform.cpp">
       <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="lights\directional_light.cpp">
+      <Filter>Source Files\lights</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
