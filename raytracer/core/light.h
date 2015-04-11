@@ -8,10 +8,17 @@ namespace Cruisky {
 		class Light{
 		public:
 			Light(){}
-			Light(Vector3 position, Vector3 rotation = Vector3::ZERO, Vector3 scale = Vector3::ONE) :
-				transform(position, rotation, scale){}
 
-			virtual void Shade(Ray& ray) = 0;
+			// Emits a light ray from point to the light source.
+			inline void Emit(const RayHit& point, Ray& lightray, Color& lightcolor) const {
+				RayHit localpoint = transform.ToLocal(point);
+				GenerateRay(localpoint, lightray, lightcolor);
+				lightray = transform.ToWorld(lightray);
+			}
+
+		protected:
+			virtual void GenerateRay(RayHit& localpoint, Ray& localray, Color& lightcolor) const = 0;
+
 		public:
 			Transform transform;
 		};
