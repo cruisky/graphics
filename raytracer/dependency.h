@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cfloat>
+#include <cassert>
 #include <iostream>
 #include <cstring>
 using std::string;
