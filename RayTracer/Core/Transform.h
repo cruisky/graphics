@@ -3,7 +3,6 @@
 #include "fwddecl.h"
 #include "Matrix.h"
 #include "Ray.h"
-#include "RayHit.h"
 
 namespace Cruisky{
 	namespace RayTracer
@@ -41,23 +40,11 @@ namespace Cruisky{
 					ray.t_min, ray.t_max);
 			}
 
-			inline RayHit ToWorld(const RayHit& hit) const{
-				return RayHit(
-					Matrix4x4::TPoint(local_world_, hit.point),
-					Matrix4x4::TNormal(local_world_, hit.normal).Normalize());
-			}
-
 			inline Ray ToLocal(const Ray& ray) const{
 				return Ray(
 					Matrix4x4::TPoint(world_local_, ray.origin),
 					Matrix4x4::TVector(world_local_, ray.dir),
 					ray.t_min, ray.t_max);
-			}
-
-			inline RayHit ToLocal(const RayHit& hit) const{
-				return RayHit(
-					Matrix4x4::TPoint(world_local_, hit.point),
-					Matrix4x4::TNormal(world_local_, hit.normal).Normalize());
 			}
 
 		private:

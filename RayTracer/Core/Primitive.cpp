@@ -2,33 +2,38 @@
 #include "Primitive.h"
 #include "Ray.h"
 #include "Shape.h"
-#include "RayHit.h"
 #include "Intersection.h"
-#include "Material.h"
 
 namespace Cruisky{
 
 	namespace RayTracer
 	{
-		bool GeometricPrimitive::Intersect(Ray& ray, Intersection& intxn) const {
+		bool Primitive::Intersect(const Ray& ray, Intersection& intxn) const {
 			// transform the ray into local space
-			Ray localRay = transform.ToLocal(ray);
-			RayHit hit;
+			localray_ = transform.ToLocal(ray);
 
-			if (shape->Intersect(localRay, hit)) return false;
-			intxn.hit = transform.ToWorld(hit);
+			if (!shape_->Intersect(localray_)) return false;
 			intxn.prim = this;
-			ray.t_max = localRay.t_max;
+			ray.t_max = localray_.t_max;
 			return true;
 		}
 
-		bool GeometricPrimitive::Occlude(const Ray& ray) const {
-			return shape->Occlude(transform.ToLocal(ray));
+		void Primitive::PostIntersect(LocalGeo& geo) const {
+			geo.bsdf = GetBSDF();
+			shape_->PostIntersect(localray_, geo);
+			// transform the hit point and normal to world space
+			const Matrix4x4& local_world = transform.GetLocalToWorld();
+			geo.point = Matrix4x4::TPoint(local_world, geo.point);
+			geo.normal = Matrix4x4::TNormal(local_world, geo.normal);
 		}
 
-		/*void GeometricPrimitive::GetBRDF(RayHit& hit, BRDF* out) const {
-			material->GetBRDF(hit, out);
-		}*/
+		bool Primitive::Occlude(const Ray& ray) const {
+			return shape_->Occlude(transform.ToLocal(ray));
+		}
+
+		const BSDF* Primitive::GetBSDF() const {
+			return bsdf_.get();
+		}
 
 	}
 

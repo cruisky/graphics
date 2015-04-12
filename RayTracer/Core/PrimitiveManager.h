@@ -11,10 +11,13 @@ namespace Cruisky
 		public:
 			PrimitiveManager(){}
 
-			virtual void Init(vector<shared_ptr<Primitive>>& prims) = 0;
+			virtual void Construct(const vector<shared_ptr<Primitive>>& prims);
 
-			virtual bool Intersect(Ray& ray, Intersection& intxn) const = 0;
+			virtual bool Intersect(const Ray& ray, Intersection& intxn) const;
 			virtual bool Occlude(const Ray& ray) const;
+		
+		public:
+			vector<shared_ptr<Primitive>> *prims_;
 		};
 	}
 }

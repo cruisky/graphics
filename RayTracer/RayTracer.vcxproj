@@ -11,13 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\BSDF.h" />
     <ClInclude Include="Core\Intersection.h" />
     <ClInclude Include="Core\Light.h" />
-    <ClInclude Include="Core\Material.h" />
+    <ClInclude Include="Core\BSDF.h" />
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\PrimitiveManager.h" />
-    <ClInclude Include="Core\RayHit.h" />
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\Shape.h" />
     <ClInclude Include="Core\Transform.h" />
@@ -26,8 +24,9 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core\Material.cpp" />
+    <ClCompile Include="Core\BSDF.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
+    <ClCompile Include="Core\PrimitiveManager.cpp" />
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\Shape.cpp" />
     <ClCompile Include="Core\Transform.cpp" />

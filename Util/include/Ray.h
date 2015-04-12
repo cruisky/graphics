@@ -21,8 +21,7 @@ namespace Cruisky{
 	public:
 		Vector3 origin;
 		Vector3 dir;
-		float t_min;
-		float t_max;
+		mutable float t_min, t_max;
 	};
 
 	inline Ray& Ray::operator = (const Ray& ot){

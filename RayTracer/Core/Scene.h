@@ -9,10 +9,14 @@ namespace Cruisky{
 		class Scene{
 		public:
 			Scene();
+			
+			void AddPrimitive(Primitive * prim);
+			void AddLight(Light * light);
+			// Initializes the scene after all lights & primitives are added
+			void Init();
 
-			void AddPrimitive(const shared_ptr<Primitive>& prim);
-			void AddLight(const Light& light);
-			bool Intersect(Ray& ray, Intersection& intersection) const;
+			bool Intersect(const Ray& ray, Intersection& intxn) const;
+			void PostIntersect(LocalGeo& geo) const;
 			bool Occlude(const Ray& ray) const;
 
 		private:

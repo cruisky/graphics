@@ -5,14 +5,14 @@
 namespace Cruisky{
 	namespace RayTracer
 	{
-		class Material{
+		class BSDF {
 		public:
 			static const float NOT_REFRACTIVE;
 			static const float NOT_REFLECTVIE;
 		public:
-			Material(Color ambient, Color diffuse, Color specular, float shininess, float reflection) :
+			BSDF(Color ambient, Color diffuse, Color specular, float shininess, float reflection) :
 				ambient_(ambient), diffuse_(diffuse), specular_(specular), shininess_(shininess), reflection_(reflection){}
-			~Material(){}
+			virtual ~BSDF(){}
 
 			inline Color GetAmbient(){ return ambient_; }
 			inline Color GetDiffuse(){ return diffuse_; }
@@ -29,10 +29,10 @@ namespace Cruisky{
 		};
 
 
-		class Dielectric : protected Material{
+		class Dielectric : protected BSDF{
 		public:
 			Dielectric(Color ambient, Color diffuse, Color specular, float shininess, float refractive_index, Color attenuation) :
-				Material(ambient, diffuse, specular, shininess, NOT_REFLECTVIE), refr_index_(refractive_index){
+				BSDF(ambient, diffuse, specular, shininess, NOT_REFLECTVIE), refr_index_(refractive_index){
 				refr_index_inv_ = 1.f / refractive_index;
 				refl_ = Math::Pow((refractive_index - 1.f) / (refractive_index + 1.f), 2.f);
 				refl_c_ = 1.f - refl_;

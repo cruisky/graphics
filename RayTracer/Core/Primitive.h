@@ -8,35 +8,22 @@ namespace Cruisky {
 	{
 		class Primitive {
 		public:
-			Primitive(){};
+			Primitive(const BSDF *bsdf, const Shape *shape) : bsdf_(bsdf), shape_(shape){};
 
-			// TODO
-			//virtual void GetBSDF(RayHit& hit, BSDF* out) const = 0;
-
-			// Check if the global ray intersects this primitive, if so
-			// set geo info and material in the intersection, 
+			// Checks if the global ray intersects this primitive, if so
+			// fills dist and prim in the intersection, 
 			// and modify the length (t_max) of the ray.
-			virtual bool Intersect(Ray& ray, Intersection& intersection) const = 0;
-			virtual bool Occlude(const Ray& ray) const = 0;
-		
+			bool Intersect(const Ray& ray, Intersection& intersection) const;
+			void PostIntersect(LocalGeo& geo) const;
+			bool Occlude(const Ray& ray) const;
+
+			const BSDF* GetBSDF() const;
 		public:
 			Transform transform;
-		};
-
-
-		class GeometricPrimitive : public Primitive {
-		public:
-			GeometricPrimitive(const Material* material, const Shape* shape) : material(material), shape(shape){};
-			~GeometricPrimitive(){}
-
-			// TODO
-			//void GetBSDF(RayHit& hit, BSDF* out) const;
-
-			bool Intersect(Ray& ray, Intersection& intersection) const;
-			bool Occlude(const Ray& ray) const;
-		public:
-			const Material* material;
-			const Shape* shape;
+		private:
+			shared_ptr<const BSDF>	bsdf_;
+			shared_ptr<const Shape>	shape_;
+			mutable Ray localray_;			// last local ray
 		};
 	}
 }

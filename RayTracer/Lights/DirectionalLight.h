@@ -9,8 +9,7 @@ namespace Cruisky{
 		public:
 			DirectionalLight(const Color& intensity, const Vector3& dir);
 
-		protected:
-			void GenerateRay(RayHit& localpoint, Ray& localray, Color& lightcolor) const override;
+			void Emit(const LocalGeo& geo, Ray& out, Color& lightcolor) const;
 
 		private:
 			Color intensity;

@@ -1,17 +1,29 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "Rayhit.h"
+#include "vector.h"
+#include "BSDF.h"
 
 namespace Cruisky{
 	namespace RayTracer{
-		class Intersection{
+
+		// Basic info of a intersection
+		struct Intersection{
 		public:
 			Intersection(){}
-
 		public:
-			RayHit hit;
+			float dist;
 			const Primitive *prim;
+		};
+
+		struct LocalGeo : Intersection {
+		public:
+			LocalGeo(){}
+		public:
+			const BSDF *bsdf;
+			Vector3 point;
+			Vector3 normal;			// from surface
+			//Vector3 normal;		// from normal map
 		};
 	}
 }

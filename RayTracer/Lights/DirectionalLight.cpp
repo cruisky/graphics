@@ -11,7 +11,7 @@ namespace Cruisky {
 			}
 		}
 
-		void DirectionalLight::GenerateRay(RayHit& localpoint, Ray& localray, Color& lightcolor) const {
+		void DirectionalLight::Emit(const LocalGeo& geo, Ray& out, Color& lightcolor) const {
 			// TODO
 		}
 	}
