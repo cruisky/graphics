@@ -14,7 +14,7 @@ namespace Cruisky
 			virtual void Init(vector<shared_ptr<Primitive>>& prims) = 0;
 
 			virtual bool Intersect(Ray& ray, Intersection& intxn) const = 0;
-			virtual bool Occlude(Ray& ray) const;
+			virtual bool Occlude(const Ray& ray) const;
 		};
 	}
 }

@@ -10,8 +10,10 @@ namespace Cruisky{
 		public:
 			Scene();
 
-			inline bool Intersect(Ray& ray, Intersection& intersection) const;
-			inline bool Occlude(const Ray& ray) const;
+			void AddPrimitive(const shared_ptr<Primitive>& prim);
+			void AddLight(const Light& light);
+			bool Intersect(Ray& ray, Intersection& intersection) const;
+			bool Occlude(const Ray& ray) const;
 
 		private:
 			unique_ptr<PrimitiveManager> primmgr_;

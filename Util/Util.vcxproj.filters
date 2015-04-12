@@ -14,23 +14,20 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\include">
-      <UniqueIdentifier>{bbdb75c4-42ca-46ee-9564-2333775457f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\src">
-      <UniqueIdentifier>{4ffa595f-59a4-4fda-9462-9af4b4d90a6e}</UniqueIdentifier>
+      <UniqueIdentifier>{bd829395-1303-4fed-88f8-93b24987bfb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fwddecl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Color.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MathUtil.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="include\Matrix.h">
@@ -42,28 +39,22 @@
     <ClInclude Include="include\Vector.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\MathUtil.h">
-      <Filter>Header Files\include</Filter>
+    <ClInclude Include="fwddecl.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="src\MathUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="src\Matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Vector.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ray.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Matrix.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MathUtil.cpp">
-      <Filter>Source Files\src</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -28,6 +28,7 @@
   <ItemGroup>
     <ClCompile Include="Core\Material.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
+    <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\Shape.cpp" />
     <ClCompile Include="Core\Transform.cpp" />
     <ClCompile Include="Lights\DirectionalLight.cpp" />
@@ -35,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.vcxproj">
-      <Project>{59725663-4e3e-4aad-8ca6-65f72cfa6895}</Project>
+      <Project>{e3244cff-b604-45fb-966f-66c48abe586a}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

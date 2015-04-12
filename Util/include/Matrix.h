@@ -1,18 +1,12 @@
 #pragma once
 
-#ifdef UTIL_EXPORTS
-#define UTIL_API __declspec(dllexport) 
-#else
-#define UTIL_API __declspec(dllimport) 
-#endif
-
 #include "fwddecl.h"
 #include "stdafx.h"
 #include "MathUtil.h"
 
 namespace Cruisky{
 	// 4x4 row-major matrix using right-handed coordinate system
-	class UTIL_API Matrix4x4{
+	class Matrix4x4{
 	public: 
 		static const Matrix4x4 IDENTITY;
 
