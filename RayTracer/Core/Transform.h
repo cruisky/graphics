@@ -50,7 +50,7 @@ namespace Cruisky{
 			inline Ray ToLocal(const Ray& ray) const{
 				return Ray(
 					Matrix4x4::TPoint(world_local_, ray.origin),
-					Matrix4x4::TVector(world_local_, ray.dir).Normalize(),
+					Matrix4x4::TVector(world_local_, ray.dir),
 					ray.t_min, ray.t_max);
 			}
 
