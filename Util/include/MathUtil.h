@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable: 4800)
 
 #include <cmath>
 
@@ -46,5 +47,9 @@ namespace Cruisky {
 		template <typename T> inline T Clamp(const T& val, const T& min, const T& max){
 			return (val > min) ? ((val < max) ? val : max) : min;
 		}
+
+		inline int Floor(float n) { return (int)(n + EPSILON) - 1; }
+		inline int Ceil(float n) { return (int)(n - EPSILON) + 1; }
+		inline int Round(float n) { return (int)(n + 0.5f); }
 	}
 }

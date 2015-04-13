@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "include/MathUtil.h"
 #include <limits>
 

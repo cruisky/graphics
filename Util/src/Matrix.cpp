@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "include/Matrix.h"
 #include "include/Vector.h"
 #include "include/Ray.h"

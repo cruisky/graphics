@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "include/Vector.h"
 
 namespace Cruisky{
