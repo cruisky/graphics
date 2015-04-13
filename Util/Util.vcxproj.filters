@@ -42,6 +42,9 @@
     <ClInclude Include="src\stb_image_write.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Image.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MathUtil.cpp">

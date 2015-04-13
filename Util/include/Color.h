@@ -10,7 +10,7 @@ namespace Cruisky{
 			r(0.f), g(0.f), b(0.f), a(1.f) {}
 		Color(float gray, float a = 1.f) :
 			r(gray), g(gray), b(gray), a(a) {}
-		Color(float r, float g, float b, float a = 1.f);
+		Color(float r, float g, float b, float a = 1.f) : r(r), g(g), b(b), a(a) {}
 		Color(const Color& ot) :
 			r(ot.r), g(ot.g), b(ot.b), a(ot.a){}
 		~Color(){}
