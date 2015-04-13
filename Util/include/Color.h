@@ -3,7 +3,6 @@
 #include "MathUtil.h"
 
 namespace Cruisky{
-	// This class has only inline functions so don't export
 	class Color {
 	public:
 		float r, g, b, a;
