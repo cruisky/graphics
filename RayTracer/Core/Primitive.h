@@ -2,6 +2,8 @@
 
 #include "fwddecl.h"
 #include "Transform.h"
+#include "BSDF.h"		// shared_ptr
+#include "Shape.h"		// shared_ptr
 
 namespace Cruisky {
 	namespace RayTracer

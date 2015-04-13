@@ -2,6 +2,7 @@
 
 #include "fwddecl.h"
 #include "stdafx.h"
+#include "Light.h"		// for shared_ptr
 
 namespace Cruisky{
 	namespace RayTracer

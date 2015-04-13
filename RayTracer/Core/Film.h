@@ -21,7 +21,7 @@ namespace Cruisky{
 
 		private:
 			int width_, height_;
-			unique_ptr<Color[]> pixels_;
+			unique_ptr<Color[]> pixels_;	// or vector<Color> if Resize() is constantly called
 		};
 	}
 }
