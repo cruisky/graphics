@@ -17,6 +17,7 @@
     <ClInclude Include="Core\BSDF.h" />
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\PrimitiveManager.h" />
+    <ClInclude Include="Core\Sampler.h" />
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\Shape.h" />
     <ClInclude Include="Core\Transform.h" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Core\Film.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
     <ClCompile Include="Core\PrimitiveManager.cpp" />
+    <ClCompile Include="Core\Sampler.cpp" />
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\Shape.cpp" />
     <ClCompile Include="Core\Transform.cpp" />

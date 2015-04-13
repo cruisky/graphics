@@ -1,6 +1,7 @@
 #pragma once
-
 #include "fwddecl.h"
+
+#include <memory>
 
 namespace Cruisky{
 	namespace RayTracer{
@@ -21,7 +22,7 @@ namespace Cruisky{
 
 		private:
 			int width_, height_;
-			unique_ptr<Color[]> pixels_;	// or vector<Color> if Resize() is constantly called
+			std::unique_ptr<Color[]> pixels_;	// or vector<Color> if Resize() is constantly called
 		};
 	}
 }

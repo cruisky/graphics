@@ -1,6 +1,7 @@
 #pragma once
-
 #include "fwddecl.h"
+
+#include <memory>
 #include "Transform.h"
 #include "BSDF.h"		// shared_ptr
 #include "Shape.h"		// shared_ptr
@@ -23,9 +24,9 @@ namespace Cruisky {
 		public:
 			Transform transform;
 		private:
-			shared_ptr<const BSDF>	bsdf_;
-			shared_ptr<const Shape>	shape_;
-			mutable Ray localray_;			// last local ray
+			std::shared_ptr<const BSDF>		bsdf_;
+			std::shared_ptr<const Shape>	shape_;
+			mutable Ray localray_;		// last local ray
 		};
 	}
 }

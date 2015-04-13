@@ -1,8 +1,7 @@
 #pragma once
-
 #include "fwddecl.h"
+
 #include "vector.h"
-#include "BSDF.h"
 
 namespace Cruisky{
 	namespace RayTracer{

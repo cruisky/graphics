@@ -1,4 +1,5 @@
 #pragma once
+#include "fwddecl.h"
 
 #include "Color.h"
 

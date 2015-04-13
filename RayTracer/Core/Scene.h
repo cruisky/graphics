@@ -1,7 +1,7 @@
 #pragma once
-
 #include "fwddecl.h"
-#include "stdafx.h"
+
+#include <memory>
 #include "Light.h"		// for shared_ptr
 
 namespace Cruisky{

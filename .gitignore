@@ -1,4 +1,6 @@
-*.ppm
+*.png
+*.bmp
+*.tga
 
 #OS junk files
 [Tt]humbs.db

@@ -1,6 +1,6 @@
 #pragma once
-
 #include "fwddecl.h"
+
 #include "Matrix.h"
 #include "Ray.h"
 

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "fwddecl.h"
 
 namespace Cruisky {

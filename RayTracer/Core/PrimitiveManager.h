@@ -1,6 +1,6 @@
 #pragma once
-
 #include "fwddecl.h"
+
 #include "stdafx.h"
 
 namespace Cruisky
