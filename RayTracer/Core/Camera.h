@@ -22,7 +22,8 @@ namespace Cruisky
 
 			// Transforms point from screen to world (on the near plane)
 			Vector3 ScreenToWorldPoint(const Vector3& pix) const;
-			// Transforms point from world to screen (z component is in world units)
+			// Transforms point from world to screen.
+			// z component is in canonical view volume unit
 			Vector3 WorldToScreenPoint(const Vector3& point) const;
 
 			Camera& Resize(int w, int h);
