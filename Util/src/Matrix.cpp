@@ -102,13 +102,13 @@ namespace Cruisky{
 
 	Matrix4x4 Matrix4x4::LookAt(const Vector3& pEye, const Vector3& pTarget, const Vector3& up){
 		assert(pEye != pTarget);
-		Vector3 zaxis = (pEye - pTarget).Normalize();	// -z is the viewing direction in this coord system
+		Vector3 zaxis = (pEye - pTarget).Normalize();	// -z forward
 		Vector3 xaxis = Cross(up, zaxis).Normalize();
 		Vector3 yaxis = Cross(zaxis, xaxis);
 		return Matrix4x4(
-			xaxis.x, xaxis.y, xaxis.z, Dot(xaxis, pEye),
-			yaxis.x, yaxis.y, yaxis.z, Dot(yaxis, pEye),
-			zaxis.x, zaxis.y, zaxis.z, Dot(zaxis, pEye),
+			xaxis.x, xaxis.y, xaxis.z, -Dot(xaxis, pEye),
+			yaxis.x, yaxis.y, yaxis.z, -Dot(yaxis, pEye),
+			zaxis.x, zaxis.y, zaxis.z, -Dot(zaxis, pEye),
 			0.f, 0.f, 0.f, 1.f);
 	}
 
@@ -126,6 +126,7 @@ namespace Cruisky{
 	}
 
 	Vector3 Matrix4x4::TPoint(const Matrix4x4& m, const Vector3& p){
+		// apply translation
 		return Vector3(
 			p.x * m.m[0][0] + p.y * m.m[0][1] + p.z * m.m[0][2] + m.m[0][3],
 			p.x * m.m[1][0] + p.y * m.m[1][1] + p.z * m.m[1][2] + m.m[1][3],
@@ -133,16 +134,18 @@ namespace Cruisky{
 	}
 
 	Vector3 Matrix4x4::TVector(const Matrix4x4& m, const Vector3& v){
+		// ignore translation
 		return Vector3(
-			v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
-			v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
-			v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2]);
+			v.x * m.m[0][0] + v.y * m.m[0][1] + v.z * m.m[0][2],
+			v.x * m.m[1][0] + v.y * m.m[1][1] + v.z * m.m[1][2],
+			v.x * m.m[2][0] + v.y * m.m[2][1] + v.z * m.m[2][2]);
 	}
 
 	Vector3 Matrix4x4::TNormal(const Matrix4x4& m_inv, const Vector3& n){
+		// multiply the transpose
 		return Vector3(
-			m_inv.m[0][0] * n.x + m_inv.m[1][0] * n.y + m_inv.m[2][0] * n.z,
-			m_inv.m[0][1] * n.x + m_inv.m[1][1] * n.y + m_inv.m[2][1] * n.z,
-			m_inv.m[0][2] * n.x + m_inv.m[1][2] * n.y + m_inv.m[2][2] * n.z);
+			n.x * m_inv.m[0][0] + n.y * m_inv.m[1][0] + n.z * m_inv.m[2][0],
+			n.x * m_inv.m[0][1] + n.y * m_inv.m[1][1] + n.z * m_inv.m[2][1],
+			n.x * m_inv.m[0][2] + n.y * m_inv.m[1][2] + n.z * m_inv.m[2][2]);
 	}
 }
