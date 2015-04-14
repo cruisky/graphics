@@ -48,6 +48,13 @@ namespace Cruisky{
 		static Matrix4x4 Scale(const Vector3& s);
 		static Matrix4x4 Scale(float x, float y, float z);
 
+		// Orthographic projection matrix, size is a similar term to fov
+		static Matrix4x4 Orthographic(float ratio, float size = 10.f, float near = 0.1f, float far = 1000.f);
+		// Perspective projection matrix, fov is vertical
+		static Matrix4x4 Perspective(float ratio, float fov = 90.f, float near = 0.1f, float far = 1000.f);
+		// Viewport matrix
+		static Matrix4x4 Viewport(float resx, float resy);
+
 		// Transforms a point
 		static Vector3 TPoint(const Matrix4x4& m, const Vector3& v);
 		// Transforms a vector

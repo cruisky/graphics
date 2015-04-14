@@ -125,6 +125,38 @@ namespace Cruisky{
 		return Scale(Vector3(x, y, z));
 	}
 
+	Matrix4x4 Matrix4x4::Orthographic(float ratio, float size, float an, float af){
+		assert(an > 0 && af > 0);
+		float t = size;			// top
+		float r = ratio * t;	// right
+		return Matrix4x4(
+			1.f/r, 0.f, 0.f, 0.f,
+			0.f, 1.f / t, 0.f, 0.f,
+			0.f, 0.f, 1.f / (af - an), (an + af) / (af - an),
+			0.f, 0.f, 0.f, 1.f);
+	}
+
+	Matrix4x4 Matrix4x4::Perspective(float ratio, float fov, float an, float af){
+		assert(an > 0 && af > 0);
+		float t = Math::Tan(Math::ToRad(fov) / 2.f) * an;		// top
+		float r = ratio * t;									// right
+		return Matrix4x4(
+			an / r, 0.f, 0.f, 0.f,
+			0.f, an / t, 0.f, 0.f,
+			0.f, 0.f, (an + af) / (an - af), 2 * af * an / (an - af),
+			0.f, 0.f, -1.f, 0.f);
+	}
+
+	Matrix4x4 Matrix4x4::Viewport(float resx, float resy){
+		resx /= 2.f;
+		resy /= 2.f;
+		return Matrix4x4(
+			resx, 0.f, 0.f, resx - 0.5f,
+			0.f, resy, 0.f, resy - 0.5f,
+			0.f, 0.f, 1.f, 0.f,
+			0.f, 0.f, 0.f, 1.f);
+	}
+
 	Vector3 Matrix4x4::TPoint(const Matrix4x4& m, const Vector3& p){
 		// apply translation
 		return Vector3(
