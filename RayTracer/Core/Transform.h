@@ -17,9 +17,9 @@ namespace Cruisky{
 			}
 			~Transform(){}
 
-			const Vector3& GetPosition() const { return position_; }
-			const Matrix4x4& GetWorldToLocal() const { return world_local_; }
-			const Matrix4x4& GetLocalToWorld() const { return local_world_; }
+			const Vector3& Position() const { return position_; }
+			const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
+			const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
 
 			Transform& Translate(const Vector3& translation);
 			Transform& Rotate(const Vector3& rotation);
@@ -33,18 +33,14 @@ namespace Cruisky{
 			inline Transform& Rotate(float x, float y, float z){ return Rotate(Vector3(x, y, z)); }
 			inline Transform& Scale(float x, float y, float z){ return Scale(Vector3(x, y, z)); }
 
-			inline Ray ToWorld(const Ray& ray) const{
-				return Ray(
-					Matrix4x4::TPoint(local_world_, ray.origin),
-					Matrix4x4::TVector(local_world_, ray.dir).Normalize(),
-					ray.t_min, ray.t_max);
+			inline void ToWorld(Ray& ray) const {
+				ray.origin = Matrix4x4::TPoint(local_world_, ray.origin);
+				ray.dir = Matrix4x4::TVector(local_world_, ray.dir).Normalize();
 			}
 
-			inline Ray ToLocal(const Ray& ray) const{
-				return Ray(
-					Matrix4x4::TPoint(world_local_, ray.origin),
-					Matrix4x4::TVector(world_local_, ray.dir),
-					ray.t_min, ray.t_max);
+			inline void ToLocal(Ray& ray) const{
+				ray.origin = Matrix4x4::TPoint(world_local_, ray.origin);
+				ray.dir = Matrix4x4::TVector(world_local_, ray.dir).Normalize();
 			}
 
 		private:

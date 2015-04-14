@@ -17,15 +17,15 @@ namespace Cruisky{
 
 			Color Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo);
 
-			inline Color GetAmbient(){ return ambient_; }
-			inline Color GetDiffuse(){ return diffuse_; }
-			inline Color GetSpecular(){ return specular_; }
-			inline Color GetShininess(){ return shininess_; }
+			inline Color Ambient(){ return ambient_; }
+			inline Color Diffuse(){ return diffuse_; }
+			inline Color Specular(){ return specular_; }
+			inline Color Shininess(){ return shininess_; }
 
-			virtual float GetReflection(float cos_incidence){ return reflection_; }
-			virtual float GetRefractiveIndex(){ return NOT_REFRACTIVE; }
-			virtual float GetRefractiveIndexInv(){ return NOT_REFRACTIVE; }
-			virtual Color GetAttenuation(float ray_distance){ return Color(); }
+			virtual float Reflection(float cos_incidence){ return reflection_; }
+			virtual float RefractiveIndex(){ return NOT_REFRACTIVE; }
+			virtual float RefractiveIndexInv(){ return NOT_REFRACTIVE; }
+			virtual Color Attenuation(float ray_distance){ return Color(); }
 		protected:
 			Color ambient_, diffuse_, specular_;
 			float shininess_, reflection_;
@@ -43,10 +43,10 @@ namespace Cruisky{
 			}
 			~Dielectric(){}
 
-			float GetReflection(float cos_incidence) override { return (refl_ + refl_c_ * Math::Pow(1.f - cos_incidence, 5.f)); }
-			float GetRefractiveIndex() override { return refr_index_; }
-			float GetRefractiveIndexInv() override { return refr_index_inv_; }
-			Color GetAttenuation(float ray_distance) override { return Math::Exp(att_log_ * -ray_distance); }
+			float Reflection(float cos_incidence) override { return (refl_ + refl_c_ * Math::Pow(1.f - cos_incidence, 5.f)); }
+			float RefractiveIndex() override { return refr_index_; }
+			float RefractiveIndexInv() override { return refr_index_inv_; }
+			Color Attenuation(float ray_distance) override { return Math::Exp(att_log_ * -ray_distance); }
 		private:
 			float refr_index_, refr_index_inv_, refl_, refl_c_;
 			Color att_log_;

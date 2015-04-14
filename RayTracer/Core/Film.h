@@ -13,8 +13,8 @@ namespace Cruisky{
 			//TODO
 			//void Commit(Sample& sample, Color& color);
 
-			inline int GetWidth() const { return width_; }
-			inline int GetHeight() const { return height_; }
+			inline int Width() const { return width_; }
+			inline int Height() const { return height_; }
 			void Resize(int width, int height);
 			const Color *GetPixels() const;
 			

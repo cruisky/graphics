@@ -10,7 +10,8 @@ namespace Cruisky{
 	{
 		bool Primitive::Intersect(const Ray& ray, Intersection& intxn) const {
 			// transform the ray into local space
-			localray_ = transform.ToLocal(ray);
+			localray_ = ray;
+			transform.ToLocal(localray_);
 
 			if (!shape_->Intersect(localray_)) return false;
 			intxn.prim = this;
@@ -22,13 +23,15 @@ namespace Cruisky{
 			geo.bsdf = GetBSDF();
 			shape_->PostIntersect(localray_, geo);
 			// transform the hit point and normal to world space
-			const Matrix4x4& local_world = transform.GetLocalToWorld();
+			const Matrix4x4& local_world = transform.LocalToWorldMatrix();
 			geo.point = Matrix4x4::TPoint(local_world, geo.point);
 			geo.normal = Matrix4x4::TNormal(local_world, geo.normal);
 		}
 
 		bool Primitive::Occlude(const Ray& ray) const {
-			return shape_->Occlude(transform.ToLocal(ray));
+			Ray loc_ray(ray);	// don't cache shadow ray
+			transform.ToLocal(loc_ray);
+			return shape_->Occlude(loc_ray);
 		}
 
 		const BSDF* Primitive::GetBSDF() const {
