@@ -10,12 +10,18 @@ namespace Cruisky{
 	namespace RayTracer
 	{
 		class BSDF;
+		class Camera;
+		class Film;
 		struct Intersection; struct LocalGeo;
 		class Light;
 		class Primitive;
 		class PrimitiveManager;
+		class Renderer;
+		class Sampler; struct Sample;
 		class Scene;
+		class SceneObject;
 		class Shape;
+		class Tracer;
 		class Transform;
 	}
 }

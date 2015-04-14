@@ -1,15 +1,15 @@
 #pragma once
 #include "fwddecl.h"
 
+#include "SceneObject.h"
 #include <memory>
-#include "Transform.h"
 #include "BSDF.h"		// shared_ptr
 #include "Shape.h"		// shared_ptr
 
 namespace Cruisky {
 	namespace RayTracer
 	{
-		class Primitive {
+		class Primitive : public SceneObject {
 		public:
 			Primitive(const BSDF *bsdf, const Shape *shape) : bsdf_(bsdf), shape_(shape){};
 
@@ -21,8 +21,6 @@ namespace Cruisky {
 			bool Occlude(const Ray& ray) const;
 
 			const BSDF* GetBSDF() const;
-		public:
-			Transform transform;
 		private:
 			std::shared_ptr<const BSDF>		bsdf_;
 			std::shared_ptr<const Shape>	shape_;
