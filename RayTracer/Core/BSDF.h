@@ -15,6 +15,8 @@ namespace Cruisky{
 				ambient_(ambient), diffuse_(diffuse), specular_(specular), shininess_(shininess), reflection_(reflection){}
 			virtual ~BSDF(){}
 
+			Color Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo);
+
 			inline Color GetAmbient(){ return ambient_; }
 			inline Color GetDiffuse(){ return diffuse_; }
 			inline Color GetSpecular(){ return specular_; }
