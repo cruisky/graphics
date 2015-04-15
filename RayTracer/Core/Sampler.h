@@ -1,5 +1,6 @@
 #pragma once
 #include "fwddecl.h"
+#include <iostream>
 
 namespace Cruisky
 {
@@ -13,6 +14,8 @@ namespace Cruisky
 		public:
 			float u, v;
 		};
+		std::ostream& operator<<(std::ostream& os, const Sample& sample);
+
 
 		class Sampler {
 		public:

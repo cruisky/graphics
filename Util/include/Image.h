@@ -1,8 +1,10 @@
 #pragma once
 
-#include "fwddecl.h"
+#include "../Util.h"
 
 namespace Cruisky{
+	class Color;
+
 	class Image {
 	public:
 		enum Channel {
