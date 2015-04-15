@@ -1,9 +1,8 @@
 #pragma once
 
-#include "fwddecl.h"
+#include "../Util.h"
 #include "MathUtil.h"
-#include <iostream>
-#include <cassert>
+#include "Vector.h"
 
 namespace Cruisky{
 	// 4x4 row-major matrix using right-handed coordinate system

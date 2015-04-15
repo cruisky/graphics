@@ -1,7 +1,6 @@
 #pragma once
-#pragma warning(disable: 4800)
 
-#include <cmath>
+#include "../Util.h"
 
 namespace Cruisky {
 	namespace Math {

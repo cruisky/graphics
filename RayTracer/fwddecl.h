@@ -6,6 +6,7 @@ namespace Cruisky{
 	class Color;
 	class Vector3;
 	class Matrix4x4;
+	class RNG;
 
 	namespace RayTracer
 	{

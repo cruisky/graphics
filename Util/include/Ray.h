@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fwddecl.h"
+#include "../Util.h"
 #include "Vector.h"
 
 namespace Cruisky{

@@ -33,9 +33,6 @@
     <ClInclude Include="include\Vector.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="fwddecl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\stb_image.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -44,6 +41,12 @@
     </ClInclude>
     <ClInclude Include="include\Image.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RNG.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

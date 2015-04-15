@@ -73,15 +73,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="fwddecl.h" />
     <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\Image.h" />
     <ClInclude Include="include\MathUtil.h" />
     <ClInclude Include="include\Matrix.h" />
     <ClInclude Include="include\Ray.h" />
+    <ClInclude Include="include\RNG.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\stb_image_write.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Image.cpp" />

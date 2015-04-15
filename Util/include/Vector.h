@@ -1,8 +1,7 @@
 #pragma once
 
+#include "../Util.h"
 #include "MathUtil.h"
-#include <cassert>
-#include <iostream>
 
 namespace Cruisky {
 	class Vector3{
