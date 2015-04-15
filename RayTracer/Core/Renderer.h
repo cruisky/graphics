@@ -2,18 +2,20 @@
 #include "fwddecl.h"
 
 #include <memory>
-#include "Scene.h"
+#include "Tracer.h"
+#include "Sampler.h"
 
 namespace Cruisky {
 	namespace RayTracer {
 		class Renderer{
 		public:
-			//TODO
+			Renderer(const Scene *scene, const Camera *camera, Film *film);
 		private:
-			std::shared_ptr<Camera> camera_;
-			std::shared_ptr<Scene> scene_;
+			const Scene* scene_;
+			const Camera* camera_;
+			Film* film_;
 			std::unique_ptr<Tracer> tracer_;
-			std::unique_ptr<Film> film_;
+			std::unique_ptr<Sampler> sampler_;
 			//TODO
 		};
 	}
