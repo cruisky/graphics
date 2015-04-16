@@ -28,10 +28,12 @@ namespace Cruisky{
 		inline Color operator - (const Color& ot) const { return Color(r - ot.r, g - ot.g, b - ot.b).Clamp(); }
 		inline Color operator * (const Color& ot) const { return Color(r * ot.r, g * ot.g, b * ot.b).Clamp(); }
 		inline Color operator * (const float s) const { return Color(r * s, g * s, b * s).Clamp(); }
+		inline Color operator / (const float d) const { return Color(r / d, g / d, b / d).Clamp(); }
 		inline Color& operator += (const Color& ot) { r += ot.r; g += ot.g; b += ot.b; return Clamp(); }
 		inline Color& operator -= (const Color& ot) { r -= ot.r; g -= ot.g; b -= ot.b; return Clamp(); }
 		inline Color& operator *= (const Color& ot) { r *= ot.r; g *= ot.g; b *= ot.b; return Clamp(); }
 		inline Color& operator *= (const float s) { r *= s; g *= s; b *= s; return Clamp(); }
+		inline Color& operator /= (const float d) { r /= d; g /= d; b /= d; return Clamp(); }
 
 
 		inline bool operator == (const Color ot) const { return r == ot.r && g == ot.g && b == ot.b && a == ot.a; }

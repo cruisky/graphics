@@ -17,10 +17,11 @@ namespace Cruisky{
 			}
 			~Transform(){}
 
-			const Vector3& Position() const { return position_; }
 			const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
 			const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
+			const Vector3& Position() const { return position_; }
 
+			Transform& SetPosition(const Vector3& position);
 			Transform& Translate(const Vector3& translation);
 			Transform& Rotate(const Vector3& rotation);
 			Transform& Rotate(float angle, const Vector3& axis);
