@@ -9,6 +9,7 @@ namespace Cruisky
 		struct Sample {
 		public:
 			Sample(){}
+			// For a pixel the range should be (-0.5, 0.5)
 			Sample(float u, float v) : u(u), v(v) {}
 
 		public:

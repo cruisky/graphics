@@ -22,9 +22,9 @@ namespace Cruisky{
 			if (y == y_end)
 				return false;
 			
-			// simply take a sample at the center of the pixel
-			sample->u = x++ + 0.5f;
-			sample->v = y + 0.5f;
+			// simply take a sample at the center of the pixel (with zero offset)
+			sample->u = x++;
+			sample->v = y;
 			return true;
 		}
 	}

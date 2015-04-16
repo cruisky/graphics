@@ -148,8 +148,8 @@ namespace Cruisky{
 	}
 
 	Matrix4x4 Matrix4x4::Viewport(float resx, float resy){
-		resx /= 2.f;
-		resy /= 2.f;
+		resx *= 0.5f;
+		resy *= 0.5f;
 		return Matrix4x4(
 			resx, 0.f, 0.f, resx - 0.5f,
 			0.f, resy, 0.f, resy - 0.5f,

@@ -2,6 +2,7 @@
 #include "fwddecl.h"
 
 #include "Color.h"
+#include "Ray.h"
 
 namespace Cruisky{
 	namespace RayTracer{

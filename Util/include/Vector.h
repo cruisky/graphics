@@ -42,7 +42,7 @@ namespace Cruisky {
 
 	inline Vector3 operator * (float r, const Vector3& v) { return Vector3(v.x * r, v.y * r, v.z * r); }
 	inline std::ostream& operator << (std::ostream& os, const Vector3& v) {
-		return os << "(" << v.x << ", " << v.y << ", " << v.z << ")" << std::endl;
+		return os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
 	}
 
 	inline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y * v.y + u.z * v.z; }

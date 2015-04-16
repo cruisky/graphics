@@ -8,7 +8,7 @@ namespace Cruisky
 	namespace RayTracer{
 		class Camera : public SceneObject {
 		public:
-			Camera(int width, int height, float fov = 90.f, float near = 0.1f, float far = 1000.f, bool is_ortho = false);
+			Camera(int width, int height, float fov = 90.f, float near = 1.f, float far = 1000.f, bool is_ortho = false);
 
 			void GenerateRay(Ray *out, const Sample& sample) const;
 
@@ -57,8 +57,8 @@ namespace Cruisky
 
 
 		void Camera::UpdateMainMatrix(){
-			cam_screen_ = cam_viewport_ * viewport_screen_;
-			screen_cam_ = screen_viewport_ * viewport_cam_;
+			cam_screen_ = viewport_screen_ * cam_viewport_;
+			screen_cam_ = viewport_cam_ * screen_viewport_;
 		}
 
 		void Camera::UpdateProjection(){

@@ -7,6 +7,7 @@ namespace Cruisky{
 	namespace RayTracer{
 		class Film {
 		public:
+			Film() : width_(0), height_(0){};
 			Film(int width, int height){ Resize(width, height); }
 			~Film(){}
 
