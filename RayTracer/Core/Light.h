@@ -12,7 +12,7 @@ namespace Cruisky {
 			virtual ~Light(){};
 
 			// Emits a light ray from point to the light source.
-			virtual void Emit(const LocalGeo& geo, Ray& out, Color& lightcolor) const = 0;
+			virtual void Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const = 0;
 		};
 	}
 }

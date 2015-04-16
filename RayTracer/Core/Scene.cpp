@@ -3,17 +3,21 @@
 #include "PrimitiveManager.h"
 #include "Primitive.h"
 #include "Intersection.h"
+#include <memory>
 
 namespace Cruisky {
 	namespace RayTracer {
-		void Scene::AddPrimitive(Primitive * prim){
-			prims_.push_back(shared_ptr<Primitive>(prim));
+		Scene::Scene(){
+			primmgr_ = unique_ptr<PrimitiveManager>(new PrimitiveManager(&prims_));
 		}
-		void Scene::AddLight(Light * light){
-			lights_.push_back(shared_ptr<Light>(light));
+		void Scene::AddPrimitive(shared_ptr<Primitive> prim){
+			prims_.push_back(prim);
 		}
-		void Scene::Init(){
-			primmgr_ = unique_ptr<PrimitiveManager>(new PrimitiveManager());
+		void Scene::AddLight(shared_ptr<Light> light){
+			lights.push_back(light);
+		}
+		void Scene::Construct(){
+			primmgr_->Construct();
 		}
 		bool Scene::Intersect(const Ray& ray, Intersection& intxn) const {
 			return primmgr_->Intersect(ray, intxn);

@@ -6,10 +6,6 @@ namespace Cruisky
 {
 	namespace RayTracer
 	{
-		void PrimitiveManager::Construct(const vector<shared_ptr<Primitive>>& prims) {
-			prims_ = &const_cast<vector<shared_ptr<Primitive>>&>(prims);
-		}
-
 		bool PrimitiveManager::Intersect(const Ray& ray, Intersection& intxn) const{
 			bool hasIntxn = false;
 			for (auto p : *prims_){
