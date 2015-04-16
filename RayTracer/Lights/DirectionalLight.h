@@ -5,11 +5,12 @@
 
 namespace Cruisky{
 	namespace RayTracer{
-		class DirectionalLight : protected Light {
+		class DirectionalLight : public Light {
 		public:
+			DirectionalLight(const Color& intensity) : intensity(intensity){}
 			DirectionalLight(const Color& intensity, const Vector3& dir);
 
-			void Emit(const LocalGeo& geo, Ray& out, Color& lightcolor) const;
+			void Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const;
 
 		private:
 			Color intensity;
