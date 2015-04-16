@@ -27,6 +27,7 @@
     <ClInclude Include="Core\Transform.h" />
     <ClInclude Include="fwddecl.h" />
     <ClInclude Include="Lights\DirectionalLight.h" />
+    <ClInclude Include="Lights\PointLight.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,7 @@
     <ClCompile Include="Core\Tracer.cpp" />
     <ClCompile Include="Core\Transform.cpp" />
     <ClCompile Include="Lights\DirectionalLight.cpp" />
+    <ClCompile Include="Lights\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

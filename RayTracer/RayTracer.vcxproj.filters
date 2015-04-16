@@ -78,6 +78,9 @@
     <ClInclude Include="Core\SceneObject.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Lights\PointLight.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="Core\Renderer.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Lights\PointLight.cpp">
+      <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
