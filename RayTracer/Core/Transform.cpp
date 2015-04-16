@@ -37,8 +37,8 @@ namespace Cruisky{
 		}
 
 		Transform& Transform::Scale(const Vector3& scale){
-			local_world_ = local_world_ * Matrix4x4::Rotate(scale);
-			world_local_ = Matrix4x4::Rotate(Vector3(1.f / scale.x, 1.f / scale.y, 1.f / scale.z)) * world_local_;
+			local_world_ = local_world_ * Matrix4x4::Scale(scale);
+			world_local_ = Matrix4x4::Scale(Vector3(1.f / scale.x, 1.f / scale.y, 1.f / scale.z)) * world_local_;
 			return *this;
 		}
 
