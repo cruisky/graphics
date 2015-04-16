@@ -19,7 +19,6 @@ namespace Cruisky {
 			film_->Resize(camera->Width(), camera->Height());
 			tracer_->SetScene(scene);
 			while (sampler_->GetSample(&sample, nullptr)){
-				ray.Reset();
 				camera->GenerateRay(&ray, sample);
 				//std::cout << sample << "  ->  " << ray << std::endl;
 				tracer_->Trace(ray, &c);

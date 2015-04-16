@@ -9,7 +9,6 @@ namespace Cruisky{
 			Resize(res_x, res_y);
 		}
 
-		// VERIFIED
 		void Camera::GenerateRay(Ray *out, const Sample& sample) const {
 			out->Reset();
 			// construct the ray in camera space
