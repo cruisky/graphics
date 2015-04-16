@@ -10,7 +10,7 @@ namespace Cruisky
 		public:
 			Camera(int width, int height, float fov = 90.f, float near = 0.1f, float far = 1000.f, bool is_ortho = false);
 
-			void GenerateRay(const Sample& sample, Ray& out) const;
+			void GenerateRay(Ray *out, const Sample& sample) const;
 
 			inline int Width() const { return width_; }
 			inline int Height() const { return height_; }
@@ -62,14 +62,14 @@ namespace Cruisky
 		}
 
 		void Camera::UpdateProjection(){
-			float ratio = width_ / height_;
+			float ratio = float(width_) / height_;
 			cam_viewport_ = is_ortho_ ? Matrix4x4::Orthographic(ratio, fov_, clip_near_, clip_far_)
 				: Matrix4x4::Perspective(ratio, fov_, clip_near_, clip_far_);
 			viewport_cam_ = cam_viewport_.Inverse();
 		}
 
 		void Camera::UpdateViewport(){
-			viewport_screen_ = Matrix4x4::Viewport(width_, height_);
+			viewport_screen_ = Matrix4x4::Viewport(float(width_), float(height_));
 			screen_viewport_ = viewport_screen_.Inverse();
 		}
 	}

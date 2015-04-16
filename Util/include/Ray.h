@@ -9,7 +9,7 @@ namespace Cruisky{
 	public:
 		static const float EPSILON;
 	public:
-		Ray();
+		Ray(){}
 		Ray(const Vector3& pOrigin, const Vector3& vDir, float t_min = EPSILON, float t_max = Math::INF) :
 			origin(pOrigin), dir(vDir), t_min(t_min), t_max(t_max){ dir.Normalize(); }
 		Ray(const Ray& ot) :

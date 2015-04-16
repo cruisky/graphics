@@ -9,13 +9,13 @@ namespace Cruisky{
 			Resize(res_x, res_y);
 		}
 
-		void Camera::GenerateRay(const Sample& sample, Ray& ray) const {
+		void Camera::GenerateRay(Ray *out, const Sample& sample) const {
 			// construct the ray in camera space
-			ray.origin = Vector3::ZERO;
+			out->origin = Vector3::ZERO;
 			// direction to the point on near plane in camera space
-			ray.dir = Matrix4x4::TPoint(screen_cam_, Vector3(sample.u, sample.v, 0.f));
+			out->dir = Matrix4x4::TPoint(screen_cam_, Vector3(sample.u, sample.v, 0.f));
 			// transforms the ray to the world space
-			transform.ToWorld(ray);
+			transform.ToWorld(*out);
 		}
 
 		Vector3 Camera::ScreenToWorldPoint(const Vector3& pix) const{
