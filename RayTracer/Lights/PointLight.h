@@ -12,9 +12,19 @@ namespace Cruisky{
 
 			void Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const;
 
+			inline float Radius() const { return radius_; }
+			inline PointLight& SetRadius(float radius){ 
+				radius_ = radius; 
+				radius_sqr_inv_ = 1.f / (radius * radius); 
+				return *this; 
+			}
+
 		public:
 			Color intensity;
-			float radius;
+
+		private:
+			float radius_;
+			float radius_sqr_inv_;
 		};
 	}
 }

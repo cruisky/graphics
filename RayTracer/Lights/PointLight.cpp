@@ -4,7 +4,8 @@
 namespace Cruisky {
 	namespace RayTracer{
 		PointLight::PointLight(const Color& intensity, float radius, const Vector3& position) :
-			intensity(intensity), radius(radius){
+			intensity(intensity){
+			SetRadius(radius);
 			if (position != Vector3::ZERO)
 				transform.SetPosition(position);
 		}
@@ -12,8 +13,7 @@ namespace Cruisky {
 		void PointLight::Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const {
 			out->origin = geo.point;
 			out->dir = transform.Position() - out->origin;
-			float brightness = Math::Clamp(1.f - LengthSqr(out->dir) / radius, 0.f, 1.f);
-			*lightcolor = intensity * brightness;
+			*lightcolor = intensity * Math::Clamp(1.f - LengthSqr(out->dir) * radius_sqr_inv_, 0.f, 1.f);	// decrease brightness by dist^2
 			out->dir.Normalize();
 		}
 	}
