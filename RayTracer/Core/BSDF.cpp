@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "BSDF.h"
+#include "Intersection.h"
+#include "Vector.h"
 
 namespace Cruisky{
 	namespace RayTracer
@@ -8,8 +10,11 @@ namespace Cruisky{
 		const float BSDF::NOT_REFLECTVIE = -1.f;
 
 		Color BSDF::Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo) const {
-			return Color(0, 0.5f, 1.f);
-			//TODO
+			Color c = ambient_;
+			Vector3 h = wi + wo; h.Normalize();
+			c += diffuse_ * Math::Max(0.f, Dot(geo.normal, wi));
+			c += specular_ * Math::Pow(Math::Max(0.f, Dot(h, geo.normal)), shininess_);
+			return c.Clamp();
 		}
 	}
 }
