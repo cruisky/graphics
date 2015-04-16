@@ -8,17 +8,15 @@ namespace Cruisky{
 		class Film {
 		public:
 			Film(int width, int height){ Resize(width, height); }
-			~Film(){ Release(); }
-
-			//TODO
-			//void Commit(Sample& sample, Color& color);
+			~Film(){}
 
 			inline int Width() const { return width_; }
 			inline int Height() const { return height_; }
-			void Resize(int width, int height);
-			const Color *GetPixels() const;
 			
-			void Release();
+			void Commit(const Sample& sample, const Color& color);
+			void Resize(int width, int height);
+			void Reset();
+			const Color *Pixels() const;
 
 		private:
 			int width_, height_;
