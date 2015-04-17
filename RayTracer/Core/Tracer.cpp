@@ -15,7 +15,7 @@ namespace Cruisky
 			if (depth < 0)
 				return Color::BLACK;
 			LocalGeo geo;
-			//Ray reflected, refracted;
+			Ray reflected;// , refracted;
 			Color color;
 			if (scene_->Intersect(ray, geo)){
 				scene_->PostIntersect(geo);
@@ -50,7 +50,7 @@ namespace Cruisky
 		}
 
 		Color Tracer::TraceReflection(const Ray& reflected, const LocalGeo& geo, int depth){
-			//TODO
+			//return RecursiveTrace(reflected, depth) * geo.bsdf->Reflection();
 		}
 
 		Color Tracer::TraceRefraction(const Ray& reflected, const LocalGeo& geo, int depth){
@@ -58,10 +58,10 @@ namespace Cruisky
 		}
 
 		void Tracer::Shade(const Ray& ray, const LocalGeo& geo, Color *out){
+			const int lightcount = scene_->lights.size();
 			Color lightcolor;
 			Ray lightray;
-			const int lightcount = scene_->lights.size();
-			const Vector3& wo = -ray.dir;		// dir to camera
+			Vector3 wo = -ray.dir;		// dir to camera
 			for (int i = 0; i < lightcount; i++){
 				scene_->lights[i]->Emit(geo, &lightray, &lightcolor);
 				if (!scene_->Occlude(lightray)){
