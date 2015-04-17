@@ -15,6 +15,7 @@ namespace Cruisky{
 
 			if (!shape_->Intersect(localray_)) return false;
 			intxn.prim = this;
+			intxn.dist = localray_.t_max;
 			ray.t_max = localray_.t_max;
 			return true;
 		}
@@ -23,9 +24,8 @@ namespace Cruisky{
 			geo.bsdf = GetBSDF();
 			shape_->PostIntersect(localray_, geo);
 			// transform the hit point and normal to world space
-			const Matrix4x4& local_world = transform.LocalToWorldMatrix();
-			geo.point = Matrix4x4::TPoint(local_world, geo.point);
-			geo.normal = Matrix4x4::TNormal(local_world, geo.normal);
+			geo.point = Matrix4x4::TPoint(transform.LocalToWorldMatrix(), geo.point);
+			geo.normal = Matrix4x4::TNormal(transform.WorldToLocalMatrix(), geo.normal);
 		}
 
 		bool Primitive::Occlude(const Ray& ray) const {

@@ -10,11 +10,6 @@ namespace Cruisky{
 		class Transform {
 		public:
 			Transform(){}
-			Transform(Vector3 position, Vector3 rotation = Vector3::ZERO, Vector3 scale = Vector3::ONE){
-				if(position != Vector3::ZERO) Translate(position);
-				if(rotation != Vector3::ZERO) Rotate(rotation);
-				if(scale != Vector3::ONE) Scale(scale);
-			}
 			~Transform(){}
 
 			const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
@@ -41,7 +36,7 @@ namespace Cruisky{
 
 			inline void ToLocal(Ray& ray) const{
 				ray.origin = Matrix4x4::TPoint(world_local_, ray.origin);
-				ray.dir = Matrix4x4::TVector(world_local_, ray.dir).Normalize();
+				ray.dir = Matrix4x4::TVector(world_local_, ray.dir);// DO NOT normalize a local ray
 			}
 
 		private:

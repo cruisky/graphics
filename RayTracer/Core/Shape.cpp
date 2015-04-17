@@ -12,10 +12,13 @@ namespace Cruisky{
 			float d2 = LengthSqr(lcr.dir);
 			float de = Dot(lcr.dir, lcr.origin);
 			float delta_quarter = de * de - d2 * (e2 - 1);
-			float t = -(de + Math::Sqrt(delta_quarter)) / d2;
-			if (Math::InBounds(t, lcr.t_min, lcr.t_max) && delta_quarter > 0){
-				lcr.t_max = t;
-				return true;
+			
+			if (delta_quarter > 0){
+				float t = -(de + Math::Sqrt(delta_quarter)) / d2;
+				if (Math::InBounds(t, lcr.t_min, lcr.t_max)){
+					lcr.t_max = t;
+					return true;
+				}
 			}
 			return false;
 		}
