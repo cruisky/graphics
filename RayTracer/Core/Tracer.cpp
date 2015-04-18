@@ -24,8 +24,7 @@ namespace Cruisky
 				mirror = dynamic_cast<const Mirror *>(geo.bsdf);
 				if (mirror)
 					color += TraceReflection(ray, geo, mirror->reflectivity, depth - 1);
-				//if (Refract(ray, geo, &refracted))
-				//	color += TraceRefraction(refracted, geo, depth - 1);
+				color += TraceRefraction(ray, geo, depth - 1);
 			}
 			return color;
 		}
@@ -46,7 +45,6 @@ namespace Cruisky
 			const Vector3& n = geo.normal;
 			float dn = Dot(d, n);
 			float iorinv = diel->RefractiveIndexInv();
-			assert(iorinv != BSDF::NOT_REFRACTIVE);
 			float emergeAngle = 1.f - (1.f - dn * dn) * (iorinv * iorinv);
 			// check side
 			Color tint(1);
@@ -66,11 +64,10 @@ namespace Cruisky
 		}
 
 		void Tracer::Shade(const Ray& ray, const LocalGeo& geo, Color *out){
-			const int lightcount = scene_->lights.size();
 			Color lightcolor;
 			Ray lightray;
 			Vector3 wo = -ray.dir;		// dir to camera
-			for (int i = 0; i < lightcount; i++){
+			for (int i = 0; i < scene_->lights.size(); i++){
 				scene_->lights[i]->Emit(geo, &lightray, &lightcolor);
 				if (!scene_->Occlude(lightray)){
 					*out += geo.bsdf->Eval(lightray.dir, wo, geo) * lightcolor;

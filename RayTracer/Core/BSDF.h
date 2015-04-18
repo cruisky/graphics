@@ -48,8 +48,8 @@ namespace Cruisky{
 
 		class Dielectric : public Specular {
 		public:
-			Dielectric(Color ambient, Color diffuse, Color specular, float shininess, float refractive_index, Color attenuation) :
-				Specular(ambient, diffuse, specular, shininess), refr_index_(refractive_index){
+			Dielectric(Color specular, float shininess, float refractive_index, Color attenuation) :
+				Specular(Color::BLACK, Color::BLACK, specular, shininess), refr_index_(refractive_index){
 				refr_index_inv_ = 1.f / refractive_index;
 				refl_ = Math::Pow((refractive_index - 1.f) / (refractive_index + 1.f), 2.f);
 				refl_c_ = 1.f - refl_;
