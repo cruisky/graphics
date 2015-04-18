@@ -13,9 +13,6 @@ namespace Cruisky{
 			virtual ~BSDF(){}
 
 			virtual Color Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo) const = 0;
-
-			virtual float RefractiveIndex() const { return NOT_REFRACTIVE; }
-			virtual float RefractiveIndexInv() const { return NOT_REFRACTIVE; }
 		};
 
 		class Diffuse : public BSDF{
@@ -42,13 +39,11 @@ namespace Cruisky{
 
 		class Mirror : public Specular {
 		public:
-			Mirror(Color ambient, Color diffuse, Color specular, float shininess, float reflection) :
-				Specular(ambient, diffuse, specular, shininess), reflection(reflection){}
+			Mirror(Color ambient, Color diffuse, Color specular, float shininess, float reflectivity) :
+				Specular(ambient, diffuse, specular, shininess), reflectivity(reflectivity){}
 			~Mirror(){}
-			
-			//virtual Color Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo) const;
 		public:
-			float reflection;
+			float reflectivity;
 		};
 
 		class Dielectric : public Specular {
@@ -62,11 +57,10 @@ namespace Cruisky{
 			}
 			~Dielectric(){}
 
-			float RefractiveIndex() const override { return refr_index_; }
-			float RefractiveIndexInv() const override { return refr_index_inv_; }
-			
+			float RefractiveIndex() const { return refr_index_; }
+			float RefractiveIndexInv() const { return refr_index_inv_; }
 			Color Attenuation(float ray_distance) const { return Math::Exp(att_log_ * -ray_distance); }
-			float Reflection(float cos_incidence) const { return (refl_ + refl_c_ * Math::Pow(1.f - cos_incidence, 5.f)); }
+			float Reflectivity(float cos_incidence) const { return (refl_ + refl_c_ * Math::Pow(1.f - cos_incidence, 5.f)); }
 		private:
 			float refr_index_, refr_index_inv_, refl_, refl_c_;
 			Color att_log_;
