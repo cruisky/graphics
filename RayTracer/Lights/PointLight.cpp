@@ -11,10 +11,10 @@ namespace Cruisky {
 		}
 
 		void PointLight::Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const {
-			out->origin = geo.point;
-			out->dir = transform.Position() - out->origin;
+			
+			out->dir = (transform.Position() - geo.point).Normalize();
+			out->origin = geo.point + Ray::EPSILON * out->dir;
 			*lightcolor = intensity * Math::Clamp(1.f - LengthSqr(out->dir) * radius_sqr_inv_, 0.f, 1.f);	// decrease brightness by dist^2
-			out->dir.Normalize();
 		}
 	}
 }
