@@ -10,9 +10,9 @@ namespace Cruisky {
 		}
 
 		void DirectionalLight::Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const {
-			out->origin = geo.point;
 			// the position of a directional light can be everywhere, so we only need to transform the direction
 			out->dir = Matrix4x4::TVector(transform.LocalToWorldMatrix(), Vector3(0.f, 0.f, 1.f)).Normalize();
+			out->origin = geo.point + Ray::EPSILON * out->dir;
 			*lightcolor = intensity;
 		}
 	}
