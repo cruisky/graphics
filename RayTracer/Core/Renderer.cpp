@@ -7,22 +7,22 @@
 
 namespace Cruisky {
 	namespace RayTracer {
-		Renderer::Renderer(Film *film) : film_(film){
-			tracer_ = std::make_unique<Tracer>();
-		}
+		Renderer::Renderer() : 
+			tracer_(new Tracer), sampler_(new SimpleSampler){}
 
-		void Renderer::Render(const Scene *scene, const Camera *camera) {
+		void Renderer::Render(const Scene *scene, const Camera *camera, Film *film) {
 			Sample sample;
 			Ray ray; 
 			Color c;
 			sampler_.reset(new SimpleSampler(0, camera->Width(), 0, camera->Height()));
-			film_->Resize(camera->Width(), camera->Height());
+			assert(film->Width() == camera->Width());
+			assert(film->Height() == camera->Height());
 			tracer_->SetScene(scene);
 			while (sampler_->GetSample(&sample, nullptr)){
 				camera->GenerateRay(&ray, sample);
 				//std::cout << sample << "  ->  " << ray << std::endl;
 				tracer_->Trace(ray, &c);
-				film_->Commit(sample, c);
+				film->Commit(sample, c);
 			}
 		}
 	}

@@ -36,6 +36,7 @@ namespace Cruisky
 		// Samples one time per pixel
 		class SimpleSampler : public Sampler {
 		public:
+			SimpleSampler() : SimpleSampler(0, 0, 0, 0){}
 			SimpleSampler(int xstart, int xend, int ystart, int yend);
 			~SimpleSampler(){}
 

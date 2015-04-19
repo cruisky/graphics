@@ -9,13 +9,13 @@ namespace Cruisky {
 	namespace RayTracer {
 		class Renderer{
 		public:
-			Renderer(Film *film);
+			Renderer();
 
-			void Render(const Scene *scene, const Camera *camera);
+			void Render(const Scene *scene, const Camera *camera, Film *film);
+		
 		private:
-			Film* film_;
-			std::unique_ptr<Tracer> tracer_;
-			std::unique_ptr<Sampler> sampler_;
+			unique_ptr<Tracer> tracer_;
+			unique_ptr<Sampler> sampler_;
 		};
 	}
 }
