@@ -12,7 +12,7 @@ namespace Cruisky{
 			Application(), scene_(scene), camera_(camera), film_(film), renderer_(new Renderer){}
 		
 		void GUIViewer::Start(){
-			AttemptRenderScene();
+			RenderScene();
 		}
 
 		void GUIViewer::Config(){
@@ -27,17 +27,66 @@ namespace Cruisky{
 			return true;
 		}
 
-		void GUIViewer::AttemptRenderScene(){
-			if (!rendering.load()){
-				rendering.store(true);
-				film_->Resize(camera_->Width(), camera_->Height());
-				task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
+		void GUIViewer::OnKey(unsigned char c, int x, int y){
+			switch (c){
+			case 'w':case 'W': AttemptMoveCamera(Direction::UP); break;
+			case 's':case 'S': AttemptMoveCamera(Direction::DOWN); break;
+			case 'a':case 'A': AttemptMoveCamera(Direction::LEFT); break;
+			case 'd':case 'D': AttemptMoveCamera(Direction::RIGHT); break;
 			}
+		}
+
+		void GUIViewer::OnSpecialKey(KeyCode code, int x, int y){
+			switch (code){
+			case KeyCode::UP: AttemptPanCamera(Direction::UP); break;
+			case KeyCode::DOWN: AttemptPanCamera(Direction::DOWN); break;
+			case KeyCode::LEFT: AttemptPanCamera(Direction::LEFT); break;
+			case KeyCode::RIGHT: AttemptPanCamera(Direction::RIGHT); break;
+			}
+		}
+
+		void GUIViewer::AttemptMoveCamera(Direction dir){
+			float dist = 1.f;
+			Vector3 movement;
+			if (!rendering.load()){
+				switch (dir){
+				case Direction::UP: movement = Vector3(0.f, 0.f, -dist); break;
+				case Direction::DOWN: movement = Vector3(0.f, 0.f, dist); break;
+				case Direction::LEFT: movement = Vector3(-dist, 0.f, 0.f); break;
+				case Direction::RIGHT: movement = Vector3(dist, 0.f, 0.f); break;
+				}
+				camera_->transform.Translate(movement);
+				RenderScene();
+			}
+		}
+
+		void GUIViewer::AttemptPanCamera(Direction dir){
+			float degree = 10.f;
+			Vector3 axis; 
+			if (!rendering.load()){
+				switch (dir){
+				case Direction::UP: axis = Vector3::X; break;
+				case Direction::DOWN: axis = -Vector3::X; break;
+				case Direction::LEFT: axis = Vector3::Y; break;
+				case Direction::RIGHT: axis = -Vector3::Y; break;
+				}
+				camera_->transform.Rotate(degree, axis);
+				RenderScene();
+			}
+		}
+
+
+		void GUIViewer::RenderScene(){
+			assert(!rendering.load());
+			rendering.store(true);
+			film_->Resize(camera_->Width(), camera_->Height());
+			task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
 		}
 
 		void GUIViewer::AsyncRenderScene(){
 			renderer_->Render(scene_.get(), camera_.get(), film_.get());
 			rendering.store(false);
 		}
+
 	}
 }

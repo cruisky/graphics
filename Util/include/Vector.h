@@ -8,6 +8,9 @@ namespace Cruisky {
 	public:
 		static const Vector3 ZERO;
 		static const Vector3 ONE;
+		static const Vector3 X;
+		static const Vector3 Y;
+		static const Vector3 Z;
 	public:
 		float x, y, z;
 	public:
