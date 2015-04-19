@@ -151,17 +151,17 @@ namespace Cruisky{
 		resx *= 0.5f;
 		resy *= 0.5f;
 		// upside down screen space
-		//return Matrix4x4(
-		//	resx, 0.f, 0.f, resx - 0.5f,
-		//	0.f, resy, 0.f, resy - 0.5f,
-		//	0.f, 0.f, 1.f, 0.f,
-		//	0.f, 0.f, 0.f, 1.f);
-
 		return Matrix4x4(
 			resx, 0.f, 0.f, resx - 0.5f,
-			0.f, -resy, 0.f, resy - 0.5f,
+			0.f, resy, 0.f, resy - 0.5f,
 			0.f, 0.f, 1.f, 0.f,
 			0.f, 0.f, 0.f, 1.f);
+
+		//return Matrix4x4(
+		//	resx, 0.f, 0.f, resx - 0.5f,
+		//	0.f, -resy, 0.f, resy - 0.5f,
+		//	0.f, 0.f, 1.f, 0.f,
+		//	0.f, 0.f, 0.f, 1.f);
 	}
 
 	Vector3 Matrix4x4::TPoint(const Matrix4x4& m, const Vector3& p){

@@ -20,6 +20,7 @@ namespace Cruisky{
 			const Color *data,
 			int width,
 			int height,
+			bool flip_y = false,
 			Format format = BMP,
 			Channel channel = RGB);
 	};

@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Lights">
       <UniqueIdentifier>{1b9e70f2-0877-467b-a878-09f9c094311c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{6d7dcecc-f1d3-4790-97fb-4c680b48476b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{d2233ca4-29d5-4359-b5a2-4f94c29ee349}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fwddecl.h">
@@ -81,6 +87,9 @@
     <ClInclude Include="Lights\PointLight.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="Application\GUIViewer.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -124,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Lights\PointLight.cpp">
       <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\GUIViewer.cpp">
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

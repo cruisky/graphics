@@ -5,27 +5,33 @@
 #include "stb_image_write.h"
 
 namespace Cruisky{
-	void Image::Write(char const *filename, const Color *data, int width, int height, Format format, Channel channel){
+	void Image::Write(char const *filename, const Color *data, int width, int height, bool flip_y, Format format, Channel channel){
 		// get bytes per pixel
 		const int pixel_size = channel;
 		const int image_size = width * height;
+
 		unsigned char *buffer = new unsigned char[image_size * pixel_size];
+		int buffer_i, data_i;
 		if (channel <= YA){
-			for (int i = 0; i < image_size; i++){
-				int buffer_i = i * pixel_size;
-				buffer[buffer_i] = Math::Clamp(Math::Round(data[i].Luminance() * 255), 0, 255);
-				if (channel == YA)
-					buffer[buffer_i + 1] = Math::Clamp(Math::Round(data[i].a * 255), 0, 255);
+			for (int y = 0; y < height; y++){
+				buffer_i = ((flip_y ? height - y - 1 : y) * width) * pixel_size;
+				for (int x = 0, data_i = y * width; x < width; x++, data_i++){
+					buffer[buffer_i++] = Math::Clamp(Math::Round(data[data_i].Luminance() * 255), 0, 255);
+					if (channel == YA)
+						buffer[buffer_i++] = Math::Clamp(Math::Round(data[data_i].a * 255), 0, 255);
+				}
 			}
 		}
 		else {
-			for (int i = 0; i < image_size; i++){
-				int buffer_i = i * pixel_size;
-				buffer[buffer_i + 0] = Math::Clamp(Math::Round(data[i].r * 255), 0, 255);
-				buffer[buffer_i + 1] = Math::Clamp(Math::Round(data[i].g * 255), 0, 255);
-				buffer[buffer_i + 2] = Math::Clamp(Math::Round(data[i].b * 255), 0, 255);
-				if (channel == RGBA)
-					buffer[buffer_i + 3] = Math::Clamp(Math::Round(data[i].a * 255), 0, 255);
+			for (int y = 0; y < height; y++){
+				buffer_i = ((flip_y ? height - y - 1 : y) * width) * pixel_size;
+				for (int x = 0, data_i = y * width; x < width; x++, data_i++){
+					buffer[buffer_i++] = Math::Clamp(Math::Round(data[data_i].r * 255), 0, 255);
+					buffer[buffer_i++] = Math::Clamp(Math::Round(data[data_i].g * 255), 0, 255);
+					buffer[buffer_i++] = Math::Clamp(Math::Round(data[data_i].b * 255), 0, 255);
+					if (channel == RGBA)
+						buffer[buffer_i++] = Math::Clamp(Math::Round(data[data_i].a * 255), 0, 255);
+				}
 			}
 		}
 
