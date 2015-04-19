@@ -13,9 +13,11 @@ namespace Cruisky
 		}
 
 		void Film::Resize(int width, int height){
-			width_ = width;
-			height_ = height;
-			pixels_.reset(new Color[width * height]);
+			if (width_ != width || height_ != height){
+				width_ = width;
+				height_ = height;
+				pixels_.reset(new Color[width * height]);
+			}
 		}
 
 		void Film::Reset(){
