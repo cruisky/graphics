@@ -12,6 +12,7 @@ namespace Cruisky{
 			int width = 800;
 			int height = 600;
 			bool fullscreen = false;
+			bool fixsize = false;
 		};
 		enum class Button;
 		enum class ButtonState;
@@ -43,12 +44,19 @@ namespace Cruisky{
 	// Wrappers
 	private:
 		static inline void GLUTRender()									{ if (app->Render()) glutSwapBuffers(); }
-		static inline void GLUTResize(int w, int h)						{ app->config.width = w; app->config.height = h; app->OnResize(w, h); }
 		static inline void GLUTKey(unsigned char key, int x, int y)		{ app->OnKey(key, x, y); }
 		static inline void GLUTSpecial(int key, int x, int y)			{ app->OnSpecialKey(KeyCode(key), x, y); }
 		static inline void GLUTMouseDrag(int x, int y)					{ app->OnMouseMove(x, y); }
 		static inline void GLUTMouseMove(int x, int y)					{ app->OnMouseMove(x, y); }
 		static inline void GLUTMouseButton(int b, int s, int x, int y)	{ app->OnMouseButton(Button(b), ButtonState(s), x, y); }
+		static inline void GLUTResize(int w, int h)	{ 
+			if (!app->config.fixsize){ 
+				app->config.width = w; 
+				app->config.height = h; 
+				app->OnResize(w, h); 
+			} 
+			glutReshapeWindow(app->config.width, app->config.height);
+		}
 	protected:
 		AppConfig config;
 	private:
