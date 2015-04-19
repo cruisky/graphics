@@ -33,6 +33,7 @@ namespace Cruisky{
 			case 's':case 'S': AttemptMoveCamera(Direction::DOWN); break;
 			case 'a':case 'A': AttemptMoveCamera(Direction::LEFT); break;
 			case 'd':case 'D': AttemptMoveCamera(Direction::RIGHT); break;
+			case 27: Exit(); break;			// escape
 			}
 		}
 
