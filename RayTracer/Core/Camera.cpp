@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Camera.h"
 #include "Sampler.h"
+#include "Sample.h"
 
 namespace Cruisky{
 	namespace RayTracer{
@@ -9,12 +10,12 @@ namespace Cruisky{
 			Resize(res_x, res_y);
 		}
 
-		void Camera::GenerateRay(Ray *out, const Sample& sample) const {
+		void Camera::GenerateRay(Ray *out, const CameraSample& sample) const {
 			out->Reset();
 			// construct the ray in camera space
 			out->origin = Vector3::ZERO;
 			// direction to the point on near plane in camera space
-			out->dir = Matrix4x4::TPoint(screen_cam_, Vector3(sample.u, sample.v, -1.f));
+			out->dir = Matrix4x4::TPoint(screen_cam_, Vector3(sample.x, sample.y, -1.f));
 			// transforms the ray to the world space
 			transform.ToWorld(*out);
 		}

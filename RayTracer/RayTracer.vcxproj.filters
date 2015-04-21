@@ -90,6 +90,9 @@
     <ClInclude Include="Application\GUIViewer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Sample.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="Application\GUIViewer.cpp">
       <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Sample.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

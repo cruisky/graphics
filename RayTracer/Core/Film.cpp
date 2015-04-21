@@ -2,13 +2,14 @@
 
 #include "Film.h"
 #include "Sampler.h"
+#include "Sample.h"
 #include "Color.h"
 
 namespace Cruisky
 {
 	namespace RayTracer {
-		void Film::Commit(const Sample& sample, const Color& color){
-			int offset = int(sample.v) * width_ + int(sample.u);
+		void Film::Commit(const CameraSample& sample, const Color& color){
+			int offset = int(sample.y) * width_ + int(sample.x);
 			pixels_[offset] = color;
 		}
 

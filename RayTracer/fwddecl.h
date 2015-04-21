@@ -18,7 +18,9 @@ namespace Cruisky{
 		class Primitive;
 		class PrimitiveManager;
 		class Renderer;
-		class Sampler; struct Sample;
+		struct Sample; 
+		struct CameraSample;
+		class Sampler;
 		class Scene;
 		class SceneObject;
 		class Shape;

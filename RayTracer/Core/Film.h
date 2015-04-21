@@ -15,7 +15,7 @@ namespace Cruisky{
 			inline int Width() const { return width_; }
 			inline int Height() const { return height_; }
 			
-			void Commit(const Sample& sample, const Color& color);
+			void Commit(const CameraSample& sample, const Color& color);
 			void Resize(int width, int height);
 			void Reset();
 			const Color *Pixels() const;

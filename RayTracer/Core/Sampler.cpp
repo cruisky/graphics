@@ -1,31 +1,19 @@
 #include "stdafx.h"
 
 #include "Sampler.h"
+#include "Sample.h"
+#include "RNG.h"
 
 namespace Cruisky{
 	namespace RayTracer {
-		std::ostream& operator<<(std::ostream& os, const Sample& sample){
-			os << "(" << sample.u << "," << sample.v << ")";
-			return os;
-		}
-
-		SimpleSampler::SimpleSampler(int xstart, int xend, int ystart, int yend) :
-			Sampler(xstart, xend, ystart, yend, 1), x(xstart), y(ystart){}
-	
-		bool SimpleSampler::GetSample(Sample *sample, RNG *rng){
-			if (x_start == x_end || y_start == y_end)
-				return false;
-			if (x == x_end) {
-				x = x_start;
-				y++;
+		void RandomSampler::GetSamples(CameraSample *sample){
+			sample->x = rng.Float();
+			sample->y = rng.Float();
+			for (int i = 0; i < sample->bufsize; i++){
+				sample->buffer[i].u = rng.Float();
+				sample->buffer[i].v = rng.Float();
+				sample->buffer[i].w = rng.Float();
 			}
-			if (y == y_end)
-				return false;
-			
-			// simply take a sample at the center of the pixel (with zero offset)
-			sample->u = x++;
-			sample->v = y;
-			return true;
 		}
 	}
 }

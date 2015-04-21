@@ -10,7 +10,7 @@ namespace Cruisky
 		public:
 			Camera(int width, int height, float fov = 90.f, float near = 1.f, float far = 1000.f, bool is_ortho = false);
 
-			void GenerateRay(Ray *out, const Sample& sample) const;
+			void GenerateRay(Ray *out, const CameraSample& sample) const;
 
 			inline int Width() const { return width_; }
 			inline int Height() const { return height_; }

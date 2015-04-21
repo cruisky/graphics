@@ -11,7 +11,7 @@ namespace Cruisky
 {
 	namespace RayTracer
 	{
-		Color Tracer::RecursiveTrace(const Ray& ray, int depth){
+		Color Tracer::RecursiveTrace(const Ray& ray, const CameraSample& samples, int depth){
 			if (depth < 0)
 				return Color::BLACK;
 			LocalGeo geo;
@@ -19,24 +19,24 @@ namespace Cruisky
 			const Mirror *mirror;
 			if (scene_->Intersect(ray, geo)){
 				scene_->PostIntersect(geo);
-				Shade(ray, geo, &color);
+				Shade(ray, samples, geo, &color);
 
 				mirror = dynamic_cast<const Mirror *>(geo.bsdf);
 				if (mirror)
-					color += TraceReflection(ray, geo, mirror->reflectivity, depth - 1);
-				color += TraceRefraction(ray, geo, depth - 1);
+					color += TraceReflection(ray, samples, geo, mirror->reflectivity, depth - 1);
+				color += TraceRefraction(ray, samples, geo, depth - 1);
 			}
 			return color;
 		}
 
-		Color Tracer::TraceReflection(const Ray& ray, const LocalGeo& geo, float reflectivity, int depth){
+		Color Tracer::TraceReflection(const Ray& ray, const CameraSample& samples, const LocalGeo& geo, float reflectivity, int depth){
 			Ray reflected;
 			reflected.dir = ray.dir + 2.f * Math::Abs(Dot(ray.dir, geo.normal)) * geo.normal;
 			reflected.origin = geo.point + Ray::EPSILON * reflected.dir;
-			return RecursiveTrace(reflected, depth) * reflectivity;
+			return RecursiveTrace(reflected, samples, depth) * reflectivity;
 		}
 
-		Color Tracer::TraceRefraction(const Ray& ray, const LocalGeo& geo, int depth){
+		Color Tracer::TraceRefraction(const Ray& ray, const CameraSample& samples, const LocalGeo& geo, int depth){
 			const Dielectric *diel = dynamic_cast<const Dielectric*>(geo.bsdf);
 			if (!diel) return Color::BLACK;
 			Ray refracted;
@@ -54,16 +54,16 @@ namespace Cruisky
 				// ray goes out of the object
 				tint = diel->Attenuation(geo.dist);
 				if (emergeAngle < 0)
-					return tint * TraceReflection(ray, geo, 1.f, depth);	// total internal reflection
+					return tint * TraceReflection(ray, samples, geo, 1.f, depth);	// total internal reflection
 			}
 			// compute refracted ray
 			refracted.dir = iorinv * (d + Math::Abs(dn) * n) - Math::Sqrt(emergeAngle) * n;
 			refracted.origin = geo.point + Ray::EPSILON * refracted.dir;
 			reflectivity = diel->Reflectivity(costheta);
-			return tint * (TraceReflection(ray, geo, reflectivity, depth) + RecursiveTrace(refracted, depth) * (1 - reflectivity));
+			return tint * (TraceReflection(ray, samples, geo, reflectivity, depth) + RecursiveTrace(refracted, samples, depth) * (1 - reflectivity));
 		}
 
-		void Tracer::Shade(const Ray& ray, const LocalGeo& geo, Color *out){
+		void Tracer::Shade(const Ray& ray, const CameraSample& samples, const LocalGeo& geo, Color *out){
 			Color lightcolor;
 			Ray lightray;
 			Vector3 wo = -ray.dir;		// dir to camera
