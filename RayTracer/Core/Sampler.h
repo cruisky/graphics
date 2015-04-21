@@ -10,9 +10,8 @@ namespace Cruisky
 		class Sampler {
 		public:
 			virtual ~Sampler(){}
-
-			// Generates a camera sample and return true.
-			// Return false when all samples are generated.
+			
+			// Fills all fields with canonical random value
 			virtual void GetSamples(CameraSample *sample) = 0;
 		};
 

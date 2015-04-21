@@ -21,6 +21,8 @@ namespace Cruisky {
 			for (int y = 0; y < film->Height(); y++){
 				for (int x = 0; x < film->Width(); x++){
 					sampler_->GetSamples(&cam_sample);
+					cam_sample.pix_x = x;
+					cam_sample.pix_y = y;
 					cam_sample.x += x;
 					cam_sample.y += y;
 					camera->GenerateRay(&ray, cam_sample);

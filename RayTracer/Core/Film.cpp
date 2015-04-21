@@ -9,7 +9,7 @@ namespace Cruisky
 {
 	namespace RayTracer {
 		void Film::Commit(const CameraSample& sample, const Color& color){
-			int offset = int(sample.y) * width_ + int(sample.x);
+			int offset = sample.pix_y * width_ + sample.pix_x;
 			pixels_[offset] = color;
 		}
 

@@ -48,8 +48,8 @@ namespace Cruisky {
 			return (val > min) ? ((val < max) ? val : max) : min;
 		}
 
-		inline int Floor(float n) { return (int)(n + EPSILON) - 1; }
-		inline int Ceil(float n) { return (int)(n - EPSILON) + 1; }
-		inline int Round(float n) { return (int)(n + 0.5f); }
+		inline int Floor(float n) { return int(n); }
+		inline int Ceil(float n) { return int(n) + 1; }
+		inline int Round(float n) { return int(n + 0.5f); }
 	}
 }

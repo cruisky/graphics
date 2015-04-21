@@ -15,7 +15,8 @@ namespace Cruisky{
 		std::ostream& operator<<(std::ostream& os, const Sample& sample);
 		
 		struct CameraSample {
-			float x, y;		// [0, 1]
+			int pix_x, pix_y;
+			float x, y;		// [0, 1] after sampling
 			const int bufsize;
 			Sample * const buffer;
 			CameraSample(int bufsize);
