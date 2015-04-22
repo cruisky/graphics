@@ -49,11 +49,15 @@ namespace Cruisky
 			Color lightcolor;
 			Ray lightray;
 			Vector3 wo = -ray.dir;		// dir to camera
-			light->Emit(geo, &lightray, &lightcolor); 
-			if (!scene_->Occlude(lightray))
+			float lightpdf;
+			light->Illuminate(geo.point, lightsamples, &lightray, &lightcolor, &lightpdf);
+			//TODO pdf
+			if (lightpdf > 0.f && lightcolor != Color::BLACK && !scene_->Occlude(lightray)){
 				return geo.bsdf->Eval(lightray.dir, wo, geo) * lightcolor;
-			else
+			}
+			else {
 				return Color::BLACK;
+			}
 		}
 	}
 }

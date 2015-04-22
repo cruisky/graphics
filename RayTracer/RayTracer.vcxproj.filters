@@ -167,8 +167,5 @@
     <ClCompile Include="Samplers\RandomSampler.cpp">
       <Filter>Source Files\Samplers</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Light.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

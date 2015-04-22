@@ -10,8 +10,9 @@ namespace Cruisky{
 		public:
 			PointLight(const Color& intensity, float radius = 10.f, const Vector3& position = Vector3::ZERO, int sample_count = 1);
 
-			void Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const;
-
+			void Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *out, Color *lightcolor, float *pdf) const;
+			void Emit(const Vector3& dir, Color *out) const;
+			float Pdf(const Vector3& pos, const Vector3& dir) const;
 			inline float Radius() const { return radius_; }
 			inline PointLight& SetRadius(float radius){ 
 				radius_ = radius; 

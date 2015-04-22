@@ -10,7 +10,7 @@ namespace Cruisky{
 		static const float EPSILON;
 	public:
 		Ray() : t_min(EPSILON), t_max(Math::INF){}
-		Ray(const Vector3& origin, const Vector3& vdir, float t_min = EPSILON, float t_max = Math::INF) :
+		Ray(const Vector3& origin, const Vector3& vdir, float t_max = Math::INF, float t_min = EPSILON) :
 			origin(origin), dir(vdir), t_min(t_min), t_max(t_max){ dir.Normalize(); }
 		Ray(const Ray& ot) :
 			origin(ot.origin), dir(ot.dir), t_min(ot.t_min), t_max(ot.t_max){}
@@ -23,6 +23,15 @@ namespace Cruisky{
 			t_max = Math::INF;
 			origin = Vector3::ZERO;
 			dir = Vector3(0.f, 0.f, -1.f);
+			return *this;
+		}
+
+		inline Ray& SetSegment(const Vector3& orig, const Vector3& dest){
+			origin = orig;
+			dir = dest - orig;
+			t_min = Ray::EPSILON;
+			t_max = Length(dir);
+			dir /= t_max;
 			return *this;
 		}
 	public:
