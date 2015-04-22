@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PointLight.h"
+#include "Core/Intersection.h"
 
 namespace Cruisky {
 	namespace RayTracer{

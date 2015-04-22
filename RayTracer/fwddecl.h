@@ -15,7 +15,7 @@ namespace Cruisky{
 		enum class TracerType; enum class SamplerType;
 		class Film;
 		struct Intersection; struct LocalGeo;
-		class Light;
+		class Light; class VisibilityTester;
 		class Primitive;
 		class PrimitiveManager;
 		class Renderer; struct RendererConfig;

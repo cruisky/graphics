@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "DirectionalLight.h"
+#include "Core/Intersection.h"
 #include "Color.h"
 
 namespace Cruisky {

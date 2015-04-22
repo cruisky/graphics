@@ -40,6 +40,7 @@
     <ClCompile Include="Core\BSDF.cpp" />
     <ClCompile Include="Core\Camera.cpp" />
     <ClCompile Include="Core\Film.cpp" />
+    <ClCompile Include="Core\Light.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
     <ClCompile Include="Core\PrimitiveManager.cpp" />
     <ClCompile Include="Core\Renderer.cpp" />
