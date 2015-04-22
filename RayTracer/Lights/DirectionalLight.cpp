@@ -24,6 +24,10 @@ namespace Cruisky {
 
 		float DirectionalLight::Pdf(const Vector3& pos, const Vector3& dir) const{
 			return 0.f;
+		}		
+		
+		bool DirectionalLight::IsDelta() const {
+			return true;
 		}
 	}
 }

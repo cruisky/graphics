@@ -26,5 +26,9 @@ namespace Cruisky {
 			return 0.f;
 		}
 
+		bool PointLight::IsDelta() const {
+			return true;
+		}
+
 	}
 }

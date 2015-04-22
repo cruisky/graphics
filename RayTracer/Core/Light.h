@@ -14,6 +14,9 @@ namespace Cruisky {
 			virtual void Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *out, Color *lightcolor, float *pdf) const = 0;
 			virtual void Emit(const Vector3& dir, Color *out) const = 0;
 			virtual float Pdf(const Vector3& pos, const Vector3& dir) const = 0;
+
+			// Indicate whether this light is described by a delta distribution, if so, this light cannot be randomly sampled
+			virtual bool IsDelta() const = 0;
 		public:
 			const int sample_count;
 		};
