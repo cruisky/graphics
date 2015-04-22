@@ -8,8 +8,11 @@
 
 namespace Cruisky{
 	namespace RayTracer{
-		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) : 
-			Application(), scene_(scene), camera_(camera), film_(film), renderer_(new Renderer){}
+		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
+			Application(), scene_(scene), camera_(camera), film_(film){
+			RendererConfig config;
+			renderer_.reset(new Renderer(config));
+		}
 		
 		void GUIViewer::Start(){
 			RenderScene();

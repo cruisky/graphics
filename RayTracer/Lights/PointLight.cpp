@@ -3,8 +3,8 @@
 
 namespace Cruisky {
 	namespace RayTracer{
-		PointLight::PointLight(const Color& intensity, float radius, const Vector3& position) :
-			intensity(intensity){
+		PointLight::PointLight(const Color& intensity, float radius, const Vector3& position, int sample_count) :
+			Light(sample_count), intensity(intensity){
 			SetRadius(radius);
 			if (position != Vector3::ZERO)
 				transform.SetPosition(position);

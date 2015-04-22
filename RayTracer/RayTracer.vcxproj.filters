@@ -31,6 +31,18 @@
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{d2233ca4-29d5-4359-b5a2-4f94c29ee349}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tracers">
+      <UniqueIdentifier>{4150bddc-6fc1-453a-a714-fdc975398eda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tracers">
+      <UniqueIdentifier>{e0b9e721-4c5a-46da-b59f-a7b766d4d76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Samplers">
+      <UniqueIdentifier>{cb645dab-f016-4d1e-a042-e15e7f88c5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Samplers">
+      <UniqueIdentifier>{9bd813e1-e750-4287-b000-42c24f7a68b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fwddecl.h">
@@ -93,6 +105,15 @@
     <ClInclude Include="Core\Sample.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Tracers\DirectLighting.h">
+      <Filter>Header Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Config.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Samplers\RandomSampler.h">
+      <Filter>Header Files\Samplers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -122,9 +143,6 @@
     <ClCompile Include="Core\Film.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Sampler.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Tracer.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -142,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="Core\Sample.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Tracers\DirectLighting.cpp">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Samplers\RandomSampler.cpp">
+      <Filter>Source Files\Samplers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

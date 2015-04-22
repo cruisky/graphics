@@ -7,13 +7,23 @@
 
 namespace Cruisky {
 	namespace RayTracer {
+
+		struct RendererConfig {
+			RendererConfig(){}
+			TracerType tracer_t;
+			SamplerType sampler_t;
+		};
+
+
 		class Renderer{
 		public:
-			Renderer();
+			
+			Renderer(const RendererConfig& config);
 
 			void Render(const Scene *scene, const Camera *camera, Film *film);
 		
 		private:
+			RendererConfig config;
 			unique_ptr<Tracer> tracer_;
 			unique_ptr<Sampler> sampler_;
 		};

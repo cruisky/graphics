@@ -12,21 +12,27 @@ namespace Cruisky{
 			virtual ~Tracer(){}
 
 			inline void Trace(const Ray& ray, const CameraSample& samples, Color *color){
-				*color = RecursiveTrace(ray, samples, maxdepth_);
+				samples_ = &samples;
+				ProcessSamples();
+				*color = Li(ray, maxdepth_);
 				color->Clamp();
 			}
 
 			inline void SetScene(const Scene *scene){ scene_ = scene; }
 
 		protected:
-			virtual Color RecursiveTrace(const Ray& ray, const CameraSample& samples, int depth);
-			Color TraceReflection(const Ray& ray, const CameraSample& samples, const LocalGeo& geo, float reflectivity, int depth);
-			Color TraceRefraction(const Ray& ray, const CameraSample& samples, const LocalGeo& geo, int depth);
-			void Shade(const Ray& ray, const CameraSample& samples, const LocalGeo& geo, Color *out);
+			// The recursive tracing function
+			virtual Color Li(const Ray& ray, int depth) = 0;
+			// Pick necessary samples from current sample buffer for future use
+			virtual void ProcessSamples() = 0;
+			Color TraceReflection(const Ray& ray, const LocalGeo& geo, float reflectivity, int depth);
+			Color TraceRefraction(const Ray& ray, const LocalGeo& geo, int depth);
+			Color TraceDirectLight(const Ray& ray, const LocalGeo& geo, const Light *light, const Sample *lightsample, const Sample *bsdfsample);
 
-		private:
+		protected:
 			int maxdepth_;
 			const Scene *scene_;
+			const CameraSample *samples_;
 		};
 	}
 }

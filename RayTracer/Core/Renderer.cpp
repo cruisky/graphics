@@ -5,11 +5,26 @@
 #include "Sample.h"
 #include "Color.h"
 #include "Ray.h"
+#include "Config.h"
+
+#include "Tracers/DirectLighting.h"
+#include "Samplers/RandomSampler.h"
 
 namespace Cruisky {
 	namespace RayTracer {
-		Renderer::Renderer() : 
-			tracer_(new Tracer), sampler_(new RandomSampler){}
+		Renderer::Renderer(const RendererConfig& config) : config(config){
+			switch (config.tracer_t){
+			case TracerType::DirectLighting:
+				tracer_.reset(new DirectLighting);
+				break;
+			}
+
+			switch (config.sampler_t){
+			case SamplerType::Random:
+				sampler_.reset(new RandomSampler);
+				break;
+			}
+		}
 
 		void Renderer::Render(const Scene *scene, const Camera *camera, Film *film) {
 			CameraSample cam_sample(10);

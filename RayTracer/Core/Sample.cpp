@@ -2,6 +2,7 @@
 
 #include "Sample.h"
 #include "RNG.h"
+#include "MathUtil.h"
 
 namespace Cruisky{
 	namespace RayTracer{
@@ -15,7 +16,13 @@ namespace Cruisky{
 		}
 
 
-		CameraSample::CameraSample(int bufsize) : bufsize(bufsize), buffer(new Sample[bufsize]){}
+		CameraSample::CameraSample(int bufsize) : offset_(0), bufsize(bufsize), buffer(new Sample[bufsize]){}
+		Sample * CameraSample::RequestSamples(int count) const {
+			int start = Math::Min(offset_, bufsize - count - 1);
+			assert(start >= 0);
+			offset_ = (offset_ + count) % bufsize;
+			return buffer + start;
+		}
 		CameraSample::~CameraSample(){ delete[] buffer; }
 	}
 }

@@ -4,8 +4,9 @@
 
 namespace Cruisky {
 	namespace RayTracer {
-		DirectionalLight::DirectionalLight(const Color& intensity, const Vector3& dir) : 
-			intensity(intensity) {
+		DirectionalLight::DirectionalLight(const Color& intensity, int sample_count) : Light(sample_count), intensity(intensity){}
+		DirectionalLight::DirectionalLight(const Color& intensity, const Vector3& dir, int sample_count) :
+			Light(sample_count), intensity(intensity) {
 			transform.LookAt(dir);
 		}
 

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="Application\GUIViewer.h" />
     <ClInclude Include="Core\Camera.h" />
+    <ClInclude Include="Core\Config.h" />
     <ClInclude Include="Core\Film.h" />
     <ClInclude Include="Core\Intersection.h" />
     <ClInclude Include="Core\Light.h" />
@@ -30,7 +31,9 @@
     <ClInclude Include="fwddecl.h" />
     <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="Lights\PointLight.h" />
+    <ClInclude Include="Samplers\RandomSampler.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tracers\DirectLighting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\GUIViewer.cpp" />
@@ -41,7 +44,6 @@
     <ClCompile Include="Core\PrimitiveManager.cpp" />
     <ClCompile Include="Core\Renderer.cpp" />
     <ClCompile Include="Core\Sample.cpp" />
-    <ClCompile Include="Core\Sampler.cpp" />
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\Shape.cpp" />
     <ClCompile Include="Core\Tracer.cpp" />
@@ -49,6 +51,8 @@
     <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Samplers\RandomSampler.cpp" />
+    <ClCompile Include="Tracers\DirectLighting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.vcxproj">

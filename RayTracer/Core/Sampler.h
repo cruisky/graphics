@@ -14,16 +14,5 @@ namespace Cruisky
 			// Fills all fields with canonical random value
 			virtual void GetSamples(CameraSample *sample) = 0;
 		};
-
-
-		class RandomSampler : public Sampler {
-		public:
-			RandomSampler(){}
-			~RandomSampler(){}
-
-			void GetSamples(CameraSample *sample);
-		private:
-			RNG rng;
-		};
 	}
 }

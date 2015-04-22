@@ -12,14 +12,15 @@ namespace Cruisky{
 	{
 		class BSDF;
 		class Camera;
+		enum class TracerType; enum class SamplerType;
 		class Film;
 		struct Intersection; struct LocalGeo;
 		class Light;
 		class Primitive;
 		class PrimitiveManager;
-		class Renderer;
+		class Renderer; struct RendererConfig;
 		struct Sample; 
-		struct CameraSample;
+		class CameraSample;
 		class Sampler;
 		class Scene;
 		class SceneObject;

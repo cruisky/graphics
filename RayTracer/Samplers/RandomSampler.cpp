@@ -1,8 +1,6 @@
 #include "stdafx.h"
-
-#include "Sampler.h"
-#include "Sample.h"
-#include "RNG.h"
+#include "RandomSampler.h"
+#include "Core/Sample.h"
 
 namespace Cruisky{
 	namespace RayTracer {
