@@ -6,7 +6,44 @@
 namespace Cruisky{
 	namespace RayTracer
 	{
+		enum BSDFType {
+			BSDF_REFLECTION		= 1<<0,
+			BSDF_TRANSMISSION	= 1<<1,
+			BSDF_DIFFUSE		= 1<<2,
+			BSDF_GLOSSY			= 1<<3,
+			BSDF_SPECULAR		= 1<<4,
+			BSDF_ALL_TYPES			= BSDF_DIFFUSE | BSDF_GLOSSY | BSDF_SPECULAR,
+			BSDF_ALL_REFLECTION		= BSDF_REFLECTION | BSDF_ALL_TYPES,
+			BSDF_ALL_TRANSMISSION	= BSDF_TRANSMISSION | BSDF_ALL_TYPES,
+			BSDF_ALL				= BSDF_ALL_REFLECTION | BSDF_ALL_TRANSMISSION
+		};
+
 		class BSDF {
+		public:
+			BSDF(BSDFType t, const Color& c) : type(t), color(c){}
+			virtual ~BSDF(){}
+
+			// Wrappers
+
+			virtual float Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geo, BSDFType type = BSDF_ALL) const;
+			virtual float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geo, BSDFType type = BSDF_ALL) const;
+			
+			/*virtual Color Scatter(const Vector3& wo, const LocalGeo& geo, const Sample *samples, Vector3 *wi, float *pdf, BSDFType type = BSDF_ALL) const = 0;*/
+
+			inline bool SubtypeOf(BSDFType t) const { return (type & t) == type; }
+			inline Color GetColor(const LocalGeo& geo) const {
+				return color;
+			}
+
+		protected:
+			virtual float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+			virtual float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+		protected:
+			const BSDFType type;
+			const Color color;
+		};
+
+		/*class BSDF {
 		public:
 			static const float NOT_REFRACTIVE;
 		public:
@@ -64,6 +101,6 @@ namespace Cruisky{
 		private:
 			float refr_index_, refr_index_inv_, refl_, refl_c_;
 			Color att_log_;
-		};
+		};*/
 	}
 }
