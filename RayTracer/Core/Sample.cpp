@@ -19,7 +19,7 @@ namespace Cruisky{
 
 		CameraSample::CameraSample(int bufsize) : offset_(0), bufsize(bufsize), buffer(new Sample[bufsize]){}
 		Sample * CameraSample::RequestSamples(int count) const {
-			int start = Math::Min(offset_, bufsize - count - 1);
+			int start = Math::Min(offset_, bufsize - count);
 			assert(start >= 0);
 			offset_ = (offset_ + count) % bufsize;
 			return buffer + start;
