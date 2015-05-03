@@ -2,6 +2,7 @@
 
 #include "fwddecl.h"
 #include <iostream>
+#include "Vector.h"
 
 namespace Cruisky{
 	namespace RayTracer{
@@ -37,6 +38,27 @@ namespace Cruisky{
 		inline float PowerHeuristic(int nf, float f_pdf, int ng, float g_pdf) {
 			float f = nf * f_pdf, g = ng * g_pdf, f2 = f * f;
 			return f2 / (f2 + g * g);
+		}
+
+		namespace MonteCarlo {
+			Vector3 UniformHemisphere(float u1, float u2);
+			Vector3 UniformSphere(float u1, float u2);
+			void UniformDisk(float u1, float u2, float *x, float *y);
+			void UniformTriangle(float u1, float u2, float *u, float *v);
+			void ConcentricDisk(float u1, float u2, float *u, float *v);
+			inline Vector3 CosineHemisphere(float u1, float u2){
+				Vector3 ret;
+				ConcentricDisk(u1, u2, &ret.x, &ret.y);
+				ret.z = Math::Sqrt(Math::Max(0.f, 1.f - ret.x * ret.x - ret.y * ret.y));
+				return ret;
+			}
+
+
+			inline float UniformHemispherePdf(){ return Math::TWO_PI_INV; }
+			inline float UniformSpherePdf(){ return Math::FOUR_PI_INV; }
+			inline float CosineHemispherePdf(float costheta, float phi){
+				return costheta * Math::PI_INV;
+			}
 		}
 	}
 }

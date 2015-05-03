@@ -5,12 +5,15 @@
 #include "Core/Scene.h"
 #include "Core/Camera.h"
 #include "Core/Renderer.h"
+#include "Core/Config.h"
 
 namespace Cruisky{
 	namespace RayTracer{
 		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
 			Application(), scene_(scene), camera_(camera), film_(film){
 			RendererConfig config;
+			config.tracer_t = TracerType::DirectLighting;
+			config.sampler_t = SamplerType::Random;
 			renderer_.reset(new Renderer(config));
 		}
 		
@@ -89,6 +92,7 @@ namespace Cruisky{
 
 		void GUIViewer::AsyncRenderScene(){
 			renderer_->Render(scene_.get(), camera_.get(), film_.get());
+
 			rendering.store(false);
 		}
 

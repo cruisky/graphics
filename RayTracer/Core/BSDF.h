@@ -18,29 +18,40 @@ namespace Cruisky{
 			BSDF_ALL				= BSDF_ALL_REFLECTION | BSDF_ALL_TRANSMISSION
 		};
 
+		inline int NumComponents(BSDFType t){
+
+		}
+
 		class BSDF {
 		public:
-			BSDF(BSDFType t, const Color& c) : type(t), color(c){}
+			BSDF(BSDFType t, const Color& c = Color::WHITE) : type(t), color(c){}
 			virtual ~BSDF(){}
 
-			// Wrappers
-
-			virtual float Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geo, BSDFType type = BSDF_ALL) const;
-			virtual float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geo, BSDFType type = BSDF_ALL) const;
-			
-			/*virtual Color Scatter(const Vector3& wo, const LocalGeo& geo, const Sample *samples, Vector3 *wi, float *pdf, BSDFType type = BSDF_ALL) const = 0;*/
-
+			virtual Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const = 0;
 			inline bool SubtypeOf(BSDFType t) const { return (type & t) == type; }
 			inline Color GetColor(const LocalGeo& geo) const {
 				return color;
 			}
+			// Wrappers
+			virtual float Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+			virtual float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 
 		protected:
-			virtual float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
-			virtual float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+			virtual float Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type = BSDF_ALL) const = 0;
+			virtual float Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type = BSDF_ALL) const = 0;
 		protected:
 			const BSDFType type;
 			const Color color;
+		};
+
+
+		class Diffuse : public BSDF {
+		public:
+			Diffuse(const Color& c = Color::WHITE) : BSDF(BSDF_DIFFUSE, c){}
+			Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+		protected:
+			float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+			float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
 		};
 
 		/*class BSDF {
@@ -102,5 +113,40 @@ namespace Cruisky{
 			float refr_index_, refr_index_inv_, refl_, refl_c_;
 			Color att_log_;
 		};*/
+
+		namespace LocalCoord {
+			inline float CosTheta(const Vector3& vec) { return vec.z; }
+			inline float CosTheta2(const Vector3& vec) { return vec.z * vec.z; }
+			inline float AbsCosTheta(const Vector3& vec) { return Math::Abs(vec.z); }
+			inline float SinTheta2(const Vector3& vec) { return Math::Max(0.f, 1.f - CosTheta2(vec)); }
+			inline float SinTheta(const Vector3& vec) { return Math::Sqrt(SinTheta2(vec)); }
+			inline float TanTheta(const Vector3& vec)
+			{
+				return Math::Sqrt(SinTheta2(vec)) / vec.z;
+			}
+			inline float TanTheta2(const Vector3& vec)
+			{
+				float cos2 = vec.z * vec.z;
+				float sin2 = 1 - cos2;
+				if (sin2 <= 0.f)
+					return 0.f;
+				return sin2 / cos2;
+			}
+			inline float CosPhi(const Vector3& vec)
+			{
+				float sintheta = SinTheta(vec);
+				if (sintheta == 0.f) return 1.f;
+				return Math::Clamp(vec.x / sintheta, -1.f, 1.f);
+			}
+			inline float SinPhi(const Vector3& vec)
+			{
+				float sintheta = SinTheta(vec);
+				if (sintheta == 0.f)
+					return 0.f;
+				return Math::Clamp(vec.y / sintheta, -1.f, 1.f);
+			}
+			inline bool SameHemisphere(const Vector3& v1, const Vector3& v2) { return v1.z * v2.z > 0.f; }
+
+		}
 	}
 }

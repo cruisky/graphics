@@ -25,10 +25,9 @@ namespace Cruisky{
 			virtual Color Li(const Ray& ray, int depth) = 0;
 			// Pick necessary samples from current sample buffer for future use
 			virtual void ProcessSamples() = 0;
-			Color TraceReflection(const Ray& ray, const LocalGeo& geo, float reflectivity, int depth);
-			Color TraceRefraction(const Ray& ray, const LocalGeo& geo, int depth);
-			Color TraceDirectLight(const Ray& ray, const LocalGeo& geo, const Light *light, const Sample *lightsample, const Sample *bsdfsample);
-
+			Color TraceDirectLight(const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample);
+			Color TraceSpecularReflect(const Ray& ray, const LocalGeo& geom, int depth);
+			Color TraceSpecularTransmit(const Ray& ray, const LocalGeo& geom, int depth);
 		protected:
 			int maxdepth_;
 			const Scene *scene_;

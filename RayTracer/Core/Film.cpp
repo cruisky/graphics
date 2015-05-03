@@ -11,6 +11,7 @@ namespace Cruisky
 		void Film::Commit(const CameraSample& sample, const Color& color){
 			int offset = sample.pix_y * width_ + sample.pix_x;
 			pixels_[offset] = color;
+			// TODO filter
 		}
 
 		void Film::Resize(int width, int height){

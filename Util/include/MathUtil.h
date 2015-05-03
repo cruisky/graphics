@@ -5,6 +5,13 @@
 namespace Cruisky {
 	namespace Math {
 		extern const float PI;
+		extern const float HALF_PI;
+		extern const float TWO_PI;
+		extern const float FOUR_PI;
+		extern const float PI_INV;
+		extern const float HALF_PI_INV;
+		extern const float TWO_PI_INV;
+		extern const float FOUR_PI_INV;
 		extern const float INF;
 		extern const float EPSILON;
 
