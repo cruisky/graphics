@@ -18,6 +18,7 @@ namespace Cruisky{
 			void Commit(const CameraSample& sample, const Color& color);
 			void Resize(int width, int height);
 			void Reset();
+			Color Get(int x, int y) const;
 			const Color *Pixels() const;
 
 		private:

@@ -33,6 +33,18 @@ namespace Cruisky{
 			return true;
 		}
 
+		void GUIViewer::OnMouseButton(Button button, ButtonState state, int x, int y) {
+			FlipY(&y);
+
+			if (state == ButtonState::DOWN){
+				switch (button){
+				case Button::LEFT:
+					Color c = film_->Get(x, y);
+					printf("(%3d, %3d), (%1.3f, %1.3f, %1.3f)\n", x, y, c.r, c.g, c.b); break;
+				}
+			}
+		}
+
 		void GUIViewer::OnKey(unsigned char c, int x, int y){
 			switch (c){
 			case 'w':case 'W': AttemptMoveCamera(Direction::UP); break;
@@ -95,6 +107,9 @@ namespace Cruisky{
 
 			rendering.store(false);
 		}
+
+		void GUIViewer::FlipY(int *y) { *y = film_->Height() - *y - 1; }
+		void GUIViewer::FlipX(int *x) { *x = film_->Width() - *x - 1; }
 
 	}
 }

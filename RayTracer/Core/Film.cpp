@@ -28,6 +28,10 @@ namespace Cruisky
 				pixels_[i] = Color::BLACK;
 		}
 
+		Color Film::Get(int x, int y) const{
+			return pixels_[y * width_ + x];
+		}
+
 		const Color *Film::Pixels() const {
 			assert(pixels_);
 			return pixels_.get();
