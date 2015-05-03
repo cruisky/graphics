@@ -5,7 +5,6 @@
 #include <memory>
 #include <future>
 #include <atomic>
-#include "Core/Film.h"
 
 namespace Cruisky{
 	namespace RayTracer{
