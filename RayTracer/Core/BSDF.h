@@ -33,7 +33,7 @@ namespace Cruisky{
 				return color;
 			}
 			// Wrappers
-			virtual float Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+			virtual Color Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 			virtual float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 
 		protected:

@@ -8,14 +8,14 @@
 namespace Cruisky{
 	namespace RayTracer
 	{
-		float BSDF::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType t) const {
+		Color BSDF::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType t) const {
 			if (Dot(wo, geom.normal) * Dot(wi, geom.normal) < 0.f)
 				t = BSDFType(t & ~BSDF_REFLECTION);
 			else
 				t = BSDFType(t & ~BSDF_TRANSMISSION);
 			if (!SubtypeOf(t))
 				return 0.f;
-			return Eval(
+			return GetColor(geom) * Eval(
 				geom.WorldToLocal(wo),
 				geom.WorldToLocal(wi),
 				t);
@@ -45,7 +45,7 @@ namespace Cruisky{
 		}
 
 		Color Diffuse::Scatter(const Vector3& wo, const LocalGeo& geo, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
-			Vector3 localwo = geo.WorldToLocal(wo);
+			Vector3 localwo = geo.WorldToLocal(wo).Normalize();
 			Vector3 localwi = MonteCarlo::CosineHemisphere(sample.u, sample.v);
 			if (localwo.z < 0.f)
 				localwi.z *= -1.f;

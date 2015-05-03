@@ -46,14 +46,14 @@ namespace Cruisky
 		//	return tint * (TraceReflection(ray, geo, reflectivity, depth) + Li(refracted, depth) * (1 - reflectivity));
 		//}
 
-		Color Tracer::TraceDirectLight(const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsamples, const Sample *bsdfsamples){
+		Color Tracer::TraceDirectLight(const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
 			Vector3 wo = -ray.dir;		// dir to camera
 			Ray lightray;
 			float light_pdf, bsdf_pdf;
 			Color color, lightcolor, surfacecolor;
 
 			// sample light sources
-			light->Illuminate(geom.point, lightsamples, &lightray, &lightcolor, &light_pdf);
+			light->Illuminate(geom.point, lightsample, &lightray, &lightcolor, &light_pdf);
 			if (light_pdf > 0.f && lightcolor != Color::BLACK){
 				surfacecolor = geom.bsdf->Eval(lightray.dir, wo, geom);
 				if (surfacecolor != Color::BLACK && !scene_->Occlude(lightray)){
@@ -70,7 +70,7 @@ namespace Cruisky
 
 			// sample bsdf
 			BSDFType sampled;
-			surfacecolor = geom.bsdf->Scatter(wo, geom, *bsdfsamples, &lightray.dir, &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR), &sampled);
+			surfacecolor = geom.bsdf->Scatter(wo, geom, *bsdfsample, &lightray.dir, &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR), &sampled);
 			if (bsdf_pdf > 0.f && surfacecolor != Color::BLACK){
 				light_pdf = light->Pdf(geom.point, lightray.dir);
 				if (light_pdf > 0.f){
