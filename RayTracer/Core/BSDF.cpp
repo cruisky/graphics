@@ -8,12 +8,11 @@
 namespace Cruisky{
 	namespace RayTracer
 	{
+		//
+		// BSDF
+		//
 		Color BSDF::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType t) const {
-			if (Dot(wo, geom.normal) * Dot(wi, geom.normal) < 0.f)
-				t = BSDFType(t & ~BSDF_REFLECTION);
-			else
-				t = BSDFType(t & ~BSDF_TRANSMISSION);
-			if (!SubtypeOf(t))
+			if (!Valid(wo, wi, geom.normal, &t))
 				return 0.f;
 			return GetColor(geom) * Eval(
 				geom.WorldToLocal(wo),
@@ -22,11 +21,7 @@ namespace Cruisky{
 		}
 
 		float BSDF::Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType t) const {
-			if (Dot(wo, geom.normal) * Dot(wi, geom.normal) < 0.f)
-				t = BSDFType(t & ~BSDF_REFLECTION);
-			else
-				t = BSDFType(t & ~BSDF_TRANSMISSION);
-			if (!SubtypeOf(t))
+			if (!Valid(wo, wi, geom.normal, &t))
 				return 0.f;
 			return Pdf(
 				geom.WorldToLocal(wo),
@@ -34,8 +29,26 @@ namespace Cruisky{
 				t);
 		}
 
+		//
+		// Diffuse
+		//
+		Color Diffuse::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
+			Vector3 localwo = geom.WorldToLocal(wo).Normalize();
+			Vector3 localwi = MonteCarlo::CosineHemisphere(sample.u, sample.v);
+			if (localwo.z < 0.f)
+				localwi.z *= -1.f;
+			*wi = geom.LocalToWorld(localwi);
+			if (!Valid(wo, *wi, geom.normal, &types)){
+				*pdf = 0.f;
+				return Color::BLACK;
+			}
+			*pdf = Pdf(localwo, localwi, types);
+			if (sampled_types) *sampled_types = type_;
+			return GetColor(geom) * Eval(localwo, localwi, types);
+		}
+
 		float Diffuse::Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
-			return Math::PI_INV;
+			return 1.f;// Math::PI_INV;
 		}
 
 		float Diffuse::Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
@@ -44,23 +57,33 @@ namespace Cruisky{
 			return LocalCoord::AbsCosTheta(localwi) * Math::PI_INV;
 		}
 
-		Color Diffuse::Scatter(const Vector3& wo, const LocalGeo& geo, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
-			Vector3 localwo = geo.WorldToLocal(wo).Normalize();
-			Vector3 localwi = MonteCarlo::CosineHemisphere(sample.u, sample.v);
-			if (localwo.z < 0.f)
-				localwi.z *= -1.f;
-			*wi = geo.LocalToWorld(localwi);
-			if (Dot(wo, geo.normal) * Dot(*wi, geo.normal) < 0.f)
-				types = BSDFType(types & ~BSDF_REFLECTION);
-			else
-				types = BSDFType(types & ~BSDF_TRANSMISSION);
+		
+		//
+		// Mirror
+		//
+		Color Mirror::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type) const {
+			return Color::BLACK;
+		}
+		float Mirror::Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type) const {
+			return 0.f;
+		}
+		Color Mirror::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const {
 			if (!SubtypeOf(types)){
 				*pdf = 0.f;
 				return Color::BLACK;
 			}
-			*pdf = Pdf(localwo, localwi, types);
-			if (sampled_types) *sampled_types = type;
-			return GetColor(geo) * Eval(localwo, localwi, types);
+			Vector3 localwo(geom.WorldToLocal(wo));
+			Vector3 localwi(-localwo.x, -localwo.y, localwo.z);
+			*wi = geom.LocalToWorld(localwi);
+			*pdf = 1.f;
+			if (sampled_types) *sampled_types = type_;
+			return GetColor(geom) / LocalCoord::AbsCosTheta(localwi);
+		}
+		float Mirror::Eval(const Vector3& wo, const Vector3& wi, BSDFType type) const {
+			return 0.f;
+		}
+		float Mirror::Pdf(const Vector3& wo, const Vector3& wi, BSDFType type) const {
+			return 0.f;
 		}
 
 

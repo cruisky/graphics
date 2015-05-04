@@ -22,15 +22,18 @@ namespace Cruisky{
 
 		}
 
+		//
+		// BSDF
+		//
 		class BSDF {
 		public:
-			BSDF(BSDFType t, const Color& c = Color::WHITE) : type(t), color(c){}
+			BSDF(BSDFType t, const Color& c = Color::WHITE) : type_(t), color_(c){}
 			virtual ~BSDF(){}
-
+			
 			virtual Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const = 0;
-			inline bool SubtypeOf(BSDFType t) const { return (type & t) == type; }
+			inline bool SubtypeOf(BSDFType t) const { return (type_ & t) == type_; }
 			inline Color GetColor(const LocalGeo& geo) const {
-				return color;
+				return color_;
 			}
 			// Wrappers
 			virtual Color Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
@@ -39,16 +42,39 @@ namespace Cruisky{
 		protected:
 			virtual float Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type = BSDF_ALL) const = 0;
 			virtual float Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type = BSDF_ALL) const = 0;
+			inline bool Valid(const Vector3& wo, const Vector3& wi, const Vector3& normal, BSDFType *t) const{
+				if (Dot(wo, normal) * Dot(wi, normal) < 0.f)
+					*t = BSDFType(*t & ~BSDF_REFLECTION);
+				else
+					*t = BSDFType(*t & ~BSDF_TRANSMISSION);
+				return SubtypeOf(*t);
+			}
 		protected:
-			const BSDFType type;
-			const Color color;
+			const BSDFType type_;
+			const Color color_;
 		};
 
-
+		//
+		// Diffuse
+		//
 		class Diffuse : public BSDF {
 		public:
-			Diffuse(const Color& c = Color::WHITE) : BSDF(BSDF_DIFFUSE, c){}
+			Diffuse(const Color& c = Color::WHITE) : BSDF(BSDFType(BSDF_REFLECTION | BSDF_DIFFUSE), c){}
 			Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+		protected:
+			float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+			float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+		};
+
+		//
+		// Mirror
+		//
+		class Mirror : public BSDF {
+		public:
+			Mirror(const Color& c = Color::WHITE) : BSDF(BSDFType(BSDF_REFLECTION | BSDF_SPECULAR), c){}
+			Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+			Color Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+			float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		protected:
 			float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
 			float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
