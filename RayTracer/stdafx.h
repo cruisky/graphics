@@ -9,5 +9,6 @@ using std::string;
 #include <vector>
 using std::vector;
 #include <memory>
+#include <utility>
 using std::unique_ptr;
 using std::shared_ptr;

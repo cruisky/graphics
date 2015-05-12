@@ -49,6 +49,7 @@ namespace Cruisky{
 					*t = BSDFType(*t & ~BSDF_TRANSMISSION);
 				return SubtypeOf(*t);
 			}
+
 		protected:
 			const BSDFType type_;
 			const Color color_;
@@ -78,6 +79,27 @@ namespace Cruisky{
 		protected:
 			float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
 			float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+		};
+
+		//
+		// Dielectric
+		//
+		class Dielectric : public BSDF{
+		public:
+			Dielectric(const Color& c = Color::WHITE, float etat = 1.5f, float etai = 1.f) :
+				BSDF(BSDFType(BSDF_REFLECTION | BSDF_TRANSMISSION | BSDF_SPECULAR), c),
+				etat_(etat), etai_(etai), eta_(etai / etat), eta_inv_(etat / etai){}
+			Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+			Color Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+			float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+		protected:
+			float Eval(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+			float Pdf(const Vector3& wo, const Vector3& wi, BSDFType type = BSDF_ALL) const;
+			float Refract(float cosi, float *eta = nullptr) const;		// computes cosine of out angle using Snell's law
+			float Reflectance(float cosi, float cost) const;	// Computes reflectance using Fresnel equation
+		private:
+			const float etai_, etat_;		// indices of refraction on each side
+			const float eta_, eta_inv_;		// convenient constants
 		};
 
 		/*class BSDF {
