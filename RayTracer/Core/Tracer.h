@@ -11,8 +11,9 @@ namespace Cruisky{
 			Tracer(int maxdepth = 5) : maxdepth_(maxdepth){}
 			virtual ~Tracer(){}
 
-			inline void Trace(const Ray& ray, const CameraSample& samples, Color *color){
+			inline void Trace(const Ray& ray, const CameraSample& samples, RNG& rng, Color *color){
 				samples_ = &samples;
+				rng_ = &rng;
 				ProcessSamples();
 				*color = Li(ray, maxdepth_);
 				color->Clamp();
@@ -32,6 +33,7 @@ namespace Cruisky{
 			int maxdepth_;
 			const Scene *scene_;
 			const CameraSample *samples_;
+			RNG *rng_;
 		};
 	}
 }
