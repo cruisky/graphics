@@ -8,7 +8,7 @@ namespace Cruisky{
 	namespace RayTracer{
 		struct Sample {
 			float u, v, w; 
-			Sample(){}
+			Sample():u(0.5f), v(0.5f), w(0.5f){}
 			Sample(RNG& rng);
 			// all values are within range [0, 1]
 			Sample(float u, float v, float w);

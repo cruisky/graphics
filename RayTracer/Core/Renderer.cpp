@@ -30,6 +30,7 @@ namespace Cruisky {
 			CameraSample cam_sample(10);
 			Ray ray; 
 			Color c;
+			RNG rng;
 			assert(film->Width() == camera->Width());
 			assert(film->Height() == camera->Height());
 			tracer_->SetScene(scene);
@@ -41,7 +42,7 @@ namespace Cruisky {
 					cam_sample.x += x;
 					cam_sample.y += y;
 					camera->GenerateRay(&ray, cam_sample);
-					tracer_->Trace(ray, cam_sample, &c);
+					tracer_->Trace(ray, cam_sample, rng, &c);
 					film->Commit(cam_sample, c);
 				}
 			}
