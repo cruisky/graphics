@@ -116,7 +116,7 @@ namespace Cruisky{
 			else if(sample.w > prob && both || transmission && !both){		// sample refraction
 				if (eta == eta_)	// entering
 					cost = -cost;
-				localwi = Vector3(-eta * localwo.x, -eta * localwo.y, cost);
+				localwi = Vector3(eta * -localwo.x, eta * -localwo.y, cost);
 				*wi = geom.LocalToWorld(localwi);
 				*pdf = both ? 1.f - prob : prob;
 				if (sampled_types) *sampled_types = BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR);
