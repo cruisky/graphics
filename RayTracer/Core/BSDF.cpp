@@ -116,7 +116,7 @@ namespace Cruisky{
 			else if(sample.w > prob && both || transmission && !both){		// sample refraction
 				if (eta == eta_)	// entering
 					cost = -cost;
-				localwi = Vector3(eta * localwo.x, eta * localwo.y, cost);
+				localwi = Vector3(-eta * localwo.x, -eta * localwo.y, cost);
 				*wi = geom.LocalToWorld(localwi);
 				*pdf = both ? 1.f - prob : prob;
 				if (sampled_types) *sampled_types = BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR);
@@ -139,7 +139,7 @@ namespace Cruisky{
 		float Dielectric::Refract(float cosi, float *eta) const{
 			float e = (cosi > 0.f) ? eta_ : eta_inv_;	// determine whether the ray is entering the surface
 			if (eta) *eta = e;
-			return Math::Sqrt(Math::Max(0.f, 1.f - e * (1.f - cosi * cosi)));
+			return Math::Sqrt(Math::Max(0.f, 1.f - e * e * (1.f - cosi * cosi)));
 		}
 		float Dielectric::Reflectance(float cosi, float cost) const {
 			if (cost == 0.f) return 1.f;	// total internal reflection
