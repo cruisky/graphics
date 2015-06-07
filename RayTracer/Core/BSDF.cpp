@@ -49,7 +49,7 @@ namespace Cruisky{
 		}
 
 		float Diffuse::Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
-			return 1.f;// Math::PI_INV;
+			return Math::PI_INV;
 		}
 
 		float Diffuse::Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{

@@ -34,6 +34,7 @@
     <ClInclude Include="Samplers\RandomSampler.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tracers\DirectLighting.h" />
+    <ClInclude Include="Tracers\PathTracer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\GUIViewer.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Samplers\RandomSampler.cpp" />
     <ClCompile Include="Tracers\DirectLighting.cpp" />
+    <ClCompile Include="Tracers\PathTracer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.vcxproj">

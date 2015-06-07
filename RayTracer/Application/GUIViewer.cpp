@@ -12,7 +12,7 @@ namespace Cruisky{
 		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
 			Application(), scene_(scene), camera_(camera), film_(film){
 			RendererConfig config;
-			config.tracer_t = TracerType::DirectLighting;
+			config.tracer_t = TracerType::PathTracing;
 			config.sampler_t = SamplerType::Random;
 			renderer_.reset(new Renderer(config));
 		}

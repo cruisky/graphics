@@ -32,9 +32,11 @@ namespace Cruisky{
 			
 			virtual Color Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const = 0;
 			inline bool SubtypeOf(BSDFType t) const { return (type_ & t) == type_; }
+			inline bool IsSpecular() const { return (BSDFType(BSDF_SPECULAR | BSDF_DIFFUSE | BSDF_GLOSSY) & type_) == BSDFType(BSDF_SPECULAR); }
 			inline Color GetColor(const LocalGeo& geo) const {
 				return color_;
 			}
+
 			// Wrappers
 			virtual Color Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 			virtual float Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;

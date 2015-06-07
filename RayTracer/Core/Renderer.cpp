@@ -8,6 +8,7 @@
 #include "Config.h"
 
 #include "Tracers/DirectLighting.h"
+#include "Tracers/PathTracer.h"
 #include "Samplers/RandomSampler.h"
 
 namespace Cruisky {
@@ -16,6 +17,9 @@ namespace Cruisky {
 			switch (config.tracer_t){
 			case TracerType::DirectLighting:
 				tracer_.reset(new DirectLighting);
+				break;
+			case TracerType::PathTracing:
+				tracer_.reset(new PathTracer);
 				break;
 			}
 

@@ -3,7 +3,8 @@
 namespace Cruisky{
 	namespace RayTracer{
 		enum class TracerType{
-			DirectLighting
+			DirectLighting,
+			PathTracing
 		};
 		enum class SamplerType{
 			Random
