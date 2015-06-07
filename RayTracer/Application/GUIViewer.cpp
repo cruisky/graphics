@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GUIViewer.h"
 
+#include <cctype>
 #include "Core/Film.h"
 #include "Core/Scene.h"
 #include "Core/Camera.h"
@@ -46,11 +47,13 @@ namespace Cruisky{
 		}
 
 		void GUIViewer::OnKey(unsigned char c, int x, int y){
-			switch (c){
-			case 'w':case 'W': AttemptMoveCamera(Direction::UP); break;
-			case 's':case 'S': AttemptMoveCamera(Direction::DOWN); break;
-			case 'a':case 'A': AttemptMoveCamera(Direction::LEFT); break;
-			case 'd':case 'D': AttemptMoveCamera(Direction::RIGHT); break;
+			switch (toupper(c)){
+			case 'W': AttemptMoveCamera(Direction::UP); break;
+			case 'S': AttemptMoveCamera(Direction::DOWN); break;
+			case 'A': AttemptMoveCamera(Direction::LEFT); break;
+			case 'D': AttemptMoveCamera(Direction::RIGHT); break;
+			case 'Q': AttemptBarrelRollCamera(false); break;
+			case 'E': AttemptBarrelRollCamera(true); break;
 			case 27: Exit(); break;			// escape
 			}
 		}
@@ -90,6 +93,14 @@ namespace Cruisky{
 				case Direction::RIGHT: axis = -Vector3::Y; break;
 				}
 				camera_->transform.Rotate(degree, axis);
+				RenderScene();
+			}
+		}
+
+		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
+			float degree = clockwise ? 10.f : -10.f;
+			if (!rendering.load()){
+				camera_->transform.Rotate(degree, -Vector3::Z);
 				RenderScene();
 			}
 		}

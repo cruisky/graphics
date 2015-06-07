@@ -16,6 +16,7 @@ namespace Cruisky {
 	public:
 		Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 		Vector3(float x, float y, float z) : x(x), y(y), z(z) { Validate(); }
+		Vector3(float arr[3]) : x(arr[0]), y(arr[1]), z(arr[2]) { Validate(); }
 		Vector3(const Vector3& ot) : x(ot.x), y(ot.y), z(ot.z) { Validate(); }
 		~Vector3(){}
 

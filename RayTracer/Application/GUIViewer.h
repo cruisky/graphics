@@ -24,6 +24,7 @@ namespace Cruisky{
 		private:
 			void AttemptMoveCamera(Direction dir);
 			void AttemptPanCamera(Direction dir);
+			void AttemptBarrelRollCamera(bool clockwise);
 			void RenderScene();
 			void AsyncRenderScene();
 			void FlipY(int *y);

@@ -12,9 +12,12 @@ namespace Cruisky{
 			Transform(){}
 			~Transform(){}
 
-			const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
-			const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
-			const Vector3& Position() const { return position_; }
+			inline const Vector3& Right() const { return Matrix4x4::TVector(local_world_, Vector3::X); }
+			inline const Vector3& Up() const { return Matrix4x4::TVector(local_world_, Vector3::Y); }
+			inline const Vector3& Forward() const { return Matrix4x4::TVector(local_world_, -Vector3::Z); }
+			inline const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
+			inline const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
+			inline const Vector3& Position() const { return position_; }
 
 			Transform& SetPosition(const Vector3& position);
 			Transform& Translate(const Vector3& translation);
