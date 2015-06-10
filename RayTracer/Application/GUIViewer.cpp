@@ -12,10 +12,7 @@ namespace Cruisky{
 	namespace RayTracer{
 		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
 			Application(), scene_(scene), camera_(camera), film_(film){
-			RendererConfig config;
-			config.tracer_t = TracerType::PathTracing;
-			config.sampler_t = SamplerType::Random;
-			renderer_.reset(new Renderer(config));
+			 renderer_.reset(new Renderer(RendererConfig()));
 		}
 		
 		void GUIViewer::Start(){
@@ -27,6 +24,11 @@ namespace Cruisky{
 			config.width = camera_->Width();
 			config.height = camera_->Height();
 			config.fixsize = true;
+		}
+
+		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config){
+			renderer_.reset(new Renderer(config));
+			return *this;
 		}
 
 		bool GUIViewer::Render(){

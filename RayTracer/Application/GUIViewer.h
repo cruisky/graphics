@@ -17,6 +17,7 @@ namespace Cruisky{
 			GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film);
 			void Start();
 			void Config();
+			GUIViewer& ConfigRenderer(RendererConfig config);
 			bool Render();
 			void OnMouseButton(Button button, ButtonState state, int x, int y);
 			void OnKey(unsigned char c, int x, int y);

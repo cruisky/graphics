@@ -4,12 +4,14 @@
 #include <memory>
 #include "Tracer.h"
 #include "Sampler.h"
+#include "Config.h"
 
 namespace Cruisky {
 	namespace RayTracer {
 
 		struct RendererConfig {
-			RendererConfig(){}
+			RendererConfig(TracerType tracer_type = TracerType::DirectLighting, SamplerType sampler_type = SamplerType::Random) : 
+				tracer_t(tracer_type), sampler_t(sampler_type){}
 			TracerType tracer_t;
 			SamplerType sampler_t;
 		};
