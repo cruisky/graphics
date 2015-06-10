@@ -18,7 +18,7 @@ namespace Cruisky{
 
 				auto lightcount = scene_->lights.size();
 				for (auto i = 0; i < lightcount; i++){
-					color += TraceDirectLight(ray, geom, scene_->lights[i].get(), light_samples_[i], bsdf_samples_[i]);
+					color += TraceDirectLight(ray, geom, scene_->lights[i].get(), light_samples_[i], bsdf_samples_[i]) * Math::PI;
 				}
 
 				if (depth >= 0){
