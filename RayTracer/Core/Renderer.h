@@ -18,12 +18,11 @@ namespace Cruisky {
 		};
 
 
-		class Renderer{
+		class Renderer {
 		public:
-			
 			Renderer(const RendererConfig& config);
 
-			void Render(const Scene *scene, const Camera *camera, Film *film);
+			void Render(const Scene *scene, const Camera *camera, Film *film, shared_ptr<IProgressMonitor> progress_monitor = nullptr);
 			inline const RendererConfig& Config(){ return config; }
 		private:
 			RendererConfig config;

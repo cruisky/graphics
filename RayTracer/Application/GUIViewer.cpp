@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "GUIViewer.h"
 
-#include <cctype>
 #include "Core/Film.h"
 #include "Core/Scene.h"
 #include "Core/Camera.h"
@@ -13,10 +12,12 @@ namespace Cruisky{
 	namespace RayTracer{
 		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
 			Application(), scene_(scene), camera_(camera), film_(film){
-			 renderer_.reset(new Renderer(RendererConfig()));
+			 renderer_ = std::make_unique<Renderer>(RendererConfig());
+			 monitor_= std::make_shared<ProgressMonitor>();
 		}
 		
 		void GUIViewer::Start(){
+			progress_reporter_job_ = std::thread(&GUIViewer::ProgressReporterJob, this);
 			RenderScene();
 		}
 
@@ -112,18 +113,29 @@ namespace Cruisky{
 		void GUIViewer::RenderScene(){
 			assert(!rendering.load());
 			rendering.store(true);
-			task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
+			render_task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
+		}
+
+		void GUIViewer::ProgressReporterJob(){
+			bool prev_status = false, status;
+			while (true){
+				Sleep(100);
+				status = monitor_->InProgress();
+				if (status || prev_status){
+					prev_status = status;
+					system("CLS");
+					printf("Progress:\t %2.1f%%\n", monitor_->Progress() * 100.f);
+					//printf("Elapsed:\t %.0f s\n", monitor_->ElapsedTime());
+					printf("Remaining:\t %.0f s\n", monitor_->RemainingTime());
+				}
+			}
 		}
 
 		void GUIViewer::AsyncRenderScene(){
-			Timer timer;
 			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
 				film_->Resize(camera_->Width(), camera_->Height());
-			printf("Sample size:\t%d\n", film_->Size() * (int)Math::Pow(renderer_->Config().samples_per_pixel, 2));
-			timer.reset();
 			film_->Reset();
-			renderer_->Render(scene_.get(), camera_.get(), film_.get());
-			printf("Elapsed Time:\t%f\n", timer.elapsed());
+			renderer_->Render(scene_.get(), camera_.get(), film_.get(), monitor_);
 			rendering.store(false);
 		}
 

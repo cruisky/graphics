@@ -1,7 +1,7 @@
 #pragma once
+#include "fwddecl.h"
 
 #include "Application.h"
-#include "fwddecl.h"
 #include <memory>
 #include <future>
 #include <atomic>
@@ -28,6 +28,7 @@ namespace Cruisky{
 			void AttemptBarrelRollCamera(bool clockwise);
 			void RenderScene();
 			void AsyncRenderScene();
+			void ProgressReporterJob();
 			void FlipY(int *y);
 			void FlipX(int *x);
 		private:
@@ -35,8 +36,10 @@ namespace Cruisky{
 			shared_ptr<Camera> camera_;
 			shared_ptr<Film> film_;
 			unique_ptr<Renderer> renderer_;
+			shared_ptr<IProgressMonitor> monitor_;
 
-			std::future<void> task_;
+			std::thread progress_reporter_job_;
+			std::future<void> render_task_;
 			std::atomic<bool> rendering = false;
 		};
 	}
