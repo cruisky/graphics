@@ -38,18 +38,27 @@ namespace Cruisky {
 			assert(film->Width() == camera->Width());
 			assert(film->Height() == camera->Height());
 			tracer_->SetScene(scene);
+			float spp_rec = 1.f / config.samples_per_pixel;
+			printf("rendering %d samples\n", film->Size() * config.samples_per_pixel * config.samples_per_pixel);
 			for (int y = 0; y < film->Height(); y++){
 				for (int x = 0; x < film->Width(); x++){
-					sampler_->GetSamples(&cam_sample);
-					cam_sample.pix_x = x;
-					cam_sample.pix_y = y;
-					cam_sample.x += x;
-					cam_sample.y += y;
-					camera->GenerateRay(&ray, cam_sample);
-					tracer_->Trace(ray, cam_sample, rng, &c);
-					film->Commit(cam_sample, c);
+					for (int p = 0; p < config.samples_per_pixel; p++){
+						for (int q = 0; q < config.samples_per_pixel; q++){
+							// stratefied sampling
+							sampler_->GetSamples(&cam_sample);
+							cam_sample.pix_x = x;
+							cam_sample.pix_y = y;
+							cam_sample.x = x + (p + cam_sample.x) * spp_rec;
+							cam_sample.y = y + (q + cam_sample.y) * spp_rec;
+							camera->GenerateRay(&ray, cam_sample);
+							tracer_->Trace(ray, cam_sample, rng, &c);
+							film->Commit(cam_sample, c);
+						}
+					}
 				}
 			}
+			printf("done\n");
+			film->ScalePixels();
 		}
 	}
 }

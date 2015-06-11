@@ -10,8 +10,9 @@ namespace Cruisky {
 	namespace RayTracer {
 
 		struct RendererConfig {
-			RendererConfig(TracerType tracer_type = TracerType::DirectLighting, SamplerType sampler_type = SamplerType::Random) : 
-				tracer_t(tracer_type), sampler_t(sampler_type){}
+			RendererConfig(TracerType tracer_type = TracerType::DirectLighting, int spp = 1, SamplerType sampler_type = SamplerType::Random) : 
+				tracer_t(tracer_type), samples_per_pixel(spp), sampler_t(sampler_type){}
+			int samples_per_pixel;
 			TracerType tracer_t;
 			SamplerType sampler_t;
 		};

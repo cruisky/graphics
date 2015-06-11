@@ -111,13 +111,14 @@ namespace Cruisky{
 		void GUIViewer::RenderScene(){
 			assert(!rendering.load());
 			rendering.store(true);
-			film_->Resize(camera_->Width(), camera_->Height());
 			task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
 		}
 
 		void GUIViewer::AsyncRenderScene(){
+			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
+				film_->Resize(camera_->Width(), camera_->Height());
+			film_->Reset();
 			renderer_->Render(scene_.get(), camera_.get(), film_.get());
-
 			rendering.store(false);
 		}
 
