@@ -7,6 +7,7 @@
 #include "Core/Camera.h"
 #include "Core/Renderer.h"
 #include "Core/Config.h"
+#include "Tools.h"
 
 namespace Cruisky{
 	namespace RayTracer{
@@ -115,10 +116,14 @@ namespace Cruisky{
 		}
 
 		void GUIViewer::AsyncRenderScene(){
+			Timer timer;
 			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
 				film_->Resize(camera_->Width(), camera_->Height());
+			printf("Sample size:\t%d\n", film_->Size() * (int)Math::Pow(renderer_->Config().samples_per_pixel, 2));
+			timer.reset();
 			film_->Reset();
 			renderer_->Render(scene_.get(), camera_.get(), film_.get());
+			printf("Elapsed Time:\t%f\n", timer.elapsed());
 			rendering.store(false);
 		}
 

@@ -86,6 +86,7 @@
     <ClInclude Include="include\Matrix.h" />
     <ClInclude Include="include\Ray.h" />
     <ClInclude Include="include\RNG.h" />
+    <ClInclude Include="include\Tools.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\stb_image_write.h" />

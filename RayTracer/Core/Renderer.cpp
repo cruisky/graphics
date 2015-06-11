@@ -39,7 +39,6 @@ namespace Cruisky {
 			assert(film->Height() == camera->Height());
 			tracer_->SetScene(scene);
 			float spp_rec = 1.f / config.samples_per_pixel;
-			printf("rendering %d samples\n", film->Size() * config.samples_per_pixel * config.samples_per_pixel);
 			for (int y = 0; y < film->Height(); y++){
 				for (int x = 0; x < film->Width(); x++){
 					for (int p = 0; p < config.samples_per_pixel; p++){
@@ -57,7 +56,6 @@ namespace Cruisky {
 					}
 				}
 			}
-			printf("done\n");
 			film->ScalePixels();
 		}
 	}

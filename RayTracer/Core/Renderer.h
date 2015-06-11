@@ -24,7 +24,7 @@ namespace Cruisky {
 			Renderer(const RendererConfig& config);
 
 			void Render(const Scene *scene, const Camera *camera, Film *film);
-		
+			inline const RendererConfig& Config(){ return config; }
 		private:
 			RendererConfig config;
 			unique_ptr<Tracer> tracer_;
