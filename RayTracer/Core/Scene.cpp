@@ -22,8 +22,8 @@ namespace Cruisky {
 		bool Scene::Intersect(const Ray& ray, Intersection& intxn) const {
 			return primmgr_->Intersect(ray, intxn);
 		}
-		void Scene::PostIntersect(LocalGeo& geo) const {
-			geo.prim->PostIntersect(geo);
+		void Scene::PostIntersect(const Ray& ray, LocalGeo& geo) const {
+			geo.prim->PostIntersect(ray, geo);
 		}
 		bool Scene::Occlude(const Ray& ray) const {
 			return primmgr_->Occlude(ray);

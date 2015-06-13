@@ -18,7 +18,7 @@ namespace Cruisky{
 			Sample *lightsample, *bsdfsample, *scattersample;
 			for (auto bounce = 0; bounce < maxdepth_; ++bounce){
 				if (scene_->Intersect(pathRay, geom)){
-					scene_->PostIntersect(geom);
+					scene_->PostIntersect(pathRay, geom);
 					geom.ComputeDifferentials(pathRay);
 					/*if (specBounce)
 						L += pathThroughput * geom.Emit(-pathRay.dir);*/
@@ -26,7 +26,7 @@ namespace Cruisky{
 					if (!geom.bsdf->IsSpecular()){
 						lightsample = light_samples_[bounce];
 						bsdfsample = bsdf_samples_[bounce];
-						auto lightIdx = Math::Min(lightsample->w * countLights, countLights - 1);
+						int lightIdx = Math::Min(lightsample->w * countLights, countLights - 1);
 						L += pathThroughput * TraceDirectLight(pathRay, geom, scene_->lights[lightIdx].get(), lightsample, bsdfsample);
 					}
 					Vector3 wo = -pathRay.dir;

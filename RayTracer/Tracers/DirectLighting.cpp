@@ -13,7 +13,7 @@ namespace Cruisky{
 			LocalGeo geom;
 			Color color;
 			if (scene_->Intersect(ray, geom)){
-				scene_->PostIntersect(geom);
+				scene_->PostIntersect(ray, geom);
 				geom.ComputeDifferentials(ray);
 
 				auto lightcount = scene_->lights.size();

@@ -18,7 +18,9 @@ namespace Cruisky {
 			// fills dist and prim in the intersection, 
 			// and modify the length (t_max) of the ray.
 			bool Intersect(const Ray& ray, Intersection& intersection) const;
-			void PostIntersect(LocalGeo& geo) const;
+			// Extracts info for the LocalGeo.
+			void PostIntersect(const Ray& ray, LocalGeo& geo) const;
+			// Test if this object occludes the ray.
 			bool Occlude(const Ray& ray) const;
 
 			const BSDF* GetBSDF() const;

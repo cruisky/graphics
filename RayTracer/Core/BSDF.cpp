@@ -35,7 +35,7 @@ namespace Cruisky{
 		//
 		Color Diffuse::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
 			Vector3 localwo = geom.WorldToLocal(wo).Normalize();
-			Vector3 localwi = MonteCarlo::CosineHemisphere(sample.u, sample.v);
+			Vector3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
 			if (localwo.z < 0.f)
 				localwi.z *= -1.f;
 			*wi = geom.LocalToWorld(localwi);

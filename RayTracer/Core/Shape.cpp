@@ -24,8 +24,7 @@ namespace Cruisky{
 		}
 
 		void UnitSphere::PostIntersect(const Ray& lcr, LocalGeo& geo) const {
-			geo.point = lcr.origin + lcr.dir * lcr.t_max;	// local point
-			geo.normal = geo.point;// .Normalize();
+			geo.normal = lcr.End();// .Normalize();
 		}
 
 		bool UnitSphere::Occlude(const Ray& lcr) const {
@@ -50,8 +49,7 @@ namespace Cruisky{
 		}
 
 		void UnitPlane::PostIntersect(const Ray& lcr, LocalGeo& geo) const {
-			geo.point = lcr.origin + lcr.dir * lcr.t_max;	// local point
-			geo.normal = Vector3(0.f, 0.f, 1.f);// .Normalize();
+			geo.normal = Vector3::Z;// .Normalize();
 		}
 
 		bool UnitPlane::Occlude(const Ray& lcr) const {

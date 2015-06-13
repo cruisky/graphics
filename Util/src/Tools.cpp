@@ -12,13 +12,14 @@ namespace Cruisky
 	void ProgressMonitor::Update(float current){
 		assert(in_progress_);
 		double elapsed = timer_.elapsed();
-		rate_per_sec_ = (current - current_) / (double)(elapsed - time_since_last_update_);
+		rate_per_sec_ = (current - current_) / (float)(elapsed - time_since_last_update_);
 		current_ = current;
 		time_since_last_update_ = elapsed;
 	}
 	void ProgressMonitor::Finish(){
 		Update(total_);
 		in_progress_ = false;
+		time_since_last_update_ = timer_.elapsed();
 	}
 	double ProgressMonitor::ElapsedTime(){
 		return in_progress_ ? timer_.elapsed() : time_since_last_update_;

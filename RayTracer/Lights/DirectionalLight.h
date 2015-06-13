@@ -11,7 +11,6 @@ namespace Cruisky{
 			DirectionalLight(const Color& intensity, const Vector3& dir, int sample_count = 1);
 
 			void Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *out, Color *lightcolor, float *pdf) const;
-			void Emit(const Vector3& dir, Color *out) const;
 			float Pdf(const Vector3& pos, const Vector3& dir) const;
 			bool IsDelta() const; 
 		public:

@@ -5,6 +5,7 @@
 namespace Cruisky {
 	namespace Math {
 		extern const float PI;
+		extern const float QTR_PI;
 		extern const float HALF_PI;
 		extern const float TWO_PI;
 		extern const float FOUR_PI;
@@ -58,5 +59,6 @@ namespace Cruisky {
 		inline int Floor(float n) { return int(n); }
 		inline int Ceil(float n) { return int(n) + 1; }
 		inline int Round(float n) { return int(n + 0.5f); }
+		inline float Lerp(float t, float v1, float v2){ return (1.f - t) * v1 + t * v2; }
 	}
 }

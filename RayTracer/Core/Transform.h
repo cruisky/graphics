@@ -32,14 +32,16 @@ namespace Cruisky{
 			inline Transform& Rotate(float x, float y, float z){ return Rotate(Vector3(x, y, z)); }
 			inline Transform& Scale(float x, float y, float z){ return Scale(Vector3(x, y, z)); }
 
+			// Transforms a local ray to world space and normalize it.
 			inline void ToWorld(Ray& ray) const {
 				ray.origin = Matrix4x4::TPoint(local_world_, ray.origin);
 				ray.dir = Matrix4x4::TVector(local_world_, ray.dir).Normalize();
 			}
 
+			// Transforms a global ray to local space WITHOUT normalizing it (so that t_max is valid)
 			inline void ToLocal(Ray& ray) const{
 				ray.origin = Matrix4x4::TPoint(world_local_, ray.origin);
-				ray.dir = Matrix4x4::TVector(world_local_, ray.dir);// DO NOT normalize a local ray
+				ray.dir = Matrix4x4::TVector(world_local_, ray.dir);
 			}
 
 		private:

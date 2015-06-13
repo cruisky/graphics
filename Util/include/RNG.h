@@ -9,6 +9,7 @@ namespace Cruisky{
 	public:
 		RNG(uint32 seed = (uint32)time(NULL)){
 			cur_seed_ = (__m128i *)_aligned_malloc(sizeof __m128i, 16);
+			if (!cur_seed_) throw std::runtime_error("out of memory");
 			*cur_seed_ = _mm_set_epi32(seed, seed + 1, seed, seed + 1);
 		}
 

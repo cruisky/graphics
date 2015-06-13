@@ -11,7 +11,6 @@ namespace Cruisky{
 			PointLight(const Color& intensity, float radius = 10.f, const Vector3& position = Vector3::ZERO, int sample_count = 1);
 
 			void Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *out, Color *lightcolor, float *pdf) const;
-			void Emit(const Vector3& dir, Color *out) const;
 			float Pdf(const Vector3& pos, const Vector3& dir) const;
 			bool IsDelta() const;
 

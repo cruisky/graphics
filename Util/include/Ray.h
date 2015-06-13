@@ -26,14 +26,18 @@ namespace Cruisky{
 			return *this;
 		}
 
+		// Sets origin,dir,t values of this ray using two points, and normalize it.
 		inline Ray& SetSegment(const Vector3& orig, const Vector3& dest){
 			origin = orig;
 			dir = dest - orig;
 			t_min = Ray::EPSILON;
 			t_max = Length(dir);
-			dir /= t_max;
+			dir /= t_max;		// normalize using known length
 			return *this;
 		}
+
+		// The target point
+		inline Vector3 End() const { return origin + t_max * dir; }
 	public:
 		Vector3 origin;
 		Vector3 dir;

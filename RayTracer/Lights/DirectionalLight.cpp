@@ -18,10 +18,6 @@ namespace Cruisky {
 			*pdf = 1.f;
 		}
 
-		void DirectionalLight::Emit(const Vector3& dir, Color *out) const{
-			*out = Color::BLACK;
-		}
-
 		float DirectionalLight::Pdf(const Vector3& pos, const Vector3& dir) const{
 			return 0.f;
 		}		

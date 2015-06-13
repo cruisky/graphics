@@ -9,6 +9,9 @@ namespace Cruisky{
 		// get bytes per pixel
 		const int pixel_size = channel;
 		const int image_size = width * height;
+		
+		if (width <= 0 || height <= 0)
+			return;
 
 		unsigned char *buffer = new unsigned char[image_size * pixel_size];
 		int buffer_i, data_i;
