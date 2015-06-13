@@ -18,38 +18,41 @@ namespace Cruisky
 			float light_pdf, bsdf_pdf;
 			Color color, lightcolor, surfacecolor;
 
-			// sample light sources
+			// sample light sources with multiple importance sampling
 			light->Illuminate(geom.point, lightsample, &lightray, &lightcolor, &light_pdf);
 			if (light_pdf > 0.f && lightcolor != Color::BLACK){
 				surfacecolor = geom.bsdf->Eval(lightray.dir, wo, geom);
 				if (surfacecolor != Color::BLACK && !scene_->Occlude(lightray)){
-					color = surfacecolor * lightcolor * Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf;
 					if (light->IsDelta())
-						return color;
-					// multiple importance sampling
-					bsdf_pdf = geom.bsdf->Pdf(wo, lightray.dir, geom);
-					color *= PowerHeuristic(1, light_pdf, 1, bsdf_pdf);
+						color = surfacecolor * lightcolor * (Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf);
+					else{
+						bsdf_pdf = geom.bsdf->Pdf(wo, lightray.dir, geom);
+						color = surfacecolor * lightcolor * (Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf * PowerHeuristic(1, light_pdf, 1, bsdf_pdf));
+					}
 				}
 			}
 
-			if (light->IsDelta()) return color;
+			if (light->IsDelta()) 
+				return color;
 
-			// sample bsdf
+			// sample bsdf with multiple importance sampling
 			BSDFType sampled;
-			surfacecolor = geom.bsdf->Scatter(wo, geom, *bsdfsample, &lightray.dir, &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR), &sampled);
+			surfacecolor = geom.bsdf->Scatter(wo, geom, *bsdfsample, &(lightray.dir), &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR), &sampled);
 			if (bsdf_pdf > 0.f && surfacecolor != Color::BLACK){
 				light_pdf = light->Pdf(geom.point, lightray.dir);
-				if (light_pdf > 0.f){
-					// TODO
-					//LocalGeo intxn;
-					//if (scene_->Intersect(lightray, intxn)){
-						// Arealight
-					//} 
-					//else if environmentmap == light
-					if (lightcolor != Color::BLACK){
-						float misWeight = PowerHeuristic(1, light_pdf, 1, bsdf_pdf);
-						color += surfacecolor * lightcolor * Math::Abs(Dot(lightray.dir, geom.normal)) * misWeight;
+				if (light_pdf == 0.f)
+					return color;
+				LocalGeo geom_light;
+				if (scene_->Intersect(lightray, geom_light)){
+					if (light == geom_light.GetAreaLight()){
+						scene_->PostIntersect(lightray, geom_light);
+						geom_light.Emit(-lightray.dir, &lightcolor);
 					}
+				}
+				//else
+				//	light->Emit(lightray, &lightcolor);
+				if (lightcolor != Color::BLACK){
+					color += surfacecolor * lightcolor * Math::Abs(Dot(lightray.dir, geom.normal)) * PowerHeuristic(1, bsdf_pdf, 1, light_pdf) / bsdf_pdf;
 				}
 			}
 			return color;

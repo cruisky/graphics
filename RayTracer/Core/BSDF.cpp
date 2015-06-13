@@ -38,7 +38,7 @@ namespace Cruisky{
 			Vector3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
 			if (localwo.z < 0.f)
 				localwi.z *= -1.f;
-			*wi = geom.LocalToWorld(localwi);
+			*wi = geom.LocalToWorld(localwi).Normalize();
 			if (!Valid(wo, *wi, geom.normal, &types)){
 				*pdf = 0.f;
 				return Color::BLACK;
@@ -150,20 +150,5 @@ namespace Cruisky{
 			float perp = (eici - etct) / (eici + etct);
 			return 0.5f * (para * para + perp * perp);
 		}
-
-		/*const float BSDF::NOT_REFRACTIVE = -1.f;
-
-		Color Diffuse::Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo) const {
-			Color c = ambient;
-			c += diffuse * Math::Max(0.f, Dot(geo.normal, wi));
-			return c.Clamp();
-		}
-
-		Color Specular::Eval(const Vector3& wi, const Vector3& wo, const LocalGeo& geo) const {
-			Color c = Diffuse::Eval(wi, wo, geo);
-			Vector3 h = (wi + wo).Normalize();
-			c += specular * Math::Pow(Math::Max(0.f, Dot(h, geo.normal)), shininess);
-			return c.Clamp();
-		}*/
 	}
 }

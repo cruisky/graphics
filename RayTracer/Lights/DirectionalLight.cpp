@@ -11,9 +11,9 @@ namespace Cruisky {
 			transform.LookAt(dir);
 		}
 
-		void DirectionalLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *out, Color *lightcolor, float *pdf) const {
+		void DirectionalLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {
 			// the position of a directional light can be everywhere, so we only need to transform the direction
-			*out = Ray(pos, Matrix4x4::TVector(transform.LocalToWorldMatrix(), Vector3(0.f, 0.f, 1.f)));
+			*wi = Ray(pos, Matrix4x4::TVector(transform.LocalToWorldMatrix(), Vector3(0.f, 0.f, 1.f)));
 			*lightcolor = intensity;
 			*pdf = 1.f;
 		}

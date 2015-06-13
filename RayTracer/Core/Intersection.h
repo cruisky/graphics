@@ -2,6 +2,8 @@
 #include "fwddecl.h"
 
 #include "Vector.h"
+#include "Light.h"
+#include "Primitive.h"
 
 namespace Cruisky{
 	namespace RayTracer{
@@ -10,6 +12,7 @@ namespace Cruisky{
 		struct Intersection{
 		public:
 			Intersection(){}
+			inline const AreaLight *GetAreaLight() const { return prim->GetAreaLight(); }
 		public:
 			float dist;
 			const Primitive *prim;
@@ -18,6 +21,10 @@ namespace Cruisky{
 		struct LocalGeo : Intersection {
 		public:
 			LocalGeo(){}
+			// Gets the color of light ray emitted from this primitive 
+			// (if it has an arealight attached) to the given direction.
+			void Emit(const Vector3& wo, Color *out) const;
+
 			inline void ComputeDifferentials(const Ray& ray) {
 				u = Cross(Math::Abs(normal.x) > 0.1f ? Vector3::Y : Vector3::X, normal).Normalize();
 				v = Cross(normal, u);

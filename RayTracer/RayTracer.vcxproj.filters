@@ -173,5 +173,14 @@
     <ClCompile Include="Tracers\PathTracer.cpp">
       <Filter>Source Files\Tracers</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Intersection.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Light.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

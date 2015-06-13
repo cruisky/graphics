@@ -15,6 +15,7 @@ namespace Cruisky{
 			Color Li(const Ray& ray, int depth);
 			void ProcessSamples();
 		private:
+			static const int SAMPLE_DEPTH;
 			std::vector<Sample *> light_samples_;
 			std::vector<Sample *> bsdf_samples_;
 			std::vector<Sample *> scatter_samples_;

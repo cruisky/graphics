@@ -122,7 +122,11 @@ namespace Cruisky{
 				Sleep(100);
 				status = monitor_->InProgress();
 				if (status || prev_status){
+#ifndef _DEBUG
 					system("CLS");
+#else
+					printf("============================================\n");
+#endif
 					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
 					printf("Remaining:\t %.1f s\n", Math::Max(monitor_->RemainingTime(), 0.f));
 					if (!status) printf("Render Time:\t %.2f s\n", monitor_->ElapsedTime());

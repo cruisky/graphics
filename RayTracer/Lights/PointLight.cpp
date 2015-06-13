@@ -11,9 +11,9 @@ namespace Cruisky {
 				transform.SetPosition(position);
 		}
 
-		void PointLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *out, Color *lightcolor, float *pdf) const{
-			out->SetSegment(pos, transform.Position());
-			*lightcolor = intensity * (1.f - out->t_max * out->t_max * radius_sqr_inv_);	// decrease brightness by dist^2
+		void PointLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const{
+			wi->SetSegment(pos, transform.Position());
+			*lightcolor = intensity * (1.f - wi->t_max * wi->t_max * radius_sqr_inv_);	// decrease brightness by dist^2
 			*pdf = 1.f;
 		}
 

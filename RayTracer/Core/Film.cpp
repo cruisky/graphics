@@ -46,7 +46,6 @@ namespace Cruisky
 		}
 
 		const Color *Film::Pixels() const {
-			assert(pixels_);
 			return pixels_.get();
 		}
 	}

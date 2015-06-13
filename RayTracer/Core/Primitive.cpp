@@ -38,6 +38,9 @@ namespace Cruisky{
 			return bsdf_.get();
 		}
 
+		const AreaLight* Primitive::GetAreaLight() const {
+			return area_light_;
+		}
 	}
 
 }

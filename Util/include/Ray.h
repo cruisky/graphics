@@ -18,21 +18,23 @@ namespace Cruisky{
 
 		Ray& operator = (const Ray& ot);
 
-		inline Ray& Reset(){
-			t_min = EPSILON;
-			t_max = Math::INF;
-			origin = Vector3::ZERO;
-			dir = Vector3(0.f, 0.f, -1.f);
+		// Reset the value of this ray, without normalizing direction vector.
+		inline Ray& Reset(const Vector3& origin = Vector3::ZERO, const Vector3& dir = Vector3::Z, float t_max = Math::INF, float t_min = EPSILON){
+			this->t_min = t_min;
+			this->t_max = t_max;
+			this->origin = origin;
+			this->dir = dir;
 			return *this;
 		}
 
 		// Sets origin,dir,t values of this ray using two points, and normalize it.
-		inline Ray& SetSegment(const Vector3& orig, const Vector3& dest){
+		inline Ray& SetSegment(const Vector3& orig, const Vector3& dest, float eps_dest = EPSILON, float eps_origin = EPSILON){
 			origin = orig;
 			dir = dest - orig;
-			t_min = Ray::EPSILON;
+			t_min = eps_origin;
 			t_max = Length(dir);
-			dir /= t_max;		// normalize using known length
+			dir /= t_max;
+			t_max -= eps_dest;
 			return *this;
 		}
 
