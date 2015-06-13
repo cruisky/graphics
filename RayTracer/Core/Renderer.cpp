@@ -39,13 +39,13 @@ namespace Cruisky {
 			assert(film->Width() == camera->Width());
 			assert(film->Height() == camera->Height());
 			tracer_->SetScene(scene);
-			if (monitor) monitor->Reset(film->Height());
+			if (monitor) monitor->Reset(config.samples_per_pixel * config.samples_per_pixel);
 			float spp_rec = 1.f / config.samples_per_pixel;
-			for (int y = 0; y < film->Height(); y++){
-				for (int x = 0; x < film->Width(); x++){
-					// stratefied sampling
-					for (int p = 0; p < config.samples_per_pixel; p++){
-						for (int q = 0; q < config.samples_per_pixel; q++){
+			// stratefied sampling
+			for (int p = 0; p < config.samples_per_pixel; p++){
+				for (int q = 0; q < config.samples_per_pixel; q++){
+					for (int y = 0; y < film->Height(); y++){
+						for (int x = 0; x < film->Width(); x++){
 							sampler_->GetSamples(&cam_sample);
 							cam_sample.pix_x = x;
 							cam_sample.pix_y = y;
@@ -56,11 +56,12 @@ namespace Cruisky {
 							film->Commit(cam_sample, c);
 						}
 					}
+					if (monitor) monitor->Update(p * config.samples_per_pixel + q);
+					film->ScalePixels();
 				}
-				if (monitor) monitor->Update(y);
 			}
 			if (monitor) monitor->Finish();
-			film->ScalePixels();
+			//film->ScalePixels();
 		}
 	}
 }
