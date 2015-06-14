@@ -4,7 +4,7 @@
 #include "Matrix.h"
 #include "Ray.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		class Transform {

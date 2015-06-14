@@ -1,7 +1,7 @@
 #pragma once
 #include "fwddecl.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer
 	{
 		class Shape {

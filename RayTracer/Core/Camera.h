@@ -3,7 +3,7 @@
 
 #include "SceneObject.h"
 
-namespace Cruisky
+namespace TX
 {
 	namespace RayTracer{
 		class Camera : public SceneObject {

@@ -4,7 +4,7 @@
 #include "Color.h"
 #include "SceneObject.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer {
 		class Light : public SceneObject {
 		public:

@@ -6,7 +6,7 @@
 #include "Sampler.h"
 #include "Config.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer {
 
 		struct RendererConfig {

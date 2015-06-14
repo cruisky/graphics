@@ -1,7 +1,7 @@
 #include "include/Application.h"
 #include <stdexcept>
 
-namespace Cruisky
+namespace TX
 {
 	void Application::Run(){
 		app = this;

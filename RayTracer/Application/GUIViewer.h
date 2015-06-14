@@ -6,7 +6,7 @@
 #include <future>
 #include <atomic>
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class GUIViewer : public Application {
 		public:

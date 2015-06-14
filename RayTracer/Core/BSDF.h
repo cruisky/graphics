@@ -3,7 +3,7 @@
 
 #include "Color.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		enum BSDFType {

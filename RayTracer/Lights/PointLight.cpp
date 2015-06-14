@@ -2,7 +2,7 @@
 #include "PointLight.h"
 #include "Core/Intersection.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer{
 		PointLight::PointLight(const Color& intensity, float radius, const Vector3& position, int sample_count) :
 			Light(sample_count), intensity(intensity){

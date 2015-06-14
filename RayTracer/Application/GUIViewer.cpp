@@ -8,7 +8,7 @@
 #include "Core/Config.h"
 #include "Tools.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
 			Application(), scene_(scene), camera_(camera), film_(film){
@@ -129,7 +129,7 @@ namespace Cruisky{
 #endif
 					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
 					printf("Remaining:\t %.1f s\n", Math::Max(monitor_->RemainingTime(), 0.f));
-					if (!status) printf("Render Time:\t %.2f s\n", monitor_->ElapsedTime());
+					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
 					prev_status = status;
 				}
 			}

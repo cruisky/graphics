@@ -3,7 +3,7 @@
 #include "../Util.h"
 #include "Vector.h"
 
-namespace Cruisky{
+namespace TX{
 
 	class Ray{
 	public:
@@ -32,7 +32,7 @@ namespace Cruisky{
 			origin = orig;
 			dir = dest - orig;
 			t_min = eps_origin;
-			t_max = Length(dir);
+			t_max = dir.Length();
 			dir /= t_max;
 			t_max -= eps_dest;
 			return *this;

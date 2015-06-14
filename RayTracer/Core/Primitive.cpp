@@ -4,7 +4,7 @@
 #include "Shape.h"
 #include "Intersection.h"
 
-namespace Cruisky{
+namespace TX{
 
 	namespace RayTracer
 	{

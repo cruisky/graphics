@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Transform.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer {
 		Transform& Transform::SetPosition(const Vector3& position){
 			return Translate(position - position_);

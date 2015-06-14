@@ -4,7 +4,7 @@
 #include "Core/Light.h"
 #include "Color.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer {
 		class PointLight : public Light {
 		public:

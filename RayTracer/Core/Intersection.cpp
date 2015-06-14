@@ -2,7 +2,7 @@
 #include "Intersection.h"
 #include "Primitive.h"
 
-namespace Cruisky
+namespace TX
 {
 	namespace RayTracer
 	{

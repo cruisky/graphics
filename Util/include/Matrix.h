@@ -4,7 +4,7 @@
 #include "MathUtil.h"
 #include "Vector.h"
 
-namespace Cruisky{
+namespace TX{
 	// 4x4 row-major matrix using right-handed coordinate system
 	class Matrix4x4{
 	public: 

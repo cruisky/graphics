@@ -2,7 +2,7 @@
 #include "RandomSampler.h"
 #include "Core/Sample.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer {
 		void RandomSampler::GetSamples(CameraSample *sample){
 			sample->x = rng.Float();

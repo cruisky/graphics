@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		enum class TracerType{
 			DirectLighting,

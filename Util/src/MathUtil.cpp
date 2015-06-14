@@ -1,7 +1,7 @@
 #include "include/MathUtil.h"
 #include <limits>
 
-namespace Cruisky{
+namespace TX{
 	namespace Math{
 		const float PI				= 3.14159265358979323846f;
 		const float QTR_PI			= 0.78539816339744830961f;

@@ -3,7 +3,7 @@
 
 #include "Primitive.h"
 
-namespace Cruisky
+namespace TX
 {
 	namespace RayTracer {
 		AreaLight::AreaLight(const Color& intensity, Primitive *primitive, int sample_count)

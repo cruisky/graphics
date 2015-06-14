@@ -3,7 +3,7 @@
 #include "../Util.h"
 #include <chrono>
 
-namespace Cruisky{
+namespace TX{
 	class Timer
 	{
 	public:

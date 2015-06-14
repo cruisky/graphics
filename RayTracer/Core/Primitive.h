@@ -6,14 +6,14 @@
 #include "BSDF.h"		// shared_ptr
 #include "Shape.h"		// shared_ptr
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer
 	{
 		class Primitive : public SceneObject {
 			// Allows an AreaLight to bind with this primitive at its creation.
 			friend class AreaLight;
 		public:
-			Primitive(std::shared_ptr<const Shape> shape, std::shared_ptr<const BSDF> bsdf) : bsdf_(bsdf), shape_(shape){};
+			Primitive(std::shared_ptr<const Shape> shape, std::shared_ptr<const BSDF> bsdf) : bsdf_(bsdf), shape_(shape), area_light_(nullptr){};
 			virtual ~Primitive(){}
 
 			// Checks if the global ray intersects this primitive, if so

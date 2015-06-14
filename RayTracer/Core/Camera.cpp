@@ -3,7 +3,7 @@
 #include "Sampler.h"
 #include "Sample.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		Camera::Camera(int res_x, int res_y, float fov, float near, float far, bool ortho) :
 			fov_(fov), clip_near_(near), clip_far_(far), is_ortho_(ortho) {

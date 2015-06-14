@@ -3,7 +3,7 @@
 #include <iostream>
 #include "RNG.h"
 
-namespace Cruisky
+namespace TX
 {
 	namespace RayTracer
 	{

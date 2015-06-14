@@ -5,7 +5,7 @@
 #include "Sample.h"
 #include "Color.h"
 
-namespace Cruisky
+namespace TX
 {
 	namespace RayTracer {
 		void Film::Commit(const CameraSample& sample, const Color& color){

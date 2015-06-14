@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "PrimitiveManager.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		class Scene{

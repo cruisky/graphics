@@ -5,7 +5,7 @@
 #include "RNG.h"
 #include "MathUtil.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		Sample::Sample(RNG& rng){ u = rng.Float(); v = rng.Float(); w = rng.Float(); }
 		Sample::Sample(float u, float v, float w) :

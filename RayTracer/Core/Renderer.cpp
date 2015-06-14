@@ -12,7 +12,7 @@
 #include "Tracers/PathTracer.h"
 #include "Samplers/RandomSampler.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer {
 		Renderer::Renderer(const RendererConfig& config) : config(config){
 			switch (config.tracer_t){

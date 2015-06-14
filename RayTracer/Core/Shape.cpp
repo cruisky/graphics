@@ -5,7 +5,7 @@
 #include "Shape.h"
 #include "Sample.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		float Shape::Pdf(const Ray& localwi) const {
@@ -19,8 +19,8 @@ namespace Cruisky{
 
 
 		bool UnitSphere::Intersect(const Ray& lcr) const {
-			float e2 = LengthSqr(lcr.origin);
-			float d2 = LengthSqr(lcr.dir);
+			float e2 = lcr.origin.LengthSqr();
+			float d2 = lcr.dir.LengthSqr();
 			float de = Dot(lcr.dir, lcr.origin);
 			float delta_quarter = de * de - d2 * (e2 - 1.f);
 			
@@ -39,8 +39,8 @@ namespace Cruisky{
 		}
 
 		bool UnitSphere::Occlude(const Ray& lcr) const {
-			float e2 = LengthSqr(lcr.origin);
-			float d2 = LengthSqr(lcr.dir);
+			float e2 = lcr.origin.LengthSqr();
+			float d2 = lcr.dir.LengthSqr();
 			float de = Dot(lcr.dir, lcr.origin);
 			float delta_quarter = de * de - d2 * (e2 - 1.f);
 			float t = -(de + Math::Sqrt(delta_quarter)) / d2;
@@ -53,7 +53,7 @@ namespace Cruisky{
 		}
 
 		void UnitSphere::SamplePoint(const Sample *sample, const Vector3& localeye, Vector3 *point, Vector3 *normal) const{
-			float distSqr = LengthSqr(localeye);
+			float distSqr = localeye.LengthSqr();
 			// sample the sphere uniformly if eye is inside the sphere 
 			if (distSqr < 1.f + Ray::EPSILON)
 				return SamplePoint(sample, point, normal);

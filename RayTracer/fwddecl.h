@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Cruisky{
+namespace TX{
 	
 	class Ray;
 	class Color;

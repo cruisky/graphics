@@ -5,7 +5,7 @@
 #include "Core/Scene.h"
 #include "Core/Sample.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer {
 		Color DirectLighting::Li(const Ray& ray, int depth){
 			if (depth < 0)
@@ -16,8 +16,8 @@ namespace Cruisky{
 				scene_->PostIntersect(ray, geom);
 				geom.ComputeDifferentials(ray);
 
-				auto lightcount = scene_->lights.size();
-				for (auto i = 0; i < lightcount; i++){
+				int lightcount = scene_->lights.size();
+				for (int i = 0; i < lightcount; i++){
 					color += TraceDirectLight(ray, geom, scene_->lights[i].get(), light_samples_[i], bsdf_samples_[i]) * Math::PI;
 				}
 

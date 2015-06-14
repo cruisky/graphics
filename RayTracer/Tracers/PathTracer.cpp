@@ -6,7 +6,7 @@
 #include "Core/BSDF.h"
 #include "RNG.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		const int PathTracer::SAMPLE_DEPTH = 3;
 
@@ -18,14 +18,16 @@ namespace Cruisky{
 			static Vector3 wi;
 			static float pdf;
 			static BSDFType sampled;
+			static Ray pathRay;
+			static LocalGeo geom;
 
 			Le = L = Color::BLACK;
 			pathThroughput = Color::WHITE;
 
 			auto countLights = scene_->lights.size();
 			bool specBounce = true;
-			Ray pathRay = ray;
-			LocalGeo geom;
+
+			pathRay = ray;
 			Sample *lightsample, *bsdfsample, *scattersample;
 
 			for (int bounce = 0; bounce < maxdepth_; ++bounce){
@@ -43,7 +45,7 @@ namespace Cruisky{
 					if (!geom.bsdf->IsSpecular()){
 						lightsample = light_samples_[bounce];
 						bsdfsample = bsdf_samples_[bounce];
-						int lightIdx = Math::Min(lightsample->w * countLights, countLights - 1);
+						int lightIdx = (int)Math::Min(lightsample->w * countLights, countLights - 1);
 						L += pathThroughput * TraceDirectLight(pathRay, geom, scene_->lights[lightIdx].get(), lightsample, bsdfsample);
 					}
 					scattersample = scatter_samples_[bounce];

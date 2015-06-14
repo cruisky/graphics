@@ -4,7 +4,7 @@
 #include "Core/Tracer.h"
 #include <vector>
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class DirectLighting : public Tracer {
 		public:

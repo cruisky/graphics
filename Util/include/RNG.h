@@ -4,7 +4,7 @@
 #include <ctime>
 #include "emmintrin.h"
 
-namespace Cruisky{
+namespace TX{
 	class RNG {
 	public:
 		RNG(uint32 seed = (uint32)time(NULL)){

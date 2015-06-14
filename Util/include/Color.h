@@ -3,7 +3,7 @@
 #include "../Util.h"
 #include "MathUtil.h"
 
-namespace Cruisky{
+namespace TX{
 	class Color {
 	public:
 		static const Color BLACK;

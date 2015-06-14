@@ -4,7 +4,7 @@
 #include "Core/Tracer.h"
 
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class PathTracer : public Tracer {
 		public:

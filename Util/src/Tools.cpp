@@ -1,6 +1,6 @@
 #include "include/Tools.h"
 
-namespace Cruisky
+namespace TX
 {
 	void ProgressMonitor::Reset(float total){
 		timer_.reset();

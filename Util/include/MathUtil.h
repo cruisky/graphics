@@ -2,7 +2,7 @@
 
 #include "../Util.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace Math {
 		extern const float PI;
 		extern const float QTR_PI;

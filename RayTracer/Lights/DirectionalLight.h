@@ -3,7 +3,7 @@
 #include "Core/Light.h"
 #include "Color.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class DirectionalLight : public Light {
 		public:

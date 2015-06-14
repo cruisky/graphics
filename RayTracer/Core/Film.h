@@ -4,7 +4,7 @@
 #include <memory>
 #include "Color.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class Film {
 		public:

@@ -5,7 +5,7 @@
 #include "Intersection.h"
 #include <memory>
 
-namespace Cruisky {
+namespace TX {
 	namespace RayTracer {
 		Scene::Scene(){
 			primmgr_ = unique_ptr<PrimitiveManager>(new PrimitiveManager(&prims_));

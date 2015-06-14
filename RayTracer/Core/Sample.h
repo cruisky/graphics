@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Vector.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		struct Sample {
 			float u, v, w; 

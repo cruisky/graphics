@@ -5,7 +5,7 @@
 #include "Primitive.h"
 #include "Sample.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		//

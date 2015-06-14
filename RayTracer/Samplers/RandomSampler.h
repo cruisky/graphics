@@ -2,7 +2,7 @@
 
 #include "Core/Sampler.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class RandomSampler : public Sampler {
 		public:
