@@ -4,8 +4,9 @@
 #include <cmath>
 #include <cassert>
 #include <iostream>
+#include <stdexcept>
 
-namespace Cruisky
+namespace TX
 {
 	typedef	signed	 __int8	 int8;
 	typedef unsigned __int8	 uint8;

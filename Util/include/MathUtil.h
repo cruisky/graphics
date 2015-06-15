@@ -2,9 +2,17 @@
 
 #include "../Util.h"
 
-namespace Cruisky {
+namespace TX {
 	namespace Math {
 		extern const float PI;
+		extern const float QTR_PI;
+		extern const float HALF_PI;
+		extern const float TWO_PI;
+		extern const float FOUR_PI;
+		extern const float PI_INV;
+		extern const float HALF_PI_INV;
+		extern const float TWO_PI_INV;
+		extern const float FOUR_PI_INV;
 		extern const float INF;
 		extern const float EPSILON;
 
@@ -48,8 +56,9 @@ namespace Cruisky {
 			return (val > min) ? ((val < max) ? val : max) : min;
 		}
 
-		inline int Floor(float n) { return (int)(n + EPSILON) - 1; }
-		inline int Ceil(float n) { return (int)(n - EPSILON) + 1; }
-		inline int Round(float n) { return (int)(n + 0.5f); }
+		inline int Floor(float n) { return int(n); }
+		inline int Ceil(float n) { return int(n) + 1; }
+		inline int Round(float n) { return int(n + 0.5f); }
+		inline float Lerp(float t, float v1, float v2){ return (1.f - t) * v1 + t * v2; }
 	}
 }

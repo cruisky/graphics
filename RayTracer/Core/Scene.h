@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "PrimitiveManager.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		class Scene{
@@ -19,7 +19,7 @@ namespace Cruisky{
 			void Construct();
 
 			bool Intersect(const Ray& ray, Intersection& intxn) const;
-			void PostIntersect(LocalGeo& geo) const;
+			void PostIntersect(const Ray& ray, LocalGeo& geo) const;
 			bool Occlude(const Ray& ray) const;
 
 		public:

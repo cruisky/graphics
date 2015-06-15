@@ -2,7 +2,7 @@
 
 #include "../Util.h"
 
-namespace Cruisky{
+namespace TX{
 	class Color;
 
 	class Image {

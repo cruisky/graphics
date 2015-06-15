@@ -3,7 +3,7 @@
 
 #include "Transform.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
 		class SceneObject {
 		public:

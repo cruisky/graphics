@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Transform.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer {
 		Transform& Transform::SetPosition(const Vector3& position){
 			return Translate(position - position_);
@@ -49,6 +49,5 @@ namespace Cruisky{
 			world_local_ = Matrix4x4::Scale(Vector3(1.f / scale.x, 1.f / scale.y, 1.f / scale.z)) * world_local_;
 			return *this;
 		}
-
 	}
 }

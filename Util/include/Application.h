@@ -4,7 +4,7 @@
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
 
-namespace Cruisky{
+namespace TX{
 	class Application {
 	public:
 		struct AppConfig {

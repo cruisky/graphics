@@ -4,7 +4,7 @@
 #include "Shape.h"
 #include "Intersection.h"
 
-namespace Cruisky{
+namespace TX{
 
 	namespace RayTracer
 	{
@@ -20,11 +20,11 @@ namespace Cruisky{
 			return true;
 		}
 
-		void Primitive::PostIntersect(LocalGeo& geo) const {
+		void Primitive::PostIntersect(const Ray& ray, LocalGeo& geo) const {
+			geo.point = ray.End();
 			geo.bsdf = GetBSDF();
 			shape_->PostIntersect(localray_, geo);
-			// transform the hit point and normal to world space
-			geo.point = Matrix4x4::TPoint(transform.LocalToWorldMatrix(), geo.point);
+			// transform the normal to world space
 			geo.normal = Matrix4x4::TNormal(transform.WorldToLocalMatrix(), geo.normal);
 		}
 
@@ -38,6 +38,9 @@ namespace Cruisky{
 			return bsdf_.get();
 		}
 
+		const AreaLight* Primitive::GetAreaLight() const {
+			return area_light_;
+		}
 	}
 
 }

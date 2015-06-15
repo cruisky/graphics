@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="Application\GUIViewer.h" />
     <ClInclude Include="Core\Camera.h" />
+    <ClInclude Include="Core\Config.h" />
     <ClInclude Include="Core\Film.h" />
     <ClInclude Include="Core\Intersection.h" />
     <ClInclude Include="Core\Light.h" />
@@ -20,6 +21,7 @@
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\PrimitiveManager.h" />
     <ClInclude Include="Core\Renderer.h" />
+    <ClInclude Include="Core\Sample.h" />
     <ClInclude Include="Core\Sampler.h" />
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\SceneObject.h" />
@@ -29,17 +31,22 @@
     <ClInclude Include="fwddecl.h" />
     <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="Lights\PointLight.h" />
+    <ClInclude Include="Samplers\RandomSampler.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tracers\DirectLighting.h" />
+    <ClInclude Include="Tracers\PathTracer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\GUIViewer.cpp" />
     <ClCompile Include="Core\BSDF.cpp" />
     <ClCompile Include="Core\Camera.cpp" />
     <ClCompile Include="Core\Film.cpp" />
+    <ClCompile Include="Core\Intersection.cpp" />
+    <ClCompile Include="Core\Light.cpp" />
     <ClCompile Include="Core\Primitive.cpp" />
     <ClCompile Include="Core\PrimitiveManager.cpp" />
     <ClCompile Include="Core\Renderer.cpp" />
-    <ClCompile Include="Core\Sampler.cpp" />
+    <ClCompile Include="Core\Sample.cpp" />
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\Shape.cpp" />
     <ClCompile Include="Core\Tracer.cpp" />
@@ -47,6 +54,10 @@
     <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="misc.cpp" />
+    <ClCompile Include="Samplers\RandomSampler.cpp" />
+    <ClCompile Include="Tracers\DirectLighting.cpp" />
+    <ClCompile Include="Tracers\PathTracer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.vcxproj">
@@ -85,7 +96,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\Util\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

@@ -4,7 +4,7 @@
 #include "MathUtil.h"
 #include "Vector.h"
 
-namespace Cruisky{
+namespace TX{
 	// 4x4 row-major matrix using right-handed coordinate system
 	class Matrix4x4{
 	public: 
@@ -249,4 +249,12 @@ namespace Cruisky{
 		return Matrix4x4(res);
 	}
 
+	inline bool SolveLinearSystem2x2(const float A[2][2], const float B[2], float *x0, float *x1){
+		float det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
+		if (Math::Abs(det) < Math::EPSILON)
+			return false;
+		*x0 = (A[1][1] * B[0] - A[0][1] * B[1]) / det;
+		*x1 = (A[0][0] * B[1] - A[1][0] * B[0]) / det;
+		return !(Math::IsNAN(*x0) || Math::IsNAN(*x1));
+	}
 }

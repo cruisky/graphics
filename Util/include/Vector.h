@@ -3,7 +3,7 @@
 #include "../Util.h"
 #include "MathUtil.h"
 
-namespace Cruisky {
+namespace TX {
 	class Vector3{
 	public:
 		static const Vector3 ZERO;
@@ -16,6 +16,7 @@ namespace Cruisky {
 	public:
 		Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 		Vector3(float x, float y, float z) : x(x), y(y), z(z) { Validate(); }
+		Vector3(float arr[3]) : x(arr[0]), y(arr[1]), z(arr[2]) { Validate(); }
 		Vector3(const Vector3& ot) : x(ot.x), y(ot.y), z(ot.z) { Validate(); }
 		~Vector3(){}
 
@@ -37,27 +38,31 @@ namespace Cruisky {
 		inline bool operator == (const Vector3 ot) const { return x == ot.x && y == ot.y && z == ot.z; }
 		inline bool operator != (const Vector3 ot) const { return x != ot.x || y != ot.y || z != ot.z; }
 		
+		inline float LengthSqr() const;
+		inline float Length() const;
 		inline Vector3& Normalize();
+
 		inline void Validate() const {
 			assert(!Math::IsNAN(x));	assert(!Math::IsNAN(y)); assert(!Math::IsNAN(z));
 		}
 	}; 
 
+	inline Vector3 Normalized(const Vector3& v) { return v * Math::Rsqrt(v.LengthSqr()); }
 	inline Vector3 operator * (float r, const Vector3& v) { return Vector3(v.x * r, v.y * r, v.z * r); }
 	inline std::ostream& operator << (std::ostream& os, const Vector3& v) {
 		return os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
 	}
 
 	inline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y * v.y + u.z * v.z; }
+	inline float AbsDot(const Vector3& u, const Vector3& v){ return fabsf(u.x * v.x + u.y * v.y + u.z * v.z); }
 	inline Vector3 Cross(const Vector3& u, const Vector3& v){
 		return Vector3(
 			u.y * v.z - u.z * v.y,
 			u.z * v.x - u.x * v.z,
 			u.x * v.y - u.y * v.x);
 	}
-	inline float LengthSqr(const Vector3& v) { return Dot(v, v); }
-	inline float Length(const Vector3& v) { return Math::Sqrt(LengthSqr(v)); }
-	inline Vector3 Normalized(const Vector3& v) { return v * Math::Rsqrt(LengthSqr(v)); }
 
-	inline Vector3& Vector3::Normalize() { (*this) *= Math::Rsqrt(LengthSqr(*this)); return *this; }
+	inline float Vector3::LengthSqr() const { return Dot(*this, *this); }
+	inline float Vector3::Length() const { return Math::Sqrt(LengthSqr()); }
+	inline Vector3& Vector3::Normalize() { (*this) *= Math::Rsqrt(LengthSqr()); return *this; }
 }

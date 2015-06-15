@@ -4,7 +4,7 @@
 #include "Matrix.h"
 #include "Ray.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer
 	{
 		class Transform {
@@ -12,9 +12,12 @@ namespace Cruisky{
 			Transform(){}
 			~Transform(){}
 
-			const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
-			const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
-			const Vector3& Position() const { return position_; }
+			inline Vector3 Right() const { return Matrix4x4::TVector(local_world_, Vector3::X); }
+			inline Vector3 Up() const { return Matrix4x4::TVector(local_world_, Vector3::Y); }
+			inline Vector3 Forward() const { return Matrix4x4::TVector(local_world_, -Vector3::Z); }
+			inline const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
+			inline const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
+			inline const Vector3& Position() const { return position_; }
 
 			Transform& SetPosition(const Vector3& position);
 			Transform& Translate(const Vector3& translation);
@@ -29,14 +32,16 @@ namespace Cruisky{
 			inline Transform& Rotate(float x, float y, float z){ return Rotate(Vector3(x, y, z)); }
 			inline Transform& Scale(float x, float y, float z){ return Scale(Vector3(x, y, z)); }
 
+			// Transforms a local ray to world space and normalize it.
 			inline void ToWorld(Ray& ray) const {
 				ray.origin = Matrix4x4::TPoint(local_world_, ray.origin);
 				ray.dir = Matrix4x4::TVector(local_world_, ray.dir).Normalize();
 			}
 
+			// Transforms a global ray to local space WITHOUT normalizing it (so that t_max is valid)
 			inline void ToLocal(Ray& ray) const{
 				ray.origin = Matrix4x4::TPoint(world_local_, ray.origin);
-				ray.dir = Matrix4x4::TVector(world_local_, ray.dir);// DO NOT normalize a local ray
+				ray.dir = Matrix4x4::TVector(world_local_, ray.dir);
 			}
 
 		private:

@@ -2,7 +2,7 @@
 #include "include/Vector.h"
 #include "include/Ray.h"
 
-namespace Cruisky{
+namespace TX{
 	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4();
 
 	Matrix4x4::Matrix4x4(){

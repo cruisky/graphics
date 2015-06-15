@@ -4,13 +4,15 @@
 #include "Core/Light.h"
 #include "Color.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer {
 		class PointLight : public Light {
 		public:
-			PointLight(const Color& intensity, float radius = 10.f, const Vector3& position = Vector3::ZERO);
+			PointLight(const Color& intensity, float radius = 10.f, const Vector3& position = Vector3::ZERO, int sample_count = 1);
 
-			void Emit(const LocalGeo& geo, Ray *out, Color *lightcolor) const;
+			void Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const;
+			float Pdf(const Vector3& pos, const Vector3& dir) const;
+			bool IsDelta() const;
 
 			inline float Radius() const { return radius_; }
 			inline PointLight& SetRadius(float radius){ 

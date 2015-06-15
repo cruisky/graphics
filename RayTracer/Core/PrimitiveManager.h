@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-namespace Cruisky
+namespace TX
 {
 	namespace RayTracer
 	{

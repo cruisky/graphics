@@ -11,7 +11,9 @@
 *.user
 *.aps
 *.pch
+*.psess
 *.vspscc
+*.vspx
 *.vssscc
 *_i.c
 *_p.c

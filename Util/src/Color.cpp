@@ -1,6 +1,6 @@
 #include "include/Color.h"
 
-namespace Cruisky{
+namespace TX{
 	const Color Color::BLACK = Color(0.f);
 	const Color Color::WHITE = Color(1.f);
 	const Color Color::RED = Color(1.f, 0.f, 0.f);

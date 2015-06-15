@@ -1,5 +1,5 @@
 #include "include/Ray.h"
 
-namespace Cruisky{
+namespace TX{
 	const float Ray::EPSILON = 1e-4f;
 }

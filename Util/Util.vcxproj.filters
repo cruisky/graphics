@@ -51,6 +51,9 @@
     <ClInclude Include="include\Application.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Tools.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MathUtil.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

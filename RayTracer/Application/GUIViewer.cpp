@@ -5,13 +5,19 @@
 #include "Core/Scene.h"
 #include "Core/Camera.h"
 #include "Core/Renderer.h"
+#include "Core/Config.h"
+#include "Tools.h"
 
-namespace Cruisky{
+namespace TX{
 	namespace RayTracer{
-		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) : 
-			Application(), scene_(scene), camera_(camera), film_(film), renderer_(new Renderer){}
+		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
+			Application(), scene_(scene), camera_(camera), film_(film){
+			 renderer_ = std::make_unique<Renderer>(RendererConfig());
+			 monitor_= std::make_shared<ProgressMonitor>();
+		}
 		
 		void GUIViewer::Start(){
+			progress_reporter_job_ = std::thread(&GUIViewer::ProgressReporterJob, this);
 			RenderScene();
 		}
 
@@ -22,17 +28,36 @@ namespace Cruisky{
 			config.fixsize = true;
 		}
 
+		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config){
+			renderer_.reset(new Renderer(config));
+			return *this;
+		}
+
 		bool GUIViewer::Render(){
 			glDrawPixels(config.width, config.height, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
 			return true;
 		}
 
+		void GUIViewer::OnMouseButton(Button button, ButtonState state, int x, int y) {
+			FlipY(&y);
+
+			if (state == ButtonState::DOWN){
+				switch (button){
+				case Button::LEFT:
+					Color c = film_->Get(x, y);
+					printf("(%3d, %3d), (%1.3f, %1.3f, %1.3f)\n", x, y, c.r, c.g, c.b); break;
+				}
+			}
+		}
+
 		void GUIViewer::OnKey(unsigned char c, int x, int y){
-			switch (c){
-			case 'w':case 'W': AttemptMoveCamera(Direction::UP); break;
-			case 's':case 'S': AttemptMoveCamera(Direction::DOWN); break;
-			case 'a':case 'A': AttemptMoveCamera(Direction::LEFT); break;
-			case 'd':case 'D': AttemptMoveCamera(Direction::RIGHT); break;
+			switch (toupper(c)){
+			case 'W': AttemptMoveCamera(Direction::UP); break;
+			case 'S': AttemptMoveCamera(Direction::DOWN); break;
+			case 'A': AttemptMoveCamera(Direction::LEFT); break;
+			case 'D': AttemptMoveCamera(Direction::RIGHT); break;
+			case 'Q': AttemptBarrelRollCamera(false); break;
+			case 'E': AttemptBarrelRollCamera(true); break;
 			case 27: Exit(); break;			// escape
 			}
 		}
@@ -76,18 +101,50 @@ namespace Cruisky{
 			}
 		}
 
+		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
+			float degree = clockwise ? 10.f : -10.f;
+			if (!rendering.load()){
+				camera_->transform.Rotate(degree, -Vector3::Z);
+				RenderScene();
+			}
+		}
+
 
 		void GUIViewer::RenderScene(){
 			assert(!rendering.load());
 			rendering.store(true);
-			film_->Resize(camera_->Width(), camera_->Height());
-			task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
+			render_task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
+		}
+
+		void GUIViewer::ProgressReporterJob(){
+			bool prev_status = false, status;
+			while (true){
+				Sleep(100);
+				status = monitor_->InProgress();
+				if (status || prev_status){
+#ifndef _DEBUG
+					system("CLS");
+#else
+					printf("============================================\n");
+#endif
+					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
+					printf("Remaining:\t %.1f s\n", Math::Max(monitor_->RemainingTime(), 0.f));
+					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
+					prev_status = status;
+				}
+			}
 		}
 
 		void GUIViewer::AsyncRenderScene(){
-			renderer_->Render(scene_.get(), camera_.get(), film_.get());
+			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
+				film_->Resize(camera_->Width(), camera_->Height());
+			film_->Reset();
+			renderer_->Render(scene_.get(), camera_.get(), film_.get(), monitor_);
 			rendering.store(false);
 		}
+
+		void GUIViewer::FlipY(int *y) { *y = film_->Height() - *y - 1; }
+		void GUIViewer::FlipX(int *x) { *x = film_->Width() - *x - 1; }
 
 	}
 }
