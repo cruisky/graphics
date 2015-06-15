@@ -46,8 +46,8 @@ namespace TX {
 		inline float Log(float n) { return logf(n); }
 		inline float Log2(float n) { return log2f(n); }
 		inline float Log10(float n) { return log10f(n); }
-		inline float ToRad(float deg) { return deg / 180.0f * Math::PI; }
-		inline float ToDeg(float rad) { return rad * 180.0f / Math::PI; }
+		inline float ToRad(float deg) { return deg / 180.f * Math::PI; }
+		inline float ToDeg(float rad) { return rad * 180.f / Math::PI; }
 		template <typename T1, typename T2> inline auto Max(const T1& n1, const T2 n2) -> decltype(n1 + n2) { return n1 > n2 ? n1 : n2; }
 		template <typename T1, typename T2> inline auto Min(const T1& n1, const T2 n2) -> decltype(n1 + n2) { return n1 < n2 ? n1 : n2; }
 		template <typename T> inline int Sign(const T& n){ return (T(0) < val) - (val < T(0)); }
@@ -55,9 +55,8 @@ namespace TX {
 		template <typename T> inline T Clamp(const T& val, const T& min, const T& max){
 			return (val > min) ? ((val < max) ? val : max) : min;
 		}
-
-		inline int Floor(float n) { return int(n); }
-		inline int Ceil(float n) { return int(n) + 1; }
+		inline int Floor(float n) { return (int)n; }
+		inline int Ceil(float n) { int fl = int(n); return (n - fl) > 1e-7f ? fl + 1 : fl; }
 		inline int Round(float n) { return int(n + 0.5f); }
 		inline float Lerp(float t, float v1, float v2){ return (1.f - t) * v1 + t * v2; }
 	}

@@ -14,7 +14,7 @@ namespace TX{
 			return;
 
 		unsigned char *buffer = new unsigned char[image_size * pixel_size];
-		int buffer_i, data_i;
+		int buffer_i;
 		if (channel <= YA){
 			for (int y = 0; y < height; y++){
 				buffer_i = ((flip_y ? height - y - 1 : y) * width) * pixel_size;

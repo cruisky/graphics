@@ -48,8 +48,9 @@ void GUI(){
 	shared_ptr<BSDF> diffuse			= make_shared<Diffuse>();
 	shared_ptr<BSDF> mirror				= make_shared<Mirror>();
 	shared_ptr<BSDF> glass				= make_shared<Dielectric>(Color::WHITE);
+	shared_ptr<BSDF> blueglass			= make_shared<Dielectric>(Color(0.2, 0.5, 1.0));
 	shared_ptr<BSDF> greenglass			= make_shared<Dielectric>(Color::GREEN);
-	shared_ptr<BSDF> redglass			= make_shared<Dielectric>(Color(0.7, 0.2, 0.2));
+	shared_ptr<BSDF> redglass			= make_shared<Dielectric>(Color(1.0, 0.3, 0.3));
 
 	///////////////////////////////////////////
 	// Shapes & Primitives

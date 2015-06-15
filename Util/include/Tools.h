@@ -50,4 +50,11 @@ namespace TX{
 		double time_since_last_update_;
 		Timer timer_;
 	};
+
+	template<typename T>
+	std::string ToString(const T& obj){
+		std::ostringstream ss;
+		ss << obj;
+		return ss.str();
+	}
 }
