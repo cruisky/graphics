@@ -2,15 +2,10 @@
 
 namespace TX
 {
-	namespace UtilTests
+	namespace Tests
 	{
 		TEST_CLASS(ColorTests){
 		public:
-			RNG rng;
-			Color RandomColor(float absmax=1.f){
-				return Color(rng.Float(), rng.Float(), rng.Float()) * absmax;
-			}
-
 			TEST_METHOD(ClampTest){
 				repeat(i, 100){
 					Color c = RandomColor() *= 10;

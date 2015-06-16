@@ -29,13 +29,13 @@
     <ClCompile Include="MathUtilTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="template.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VectorTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColorTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

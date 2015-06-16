@@ -25,9 +25,6 @@
 #include "Ray.h"
 #include "Vector.h"
 
-#define repeat(i,n) for(int (i)=0;(i)<(n);++(i))
-#define repeat_range(i,a,b) for(int (i)=(a);(i)<(b);++(i))
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 using namespace TX;

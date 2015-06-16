@@ -3,20 +3,11 @@
 using namespace TX::Math;
 
 namespace TX{
-	namespace UtilTests
+	namespace Tests
 	{
 		TEST_CLASS(MathUtilTests)
 		{
 		public:
-			RNG rng;
-			float RandomFloat(bool allowzero = true){
-				float f;
-				do{
-					f = rng.Float();
-				} while (!allowzero && f == 0.f);
-				return f;
-			}
-
 			TEST_METHOD(RsqrtTest){
 				repeat(i, 10){
 					float f = RandomFloat(false);

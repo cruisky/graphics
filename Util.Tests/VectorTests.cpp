@@ -1,28 +1,11 @@
 #include "stdafx.h"
 
 namespace TX{
-	namespace UtilTests
+	namespace Tests
 	{
-
 		TEST_CLASS(VectorTests)
 		{
 		public:
-			RNG rng;
-
-			Vector3 RandomVector(bool allowzero = true, float absmax = 1e2f){
-				Vector3 v;
-				do{
-					v.x = (rng.Float() - 0.5f) * absmax;
-				} while (!allowzero && Math::Abs(v.x) < 1e-6f);
-				do{
-					v.y = (rng.Float() - 0.5f) * absmax;
-				} while (!allowzero && Math::Abs(v.y) < 1e-6f);
-				do{
-					v.z = (rng.Float() - 0.5f) * absmax;
-				} while (!allowzero && Math::Abs(v.y) < 1e-6f);
-				return v;
-			}
-
 			TEST_METHOD(NormalizeTest){
 				repeat(i, 100){
 					Assertions::AreClose(1.f, RandomVector(false).Normalize().Length());

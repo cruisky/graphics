@@ -100,6 +100,7 @@
     <ClCompile Include="src\MathUtil.cpp" />
     <ClCompile Include="src\Matrix.cpp" />
     <ClCompile Include="src\Ray.cpp" />
+    <ClCompile Include="src\TestHelpers.cpp" />
     <ClCompile Include="src\Tools.cpp" />
     <ClCompile Include="src\Vector.cpp" />
   </ItemGroup>
