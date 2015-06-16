@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="ColorTests.cpp" />
     <ClCompile Include="MathUtilTests.cpp" />
+    <ClCompile Include="MatrixTests.cpp" />
     <ClCompile Include="RayTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

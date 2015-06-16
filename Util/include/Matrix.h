@@ -22,9 +22,14 @@ namespace TX{
 		~Matrix4x4(){}
 
 		Matrix4x4& operator = (const Matrix4x4& ot);
+		bool operator == (const Matrix4x4& ot);
 
+		Matrix4x4 operator + (const Matrix4x4& ot) const;
+		Matrix4x4 operator - (const Matrix4x4& ot) const;
 		Matrix4x4 operator * (const Matrix4x4& ot) const;
-		const Matrix4x4& operator *= (const Matrix4x4 ot);
+		const Matrix4x4& operator += (const Matrix4x4& ot);
+		const Matrix4x4& operator -= (const Matrix4x4& ot);
+		const Matrix4x4& operator *= (const Matrix4x4& ot);
 
 		float *operator[](int row){ return m[row]; }
 		const float *operator[](int row) const { return m[row]; }
@@ -75,11 +80,37 @@ namespace TX{
 		float m[4][4];
 	};
 
+	inline std::ostream& operator << (std::ostream& os, const Matrix4x4& m){
+		for (int i = 0; i < 4; i++){
+			for (int j = 0; j < 4; j++)
+				os << m.m[i][j] << "\t";
+			os << std::endl;
+		}
+		return os;
+	}
+
 	inline Matrix4x4& Matrix4x4::operator = (const Matrix4x4& ot){
 		memcpy(m, ot.m, 16 * sizeof(float));
 		return *this;
 	}
+	inline bool Matrix4x4::operator == (const Matrix4x4& ot){
+		return memcmp(m, ot.m, 16 * sizeof(float));
+	}
 
+	inline Matrix4x4 Matrix4x4::operator + (const Matrix4x4& ot) const{
+		Matrix4x4 result;
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				result.m[i][j] = m[i][j] + ot[i][j];
+		return result;
+	}
+	inline Matrix4x4 Matrix4x4::operator - (const Matrix4x4& ot) const{
+		Matrix4x4 result;
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				result.m[i][j] = m[i][j] - ot[i][j];
+		return result;
+	}
 	inline Matrix4x4 Matrix4x4::operator * (const Matrix4x4& ot) const {
 		Matrix4x4 result;
 		for (int i = 0; i < 4; i++)
@@ -91,8 +122,19 @@ namespace TX{
 				m[i][3] * ot.m[3][j];
 		return result;
 	}
-
-	inline const Matrix4x4& Matrix4x4::operator *= (const Matrix4x4 ot){
+	inline const Matrix4x4& Matrix4x4::operator += (const Matrix4x4& ot){
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				m[i][j] += ot[i][j];
+		return *this;
+	}
+	inline const Matrix4x4& Matrix4x4::operator -= (const Matrix4x4& ot){
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 4; j++)
+				m[i][j] -= ot[i][j];
+		return *this;
+	}
+	inline const Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& ot){
 		float result[4][4];
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 4; j++)
@@ -104,16 +146,7 @@ namespace TX{
 		memcpy(m, result, 16 * sizeof(float));
 		return *this;
 	}
-
-	inline std::ostream& operator << (std::ostream& os, const Matrix4x4& m){
-		for (int i = 0; i < 4; i++){
-			for (int j = 0; j < 4; j++)
-				os << m.m[i][j] << "\t";
-			os << std::endl;
-		}
-		return os;
-	}
-
+	
 	inline Matrix4x4& Matrix4x4::InternalApplyTranslation(){
 		float v[3];
 		v[0] = m[0][3] * m[0][0] + m[1][3] * m[0][1] + m[2][3] * m[0][2];
@@ -124,7 +157,6 @@ namespace TX{
 		m[2][3] = -v[2];
 		return *this;
 	}
-
 	inline Matrix4x4& Matrix4x4::InternalTranspose(){
 		float temp;
 		temp = m[0][1]; m[0][1] = m[1][0]; m[1][0] = temp;
@@ -132,7 +164,6 @@ namespace TX{
 		temp = m[1][2]; m[1][2] = m[2][1]; m[2][1] = temp;
 		return *this;
 	}
-
 	inline Matrix4x4& Matrix4x4::InternalInverse(){
 		float cf[3][3];
 		float det, det_inv;
@@ -155,17 +186,14 @@ namespace TX{
 		}
 		return *this;
 	}
-
 	inline bool Matrix4x4::IsAffine() const {
 		return m[3][0] == 0.f && m[3][1] == 0.f && m[3][2] == 0.f && m[3][3] == 1.f;
 	}
-
 	inline Matrix4x4 Matrix4x4::InverseAffine() const {
 		Matrix4x4 result(*this);
 		result.InternalInverse();
 		return result.InternalApplyTranslation();
 	}
-
 	inline Matrix4x4 Matrix4x4::InverseGeneral() const {
 		float res[4][4];
 		const float *src = *m;
@@ -248,7 +276,6 @@ namespace TX{
 		_mm_storeh_pi((__m64*)(dst + 14), minor3);
 		return Matrix4x4(res);
 	}
-
 	inline bool SolveLinearSystem2x2(const float A[2][2], const float B[2], float *x0, float *x1){
 		float det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
 		if (Math::Abs(det) < Math::EPSILON)

@@ -1,4 +1,5 @@
 #include "include/TestHelpers.h"
+#include "include/Tools.h"
 #include "include/RNG.h"
 #include "include/Color.h"
 #include "include/Ray.h"
@@ -54,22 +55,22 @@ namespace TX
 		namespace Assertions
 		{
 
-			void AreClose(Color expected, Color actual, const wchar_t* message, const __LineInfo* pLineInfo){
-				Assert::AreEqual(expected.r, actual.r, TOLERANCE_FLT, message, pLineInfo);
-				Assert::AreEqual(expected.g, actual.g, TOLERANCE_FLT, message, pLineInfo);
-				Assert::AreEqual(expected.b, actual.b, TOLERANCE_FLT, message, pLineInfo);
+			void AreClose(Color expected, Color actual){
+				Assert::AreEqual(expected.r, actual.r, TOLERANCE_FLT, Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.g, actual.g, TOLERANCE_FLT, Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.b, actual.b, TOLERANCE_FLT, Msg::EQ(expected, actual));
 			}
 
-			void AreClose(Vector3 expected, Vector3 actual, const wchar_t* message, const __LineInfo* pLineInfo){
-				Assert::AreEqual(expected.x, actual.x, TOLERANCE_FLT, message, pLineInfo);
-				Assert::AreEqual(expected.y, actual.y, TOLERANCE_FLT, message, pLineInfo);
-				Assert::AreEqual(expected.z, actual.z, TOLERANCE_FLT, message, pLineInfo);
+			void AreClose(Vector3 expected, Vector3 actual){
+				Assert::AreEqual(expected.x, actual.x, TOLERANCE_FLT, Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.y, actual.y, TOLERANCE_FLT, Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.z, actual.z, TOLERANCE_FLT, Msg::EQ(expected, actual));
 			}
 
-			void AreClose(Matrix4x4 expected, Matrix4x4 actual, const wchar_t* message, const __LineInfo* pLineInfo){
+			void AreClose(Matrix4x4 expected, Matrix4x4 actual){
 				repeat(i, 4){
 					repeat(j, 4){
-						Assert::AreEqual(expected[i][j], actual[i][j], TOLERANCE_FLT, message, pLineInfo);
+						Assert::AreEqual(expected[i][j], actual[i][j], TOLERANCE_FLT, Msg::EQ(expected, actual));
 					}
 				}
 			}

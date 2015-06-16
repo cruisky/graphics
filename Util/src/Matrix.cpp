@@ -93,7 +93,7 @@ namespace TX{
 			cz*cy, cz*sy*sx - sz*cx, cz*sy*cx + sz*sx, 0.f,
 			sz*cy, sz*sy*sx + cz*cx, sz*sy*cx - cz*sx, 0.f,
 			-sy, cy*sx, cy*cx, 0.f,
-			0.f, 0.f, 0.f, 0.f);
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(float x, float y, float z){

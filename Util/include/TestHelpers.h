@@ -23,7 +23,7 @@ namespace TX
 		Color RandomColor(float absmax = 1.f);
 		Vector3 RandomVector(bool allowzero = true, float absmax = 1e2f);
 		Ray RandomRay(float lengthmax = 1e2f);
-		Matrix4x4 RandomMatrix(float absmax = 1e2f);
+		Matrix4x4 RandomMatrix(float absmax = 10.f);
 
 		namespace Msg{
 			inline std::wstring WStr(const std::string& str){
@@ -59,7 +59,7 @@ namespace TX
 		}
 
 		namespace Assertions {
-			const float TOLERANCE_FLT = 1e-4f;
+			const float TOLERANCE_FLT = 1e-3f;
 			const double TOLERANCE_DBL = 1e-6;
 
 			inline void AreClose(float expected, float actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
@@ -68,9 +68,9 @@ namespace TX
 			inline void AreClose(double expected, double actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
 				Assert::AreEqual(expected, actual, TOLERANCE_DBL, message, pLineInfo);
 			}
-			void AreClose(Color expected, Color actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL);
-			void AreClose(Vector3 expected, Vector3 actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL);
-			void AreClose(Matrix4x4 expected, Matrix4x4 actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL);
+			void AreClose(Color expected, Color actual);
+			void AreClose(Vector3 expected, Vector3 actual);
+			void AreClose(Matrix4x4 expected, Matrix4x4 actual);
 		}
 	}
 }
