@@ -12,13 +12,13 @@ namespace TX{
 			Vector3 RandomVector(bool allowzero = true, float absmax = 1e2f){
 				Vector3 v;
 				do{
-					v.x = (rng.Float() - 0.5f) * 1e2f;
+					v.x = (rng.Float() - 0.5f) * absmax;
 				} while (!allowzero && Math::Abs(v.x) < 1e-6f);
 				do{
-					v.y = (rng.Float() - 0.5f) * 1e2f;
+					v.y = (rng.Float() - 0.5f) * absmax;
 				} while (!allowzero && Math::Abs(v.y) < 1e-6f);
 				do{
-					v.z = (rng.Float() - 0.5f) * 1e2f;
+					v.z = (rng.Float() - 0.5f) * absmax;
 				} while (!allowzero && Math::Abs(v.y) < 1e-6f);
 				return v;
 			}

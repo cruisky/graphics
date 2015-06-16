@@ -7,8 +7,8 @@ namespace TX
 		TEST_CLASS(ColorTests){
 		public:
 			RNG rng;
-			Color RandomColor(){
-				return Color(rng.Float(), rng.Float(), rng.Float());
+			Color RandomColor(float absmax=1.f){
+				return Color(rng.Float(), rng.Float(), rng.Float()) * absmax;
 			}
 
 			TEST_METHOD(ClampTest){
