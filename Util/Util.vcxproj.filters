@@ -54,6 +54,9 @@
     <ClInclude Include="include\Tools.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\TestHelpers.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MathUtil.cpp">

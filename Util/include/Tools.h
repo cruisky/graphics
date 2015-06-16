@@ -52,9 +52,20 @@ namespace TX{
 	};
 
 	template<typename T>
-	std::string ToString(const T& obj){
-		std::ostringstream ss;
+	void Str_(std::ostringstream& ss, const T& obj){
 		ss << obj;
+	}
+
+	template<typename T, typename... Args>
+	void Str_(std::ostringstream& ss, const T& obj, Args&&... args){
+		Str_(ss, obj);
+		Str_(ss, std::forward<Args>(args)...);
+	}
+	
+	template<typename... Args>
+	std::string Str(Args&&... args){
+		std::ostringstream ss;
+		Str_(ss, std::forward<Args>(args)...);
 		return ss.str();
 	}
 }

@@ -48,6 +48,10 @@ namespace TX{
 		}
 	};
 
+	inline std::ostream& operator << (std::ostream& os, const Color& c) {
+		return os << "(" << c.r << ", " << c.g << ", " << c.b << ")";
+	}
+
 	namespace Math{
 		inline Color Exp(const Color& c) { return Color(Exp(c.r), Exp(c.g), Exp(c.g), c.a); }
 		inline Color Log(const Color& c) { return Color(Log(c.r), Log(c.g), Log(c.b), c.a); }

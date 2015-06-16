@@ -66,7 +66,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,6 +86,7 @@
     <ClInclude Include="include\Matrix.h" />
     <ClInclude Include="include\Ray.h" />
     <ClInclude Include="include\RNG.h" />
+    <ClInclude Include="include\TestHelpers.h" />
     <ClInclude Include="include\Tools.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="src\stb_image.h" />

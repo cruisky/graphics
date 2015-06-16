@@ -5,6 +5,10 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TX
 {
+	inline std::wstring WStr(const std::string& str){
+		return std::wstring(str.begin(), str.end());
+	}
+
 	inline void LogFormat(const char *fmt, ...){
 		static char buf[512];
 		va_list ap;
@@ -15,16 +19,24 @@ namespace TX
 	template <typename T>
 	inline void Log(T t)
 	{
-		string s(TX::ToString(t));
+		std::string s(TX::Str(t));
 		Logger::WriteMessage(s.c_str());
 	}
 
 	template<typename T, typename... Args>
 	inline void Log(T t, Args... args)
 	{
-		string s(TX::ToString(t));
+		std::string s(TX::Str(t));
 		Logger::WriteMessage(s.c_str());
 		Log(args...);
+	}
+	
+
+	namespace Msg{
+		template <typename T>
+		inline const wchar_t* EQ(const T& expected, const T& actual, std::string msg = ""){
+			return WStr(Str("Expected<", expected, ">, Actual<", actual, "> ", msg)).c_str();
+		}
 	}
 
 	namespace Assertions {
