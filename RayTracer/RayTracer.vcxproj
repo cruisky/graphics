@@ -54,7 +54,6 @@
     <ClCompile Include="Lights\DirectionalLight.cpp" />
     <ClCompile Include="Lights\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="misc.cpp" />
     <ClCompile Include="Samplers\RandomSampler.cpp" />
     <ClCompile Include="Tracers\DirectLighting.cpp" />
     <ClCompile Include="Tracers\PathTracer.cpp" />
