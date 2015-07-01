@@ -31,7 +31,7 @@ namespace TX {
 			}
 
 			inline float Pdf(const Vector3& point, const Vector3& dir) const {
-				static Ray localray;
+				Ray localray;
 				localray.Reset(point, dir);
 				localray.dir.Normalize();		// normalize the global ray because the length of the ray should be calculated locally (with Shape::Area())
 				transform.ToLocal(localray);

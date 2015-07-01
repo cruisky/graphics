@@ -11,15 +11,12 @@ namespace TX{
 		const int PathTracer::SAMPLE_DEPTH = 3;
 
 		Color PathTracer::Li(const Ray& ray, int ignoreddepth){
-			static Color Le;
-			static Color L;
-			static Color pathThroughput;
-			static Vector3 wo;
-			static Vector3 wi;
-			static float pdf;
-			static BSDFType sampled;
-			static Ray pathRay;
-			static LocalGeo geom;
+			Color Le, L, pathThroughput;
+			Vector3 wo, wi;
+			float pdf;
+			BSDFType sampled;
+			Ray pathRay;
+			LocalGeo geom;
 
 			Le = L = Color::BLACK;
 			pathThroughput = Color::WHITE;
