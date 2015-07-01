@@ -60,7 +60,21 @@ namespace TX
 		}
 	}
 
-	void Scheduler::Start(){
+	Scheduler* Scheduler::instance = nullptr;
+	Scheduler* Scheduler::Instance(){
+		if (!instance){
+			instance = new Scheduler;
+		}
+		return instance;
+	}
+	void Scheduler::DeleteInstance(){
+		if (instance){
+			instance->StopAll();
+			delete instance;
+			instance = nullptr;
+		}
+	}
+	void Scheduler::StartAll(){
 		int availableCores = std::thread::hardware_concurrency();
 		running = true;
 		threads.resize(availableCores);
@@ -70,7 +84,7 @@ namespace TX
 		}
 	}
 
-	void Scheduler::Stop(){
+	void Scheduler::StopAll(){
 		running = false;
 		taskLock.WaitAndLock();
 		taskAvailable.WakeAll();
@@ -78,5 +92,20 @@ namespace TX
 		for (int i = 0; i < threads.size(); i++){
 			threads[i].Stop();
 		}
+	}
+	void Scheduler::AddTask(Task& newTask){
+		taskLock.WaitAndLock();
+		tasks.push_back(newTask);
+		taskLock.Unlock();
+
+		taskCount++;
+		taskAvailable.WakeAll();
+	}
+	void Scheduler::JoinAll(){
+		finishedLock.WaitAndLock();
+		while (taskCount > 0){
+			taskFinished.Wait(finishedLock);
+		}
+		finishedLock.Unlock();
 	}
 }

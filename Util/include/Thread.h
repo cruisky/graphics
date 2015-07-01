@@ -74,6 +74,19 @@ namespace TX{
 		CRITICAL_SECTION critical_sect;
 	};
 
+	// Apply the lock during the life time
+	class LockGuard{
+	public:
+		LockGuard(Lock& lock) :lock_(lock){
+			lock_.WaitAndLock();
+		}
+		virtual ~LockGuard(){
+			lock_.Unlock();
+		}
+	protected:
+		Lock& lock_;
+	};
+
 	// Wrapper for CONDITION_VARIABLE
 	class Condition {
 	public:
@@ -100,9 +113,7 @@ namespace TX{
 		typedef void(*Func)(void *args, int idx);
 
 		Task(Func func, void *args) : func(func), args(args){}
-		inline void Run(int idx){
-			func(args, idx);
-		}
+		inline void Run(int idx){ func(args, idx); }
 	private:
 		Func func;
 		void *args;
@@ -112,47 +123,19 @@ namespace TX{
 	class Scheduler {
 	public:
 		// Singleton implementation
-		static Scheduler *Instance(){
-			if (!instance){
-				instance = new Scheduler;
-			}
-			return instance;
-		}
-		static void DeleteInstance(){
-			if (instance){
-				instance->Stop();
-				delete instance;
-				instance = nullptr;
-			}
-		}
+		static Scheduler *Instance();
+		static void DeleteInstance();
 	public:
-		void Start();
-		void Stop();
 		inline bool Running(){ return running; }
-		int ThreadCount(){
-			return threads.size();
-		}
-		void AddTask(Task& newTask){
-			taskLock.WaitAndLock();
-			tasks.push_back(newTask);
-			taskLock.Unlock();
-
-			taskCount++;
-			taskAvailable.WakeAll();
-		}
-		void JoinAll(){
-			finishedLock.WaitAndLock();
-			while (taskCount > 0){
-				taskFinished.Wait(finishedLock);
-			}
-			finishedLock.Unlock();
-		}
+		inline int ThreadCount(){ return threads.size(); }
+		void StartAll();
+		void StopAll();
+		void AddTask(Task& newTask);
+		void JoinAll();
 	private:
 		static Scheduler *instance;
 		bool running;
-		Scheduler() : running(false) {
-			taskCount = 0;
-		}
+		Scheduler() : running(false) { taskCount = 0; }
 
 	public:
 		std::atomic_int taskCount;
