@@ -139,7 +139,7 @@ namespace TX{
 			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
 				film_->Resize(camera_->Width(), camera_->Height());
 			film_->Reset();
-			renderer_->Render(scene_.get(), camera_.get(), film_.get(), monitor_);
+			renderer_->Render(scene_.get(), camera_.get(), film_.get());
 			rendering.store(false);
 		}
 

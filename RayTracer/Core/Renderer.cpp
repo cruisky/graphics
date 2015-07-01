@@ -31,7 +31,7 @@ namespace TX {
 			}
 		}
 
-		void Renderer::Render(const Scene *scene, const Camera *camera, Film *film, shared_ptr<IProgressMonitor> monitor) {
+		void Renderer::Render(const Scene *scene, const Camera *camera, Film *film) {
 			CameraSample cam_sample(10);
 			Ray ray; 
 			Color c;
@@ -39,7 +39,6 @@ namespace TX {
 			assert(film->Width() == camera->Width());
 			assert(film->Height() == camera->Height());
 			tracer_->SetScene(scene);
-			if (monitor) monitor->Reset(config.samples_per_pixel * config.samples_per_pixel);
 			float spp_rec = 1.f / config.samples_per_pixel;
 			// stratefied sampling
 			for (int p = 0; p < config.samples_per_pixel; p++){
@@ -56,11 +55,9 @@ namespace TX {
 							film->Commit(cam_sample, c);
 						}
 					}
-					if (monitor) monitor->Update(p * config.samples_per_pixel + q);
 					film->ScalePixels();
 				}
 			}
-			if (monitor) monitor->Finish();
 			//film->ScalePixels();
 		}
 	}
