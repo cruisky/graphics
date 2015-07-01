@@ -38,8 +38,8 @@ namespace TX {
 			Ray ray; 
 			Color c;
 			RNG rng;
-			assert(film->Width() == camera->Width());
-			assert(film->Height() == camera->Height());
+			assert(film->Width() == scene->camera->Width());
+			assert(film->Height() == scene->camera->Height());
 			tracer_->SetScene(scene.get());
 			float spp_rec = 1.f / config.samples_per_pixel;
 			// stratefied sampling

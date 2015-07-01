@@ -57,8 +57,6 @@ namespace TX {
 			std::shared_ptr<const BSDF>			bsdf_;
 			std::shared_ptr<const Shape>		shape_;
 			const AreaLight *					area_light_;
-			// the last calculated local ray
-			mutable Ray localray_;
 		};
 	}
 }

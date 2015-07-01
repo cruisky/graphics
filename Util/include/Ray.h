@@ -17,6 +17,7 @@ namespace TX{
 		~Ray(){}
 
 		Ray& operator = (const Ray& ot);
+		bool operator ==(const Ray& ot);
 
 		// Reset the value of this ray, without normalizing direction vector.
 		inline Ray& Reset(const Vector3& origin = Vector3::ZERO, const Vector3& dir = Vector3::Z, float t_max = Math::INF, float t_min = EPSILON){
@@ -56,5 +57,12 @@ namespace TX{
 		t_min = ot.t_min;
 		t_max = ot.t_max;
 		return *this;
+	}
+
+	inline bool Ray::operator == (const Ray& ot){
+		return origin == ot.origin
+			&& dir == ot.dir
+			&& t_min == ot.t_min
+			&& t_max == ot.t_max;
 	}
 }
