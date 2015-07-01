@@ -10,7 +10,7 @@ namespace TX{
 	{
 		class Scene{
 		public:
-			Scene();
+			Scene(shared_ptr<Camera> camera);
 			
 			void AddPrimitive(shared_ptr<Primitive> prim);
 			void AddLight(shared_ptr<Light> light);
@@ -24,6 +24,7 @@ namespace TX{
 
 		public:
 			vector<shared_ptr<Light>> lights;
+			shared_ptr<RayTracer::Camera> camera;
 		private:
 			unique_ptr<PrimitiveManager> primmgr_;
 			vector<shared_ptr<Primitive>> prims_;

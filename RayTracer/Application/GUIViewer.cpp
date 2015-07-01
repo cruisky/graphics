@@ -10,9 +10,9 @@
 
 namespace TX{
 	namespace RayTracer{
-		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
-			Application(), scene_(scene), camera_(camera), film_(film){
-			 renderer_ = std::make_unique<Renderer>(RendererConfig());
+		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Film> film) :
+			Application(), scene_(scene), film_(film){
+			 renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, film);
 			 monitor_= std::make_shared<ProgressMonitor>();
 		}
 		
@@ -23,13 +23,13 @@ namespace TX{
 
 		void GUIViewer::Config(){
 			strcpy_s(config.title, "RayTracer");
-			config.width = camera_->Width();
-			config.height = camera_->Height();
+			config.width = scene_->camera->Width();
+			config.height = scene_->camera->Height();
 			config.fixsize = true;
 		}
 
 		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config){
-			renderer_.reset(new Renderer(config));
+			renderer_.reset(new Renderer(config, scene_, film_));
 			return *this;
 		}
 
@@ -81,7 +81,7 @@ namespace TX{
 				case Direction::LEFT: movement = Vector3(-dist, 0.f, 0.f); break;
 				case Direction::RIGHT: movement = Vector3(dist, 0.f, 0.f); break;
 				}
-				camera_->transform.Translate(movement);
+				scene_->camera->transform.Translate(movement);
 				RenderScene();
 			}
 		}
@@ -96,7 +96,7 @@ namespace TX{
 				case Direction::LEFT: axis = Vector3::Y; break;
 				case Direction::RIGHT: axis = -Vector3::Y; break;
 				}
-				camera_->transform.Rotate(degree, axis);
+				scene_->camera->transform.Rotate(degree, axis);
 				RenderScene();
 			}
 		}
@@ -104,7 +104,7 @@ namespace TX{
 		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
 			float degree = clockwise ? 10.f : -10.f;
 			if (!rendering.load()){
-				camera_->transform.Rotate(degree, -Vector3::Z);
+				scene_->camera->transform.Rotate(degree, -Vector3::Z);
 				RenderScene();
 			}
 		}
@@ -136,10 +136,10 @@ namespace TX{
 		}
 
 		void GUIViewer::AsyncRenderScene(){
-			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
-				film_->Resize(camera_->Width(), camera_->Height());
+			if (scene_->camera->Width() != film_->Width() || scene_->camera->Height() != film_->Height())
+				film_->Resize(scene_->camera->Width(), scene_->camera->Height());
 			film_->Reset();
-			renderer_->Render(scene_.get(), camera_.get(), film_.get());
+			renderer_->Render(0);
 			rendering.store(false);
 		}
 

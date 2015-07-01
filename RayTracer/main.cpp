@@ -35,8 +35,14 @@ using namespace TX::RayTracer;
 
 // NOTE: Rotate -> Translate -> Scale
 void GUI(){
-	shared_ptr<Film> film(new Film);
-	shared_ptr<Scene> scene(new Scene);
+	int width = 800;
+	int height = 600;
+
+	/////////////////////////////////////
+	// Camera
+	shared_ptr<Camera> camera = make_shared<Camera>(width, height);
+	camera->transform.Rotate(90, 0, -10);
+	camera->transform.Translate(0, 3, 5);
 
 	/////////////////////////////////////////////
 	// Materials
@@ -98,6 +104,16 @@ void GUI(){
 	shared_ptr<Primitive> ball3			= make_shared<Primitive>(sphere, mirror);
 	ball3->transform.Translate(0, 0, 1);
 
+	/////////////////////////////////////
+	// Lights
+	shared_ptr<Light> light_main = make_shared<PointLight>(Color(1), 200, Vector3(0, 0, 5));
+	shared_ptr<Light> light_lamp = make_shared<AreaLight>(Color(150), lamp.get());
+
+	/////////////////////////////////////
+	// Scene
+	shared_ptr<Film> film(new Film);
+	shared_ptr<Scene> scene(new Scene(camera));
+
 	scene->AddPrimitive(w_bottom);
 	scene->AddPrimitive(w_top);
 	scene->AddPrimitive(w_forward);
@@ -111,22 +127,11 @@ void GUI(){
 	scene->AddPrimitive(ball2);
 	scene->AddPrimitive(ball3);
 
-	//////////////////////////////////////////////////
-	// Lights
-	shared_ptr<Light> light_main		= make_shared<PointLight>(Color(1), 200, Vector3(0, 0, 5));
-	shared_ptr<Light> light_lamp		= make_shared<AreaLight>(Color(150), lamp.get());
-	
 	//scene->AddLight(light_main);
 	scene->AddLight(light_lamp);
 
-	int width = 800;
-	int height = 600;
-	shared_ptr<Camera> camera			= make_shared<Camera>(width, height);
-	camera->transform.Rotate(90, 0, -10);
-	camera->transform.Translate(0, 3, 5);
-
 	scene->Construct();
-	GUIViewer gui(scene, camera, film);
+	GUIViewer gui(scene, film);
 	gui.ConfigRenderer(RendererConfig(TracerType::PathTracing, 1));
 	gui.Run();
 }

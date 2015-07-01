@@ -17,13 +17,14 @@ namespace TX {
 			SamplerType sampler_t;
 		};
 
-
 		class Renderer {
 		public:
-			Renderer(const RendererConfig& config);
-
-			void Render(const Scene *scene, const Camera *camera, Film *film);
+			Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film);
+			void Render(int workerId);
 			inline const RendererConfig& Config(){ return config; }
+		public:
+			shared_ptr<Scene> scene;
+			shared_ptr<Film> film;
 		private:
 			RendererConfig config;
 			unique_ptr<Tracer> tracer_;
