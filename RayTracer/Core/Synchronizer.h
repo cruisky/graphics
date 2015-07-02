@@ -3,7 +3,6 @@
 #include "fwddecl.h"
 #include "Thread.h"
 #include "MathUtil.h"
-#include "Renderer.h"
 
 namespace TX
 {
@@ -12,9 +11,7 @@ namespace TX
 		class RenderTask{
 		public:
 			RenderTask(Renderer *renderer) : renderer(renderer){}
-			inline void Render(int workerId){
-				//renderer->Render(workerId);
-			}
+			void Render(int workerId);
 			static void Run(RenderTask *task, int workerId){
 				task->Render(workerId);
 			}

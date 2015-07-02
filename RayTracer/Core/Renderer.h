@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Tracer.h"
+#include "Synchronizer.h"
 #include "Sampler.h"
 #include "Config.h"
 
@@ -29,6 +30,8 @@ namespace TX {
 			RendererConfig config;
 			unique_ptr<Tracer> tracer_;
 			unique_ptr<Sampler> sampler_;
+			Synchronizer threadSync_;
+			vector<shared_ptr<RenderTask>> tasks_;
 		};
 	}
 }

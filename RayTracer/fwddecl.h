@@ -28,6 +28,7 @@ namespace TX{
 		class Scene;
 		class SceneObject;
 		class Shape;
+		class Synchronizer; class RenderTask; class RenderTile;
 		class Tracer;
 		class Transform;
 	}

@@ -1,11 +1,15 @@
 #include "stdafx.h"
 
 #include "Synchronizer.h"
+#include "Renderer.h"
 
 namespace TX
 {
 	namespace RayTracer
 	{
+		void RenderTask::Render(int workerId) {
+			renderer->Render(workerId);
+		}
 		void Synchronizer::Init(int x, int y){
 			tiles.clear();
 			currentTile = 0;

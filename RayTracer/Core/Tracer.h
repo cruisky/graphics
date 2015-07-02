@@ -30,7 +30,7 @@ namespace TX{
 			Color TraceSpecularReflect(const Ray& ray, const LocalGeo& geom, int depth);
 			Color TraceSpecularTransmit(const Ray& ray, const LocalGeo& geom, int depth);
 		protected:
-			int maxdepth_;
+			const int maxdepth_;
 			const Scene *scene_;
 			const CameraSample *samples_;
 			RNG *rng_;
