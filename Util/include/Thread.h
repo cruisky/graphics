@@ -7,7 +7,7 @@
 #include <atomic>
 
 namespace TX{
-	class Scheduler;
+	class ThreadScheduler;
 
 	// General thread
 	class Thread{
@@ -41,14 +41,14 @@ namespace TX{
 		WorkerThread(){
 		}
 	public:
-		void Init(Scheduler *scheduler, int id){
+		void Init(ThreadScheduler *scheduler, int id){
 			mScheduler = scheduler;
 			mId = id;
 			mWaiting = true;
 		}
 		void WorkLoop();
 	private:
-		Scheduler *mScheduler;
+		ThreadScheduler *mScheduler;
 		int mId;
 		bool mWaiting;
 	};
@@ -119,11 +119,11 @@ namespace TX{
 		void *args;
 	};
 
-	// Scheduler that assigns tasks to threads
-	class Scheduler {
+	// ThreadScheduler that assigns tasks to threads
+	class ThreadScheduler {
 	public:
 		// Singleton implementation
-		static Scheduler *Instance();
+		static ThreadScheduler *Instance();
 		static void DeleteInstance();
 	public:
 		inline bool Running(){ return running; }
@@ -133,9 +133,9 @@ namespace TX{
 		void AddTask(Task& newTask);
 		void JoinAll();
 	private:
-		static Scheduler *instance;
+		static ThreadScheduler *instance;
 		bool running;
-		Scheduler() : running(false) { taskCount = 0; }
+		ThreadScheduler() : running(false) { taskCount = 0; }
 
 	public:
 		std::atomic_int taskCount;

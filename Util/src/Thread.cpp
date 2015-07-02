@@ -37,7 +37,7 @@ namespace TX
 		}
 		return 0;
 	}
-	
+
 	// Get a task from the scheduler and run it
 	void WorkerThread::WorkLoop(){
 		mScheduler->taskLock.WaitAndLock();
@@ -48,7 +48,6 @@ namespace TX
 			mScheduler->taskLock.Unlock();
 			return;
 		}
-
 		Task& task = mScheduler->tasks.front();
 		mScheduler->tasks.pop_front();
 		mScheduler->taskLock.Unlock();
@@ -56,35 +55,36 @@ namespace TX
 		task.Run(mId);
 
 		if (--mScheduler->taskCount == 0){
-			mScheduler->taskFinished.WakeOne();	// only Scheduler->JoinAll waits for this condition
+			mScheduler->taskFinished.WakeOne();	// only ThreadScheduler->JoinAll waits for this condition
 		}
 	}
 
-	Scheduler* Scheduler::instance = nullptr;
-	Scheduler* Scheduler::Instance(){
+	ThreadScheduler* ThreadScheduler::instance = nullptr;
+	ThreadScheduler* ThreadScheduler::Instance(){
 		if (!instance){
-			instance = new Scheduler;
+			instance = new ThreadScheduler;
 		}
 		return instance;
 	}
-	void Scheduler::DeleteInstance(){
+	void ThreadScheduler::DeleteInstance(){
 		if (instance){
 			instance->StopAll();
 			delete instance;
 			instance = nullptr;
 		}
 	}
-	void Scheduler::StartAll(){
-		int availableCores = std::thread::hardware_concurrency();
+	void ThreadScheduler::StartAll(){
+		int processor_count = std::thread::hardware_concurrency();
 		running = true;
-		threads.resize(availableCores);
-		for (int i = 0; i < availableCores; i++){
+		//processor_count = 2;	// TODO test single thread
+		threads.resize(processor_count);
+		for (int i = 0; i < processor_count; i++){
 			threads[i].Init(this, i);
 			threads[i].Start();
 		}
 	}
 
-	void Scheduler::StopAll(){
+	void ThreadScheduler::StopAll(){
 		running = false;
 		taskLock.WaitAndLock();
 		taskAvailable.WakeAll();
@@ -93,7 +93,7 @@ namespace TX
 			threads[i].Stop();
 		}
 	}
-	void Scheduler::AddTask(Task& newTask){
+	void ThreadScheduler::AddTask(Task& newTask){
 		taskLock.WaitAndLock();
 		tasks.push_back(newTask);
 		taskLock.Unlock();
@@ -101,7 +101,7 @@ namespace TX
 		taskCount++;
 		taskAvailable.WakeAll();
 	}
-	void Scheduler::JoinAll(){
+	void ThreadScheduler::JoinAll(){
 		finishedLock.WaitAndLock();
 		while (taskCount > 0){
 			taskFinished.Wait(finishedLock);

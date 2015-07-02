@@ -8,7 +8,7 @@ namespace TX
 	namespace RayTracer
 	{
 		void RenderTask::Render(int workerId) {
-			renderer->Render(workerId);
+			renderer->Render(workerId, random);
 		}
 		void Synchronizer::Init(int x, int y){
 			tiles.clear();
@@ -24,8 +24,8 @@ namespace TX
 			}
 			for (auto& e : preRenderEvents) CloseHandle(e);
 			for (auto& e : postRenderEvents) CloseHandle(e);
-			preRenderEvents.resize(Scheduler::Instance()->ThreadCount());
-			postRenderEvents.resize(Scheduler::Instance()->ThreadCount());
+			preRenderEvents.resize(ThreadScheduler::Instance()->ThreadCount());
+			postRenderEvents.resize(ThreadScheduler::Instance()->ThreadCount());
 			for (auto& e : preRenderEvents) e = CreateEvent(NULL, TRUE, FALSE, NULL);
 			for (auto& e : postRenderEvents) e = CreateEvent(NULL, TRUE, FALSE, NULL);
 			running = true;
@@ -35,6 +35,9 @@ namespace TX
 			LockGuard scope(syncLock);
 			if (currentTile < tiles.size()){
 				tile = &tiles[currentTile++];
+#ifdef _DEBUG
+				printf("rendering tile %d: %d,%d -> %d,%d\n", currentTile, tile->xmin, tile->ymin, tile->xmax, tile->ymax);
+#endif
 				return true;
 			}
 			return false;

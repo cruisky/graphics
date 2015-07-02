@@ -3,6 +3,7 @@
 #include "fwddecl.h"
 #include "Thread.h"
 #include "MathUtil.h"
+#include "RNG.h"
 
 namespace TX
 {
@@ -11,18 +12,22 @@ namespace TX
 		class RenderTask{
 		public:
 			RenderTask(Renderer *renderer) : renderer(renderer){}
-			void Render(int workerId);
+
 			static void Run(RenderTask *task, int workerId){
 				task->Render(workerId);
 			}
+		protected:
+			void Render(int workerId);
 		public:
-			Renderer *const renderer;
+			Renderer *renderer;
+		private:
+			RNG random;
 		};
 
 		struct RenderTile {
 			static const int SIZE = 32;
 			const int xmin, ymin, xmax, ymax;
-			RenderTile(int xmin, int ymin, int xmax, int ymax) 
+			RenderTile(int xmin, int ymin, int xmax, int ymax)
 				: xmin(xmin), ymin(ymin), xmax(xmax), ymax(ymax){}
 		};
 

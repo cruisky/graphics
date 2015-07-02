@@ -22,8 +22,7 @@ namespace TX{
 		class Primitive;
 		class PrimitiveManager;
 		class Renderer; struct RendererConfig;
-		struct Sample;
-		class CameraSample;
+		struct Sample; class CameraSample; class SampleOffset;
 		class Sampler;
 		class Scene;
 		class SceneObject;
