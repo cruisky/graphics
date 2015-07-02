@@ -11,10 +11,14 @@ namespace TX
 	}
 	void ProgressMonitor::Update(float current){
 		assert(in_progress_);
+		LockGuard locking(lock_);
 		double elapsed = timer_.elapsed();
 		rate_per_sec_ = (current - current_) / (float)(elapsed - time_since_last_update_);
 		current_ = current;
 		time_since_last_update_ = elapsed;
+	}
+	void ProgressMonitor::UpdateInc(){
+		Update(current_ + 1.f);
 	}
 	void ProgressMonitor::Finish(){
 		Update(total_);

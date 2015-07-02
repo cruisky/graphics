@@ -21,7 +21,7 @@ namespace TX {
 
 		class Renderer {
 		public:
-			Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film);
+			Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor=nullptr);
 			void Abort();
 			void NewTask();
 			void Render(int workerId, RNG& random);
@@ -40,6 +40,7 @@ namespace TX {
 			unique_ptr<CameraSample> sample_buf_;
 			Synchronizer thread_sync_;
 			vector<shared_ptr<RenderTask>> tasks_;
+			shared_ptr<IProgressMonitor> monitor_;
 		};
 	}
 }

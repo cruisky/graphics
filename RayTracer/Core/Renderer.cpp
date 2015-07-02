@@ -15,8 +15,8 @@
 
 namespace TX {
 	namespace RayTracer {
-		Renderer::Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film)
-			: scene(scene), film(film) {
+		Renderer::Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor)
+			: scene(scene), film(film), monitor_(monitor) {
 			// Sample buffer
 			sample_buf_ = std::make_unique<CameraSample>(10);	// should be enough to trace a ray
 			// Config renderer
@@ -64,6 +64,7 @@ namespace TX {
 		}
 
 		void Renderer::NewTask(){
+			if (monitor_) monitor_->Reset(config_.samples_per_pixel * thread_sync_.TileCount());
 			film->Reset();
 			thread_sync_.Resume();
 			for (auto i = 0; i < ThreadScheduler::Instance()->ThreadCount(); i++){
@@ -86,6 +87,9 @@ namespace TX {
 					thread_sync_.ResetTiles();
 				}
 			}
+			if (workerId == 0){
+				if (monitor_) monitor_->Finish();
+			}
 		}
 
 		void Renderer::RenderTiles(CameraSample& sample_buf, RNG& random){
@@ -106,6 +110,7 @@ namespace TX {
 						film->Commit(sample_buf, c);
 					}
 				}
+				if (monitor_) monitor_->UpdateInc();
 			}
 		}
 	}

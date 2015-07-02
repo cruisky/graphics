@@ -35,8 +35,8 @@ using namespace TX::RayTracer;
 
 // NOTE: Rotate -> Translate -> Scale
 void GUI(){
-	int width = 400;
-	int height = 300;
+	int width = 200;
+	int height = 150;
 
 	/////////////////////////////////////
 	// Camera
@@ -136,7 +136,7 @@ void GUI(){
 	//config.tracer_t = TracerType::DirectLighting;
 	config.width = width;
 	config.height = height;
-	config.samples_per_pixel = 4;
+	config.samples_per_pixel = 64;
 	gui.ConfigRenderer(config);
 	gui.Run();
 }

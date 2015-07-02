@@ -40,6 +40,7 @@ namespace TX
 
 			void ResetTiles(){ currentTile = 0; finished = false; }
 			bool NextTile(RenderTile*& tile);
+			int TileCount();
 			void PreRenderSync(int workerId);
 			void PostRenderSync(int workerId);
 

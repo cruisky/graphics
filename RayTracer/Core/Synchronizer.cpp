@@ -42,6 +42,9 @@ namespace TX
 			}
 			return false;
 		}
+		int Synchronizer::TileCount(){
+			return tiles.size();
+		}
 		void Synchronizer::PreRenderSync(int workerId){
 			SetEvent(preRenderEvents[workerId]);
 			while (WaitForMultipleObjects(preRenderEvents.size(), preRenderEvents.data(), true, 50) == WAIT_TIMEOUT)
