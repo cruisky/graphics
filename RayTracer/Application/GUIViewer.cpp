@@ -124,7 +124,7 @@ namespace TX{
 					printf("============================================\n");
 #endif
 					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
-					printf("Remaining:\t %.1f s\n", Math::Max(monitor_->RemainingTime(), 0.f));
+					printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
 					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
 					prev_status = status;
 				}

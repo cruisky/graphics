@@ -51,7 +51,7 @@ namespace TX{
 	private:
 		float total_, current_, rate_per_sec_;
 		bool in_progress_;
-		double time_since_last_update_;
+		std::atomic<double> time_since_last_update_;
 		Timer timer_;
 		Lock lock_;
 	};

@@ -35,9 +35,6 @@ namespace TX
 			LockGuard scope(syncLock);
 			if (currentTile < tiles.size()){
 				tile = &tiles[currentTile++];
-#ifdef _DEBUG
-				printf("rendering tile %d: %d,%d -> %d,%d\n", currentTile, tile->xmin, tile->ymin, tile->xmax, tile->ymax);
-#endif
 				return true;
 			}
 			return false;
