@@ -11,9 +11,9 @@ namespace TX {
 	namespace RayTracer {
 
 		struct RendererConfig {
-			RendererConfig(TracerType tracer_type = TracerType::DirectLighting, int spp = 1, SamplerType sampler_type = SamplerType::Random) : 
-				tracer_t(tracer_type), samples_per_pixel(spp), sampler_t(sampler_type){}
+			RendererConfig(){}
 			int samples_per_pixel;
+			int width=800, height=600;
 			TracerType tracer_t;
 			SamplerType sampler_t;
 		};
@@ -22,15 +22,18 @@ namespace TX {
 		public:
 			Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film);
 			void Render(int workerId);
-			inline const RendererConfig& Config(){ return config; }
+
+			inline const RendererConfig& Config(){ return config_; }
+			Renderer& Config(const RendererConfig& config);
+			Renderer& Resize(int width, int height);
 		public:
 			shared_ptr<Scene> scene;
 			shared_ptr<Film> film;
 		private:
-			RendererConfig config;
+			RendererConfig config_;
 			unique_ptr<Tracer> tracer_;
 			unique_ptr<Sampler> sampler_;
-			Synchronizer threadSync_;
+			Synchronizer thread_sync_;
 			vector<shared_ptr<RenderTask>> tasks_;
 		};
 	}

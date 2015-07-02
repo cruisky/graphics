@@ -35,8 +35,8 @@ using namespace TX::RayTracer;
 
 // NOTE: Rotate -> Translate -> Scale
 void GUI(){
-	int width = 800;
-	int height = 600;
+	int width = 200;
+	int height = 150;
 
 	/////////////////////////////////////
 	// Camera
@@ -62,7 +62,7 @@ void GUI(){
 	// Shapes & Primitives
 	shared_ptr<UnitSphere> sphere		= make_shared<UnitSphere>();
 	shared_ptr<UnitPlane> plane			= make_shared<UnitPlane>();
-		
+
 	int wall_size = 15;
 	shared_ptr<Primitive> w_bottom		= make_shared<Primitive>(plane, diffuse);
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
@@ -120,7 +120,7 @@ void GUI(){
 	scene->AddPrimitive(w_back);
 	scene->AddPrimitive(w_left);
 	scene->AddPrimitive(w_right);
-	
+
 	scene->AddPrimitive(lamp);
 
 	scene->AddPrimitive(ball1);
@@ -132,7 +132,11 @@ void GUI(){
 
 	scene->Construct();
 	GUIViewer gui(scene, film);
-	gui.ConfigRenderer(RendererConfig(TracerType::PathTracing, 1));
+	RendererConfig config;
+	config.width = width;
+	config.height = height;
+	config.samples_per_pixel = 4;
+	gui.ConfigRenderer(config);
 	gui.Run();
 }
 

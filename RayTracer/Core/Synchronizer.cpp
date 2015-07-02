@@ -22,11 +22,12 @@ namespace TX
 					tiles.push_back(RenderTile(xmin, ymin, xmax, ymax));
 				}
 			}
+			for (auto& e : preRenderEvents) CloseHandle(e);
+			for (auto& e : postRenderEvents) CloseHandle(e);
 			preRenderEvents.resize(Scheduler::Instance()->ThreadCount());
 			postRenderEvents.resize(Scheduler::Instance()->ThreadCount());
 			for (auto& e : preRenderEvents) e = CreateEvent(NULL, TRUE, FALSE, NULL);
 			for (auto& e : postRenderEvents) e = CreateEvent(NULL, TRUE, FALSE, NULL);
-
 			running = true;
 			finished = false;
 		}
@@ -36,9 +37,7 @@ namespace TX
 				tile = &tiles[currentTile++];
 				return true;
 			}
-			else{
-				return false;
-			}
+			return false;
 		}
 		void Synchronizer::PreRenderSync(int workerId){
 			SetEvent(preRenderEvents[workerId]);

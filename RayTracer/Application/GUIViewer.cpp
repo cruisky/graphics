@@ -15,7 +15,7 @@ namespace TX{
 			 renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, film);
 			 monitor_= std::make_shared<ProgressMonitor>();
 		}
-		
+
 		void GUIViewer::Start(){
 			progress_reporter_job_ = std::thread(&GUIViewer::ProgressReporterJob, this);
 			RenderScene();
@@ -88,7 +88,7 @@ namespace TX{
 
 		void GUIViewer::AttemptPanCamera(Direction dir){
 			float degree = 10.f;
-			Vector3 axis; 
+			Vector3 axis;
 			if (!rendering.load()){
 				switch (dir){
 				case Direction::UP: axis = Vector3::X; break;
@@ -136,8 +136,8 @@ namespace TX{
 		}
 
 		void GUIViewer::AsyncRenderScene(){
-			if (scene_->camera->Width() != film_->Width() || scene_->camera->Height() != film_->Height())
-				film_->Resize(scene_->camera->Width(), scene_->camera->Height());
+			//if (scene_->camera->Width() != film_->Width() || scene_->camera->Height() != film_->Height())
+			//	film_->Resize(scene_->camera->Width(), scene_->camera->Height());
 			film_->Reset();
 			renderer_->Render(0);
 			rendering.store(false);
