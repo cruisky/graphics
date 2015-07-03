@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Util.h"
+#include "Thread.h"
 #include <chrono>
 
 namespace TX{
@@ -25,6 +26,7 @@ namespace TX{
 		virtual ~IProgressMonitor(){}
 		virtual void Reset(float total) = 0;
 		virtual void Update(float current) = 0;
+		virtual void UpdateInc() = 0;
 		virtual void Finish() = 0;
 		virtual double ElapsedTime() = 0;
 		virtual double RemainingTime() = 0;
@@ -35,9 +37,11 @@ namespace TX{
 	class ProgressMonitor : public IProgressMonitor {
 	public:
 		ProgressMonitor(){}
+		// Reset the total value, and start timer immediately
 		void Reset(float total);
 		void Finish();
 		void Update(float current);
+		void UpdateInc();
 		double ElapsedTime();
 		double RemainingTime();
 		inline float Progress() { return current_ / total_; }
@@ -47,8 +51,9 @@ namespace TX{
 	private:
 		float total_, current_, rate_per_sec_;
 		bool in_progress_;
-		double time_since_last_update_;
+		std::atomic<double> time_since_last_update_;
 		Timer timer_;
+		Lock lock_;
 	};
 
 	template<typename T>
@@ -61,7 +66,7 @@ namespace TX{
 		Str_(ss, obj);
 		Str_(ss, std::forward<Args>(args)...);
 	}
-	
+
 	template<typename... Args>
 	std::string Str(Args&&... args){
 		std::ostringstream ss;

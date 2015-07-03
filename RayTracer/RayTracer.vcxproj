@@ -26,6 +26,7 @@
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\SceneObject.h" />
     <ClInclude Include="Core\Shape.h" />
+    <ClInclude Include="Core\Synchronizer.h" />
     <ClInclude Include="Core\Tracer.h" />
     <ClInclude Include="Core\Transform.h" />
     <ClInclude Include="fwddecl.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Core\Sample.cpp" />
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\Shape.cpp" />
+    <ClCompile Include="Core\Synchronizer.cpp" />
     <ClCompile Include="Core\Tracer.cpp" />
     <ClCompile Include="Core\Transform.cpp" />
     <ClCompile Include="Lights\DirectionalLight.cpp" />

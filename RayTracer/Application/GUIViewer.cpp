@@ -10,26 +10,29 @@
 
 namespace TX{
 	namespace RayTracer{
-		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
-			Application(), scene_(scene), camera_(camera), film_(film){
-			 renderer_ = std::make_unique<Renderer>(RendererConfig());
-			 monitor_= std::make_shared<ProgressMonitor>();
+		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Film> film) :
+			Application(), scene_(scene), film_(film){
+			// Progress monitor
+			monitor_ = std::make_shared<ProgressMonitor>();
+			// Start worker threads
+			ThreadScheduler::Instance()->StartAll();
+			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, film, monitor_);
 		}
-		
+
 		void GUIViewer::Start(){
 			progress_reporter_job_ = std::thread(&GUIViewer::ProgressReporterJob, this);
-			RenderScene();
+			InvalidateFrame();
 		}
 
 		void GUIViewer::Config(){
 			strcpy_s(config.title, "RayTracer");
-			config.width = camera_->Width();
-			config.height = camera_->Height();
-			config.fixsize = true;
+			config.width = scene_->camera->Width();
+			config.height = scene_->camera->Height();
+			config.fixsize = false;
 		}
 
 		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config){
-			renderer_.reset(new Renderer(config));
+			renderer_->Config(config);
 			return *this;
 		}
 
@@ -71,49 +74,48 @@ namespace TX{
 			}
 		}
 
+		void GUIViewer::OnResize(){
+			renderer_->Resize(config.width, config.height);
+			InvalidateFrame();
+		}
+
+
 		void GUIViewer::AttemptMoveCamera(Direction dir){
 			float dist = 1.f;
 			Vector3 movement;
-			if (!rendering.load()){
-				switch (dir){
-				case Direction::UP: movement = Vector3(0.f, 0.f, -dist); break;
-				case Direction::DOWN: movement = Vector3(0.f, 0.f, dist); break;
-				case Direction::LEFT: movement = Vector3(-dist, 0.f, 0.f); break;
-				case Direction::RIGHT: movement = Vector3(dist, 0.f, 0.f); break;
-				}
-				camera_->transform.Translate(movement);
-				RenderScene();
+			switch (dir){
+			case Direction::UP: movement = Vector3(0.f, 0.f, -dist); break;
+			case Direction::DOWN: movement = Vector3(0.f, 0.f, dist); break;
+			case Direction::LEFT: movement = Vector3(-dist, 0.f, 0.f); break;
+			case Direction::RIGHT: movement = Vector3(dist, 0.f, 0.f); break;
 			}
+			scene_->camera->transform.Translate(movement);
+			InvalidateFrame();
 		}
 
 		void GUIViewer::AttemptPanCamera(Direction dir){
 			float degree = 10.f;
-			Vector3 axis; 
-			if (!rendering.load()){
-				switch (dir){
-				case Direction::UP: axis = Vector3::X; break;
-				case Direction::DOWN: axis = -Vector3::X; break;
-				case Direction::LEFT: axis = Vector3::Y; break;
-				case Direction::RIGHT: axis = -Vector3::Y; break;
-				}
-				camera_->transform.Rotate(degree, axis);
-				RenderScene();
+			Vector3 axis;
+			switch (dir){
+			case Direction::UP: axis = Vector3::X; break;
+			case Direction::DOWN: axis = -Vector3::X; break;
+			case Direction::LEFT: axis = Vector3::Y; break;
+			case Direction::RIGHT: axis = -Vector3::Y; break;
 			}
+			scene_->camera->transform.Rotate(degree, axis);
+			InvalidateFrame();
 		}
 
 		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
 			float degree = clockwise ? 10.f : -10.f;
-			if (!rendering.load()){
-				camera_->transform.Rotate(degree, -Vector3::Z);
-				RenderScene();
-			}
+			scene_->camera->transform.Rotate(degree, -Vector3::Z);
+			InvalidateFrame();
 		}
 
 
-		void GUIViewer::RenderScene(){
-			assert(!rendering.load());
-			rendering.store(true);
-			render_task_ = std::async(std::launch::async, &GUIViewer::AsyncRenderScene, this);
+		void GUIViewer::InvalidateFrame(){
+			renderer_->Abort();
+			renderer_->NewTask();
 		}
 
 		void GUIViewer::ProgressReporterJob(){
@@ -128,21 +130,12 @@ namespace TX{
 					printf("============================================\n");
 #endif
 					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
-					printf("Remaining:\t %.1f s\n", Math::Max(monitor_->RemainingTime(), 0.f));
+					printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
 					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
 					prev_status = status;
 				}
 			}
 		}
-
-		void GUIViewer::AsyncRenderScene(){
-			if (camera_->Width() != film_->Width() || camera_->Height() != film_->Height())
-				film_->Resize(camera_->Width(), camera_->Height());
-			film_->Reset();
-			renderer_->Render(scene_.get(), camera_.get(), film_.get(), monitor_);
-			rendering.store(false);
-		}
-
 		void GUIViewer::FlipY(int *y) { *y = film_->Height() - *y - 1; }
 		void GUIViewer::FlipX(int *x) { *x = film_->Width() - *x - 1; }
 

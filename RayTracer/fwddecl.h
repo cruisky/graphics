@@ -1,7 +1,7 @@
 #pragma once
 
 namespace TX{
-	
+
 	class Ray;
 	class Color;
 	class Vector3;
@@ -22,12 +22,12 @@ namespace TX{
 		class Primitive;
 		class PrimitiveManager;
 		class Renderer; struct RendererConfig;
-		struct Sample; 
-		class CameraSample;
+		struct Sample; class CameraSample; class SampleOffset;
 		class Sampler;
 		class Scene;
 		class SceneObject;
 		class Shape;
+		class Synchronizer; class RenderTask; struct RenderTile;
 		class Tracer;
 		class Transform;
 	}

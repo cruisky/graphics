@@ -47,7 +47,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -66,7 +66,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,6 +87,7 @@
     <ClInclude Include="include\Ray.h" />
     <ClInclude Include="include\RNG.h" />
     <ClInclude Include="include\TestHelpers.h" />
+    <ClInclude Include="include\Thread.h" />
     <ClInclude Include="include\Tools.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="src\stb_image.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="src\Matrix.cpp" />
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\TestHelpers.cpp" />
+    <ClCompile Include="src\Thread.cpp" />
     <ClCompile Include="src\Tools.cpp" />
     <ClCompile Include="src\Vector.cpp" />
   </ItemGroup>

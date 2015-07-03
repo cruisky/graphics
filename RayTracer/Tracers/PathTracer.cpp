@@ -10,16 +10,19 @@ namespace TX{
 	namespace RayTracer{
 		const int PathTracer::SAMPLE_DEPTH = 3;
 
-		Color PathTracer::Li(const Ray& ray, int ignoreddepth){
-			static Color Le;
-			static Color L;
-			static Color pathThroughput;
-			static Vector3 wo;
-			static Vector3 wi;
-			static float pdf;
-			static BSDFType sampled;
-			static Ray pathRay;
-			static LocalGeo geom;
+		PathTracer::PathTracer(const Scene *scene, int maxdepth) : Tracer(scene, maxdepth){
+			light_samples_.resize(maxdepth);
+			bsdf_samples_.resize(maxdepth);
+			scatter_samples_.resize(maxdepth);
+		}
+
+		Color PathTracer::Li(const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
+			Color Le, L, pathThroughput;
+			Vector3 wo, wi;
+			float pdf;
+			BSDFType sampled;
+			Ray pathRay;
+			LocalGeo geom;
 
 			Le = L = Color::BLACK;
 			pathThroughput = Color::WHITE;
@@ -28,7 +31,7 @@ namespace TX{
 			bool specBounce = true;
 
 			pathRay = ray;
-			Sample *lightsample, *bsdfsample, *scattersample;
+			const Sample *lightsample, *bsdfsample, *scattersample;
 
 			for (int bounce = 0; bounce < maxdepth_; ++bounce){
 				if (scene_->Intersect(pathRay, geom)){
@@ -43,12 +46,12 @@ namespace TX{
 					}
 
 					if (!geom.bsdf->IsSpecular()){
-						lightsample = light_samples_[bounce];
-						bsdfsample = bsdf_samples_[bounce];
+						lightsample = light_samples_[bounce](samplebuf);
+						bsdfsample = bsdf_samples_[bounce](samplebuf);
 						int lightIdx = (int)Math::Min(lightsample->w * countLights, countLights - 1);
 						L += pathThroughput * TraceDirectLight(pathRay, geom, scene_->lights[lightIdx].get(), lightsample, bsdfsample);
 					}
-					scattersample = scatter_samples_[bounce];
+					scattersample = scatter_samples_[bounce](samplebuf);
 					Color f = geom.bsdf->Scatter(wo, geom, *scattersample, &wi, &pdf, BSDF_ALL, &sampled);
 					if (f == Color::BLACK || pdf == 0.f)
 						break;
@@ -74,16 +77,12 @@ namespace TX{
 			return L;
 		}
 
-		void PathTracer::ProcessSamples(){
-			light_samples_.resize(maxdepth_);
-			bsdf_samples_.resize(maxdepth_);
-			scatter_samples_.resize(maxdepth_);
-
+		void PathTracer::BakeSamples(const Scene *scene, const CameraSample *samplebuf){
 			for (auto i = 0; i < maxdepth_; ++i)
 			{
-				light_samples_[i] = samples_->RequestSamples(1);
-				bsdf_samples_[i] = samples_->RequestSamples(1);
-				scatter_samples_[i] = samples_->RequestSamples(1);
+				light_samples_[i].RequestSamples(1, samplebuf);
+				bsdf_samples_[i].RequestSamples(1, samplebuf);
+				scatter_samples_[i].RequestSamples(1, samplebuf);
 			}
 		}
 	}

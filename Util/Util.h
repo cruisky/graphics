@@ -2,6 +2,7 @@
 #pragma warning(disable: 4800)
 
 #include <cmath>
+#include <vector>
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
