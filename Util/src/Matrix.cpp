@@ -3,42 +3,53 @@
 #include "include/Ray.h"
 
 namespace TX{
-	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4();
+	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4(
+		1.f, 0.f, 0.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f);
 
-	Matrix4x4::Matrix4x4(){
-		m[0][0] = m[1][1] = m[2][2] = m[3][3] = 1.f;
-		m[0][1] = m[0][2] = m[0][3] = m[1][0] =
-			m[1][2] = m[1][3] = m[2][0] = m[2][1] =
-			m[2][3] = m[3][0] = m[3][1] = m[3][2] = 0.f;
+	Matrix4x4::Matrix4x4() : Matrix4x4(IDENTITY){}
+
+	Matrix4x4::Matrix4x4(const Matrix4x4& ot){
+		memcpy(row, ot.row, 4 * sizeof(__m128));
 	}
 
 	Matrix4x4::Matrix4x4(float matrix[4][4]){
-		memcpy(m, matrix, 16 * sizeof(float));
+		row[0] = _mm_loadu_ps(matrix[0]);
+		row[1] = _mm_loadu_ps(matrix[1]);
+		row[2] = _mm_loadu_ps(matrix[2]);
+		row[3] = _mm_loadu_ps(matrix[3]);
 	}
 
-	Matrix4x4::Matrix4x4(const Matrix4x4& ot){
-		memcpy(m, ot.m, 16 * sizeof(float));
+
+	Matrix4x4::Matrix4x4(__m128 r0, __m128 r1, __m128 r2, __m128 r3){
+		row[0] = r0; row[1] = r1; row[2] = r2; row[3] = r3;
 	}
 
-	Matrix4x4::Matrix4x4(float m00, float m01, float m02, float m03,
+	Matrix4x4::Matrix4x4(
+		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13,
 		float m20, float m21, float m22, float m23,
 		float m30, float m31, float m32, float m33){
-		m[0][0] = m00; m[0][1] = m01; m[0][2] = m02; m[0][3] = m03;
-		m[1][0] = m10; m[1][1] = m11; m[1][2] = m12; m[1][3] = m13;
-		m[2][0] = m20; m[2][1] = m21; m[2][2] = m22; m[2][3] = m23;
-		m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
+		row[0] = _mm_set_ps(m00, m01, m02, m03);
+		row[1] = _mm_set_ps(m10, m11, m12, m13);
+		row[2] = _mm_set_ps(m20, m21, m22, m23);
+		row[3] = _mm_set_ps(m30, m31, m32, m33);
 	}
 
 	Matrix4x4 Matrix4x4::Transpose() const {
+		__m128 m0 = _mm_unpacklo_ps(row[0], row[1]);
+		__m128 m1 = _mm_unpacklo_ps(row[2], row[3]);
+		__m128 m2 = _mm_unpackhi_ps(row[0], row[1]);
+		__m128 m3 = _mm_unpackhi_ps(row[2], row[3]);
 		return Matrix4x4(
-			m[0][0], m[1][0], m[2][0], m[3][0],
-			m[0][1], m[1][1], m[2][1], m[3][1],
-			m[0][2], m[1][2], m[2][2], m[3][2],
-			m[0][3], m[1][3], m[2][3], m[3][3]
-			);
+			_mm_unpacklo_ps(m0, m1),
+			_mm_unpackhi_ps(m0, m1),
+			_mm_unpacklo_ps(m2, m3),
+			_mm_unpackhi_ps(m2, m3));
 	}
-		
+
 	Matrix4x4 Matrix4x4::Inverse() const {
 		if (IsAffine()){
 			return InverseAffine();
@@ -130,7 +141,7 @@ namespace TX{
 		float t = size;			// top
 		float r = ratio * t;	// right
 		return Matrix4x4(
-			1.f/r, 0.f, 0.f, 0.f,
+			1.f / r, 0.f, 0.f, 0.f,
 			0.f, 1.f / t, 0.f, 0.f,
 			0.f, 0.f, 1.f / (af - an), (an + af) / (af - an),
 			0.f, 0.f, 0.f, 1.f);
