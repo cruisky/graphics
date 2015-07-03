@@ -22,6 +22,7 @@ namespace TX{
 			void OnMouseButton(Button button, ButtonState state, int x, int y);
 			void OnKey(unsigned char c, int x, int y);
 			void OnSpecialKey(KeyCode code, int x, int y);
+			void OnResize();
 		private:
 			void AttemptMoveCamera(Direction dir);
 			void AttemptPanCamera(Direction dir);

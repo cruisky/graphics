@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
+#include <cstdio>
 
 namespace TX{
 	class Application {
@@ -69,7 +70,7 @@ namespace TX{
 		// Rendering loop, returns true if need update
 		virtual bool Render(){ return false; }
 		
-		virtual void OnResize(int width, int height){}
+		virtual void OnResize(){}
 		virtual void OnKey(unsigned char key, int mousex, int mousey){}						// ASCII keys
 		virtual void OnSpecialKey(KeyCode key, int mousex, int mousey){}					// special keys
 		virtual void OnMouseMove(int x, int y){}											// when mouse moves with/without any pressed button
@@ -81,19 +82,26 @@ namespace TX{
 		void Exit(){ OnExit(); glutLeaveMainLoop(); }
 	// Wrappers
 	private:
-		static inline void GLUTRender()									{ if (app->Render()) glutSwapBuffers(); }
+		static inline void GLUTRender() { 
+			if (app->Render()){
+				glutPostRedisplay();
+			}
+			glutSwapBuffers();
+		}
 		static inline void GLUTKey(unsigned char key, int x, int y)		{ app->OnKey(key, x, y); }
 		static inline void GLUTSpecial(int key, int x, int y)			{ app->OnSpecialKey(KeyCode(key), x, y); }
 		static inline void GLUTMouseDrag(int x, int y)					{ app->OnMouseMove(x, y); }
 		static inline void GLUTMouseMove(int x, int y)					{ app->OnMouseMove(x, y); }
 		static inline void GLUTMouseButton(int b, int s, int x, int y)	{ app->OnMouseButton(Button(b), ButtonState(s), x, y); }
 		static inline void GLUTResize(int w, int h)	{ 
-			if (!app->config.fixsize){ 
-				app->config.width = w; 
-				app->config.height = h; 
-				app->OnResize(w, h); 
-			} 
-			glutReshapeWindow(app->config.width, app->config.height);
+			if (w != app->config.width || h != app->config.height){
+				if (!app->config.fixsize){
+					app->config.width = w;
+					app->config.height = h;
+					app->OnResize();
+				}
+				glutReshapeWindow(app->config.width, app->config.height);
+			}
 		}
 	protected:
 		AppConfig config;

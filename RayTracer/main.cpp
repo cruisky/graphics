@@ -35,8 +35,8 @@ using namespace TX::RayTracer;
 
 // NOTE: Rotate -> Translate -> Scale
 void GUI(){
-	int width = 200;
-	int height = 150;
+	int width = 320;
+	int height = 240;
 
 	/////////////////////////////////////
 	// Camera

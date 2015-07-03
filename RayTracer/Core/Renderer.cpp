@@ -49,6 +49,7 @@ namespace TX {
 
 		Renderer& Renderer::Resize(int width, int height) {
 			if (config_.width != width || config_.height != height){
+				Abort();
 				config_.width = width;
 				config_.height = height;
 				scene->camera->Resize(width, height);

@@ -28,7 +28,7 @@ namespace TX{
 			strcpy_s(config.title, "RayTracer");
 			config.width = scene_->camera->Width();
 			config.height = scene_->camera->Height();
-			config.fixsize = true;
+			config.fixsize = false;
 		}
 
 		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config){
@@ -73,6 +73,12 @@ namespace TX{
 			case KeyCode::RIGHT: AttemptPanCamera(Direction::RIGHT); break;
 			}
 		}
+
+		void GUIViewer::OnResize(){
+			renderer_->Resize(config.width, config.height);
+			InvalidateFrame();
+		}
+
 
 		void GUIViewer::AttemptMoveCamera(Direction dir){
 			float dist = 1.f;
