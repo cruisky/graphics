@@ -7,14 +7,13 @@
 namespace TX{
 	// 4x4 row-major matrix using right-handed coordinate system
 	class Matrix4x4{
-	public:
+	public: 
 		static const Matrix4x4 IDENTITY;
 
 		// Constructs an identity matrix.
 		Matrix4x4();
-		Matrix4x4(const Matrix4x4& ot);
 		Matrix4x4(float matrix[4][4]);
-		Matrix4x4(__m128 r0, __m128 r1, __m128 r2, __m128 r3);
+		Matrix4x4(const Matrix4x4& ot);
 		Matrix4x4(
 			float m00, float m01, float m02, float m03,
 			float m10, float m11, float m12, float m13,
@@ -66,19 +65,19 @@ namespace TX{
 		static Vector3 TVector(const Matrix4x4& m, const Vector3& v);
 		// Transforms a normal vector with an already inverted matrix, the result is not normalized
 		static Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n);
-
+		
 		bool IsAffine() const;
 		Matrix4x4 InverseAffine() const;
 		Matrix4x4 InverseGeneral() const;
 	private:
 		friend std::ostream& operator << (std::ostream& os, const Matrix4x4& M);
-
+		
 		// Apply the 3x3 part to the translation part
 		Matrix4x4& InternalApplyTranslation();
 		Matrix4x4& InternalTranspose();
 		Matrix4x4& InternalInverse();
 
-		__m128 row[4];
+		float m[4][4];
 	};
 
 	inline std::ostream& operator << (std::ostream& os, const Matrix4x4& m){
@@ -147,7 +146,7 @@ namespace TX{
 		memcpy(m, result, 16 * sizeof(float));
 		return *this;
 	}
-
+	
 	inline Matrix4x4& Matrix4x4::InternalApplyTranslation(){
 		float v[3];
 		v[0] = m[0][3] * m[0][0] + m[1][3] * m[0][1] + m[2][3] * m[0][2];
