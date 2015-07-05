@@ -1,4 +1,4 @@
-#include "include/Color.h"
+#include "Graphics/Color.h"
 
 namespace TX{
 	const Color Color::BLACK = Color(0.f);

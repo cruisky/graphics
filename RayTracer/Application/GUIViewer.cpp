@@ -6,7 +6,7 @@
 #include "Core/Camera.h"
 #include "Core/Renderer.h"
 #include "Core/Config.h"
-#include "Tools.h"
+#include "System/Tools.h"
 
 namespace TX{
 	namespace RayTracer{

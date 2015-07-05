@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Util.h"
-#include "Vector.h"
+#include "Util.h"
+#include "Math/Vector.h"
 
 namespace TX{
 

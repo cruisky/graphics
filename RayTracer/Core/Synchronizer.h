@@ -1,9 +1,9 @@
 #pragma once
 
 #include "fwddecl.h"
-#include "Thread.h"
-#include "MathUtil.h"
-#include "RNG.h"
+#include "System/Thread.h"
+#include "Math/MathUtil.h"
+#include "Math/RNG.h"
 
 namespace TX
 {

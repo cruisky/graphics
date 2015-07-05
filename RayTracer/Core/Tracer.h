@@ -1,8 +1,8 @@
 #pragma once
 #include "fwddecl.h"
 
-#include "Color.h"
-#include "Ray.h"
+#include "Graphics/Color.h"
+#include "Graphics/Ray.h"
 
 namespace TX{
 	namespace RayTracer{

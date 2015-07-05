@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Vector.h"
+#include "Math/Vector.h"
 #include "BSDF.h"
 #include "Intersection.h"
 #include "Primitive.h"
@@ -49,13 +49,13 @@ namespace TX{
 		}
 
 		float Diffuse::Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
-			return Math::PI_INV;
+			return Math::PI_RCP;
 		}
 
 		float Diffuse::Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
 			if (!LocalCoord::SameHemisphere(localwo, localwi))
 				return 0.f;
-			return LocalCoord::AbsCosTheta(localwi) * Math::PI_INV;
+			return LocalCoord::AbsCosTheta(localwi) * Math::PI_RCP;
 		}
 
 		

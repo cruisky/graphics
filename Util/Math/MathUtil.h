@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Util.h"
+#include "Util.h"
 
 namespace TX {
 	namespace Math {
@@ -9,10 +9,10 @@ namespace TX {
 		extern const float HALF_PI;
 		extern const float TWO_PI;
 		extern const float FOUR_PI;
-		extern const float PI_INV;
-		extern const float HALF_PI_INV;
-		extern const float TWO_PI_INV;
-		extern const float FOUR_PI_INV;
+		extern const float PI_RCP;
+		extern const float HALF_PI_RCP;
+		extern const float TWO_PI_RCP;
+		extern const float FOUR_PI_RCP;
 		extern const float INF;
 		extern const float EPSILON;
 
@@ -24,6 +24,10 @@ namespace TX {
 		inline bool Valid(const T& num) { return !_isnan(num) && _finite(num); }
 
 		inline float Abs(float n) { return fabsf(n); }
+		inline float Exp(float n) { return expf(n); }
+		inline float Log(float n) { return logf(n); }
+		inline float Log2(float n) { return log2f(n); }
+		inline float Log10(float n) { return log10f(n); }
 		inline float Pow(float n, float e) { return powf(n, e); }
 		inline float Sqrt(float n) { return sqrtf(n); }
 		inline float Rsqrt(float n) {
@@ -36,18 +40,16 @@ namespace TX {
 			//return 1.0f / Math::Sqrt(n);
 		}
 
+		inline float ToRad(float deg) { return deg / 180.f * Math::PI; }
+		inline float ToDeg(float rad) { return rad * 180.f / Math::PI; }
 		inline float Sin(float r) { return sinf(r); }
 		inline float Cos(float r) { return cosf(r); }
 		inline float Tan(float r) { return tanf(r); }
 		inline float Asin(float s) { return asinf(s); }
 		inline float Acos(float c) { return acosf(c); }
 		inline float Atan2(float y, float x) { return atan2f(y, x); }
-		inline float Exp(float n) { return expf(n); }
-		inline float Log(float n) { return logf(n); }
-		inline float Log2(float n) { return log2f(n); }
-		inline float Log10(float n) { return log10f(n); }
-		inline float ToRad(float deg) { return deg / 180.f * Math::PI; }
-		inline float ToDeg(float rad) { return rad * 180.f / Math::PI; }
+
+
 		template <typename T1, typename T2> inline auto Max(const T1& n1, const T2 n2) -> decltype(n1 + n2) { return n1 > n2 ? n1 : n2; }
 		template <typename T1, typename T2> inline auto Min(const T1& n1, const T2 n2) -> decltype(n1 + n2) { return n1 < n2 ? n1 : n2; }
 		template <typename T> inline int Sign(const T& n){ return (T(0) < val) - (val < T(0)); }

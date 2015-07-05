@@ -5,8 +5,8 @@
 #include "Intersection.h"
 #include "BSDF.h"
 #include "Sample.h"
-#include "Color.h"
-#include "Ray.h"
+#include "Graphics/Color.h"
+#include "Graphics/Ray.h"
 
 namespace TX
 {

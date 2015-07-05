@@ -3,7 +3,7 @@
 #include "Film.h"
 #include "Sampler.h"
 #include "Sample.h"
-#include "Color.h"
+#include "Graphics/Color.h"
 
 namespace TX
 {

@@ -37,7 +37,7 @@ namespace TX {
 			bool Occlude(const Ray& localray) const;
 
 			float Area() const { return Math::FOUR_PI; }
-			float Pdf(const Vector3& point) const { return Math::FOUR_PI_INV; }
+			float Pdf(const Vector3& point) const { return Math::FOUR_PI_RCP; }
 			void SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const;
 			void SamplePoint(const Sample *sample, const Vector3& localeye, Vector3 *out, Vector3 *normal) const;
 

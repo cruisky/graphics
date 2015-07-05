@@ -2,7 +2,7 @@
 
 #include "fwddecl.h"
 #include <iostream>
-#include "Vector.h"
+#include "Math/Vector.h"
 
 namespace TX{
 	namespace RayTracer{
@@ -118,10 +118,10 @@ namespace TX{
 				ret.z = Math::Sqrt(Math::Max(0.f, 1.f - ret.x * ret.x - ret.y * ret.y));
 				return ret;
 			}
-			inline float UniformHemispherePdf(){ return Math::TWO_PI_INV; }
-			inline float UniformSpherePdf(){ return Math::FOUR_PI_INV; }
+			inline float UniformHemispherePdf(){ return Math::TWO_PI_RCP; }
+			inline float UniformSpherePdf(){ return Math::FOUR_PI_RCP; }
 			inline float CosineHemispherePdf(float costheta, float phi){
-				return costheta * Math::PI_INV;
+				return costheta * Math::PI_RCP;
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Primitive.h"
-#include "Ray.h"
+#include "Graphics/Ray.h"
 #include "Shape.h"
 #include "Intersection.h"
 

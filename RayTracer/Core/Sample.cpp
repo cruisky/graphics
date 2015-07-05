@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 #include "Sample.h"
-#include "Vector.h"
-#include "RNG.h"
-#include "MathUtil.h"
+#include "Math/Vector.h"
+#include "Math/RNG.h"
+#include "Math/MathUtil.h"
 
 namespace TX{
 	namespace RayTracer{

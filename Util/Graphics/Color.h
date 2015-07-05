@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Util.h"
-#include "MathUtil.h"
+#include "Util.h"
+#include "Math/MathUtil.h"
 
 namespace TX{
 	class Color {

@@ -1,14 +1,14 @@
 #pragma warning(disable: 4244)
 #pragma warning(disable: 4305)
 
-#include "Matrix.h"
-#include "Vector.h"
+#include "Math/Matrix.h"
+#include "Math/Vector.h"
 #include "stdafx.h"
 #include "Core/transform.h"
-#include "Color.h"
-#include "Image.h"
-#include "RNG.h"
-#include "Tools.h"
+#include "Graphics/Color.h"
+#include "Graphics/Image.h"
+#include "Math/RNG.h"
+#include "System/Tools.h"
 #include "Core/Sampler.h"
 #include "Core/Sample.h"
 #include "Core/Config.h"

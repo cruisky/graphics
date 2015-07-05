@@ -1,7 +1,7 @@
 #pragma once
 #include "fwddecl.h"
 
-#include "Vector.h"
+#include "Math/Vector.h"
 #include "Light.h"
 #include "Primitive.h"
 

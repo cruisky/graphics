@@ -4,10 +4,10 @@
 #include "Camera.h"
 #include "Film.h"
 #include "Sample.h"
-#include "Color.h"
-#include "Ray.h"
+#include "Graphics/Color.h"
+#include "Graphics/Ray.h"
 #include "Config.h"
-#include "Tools.h"
+#include "System/Tools.h"
 
 #include "Tracers/DirectLighting.h"
 #include "Tracers/PathTracer.h"

@@ -79,32 +79,35 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Application.h" />
-    <ClInclude Include="include\Color.h" />
-    <ClInclude Include="include\Image.h" />
-    <ClInclude Include="include\MathUtil.h" />
-    <ClInclude Include="include\Matrix.h" />
-    <ClInclude Include="include\Ray.h" />
-    <ClInclude Include="include\RNG.h" />
-    <ClInclude Include="include\TestHelpers.h" />
-    <ClInclude Include="include\Thread.h" />
-    <ClInclude Include="include\Tools.h" />
-    <ClInclude Include="include\Vector.h" />
-    <ClInclude Include="src\stb_image.h" />
-    <ClInclude Include="src\stb_image_write.h" />
+    <ClInclude Include="Graphics\Color.h" />
+    <ClInclude Include="Graphics\Image.h" />
+    <ClInclude Include="Graphics\Ray.h" />
+    <ClInclude Include="Graphics\stb_image.h" />
+    <ClInclude Include="Graphics\stb_image_write.h" />
+    <ClInclude Include="Math\MathUtil.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\RNG.h" />
+    <ClInclude Include="Math\SIMD.h" />
+    <ClInclude Include="Math\sse_mathfun.h" />
+    <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Misc\TestHelpers.h" />
+    <ClInclude Include="System\Application.h" />
+    <ClInclude Include="System\Thread.h" />
+    <ClInclude Include="System\Tools.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Color.cpp" />
-    <ClCompile Include="src\Image.cpp" />
-    <ClCompile Include="src\MathUtil.cpp" />
-    <ClCompile Include="src\Matrix.cpp" />
-    <ClCompile Include="src\Ray.cpp" />
-    <ClCompile Include="src\TestHelpers.cpp" />
-    <ClCompile Include="src\Thread.cpp" />
-    <ClCompile Include="src\Tools.cpp" />
-    <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="Graphics\Color.cpp" />
+    <ClCompile Include="Graphics\Image.cpp" />
+    <ClCompile Include="Graphics\Ray.cpp" />
+    <ClCompile Include="Math\MathUtil.cpp" />
+    <ClCompile Include="Math\Matrix.cpp" />
+    <ClCompile Include="Math\SIMD.cpp" />
+    <ClCompile Include="Math\Vector.cpp" />
+    <ClCompile Include="Misc\TestHelpers.cpp" />
+    <ClCompile Include="System\Application.cpp" />
+    <ClCompile Include="System\Thread.cpp" />
+    <ClCompile Include="System\Tools.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

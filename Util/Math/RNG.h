@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Util.h"
+#include "Util.h"
 #include <ctime>
-#include "emmintrin.h"
+#include "SIMD.h"
 
 namespace TX{
 	class RNG {

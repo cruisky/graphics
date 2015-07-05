@@ -1,8 +1,8 @@
 #pragma once
 #include "fwddecl.h"
 
-#include "Matrix.h"
-#include "Ray.h"
+#include "Math/Matrix.h"
+#include "Graphics/Ray.h"
 
 namespace TX{
 	namespace RayTracer

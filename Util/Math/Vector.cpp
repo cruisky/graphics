@@ -1,4 +1,4 @@
-#include "include/Vector.h"
+#include "Math/Vector.h"
 
 namespace TX{
 	const Vector3 Vector3::ZERO(0.f, 0.f, 0.f);

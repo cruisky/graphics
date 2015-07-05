@@ -1,13 +1,16 @@
-#include "include/TestHelpers.h"
-#include "include/Tools.h"
-#include "include/RNG.h"
-#include "include/Color.h"
-#include "include/Ray.h"
-#include "include/Vector.h"
-#include "include/Matrix.h"
+#include "Misc/TestHelpers.h"
+#include "System/Tools.h"
+#include "Graphics/Color.h"
+#include "Graphics/Ray.h"
+#include "Math/Vector.h"
+#include "Math/Matrix.h"
+#include "Math/SIMD.h"
+#include "Math/RNG.h"
+
 namespace TX
 {
 	namespace Tests {
+		using namespace SIMD;
 		RNG rng;
 
 		float RandomFloat(bool allowzero, float absmax){
@@ -16,6 +19,14 @@ namespace TX
 				f = rng.Float();
 			} while (!allowzero && f == 0.f);
 			return f * absmax;
+		}
+
+		Float4 RandomFloat4(bool allowzero, float absmax){
+			return Float4(
+				RandomFloat(allowzero, absmax), 
+				RandomFloat(allowzero, absmax), 
+				RandomFloat(allowzero, absmax), 
+				RandomFloat(allowzero, absmax));
 		}
 
 		Color RandomColor(float absmax){
@@ -54,20 +65,25 @@ namespace TX
 
 		namespace Assertions
 		{
+			void AreClose(const Float4& expected, const Float4& actual){
+				repeat(i, 4){
+					Assert::AreEqual(expected[i], actual[i], TOLERANCE_FLT, Msg::EQ(expected[i], actual[i]));
+				}
+			}
 
-			void AreClose(Color expected, Color actual){
+			void AreClose(const Color& expected, const Color& actual){
 				Assert::AreEqual(expected.r, actual.r, TOLERANCE_FLT, Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.g, actual.g, TOLERANCE_FLT, Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.b, actual.b, TOLERANCE_FLT, Msg::EQ(expected, actual));
 			}
 
-			void AreClose(Vector3 expected, Vector3 actual){
+			void AreClose(const Vector3& expected, const Vector3& actual){
 				Assert::AreEqual(expected.x, actual.x, TOLERANCE_FLT, Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.y, actual.y, TOLERANCE_FLT, Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.z, actual.z, TOLERANCE_FLT, Msg::EQ(expected, actual));
 			}
 
-			void AreClose(Matrix4x4 expected, Matrix4x4 actual){
+			void AreClose(const Matrix4x4& expected, const Matrix4x4& actual){
 				repeat(i, 4){
 					repeat(j, 4){
 						Assert::AreEqual(expected[i][j], actual[i][j], TOLERANCE_FLT, Msg::EQ(expected, actual));

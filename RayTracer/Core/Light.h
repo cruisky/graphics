@@ -1,7 +1,7 @@
 #pragma once
 #include "fwddecl.h"
 
-#include "Color.h"
+#include "Graphics/Color.h"
 #include "SceneObject.h"
 
 namespace TX {

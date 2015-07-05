@@ -14,16 +14,17 @@
 #include <string>
 #include <cstdarg>
 #include <cstdlib>
-#include "TestHelpers.h"
-#include "Tools.h"
-#include "RNG.h"
+#include "Misc/TestHelpers.h"
+#include "System/Tools.h"
+#include "Math/RNG.h"
 
 // Area to test
-#include "Color.h"
-#include "MathUtil.h"
-#include "Matrix.h"
-#include "Ray.h"
-#include "Vector.h"
+#include "Math/MathUtil.h"
+#include "Math/Matrix.h"
+#include "Math/Vector.h"
+#include "Math/SIMD.h"
+#include "Graphics/Ray.h"
+#include "Graphics/Color.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

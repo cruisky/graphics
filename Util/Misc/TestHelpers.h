@@ -14,12 +14,18 @@ namespace TX
 	class Ray;
 	class Vector3;
 	class Matrix4x4;
+	namespace SIMD
+	{
+		class Float4;
+	}
 
 	namespace Tests
 	{
+		using namespace SIMD;
 		extern RNG rng;
 
 		float RandomFloat(bool allowzero = true, float absmax = 1.f);
+		Float4 RandomFloat4(bool allowzero = true, float absmax = 1.f);
 		Color RandomColor(float absmax = 1.f);
 		Vector3 RandomVector(bool allowzero = true, float absmax = 1e2f);
 		Ray RandomRay(float lengthmax = 1e2f);
@@ -38,14 +44,15 @@ namespace TX
 			}
 
 			template <typename T>
-			inline void Log(T t)
+			inline void Log(const T& t)
 			{
 				std::string s(TX::Str(t));
+				s += "\n";
 				Logger::WriteMessage(s.c_str());
 			}
 
 			template<typename T, typename... Args>
-			inline void Log(T t, Args... args)
+			inline void Log(const T& t, Args... args)
 			{
 				std::string s(TX::Str(t));
 				Logger::WriteMessage(s.c_str());
@@ -68,9 +75,10 @@ namespace TX
 			inline void AreClose(double expected, double actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
 				Assert::AreEqual(expected, actual, TOLERANCE_DBL, message, pLineInfo);
 			}
-			void AreClose(Color expected, Color actual);
-			void AreClose(Vector3 expected, Vector3 actual);
-			void AreClose(Matrix4x4 expected, Matrix4x4 actual);
+			void AreClose(const SIMD::Float4& expected, const SIMD::Float4& actual);
+			void AreClose(const Color& expected, const Color& actual);
+			void AreClose(const Vector3& expected, const Vector3& actual);
+			void AreClose(const Matrix4x4& expected, const Matrix4x4& actual);
 		}
 	}
 }
