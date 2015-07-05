@@ -22,7 +22,6 @@
 #include "Math/MathUtil.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
-#include "Math/SIMD.h"
 #include "Graphics/Ray.h"
 #include "Graphics/Color.h"
 

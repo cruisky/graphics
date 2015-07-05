@@ -10,7 +10,7 @@ namespace TX{
 		public:
 			TEST_METHOD(RsqrtTest){
 				repeat(i, 10){
-					float f = RandomFloat(false);
+					float f = RandomFloat(1e-2f);
 					Assertions::AreClose(1.f / sqrtf(f), Rsqrt(f));
 				}
 			}

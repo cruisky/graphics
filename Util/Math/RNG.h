@@ -2,7 +2,6 @@
 
 #include "Util.h"
 #include <ctime>
-#include "SIMD.h"
 
 namespace TX{
 	class RNG {
@@ -58,6 +57,7 @@ namespace TX{
 			return result[0];
 		}
 
+		// [0, 1]
 		inline float Float(){
 #ifdef COMPATABILITY
 			return UInt() / (float)(0xFFFF);

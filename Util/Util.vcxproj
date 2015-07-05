@@ -48,6 +48,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.</AdditionalIncludeDirectories>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -67,6 +69,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.</AdditionalIncludeDirectories>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,7 +91,6 @@
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\RNG.h" />
-    <ClInclude Include="Math\SIMD.h" />
     <ClInclude Include="Math\sse_mathfun.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Misc\TestHelpers.h" />
@@ -102,7 +105,6 @@
     <ClCompile Include="Graphics\Ray.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
-    <ClCompile Include="Math\SIMD.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Misc\TestHelpers.cpp" />
     <ClCompile Include="System\Application.cpp" />

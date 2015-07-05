@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <cassert>
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 

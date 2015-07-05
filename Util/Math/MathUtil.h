@@ -57,9 +57,9 @@ namespace TX {
 		template <typename T> inline T Clamp(const T& val, const T& min, const T& max){
 			return (val > min) ? ((val < max) ? val : max) : min;
 		}
-		inline int Floor(float n) { return (int)n; }
-		inline int Ceil(float n) { int fl = int(n); return (n - fl) > 1e-7f ? fl + 1 : fl; }
-		inline int Round(float n) { return int(n + 0.5f); }
+		inline int Floor(float n) { int t = int(n); return t - (t > n); }
+		inline int Ceil(float n) { int t = int(n); return t + (t < n); }
+		inline int Round(float n) { return n > 0 ? Floor(n + 0.5f) : Ceil(n - 0.5f); }
 		inline float Lerp(float t, float v1, float v2){ return (1.f - t) * v1 + t * v2; }
 	}
 }

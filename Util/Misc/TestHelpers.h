@@ -1,6 +1,14 @@
 #pragma once
 
 #include "CppUnitTest.h"
+#include <cstdarg>
+
+#include "System/Tools.h"
+#include "Graphics/Color.h"
+#include "Graphics/Ray.h"
+#include "Math/Vector.h"
+#include "Math/Matrix.h"
+#include "Math/RNG.h"
 
 #define repeat(i,n) for(int (i)=0;(i)<(n);++(i))
 #define repeat_range(i,a,b) for(int (i)=(a);(i)<(b);++(i))
@@ -9,27 +17,48 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TX
 {
-	class RNG;
-	class Color;
-	class Ray;
-	class Vector3;
-	class Matrix4x4;
-	namespace SIMD
-	{
-		class Float4;
-	}
-
 	namespace Tests
 	{
-		using namespace SIMD;
 		extern RNG rng;
 
-		float RandomFloat(bool allowzero = true, float absmax = 1.f);
-		Float4 RandomFloat4(bool allowzero = true, float absmax = 1.f);
-		Color RandomColor(float absmax = 1.f);
-		Vector3 RandomVector(bool allowzero = true, float absmax = 1e2f);
-		Ray RandomRay(float lengthmax = 1e2f);
-		Matrix4x4 RandomMatrix(float absmax = 10.f);
+		inline float RandomFloat(float absmin = 1e-6f, float absmax = 1.f, bool bothsign = false){
+			float f;
+			do{
+				f = rng.Float() - 0.5f;
+			} while (Math::Abs(f) < (absmin / absmax));
+			f = bothsign ? f : Math::Abs(f);
+			return f * absmax * 2.f;
+		}
+		inline Color RandomColor(float absmax = 1.f){
+			return Color(rng.Float(), rng.Float(), rng.Float()) * absmax;
+		}
+		inline Vector3 RandomVector3(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true){
+			return Vector3(
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign));
+		}
+		inline Vector4 RandomVector4(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true){
+			return Vector4(
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign));
+		}
+		inline Ray RandomRay(float lengthmax = 1e2f){
+			Vector3 origin = RandomVector3();
+			Vector3 dir = RandomVector3(0.1f, lengthmax);
+			return Ray(origin, dir);
+		}
+		inline Matrix4x4 RandomMatrix(float absmax = 10.f){
+			float mat[4][4];
+			repeat(i, 4){
+				repeat(j, 4){
+					mat[i][j] = RandomFloat(0, absmax, true);
+				}
+			}
+			return Matrix4x4(mat);
+		}
 
 		namespace Msg{
 			inline std::wstring WStr(const std::string& str){
@@ -39,7 +68,9 @@ namespace TX
 			inline void LogFormat(const char *fmt, ...){
 				static char buf[512];
 				va_list ap;
+				va_start(ap, fmt);
 				vsprintf_s(buf, fmt, ap);
+				va_end(ap);
 				Logger::WriteMessage(buf);
 			}
 
@@ -47,12 +78,11 @@ namespace TX
 			inline void Log(const T& t)
 			{
 				std::string s(TX::Str(t));
-				s += "\n";
 				Logger::WriteMessage(s.c_str());
 			}
 
 			template<typename T, typename... Args>
-			inline void Log(const T& t, Args... args)
+			inline void Log(const T& t, const Args&... args)
 			{
 				std::string s(TX::Str(t));
 				Logger::WriteMessage(s.c_str());
@@ -75,10 +105,26 @@ namespace TX
 			inline void AreClose(double expected, double actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
 				Assert::AreEqual(expected, actual, TOLERANCE_DBL, message, pLineInfo);
 			}
-			void AreClose(const SIMD::Float4& expected, const SIMD::Float4& actual);
-			void AreClose(const Color& expected, const Color& actual);
-			void AreClose(const Vector3& expected, const Vector3& actual);
-			void AreClose(const Matrix4x4& expected, const Matrix4x4& actual);
+			inline void AreClose(const Vector4& expected, const Vector4& actual, const wchar_t *msg = nullptr){
+				repeat(i, 4){
+					Assert::AreEqual(expected[i], actual[i], TOLERANCE_FLT, msg ? msg : Msg::EQ(expected[i], actual[i]));
+				}
+			}
+			inline void AreClose(const Color& expected, const Color& actual, const wchar_t *msg = nullptr){
+				Assert::AreEqual(expected.r, actual.r, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.g, actual.g, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.b, actual.b, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+			}
+			inline void AreClose(const Vector3& expected, const Vector3& actual, const wchar_t *msg = nullptr){
+				Assert::AreEqual(expected.x, actual.x, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.y, actual.y, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+				Assert::AreEqual(expected.z, actual.z, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+			}
+			inline void AreClose(const Matrix4x4& expected, const Matrix4x4& actual, const wchar_t *msg = nullptr){
+				repeat(i, 4){
+					Assertions::AreClose(expected[i], actual[i], msg ? msg : Msg::EQ(expected, actual));
+				}
+			}
 		}
 	}
 }
