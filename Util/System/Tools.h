@@ -9,7 +9,7 @@ namespace TX{
 	{
 	public:
 		Timer() : beg_(clock_::now()) {}
-		void reset() { beg_ = clock_::now(); }
+		__forceinline void reset() { beg_ = clock_::now(); }
 		__forceinline double elapsed() const {
 			return std::chrono::duration_cast<second_>
 				(clock_::now() - beg_).count();

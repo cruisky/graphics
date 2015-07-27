@@ -20,6 +20,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util.Tests", "Util.Tests\Ut
 		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmarker", "Benchmarker\Benchmarker.vcxproj", "{229477DF-8CC4-4629-90C1-6478C3454BE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -38,6 +43,10 @@ Global
 		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Debug|Win32.Build.0 = Debug|Win32
 		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Release|Win32.ActiveCfg = Release|Win32
 		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Release|Win32.Build.0 = Release|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Debug|Win32.Build.0 = Debug|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Release|Win32.ActiveCfg = Release|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

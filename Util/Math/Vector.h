@@ -62,7 +62,7 @@ namespace TX {
 		static const Vector4 FOUR_PI_RCP;
 	public:
 		__forceinline Vector4() : m128(_mm_setzero_ps()){}
-		__forceinline Vector4(const __m128& d) : m128(d){}
+		__forceinline Vector4(__m128 d) : m128(d){}
 		__forceinline Vector4(const float& v) : m128(_mm_broadcast_ss(&v)){}
 		__forceinline Vector4(float a, float b) : m128(_mm_setr_ps(a, b, a, b)){}
 		__forceinline Vector4(float a, float b, float c, float d) : m128(_mm_setr_ps(a, b, c, d)){}
