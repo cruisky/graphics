@@ -10,11 +10,13 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include "Misc/TestHelpers.h"
 #include "Misc/RandomData.h"
 #include "Math/MathUtil.h"
 #include "Math/Matrix.h"
-#include "Math/RNG.h"
+#include "Math/Random.h"
 #include "Math/Vector.h"
+#include "SSE/Float4.h"
 
 
 // TODO: reference additional headers your program requires here

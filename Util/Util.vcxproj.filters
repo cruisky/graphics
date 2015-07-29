@@ -21,6 +21,9 @@
     <Filter Include="Source Files\Misc">
       <UniqueIdentifier>{3dc20c17-1d02-4961-9542-8fb8398e30cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SSE">
+      <UniqueIdentifier>{6114fba4-15ab-4e55-ae0e-19b171efe74e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h">
@@ -44,15 +47,6 @@
     <ClInclude Include="Math\Matrix.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\RNG.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\sse_mathfun.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Misc\TestHelpers.h">
-      <Filter>Source Files\Misc</Filter>
-    </ClInclude>
     <ClInclude Include="System\Application.h">
       <Filter>Source Files\System</Filter>
     </ClInclude>
@@ -70,6 +64,18 @@
     </ClInclude>
     <ClInclude Include="Misc\RandomData.h">
       <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Random.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\CppUnitTestHelpers.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\TestHelpers.h">
+      <Filter>Source Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="SSE\sse_mathfun.h">
+      <Filter>Source Files\SSE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

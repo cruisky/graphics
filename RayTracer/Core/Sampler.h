@@ -1,7 +1,7 @@
 #pragma once
 #include "fwddecl.h"
 #include <iostream>
-#include "Math/RNG.h"
+#include "Math/Random.h"
 
 namespace TX
 {

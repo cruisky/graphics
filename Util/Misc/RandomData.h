@@ -4,7 +4,7 @@
 #include "Graphics/Ray.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
-#include "Math/RNG.h"
+#include "Math/Random.h"
 
 namespace TX
 {

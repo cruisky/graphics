@@ -6,9 +6,7 @@
 #include "System\Tools.h"
 
 #define PRECISION_HIGH   50
-#define PRECISION_MEDIUM 10
 #define PRECISION_LOW	 3
-#define PRECISION_LOWEST 1
 
 
 namespace TX{
@@ -72,7 +70,13 @@ namespace TX{
 #define BM_BODY() protected: void Body()
 #define BM_CLEANUP() protected: void Cleanup()
 
+#ifdef ENABLE_BENCHMARK
 #define BENCHMARK(className, runs, iters) \
 	const int ::TX::Tests::TestConfigImpl<className>::id = \
 		::TX::Tests::Benchmarker::Instance()->Register( \
 			new ::TX::Tests::TestConfigImpl<className>(#className, runs, iters))
+#else
+#define BENCHMARK(className, runs, iters)
+#endif
+
+

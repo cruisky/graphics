@@ -7,7 +7,7 @@
 #include "Core/transform.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
-#include "Math/RNG.h"
+#include "Math/Random.h"
 #include "System/Tools.h"
 #include "Core/Sampler.h"
 #include "Core/Sample.h"

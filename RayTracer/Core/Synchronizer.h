@@ -3,7 +3,7 @@
 #include "fwddecl.h"
 #include "System/Thread.h"
 #include "Math/MathUtil.h"
-#include "Math/RNG.h"
+#include "Math/Random.h"
 
 namespace TX
 {

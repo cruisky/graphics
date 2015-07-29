@@ -5,7 +5,7 @@
 
 namespace TX{
 
-	class Ray : public Align16 {
+	class Ray {
 	public:
 		static const float EPSILON;
 	public:

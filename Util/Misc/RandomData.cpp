@@ -1,5 +1,5 @@
 #include "RandomData.h"
-#include "Math/RNG.h"
+#include "Math/Random.h"
 
 namespace TX
 {

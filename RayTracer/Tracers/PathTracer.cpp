@@ -4,7 +4,7 @@
 #include "Core/Scene.h"
 #include "Core/Sample.h"
 #include "Core/BSDF.h"
-#include "Math/RNG.h"
+#include "Math/Random.h"
 
 namespace TX{
 	namespace RayTracer{

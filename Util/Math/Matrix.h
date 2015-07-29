@@ -6,23 +6,21 @@
 
 namespace TX{
 	// 4x4 row-major matrix using right-handed coordinate system
-	class Matrix4x4 : public Align16 {
+	class Matrix4x4 {
 	public:
 		static const Matrix4x4 IDENTITY;
-	public: 
-		// Constructs an identity matrix.
-		Matrix4x4() :Matrix4x4(IDENTITY){}
-		Matrix4x4(const Vector4& r0, const Vector4& r1, const Vector4& r2, const Vector4& r3){ 
-			row[0] = r0; 
-			row[1] = r1; 
-			row[2] = r2; 
-			row[3] = r3;
+	public:
+		Matrix4x4(){
+			row[0] = Vector4::X;
+			row[1] = Vector4::Y;
+			row[2] = Vector4::Z;
+			row[3] = Vector4::W;
 		}
-		Matrix4x4(const float matrix[4][4]){
-			row[0] = Vector4(matrix[0]); 
-			row[1] = Vector4(matrix[1]); 
-			row[2] = Vector4(matrix[2]); 
-			row[3] = Vector4(matrix[3]);
+		Matrix4x4(const Vector4& r0, const Vector4& r1, const Vector4& r2, const Vector4& r3){
+			row[0] = r0;
+			row[1] = r1;
+			row[2] = r2;
+			row[3] = r3;
 		}
 		Matrix4x4(const Matrix4x4& ot) :Matrix4x4(ot[0], ot[1], ot[2], ot[3]){}
 		Matrix4x4(
@@ -37,107 +35,91 @@ namespace TX{
 			Vector4(m30, m31, m32, m33)){}
 		~Matrix4x4(){}
 
-		inline Matrix4x4& operator = (const Matrix4x4& ot){
+		__forceinline Matrix4x4& operator = (const Matrix4x4& ot){
 			memcpy_s(row, sizeof(row), ot.row, 4 * sizeof(Vector4));
 			return *this;
 		}
-		inline bool operator == (const Matrix4x4& ot){
-			return row[0] == ot[0] && row[1] == ot[1] && row[2] == ot[2] && row[3] == ot[3];
-		}
 
-		inline Matrix4x4 operator + (const Matrix4x4& ot) const{
+		__forceinline Matrix4x4 operator + (const Matrix4x4& ot) const{
 			return Matrix4x4(
 				row[0] + ot[0],
 				row[1] + ot[1],
 				row[2] + ot[2],
 				row[3] + ot[3]);
 		}
-		inline Matrix4x4 operator - (const Matrix4x4& ot) const{
+		__forceinline Matrix4x4 operator - (const Matrix4x4& ot) const{
 			return Matrix4x4(
 				row[0] - ot[0],
 				row[1] - ot[1],
 				row[2] - ot[2],
 				row[3] - ot[3]);
 		}
-		inline Matrix4x4 operator * (const Matrix4x4& ot) const {
-			//for (int i = 0; i < 4; i++)
-			//	for (int j = 0; j < 4; j++)
-			//		result.m[i][j] =
-			//		m[i][0] * ot.m[0][j] +
-			//		m[i][1] * ot.m[1][j] +
-			//		m[i][2] * ot.m[2][j] +
-			//		m[i][3] * ot.m[3][j];
-			return Matrix4x4(
-				ot[0]	* Shuffle<0, 0, 0, 0>(row[0])
-				+ ot[1] * Shuffle<1, 1, 1, 1>(row[0])
-				+ ot[2] * Shuffle<2, 2, 2, 2>(row[0])
-				+ ot[3] * Shuffle<3, 3, 3, 3>(row[0]),
-				ot[0]	* Shuffle<0, 0, 0, 0>(row[1])
-				+ ot[1] * Shuffle<1, 1, 1, 1>(row[1])
-				+ ot[2] * Shuffle<2, 2, 2, 2>(row[1])
-				+ ot[3] * Shuffle<3, 3, 3, 3>(row[1]),
-				ot[0]	* Shuffle<0, 0, 0, 0>(row[2])
-				+ ot[1] * Shuffle<1, 1, 1, 1>(row[2])
-				+ ot[2] * Shuffle<2, 2, 2, 2>(row[2])
-				+ ot[3] * Shuffle<3, 3, 3, 3>(row[2]),
-				ot[0]	* Shuffle<0, 0, 0, 0>(row[3])
-				+ ot[1] * Shuffle<1, 1, 1, 1>(row[3])
-				+ ot[2] * Shuffle<2, 2, 2, 2>(row[3])
-				+ ot[3] * Shuffle<3, 3, 3, 3>(row[3]));
+		__forceinline Matrix4x4 operator * (const Matrix4x4& ot) const {
+			Matrix4x4 result;
+			for (int i = 0; i < 4; i++)
+				for (int j = 0; j < 4; j++)
+					result[i][j] =
+					row[i][0] * ot[0][j] +
+					row[i][1] * ot[1][j] +
+					row[i][2] * ot[2][j] +
+					row[i][3] * ot[3][j];
+			return result;
 		}
-		inline const Matrix4x4& operator += (const Matrix4x4& ot){
+		__forceinline const Matrix4x4& operator += (const Matrix4x4& ot){
 			row[0] += ot[0];
 			row[1] += ot[1];
 			row[2] += ot[2];
 			row[3] += ot[3];
 			return *this;
 		}
-		inline const Matrix4x4& operator -= (const Matrix4x4& ot){
+		__forceinline const Matrix4x4& operator -= (const Matrix4x4& ot){
 			row[0] -= ot[0];
 			row[1] -= ot[1];
 			row[2] -= ot[2];
 			row[3] -= ot[3];
 			return *this;
 		}
-
-		inline const Vector4& operator[](int rowi) const { return row[rowi]; }
-		inline Vector4& operator[](int rowi){ return row[rowi]; }
-
-		inline Matrix4x4 Transpose() const{
-			Matrix4x4 res(*this);
-			_MM_TRANSPOSE4_PS(res.row[0], res.row[1], res.row[2], res.row[3]);
-			return res;
+		__forceinline const Matrix4x4& operator *= (const Matrix4x4& ot) {
+			Vector4 temp;
+			for (int i = 0; i < 4; i++){
+				for (int j = 0; j < 4; j++)
+					temp[j] =
+					row[i][0] * ot[0][j] +
+					row[i][1] * ot[1][j] +
+					row[i][2] * ot[2][j] +
+					row[i][3] * ot[3][j];
+				row[i] = temp;
+			}
+			return *this;
 		}
-		inline Matrix4x4 Inverse() const{
-			return InverseGeneral();
+
+		__forceinline const Vector4& operator[](int rowi) const { return row[rowi]; }
+		__forceinline Vector4& operator[](int rowi){ return row[rowi]; }
+
+		__forceinline Matrix4x4 Transpose() const{
+			return Matrix4x4(
+				row[0][0], row[1][0], row[2][0], row[3][0],
+				row[0][1], row[1][1], row[2][1], row[3][1],
+				row[0][2], row[1][2], row[2][2], row[3][2],
+				row[0][3], row[1][3], row[2][3], row[3][3]);
 		}
-		inline Matrix4x4 InverseGeneral() const {
-			//float dst[4][4];
-			//const float *src = *m;
+
+		inline Matrix4x4 Inverse() const {
+			Matrix4x4 result;
+			const float *src = *row;
+			float *dst = result[0];
 			// Intel AP-928
-			Vector4 minor0, minor1, minor2, minor3;
-			Vector4 row0, row1, row2, row3;
-			Vector4 det, tmp1;
-
-			// Matrix transposition (not transpose)
-			//tmp1 = _mm_loadh_pi(_mm_loadl_pi(_mm_setzero_ps(), (__m64*)(src)), (__m64*)(src + 4));
-			//row1 = _mm_loadh_pi(_mm_loadl_pi(_mm_setzero_ps(), (__m64*)(src + 8)), (__m64*)(src + 12));
-			//row0 = _mm_shuffle_ps(tmp1, row1, 0x88);
-			//row1 = _mm_shuffle_ps(row1, tmp1, 0xDD);
-			//tmp1 = _mm_loadh_pi(_mm_loadl_pi(tmp1, (__m64*)(src + 2)), (__m64*)(src + 6));
-			//row3 = _mm_loadh_pi(_mm_loadl_pi(_mm_setzero_ps(), (__m64*)(src + 10)), (__m64*)(src + 14));
-			//row2 = _mm_shuffle_ps(tmp1, row3, 0x88);
-			//row3 = _mm_shuffle_ps(row3, tmp1, 0xDD);
-			tmp1 = UnpackLow(row[0], row[1]);
-			row1 = UnpackLow(row[2], row[3]);
-			row0 = Shuffle<0, 1, 0, 1>(tmp1, row1);
-			row1 = Shuffle<2, 3, 2, 3>(row1, tmp1);
-			tmp1 = UnpackHigh(row[0], row[1]);
-			row3 = UnpackHigh(row[2], row[3]);
-			row2 = Shuffle<0, 1, 0, 1>(tmp1, row3);
-			row3 = Shuffle<2, 3, 2, 3>(row3, tmp1);
-			
-			// Cofactors calculation. 
+			__m128 minor0, minor1, minor2, minor3;
+			__m128 row0, row1, row2, row3;
+			__m128 det, tmp1;
+			tmp1 = _mm_loadh_pi(_mm_loadl_pi(_mm_setzero_ps(), (__m64*)(src)), (__m64*)(src + 4));
+			row1 = _mm_loadh_pi(_mm_loadl_pi(_mm_setzero_ps(), (__m64*)(src + 8)), (__m64*)(src + 12));
+			row0 = _mm_shuffle_ps(tmp1, row1, 0x88);
+			row1 = _mm_shuffle_ps(row1, tmp1, 0xDD);
+			tmp1 = _mm_loadh_pi(_mm_loadl_pi(tmp1, (__m64*)(src + 2)), (__m64*)(src + 6));
+			row3 = _mm_loadh_pi(_mm_loadl_pi(_mm_setzero_ps(), (__m64*)(src + 10)), (__m64*)(src + 14));
+			row2 = _mm_shuffle_ps(tmp1, row3, 0x88);
+			row3 = _mm_shuffle_ps(row3, tmp1, 0xDD);					//
 			tmp1 = _mm_mul_ps(row2, row3);
 			tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
 			minor0 = _mm_mul_ps(row1, tmp1);
@@ -183,57 +165,51 @@ namespace TX{
 			minor3 = _mm_sub_ps(minor3, _mm_mul_ps(row1, tmp1));
 			tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
 			minor1 = _mm_sub_ps(minor1, _mm_mul_ps(row3, tmp1));
-			minor3 = _mm_add_ps(_mm_mul_ps(row1, tmp1), minor3);		// 
-
-			// Evaluation of determinant and its reciprocal value. 
-			// 1/det is evaluated using a fast rcpps command with subsequent approximation using the Newton-Raphson algorithm.
+			minor3 = _mm_add_ps(_mm_mul_ps(row1, tmp1), minor3);		//
 			det = _mm_mul_ps(row0, minor0);
 			det = _mm_add_ps(_mm_shuffle_ps(det, det, 0x4E), det);
 			det = _mm_add_ss(_mm_shuffle_ps(det, det, 0xB1), det);
 			tmp1 = _mm_rcp_ss(det);
 			det = _mm_sub_ss(_mm_add_ss(tmp1, tmp1), _mm_mul_ss(det, _mm_mul_ss(tmp1, tmp1)));
-			det = _mm_shuffle_ps(det, det, 0x00);						// 
-
-			// Multiplication of cofactors by 1/det.
+			det = _mm_shuffle_ps(det, det, 0x00);
 			minor0 = _mm_mul_ps(det, minor0);
-			//_mm_storel_pi((__m64*)(dst), minor0);
-			//_mm_storeh_pi((__m64*)(dst + 2), minor0);
+			_mm_storel_pi((__m64*)(dst), minor0);
+			_mm_storeh_pi((__m64*)(dst + 2), minor0);
 			minor1 = _mm_mul_ps(det, minor1);
-			//_mm_storel_pi((__m64*)(dst + 4), minor1);
-			//_mm_storeh_pi((__m64*)(dst + 6), minor1);
+			_mm_storel_pi((__m64*)(dst + 4), minor1);
+			_mm_storeh_pi((__m64*)(dst + 6), minor1);
 			minor2 = _mm_mul_ps(det, minor2);
-			//_mm_storel_pi((__m64*)(dst + 8), minor2);
-			//_mm_storeh_pi((__m64*)(dst + 10), minor2);
+			_mm_storel_pi((__m64*)(dst + 8), minor2);
+			_mm_storeh_pi((__m64*)(dst + 10), minor2);
 			minor3 = _mm_mul_ps(det, minor3);
-			//_mm_storel_pi((__m64*)(dst + 12), minor3);
-			//_mm_storeh_pi((__m64*)(dst + 14), minor3);				// 
-
-			return Matrix4x4(minor0, minor1, minor2, minor3);
+			_mm_storel_pi((__m64*)(dst + 12), minor3);
+			_mm_storeh_pi((__m64*)(dst + 14), minor3);
+			return result;
 		}
 
 		// Transforms a point
-		static inline Vector3 TPoint(const Matrix4x4& m, const Vector3& p){
+		static __forceinline Vector3 TPoint(const Matrix4x4& m, const Vector3& p){
 			// apply translation
-			//Matrix4x4 t = m.Transpose();
-			//return Shuffle<0, 0, 0, 3>(p) * t[0]
-			//	+ Shuffle<1, 1, 1, 3>(p) * t[1]
-			//	+ Shuffle<2, 2, 2, 3>(p) * t[2]
-			//	+ t[3];
-			Vector4 p4 = p;
-			p4.w = 1.f;
-			return Vector3(Dot4(p4, m.row[0]), Dot4(p4, m.row[1]), Dot4(p4, m.row[2]));
+			return Vector3(
+				p.x * m[0][0] + p.y * m[0][1] + p.z * m[0][2] + m[0][3],
+				p.x * m[1][0] + p.y * m[1][1] + p.z * m[1][2] + m[1][3],
+				p.x * m[2][0] + p.y * m[2][1] + p.z * m[2][2] + m[2][3]);
 		}
 		// Transforms a vector
-		static inline Vector3 TVector(const Matrix4x4& m, const Vector3& v){
+		static __forceinline Vector3 TVector(const Matrix4x4& m, const Vector3& v){
 			// ignore translation
-			return Vector3(Dot(v, m.row[0]), Dot(v, m.row[1]), Dot(v, m.row[2]));
+			return Vector3(
+				v.x * m[0][0] + v.y * m[0][1] + v.z * m[0][2],
+				v.x * m[1][0] + v.y * m[1][1] + v.z * m[1][2],
+				v.x * m[2][0] + v.y * m[2][1] + v.z * m[2][2]);
 		}
 		// Transforms a normal vector with an already inverted matrix, the result is not normalized
-		static inline Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n){
+		static __forceinline Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n){
 			// multiply the transpose
-			return Shuffle<0, 0, 0, 3>(n) * m_inv.row[0]
-				+ Shuffle<1, 1, 1, 3>(n) * m_inv.row[1]
-				+ Shuffle<2, 2, 2, 3>(n) * m_inv.row[2];
+			return Vector3(
+				n.x * m_inv[0][0] + n.y * m_inv[1][0] + n.z * m_inv[2][0],
+				n.x * m_inv[0][1] + n.y * m_inv[1][1] + n.z * m_inv[2][1],
+				n.x * m_inv[0][2] + n.y * m_inv[1][2] + n.z * m_inv[2][2]);
 		}
 
 		static Matrix4x4 Translate(const Vector3& v);

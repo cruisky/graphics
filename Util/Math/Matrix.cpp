@@ -10,17 +10,12 @@ namespace TX{
 		0.f, 0.f, 0.f, 1.f);
 
 	Matrix4x4 Matrix4x4::Translate(const Vector3& v){
-		//return Matrix4x4(
-		//	1.f, 0.f, 0.f, v.x,
-		//	0.f, 1.f, 0.f, v.y,
-		//	0.f, 0.f, 1.f, v.z,
-		//	0.f, 0.f, 0.f, 1.f
-		//	);
 		return Matrix4x4(
-			Insert<3,0,0>(Vector4::X, v),	// v0 -> x3
-			Insert<3,1,0>(Vector4::Y, v),	// v1 -> y3
-			Insert<3,2,0>(Vector4::Z, v),	// v2 -> z3
-			Vector4::W);
+			1.f, 0.f, 0.f, v.x,
+			0.f, 1.f, 0.f, v.y,
+			0.f, 0.f, 1.f, v.z,
+			0.f, 0.f, 0.f, 1.f
+		);
 	}
 
 	Matrix4x4 Matrix4x4::Translate(float x, float y, float z){
@@ -28,34 +23,32 @@ namespace TX{
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(float angle, const Vector3& axis){
-		Vector3 a = Normalized(axis);
+		Vector3 a(axis);
+		a.Normalize();
 		angle = Math::ToRad(angle);
-		//float c = Math::Cos(angle), s = Math::Sin(angle), c1 = 1 - c;
-		Vector4 tmp = Math::Sin(angle) * a;							// sin * axis (sa)
-		tmp.w = Math::Cos(angle);									// tmp: sinaxis.x, sinaxis.y, sinaxis.z, cos
-		Vector4 r0 = Shuffle<3, 2, 1, 3>(Negate<0,0,1,0>(tmp));		// cos, -sa.z, sa.y, cos
-		Vector4 r1 = Shuffle<2, 3, 0, 3>(Negate<1,0,0,0>(tmp));		// sa.z, cos, -sa.x, cos
-		Vector4 r2 = Shuffle<1, 0, 3, 3>(Negate<0,1,0,0>(tmp));		// -sa.y, sa.x, cos, cos
-		r0.w = r1.w = r2.w = 0.f;
-		tmp = Vector3::ONE - tmp.w;									// 1-cos, 1-cos, 1-cos, 0
-		r0 += Shuffle<0, 0, 0, 3>(a) * a * tmp;						// a.x * a * (1-c)
-		r1 += Shuffle<1, 1, 1, 3>(a) * a * tmp;						// a.y * a * (1-c)
-		r2 += Shuffle<2, 2, 2, 3>(a) * a * tmp;						// a.z * a * (1-c)
-		return Matrix4x4(r0, r1, r2, Vector4::W);
+		float c = Math::Cos(angle), s = Math::Sin(angle), c1 = 1 - c;
+		return Matrix4x4(
+			a.x*a.x*c1 + c, a.x*a.y*c1 - a.z*s, a.x*a.z*c1 + a.y*s, 0.f,
+			a.x*a.y*c1 + a.z*s, a.y*a.y*c1 + c, a.y*a.z*c1 - a.x*s, 0.f,
+			a.x*a.z*c1 - a.y*s, a.y*a.z*c1 + a.x*s, a.z*a.z*c1 + c, 0.f,
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(const Vector3& angle){
-		Vector3 tmp = ToRad(angle);
-		Vector3 sin = Sin(tmp);		// 0, 1, 0, 0
-		Vector3 cos = Cos(tmp);		// 1, -1, 1, 1
-		Vector3 ssin = sin * Shuffle<1, 2, 0, 3>(sin);	// xy, yz, zx 
-		Vector3 ccos = cos * Shuffle<1, 2, 0, 3>(cos);	// xy, yz, zx
-		tmp = Vector3(cos.y, ssin[0], sin.y * cos.x);
+		float x = Math::ToRad(angle.x);
+		float y = Math::ToRad(angle.y);
+		float z = Math::ToRad(angle.z);
+		float sx = Math::Sin(x);
+		float sy = Math::Sin(y);
+		float sz = Math::Sin(z);
+		float cx = Math::Cos(x);
+		float cy = Math::Cos(y);
+		float cz = Math::Cos(z);
 		return Matrix4x4(
-			Shuffle<2, 2, 2, 3>(cos) * tmp + Vector3(0.f, -sin.z * cos.x, ssin[2]),
-			Shuffle<2, 2, 2, 3>(sin) * tmp + Vector3(0.f, ccos[2], -cos.z*sin.x),
-			Vector3(-sin.y, cos.y * sin.x, ccos[0]),
-			Vector4::W);
+			cz*cy, cz*sy*sx - sz*cx, cz*sy*cx + sz*sx, 0.f,
+			sz*cy, sz*sy*sx + cz*cx, sz*sy*cx - cz*sx, 0.f,
+			-sy, cy*sx, cy*cx, 0.f,
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(float x, float y, float z){
@@ -66,18 +59,20 @@ namespace TX{
 		Vector3 zaxis = (pEye - pTarget).Normalize();	// -z forward
 		Vector3 xaxis = Cross(up, zaxis).Normalize();
 		Vector3 yaxis = Cross(zaxis, xaxis);
-		xaxis.w = -Dot(xaxis, pEye);
-		yaxis.w = -Dot(yaxis, pEye);
-		zaxis.w = -Dot(zaxis, pEye);
-		return Matrix4x4(xaxis, yaxis, zaxis, Vector4::W);
+		return Matrix4x4(
+			xaxis.x, xaxis.y, xaxis.z, -Dot(xaxis, pEye),
+			yaxis.x, yaxis.y, yaxis.z, -Dot(yaxis, pEye),
+			zaxis.x, zaxis.y, zaxis.z, -Dot(zaxis, pEye),
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Scale(const Vector3& s){
 		return Matrix4x4(
-			Blend<1, 0, 0, 0>(Vector4(), s),
-			Blend<0, 1, 0, 0>(Vector4(), s),
-			Blend<0, 0, 1, 0>(Vector4(), s),
-			Vector4::W);
+			s.x, 0.f, 0.f, 0.f,
+			0.f, s.y, 0.f, 0.f,
+			0.f, 0.f, s.z, 0.f,
+			0.f, 0.f, 0.f, 1.f
+			);
 	}
 
 	Matrix4x4 Matrix4x4::Scale(float x, float y, float z){

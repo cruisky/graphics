@@ -66,7 +66,6 @@ namespace TX{
 				repeat(i, 4){
 					Assertions::AreClose(i, v[i]);
 				}
-				Assert::IsTrue(v == _mm_set_ps(3, 2, 1, 0));
 			}
 		};
 	}

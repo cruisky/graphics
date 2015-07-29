@@ -9,7 +9,7 @@ namespace TX{
 	namespace RayTracer{
 
 		// Basic info of a intersection
-		struct Intersection : Align16{
+		struct Intersection {
 		public:
 			Intersection(){}
 			inline const AreaLight *GetAreaLight() const { return prim->GetAreaLight(); }

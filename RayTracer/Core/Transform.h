@@ -7,7 +7,7 @@
 namespace TX{
 	namespace RayTracer
 	{
-		class Transform : public Align16{
+		class Transform {
 		public:
 			Transform(){}
 			~Transform(){}

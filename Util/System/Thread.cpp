@@ -75,8 +75,10 @@ namespace TX
 	}
 	void ThreadScheduler::StartAll(){
 		int processor_count = std::thread::hardware_concurrency();
+#ifdef _DEBUG
+		processor_count = 1;
+#endif
 		running = true;
-		//processor_count = 2;	// TODO test single thread
 		threads.resize(processor_count);
 		for (int i = 0; i < processor_count; i++){
 			threads[i].Init(this, i);

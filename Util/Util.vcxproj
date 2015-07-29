@@ -77,6 +77,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,11 +97,12 @@
     <ClInclude Include="Graphics\stb_image_write.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Matrix.h" />
-    <ClInclude Include="Math\RNG.h" />
-    <ClInclude Include="Math\sse_mathfun.h" />
+    <ClInclude Include="Math\Random.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Misc\RandomData.h" />
+    <ClInclude Include="Misc\CppUnitTestHelpers.h" />
     <ClInclude Include="Misc\TestHelpers.h" />
+    <ClInclude Include="SSE\sse_mathfun.h" />
     <ClInclude Include="System\Application.h" />
     <ClInclude Include="System\Thread.h" />
     <ClInclude Include="System\Tools.h" />

@@ -5,7 +5,7 @@
 
 namespace TX{
 	namespace RayTracer{
-		class SceneObject : public Align16{
+		class SceneObject {
 		public:
 			Transform transform;
 		};
