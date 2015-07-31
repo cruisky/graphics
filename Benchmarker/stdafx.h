@@ -16,7 +16,9 @@
 #include "Math/Matrix.h"
 #include "Math/Random.h"
 #include "Math/Vector.h"
-#include "SSE/Float4.h"
+#include "SSE/Float.h"
+#include "SSE/Int.h"
+#include "SSE/Bool.h"
 
 
 // TODO: reference additional headers your program requires here

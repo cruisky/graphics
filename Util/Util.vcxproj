@@ -102,6 +102,9 @@
     <ClInclude Include="Misc\RandomData.h" />
     <ClInclude Include="Misc\CppUnitTestHelpers.h" />
     <ClInclude Include="Misc\TestHelpers.h" />
+    <ClInclude Include="SSE\Bool.h" />
+    <ClInclude Include="SSE\Float.h" />
+    <ClInclude Include="SSE\Int.h" />
     <ClInclude Include="SSE\sse_mathfun.h" />
     <ClInclude Include="System\Application.h" />
     <ClInclude Include="System\Thread.h" />
@@ -116,6 +119,9 @@
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Misc\RandomData.cpp" />
+    <ClCompile Include="SSE\Bool.cpp" />
+    <ClCompile Include="SSE\Float.cpp" />
+    <ClCompile Include="SSE\Int.cpp" />
     <ClCompile Include="System\Application.cpp" />
     <ClCompile Include="System\Thread.cpp" />
     <ClCompile Include="System\Tools.cpp" />
