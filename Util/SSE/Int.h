@@ -90,8 +90,8 @@ namespace TX
 		__forceinline V4Int UnpackHigh(const V4Int& a, const V4Int& b) { return _mm_unpackhi_epi32(a.m, b.m); }
 		
 		template<size_t v0, size_t v1, size_t v2, size_t v3>
-		__forceinline const V4Int Shuffle(const V4Int& v){ return _mm_shuffle_epi32(lhs, _MM_SHUFFLE(v3, v2, v1, v0)); }
+		__forceinline const V4Int Shuffle(const V4Int& a){ return _mm_shuffle_epi32(a, _MM_SHUFFLE(v3, v2, v1, v0)); }
 		template<size_t a0, size_t a1, size_t b2, size_t b3> 
-		__forceinline const V4Int Shuffle(const V4Int& a, const V4Int& b){ return _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(lhs), _mm_castsi128_ps(rhs), _MM_SHUFFLE(b3, b2, a1, a0))); }
+		__forceinline const V4Int Shuffle(const V4Int& a, const V4Int& b){ return _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(a), _mm_castsi128_ps(b), _MM_SHUFFLE(b3, b2, a1, a0))); }
 	}
 }

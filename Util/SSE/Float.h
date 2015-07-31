@@ -53,27 +53,27 @@ namespace TX {
 			__forceinline const V4Float operator + () const { return *this; }
 			__forceinline const V4Float operator - () const { return _mm_xor_ps(m, _mm_castsi128_ps(SIGN_MASK[0xF])); }
 
-			__forceinline const V4Float operator + (const V4Float& rhs) const { return _mm_add_ps(m, rhs.m); }
-			__forceinline const V4Float operator - (const V4Float& rhs) const { return _mm_sub_ps(m, rhs.m); }
-			__forceinline const V4Float operator * (const V4Float& rhs) const { return _mm_mul_ps(m, rhs.m); }
-			__forceinline const V4Float operator / (const V4Float& rhs) const { return *this * _mm_rcp_ps(rhs.m); }
-			__forceinline const V4Float operator + (float rhs) const { return *this + V4Float(rhs); }
-			__forceinline const V4Float operator - (float rhs) const { return *this - V4Float(rhs); }
-			__forceinline const V4Float operator * (float rhs) const { return *this * V4Float(rhs); }
-			__forceinline const V4Float operator / (float rhs) const { return *this * (1.0f / rhs); }
-			__forceinline V4Float& operator += (const V4Float& rhs) { return *this = *this + rhs; }
-			__forceinline V4Float& operator += (const float& rhs) { return *this = *this + rhs; }
-			__forceinline V4Float& operator -= (const V4Float& rhs) { return *this = *this - rhs; }
-			__forceinline V4Float& operator -= (const float& rhs) { return *this = *this - rhs; }
-			__forceinline V4Float& operator *= (const V4Float& rhs) { return *this = *this * rhs; }
-			__forceinline V4Float& operator *= (const float& rhs) { return *this = *this * rhs; }
-			__forceinline V4Float& operator /= (const V4Float& rhs) { return *this = *this / rhs; }
-			__forceinline V4Float& operator /= (const float& rhs) { return *this = *this / rhs; }
+			__forceinline const V4Float operator + (const V4Float& ot) const { return _mm_add_ps(m, ot.m); }
+			__forceinline const V4Float operator - (const V4Float& ot) const { return _mm_sub_ps(m, ot.m); }
+			__forceinline const V4Float operator * (const V4Float& ot) const { return _mm_mul_ps(m, ot.m); }
+			__forceinline const V4Float operator / (const V4Float& ot) const { return *this * _mm_rcp_ps(ot.m); }
+			__forceinline const V4Float operator + (float ot) const { return *this + V4Float(ot); }
+			__forceinline const V4Float operator - (float ot) const { return *this - V4Float(ot); }
+			__forceinline const V4Float operator * (float ot) const { return *this * V4Float(ot); }
+			__forceinline const V4Float operator / (float ot) const { return *this * (1.0f / ot); }
+			__forceinline V4Float& operator += (const V4Float& ot) { return *this = *this + ot; }
+			__forceinline V4Float& operator += (const float& ot) { return *this = *this + ot; }
+			__forceinline V4Float& operator -= (const V4Float& ot) { return *this = *this - ot; }
+			__forceinline V4Float& operator -= (const float& ot) { return *this = *this - ot; }
+			__forceinline V4Float& operator *= (const V4Float& ot) { return *this = *this * ot; }
+			__forceinline V4Float& operator *= (const float& ot) { return *this = *this * ot; }
+			__forceinline V4Float& operator /= (const V4Float& ot) { return *this = *this / ot; }
+			__forceinline V4Float& operator /= (const float& ot) { return *this = *this / ot; }
 
-			__forceinline const bool operator == (const V4Float& rhs) const { return _mm_movemask_ps(_mm_cmpeq_ps(m, rhs.m)) == 0xF; }
-			__forceinline const bool operator == (const float& rhs) const { return *this == V4Float(rhs); }
-			__forceinline const bool operator != (const V4Float& rhs) const { return _mm_movemask_ps(_mm_cmpeq_ps(m, rhs.m)) != 0xF; }
-			__forceinline const bool operator != (const float& rhs) const { return *this != V4Float(rhs); }
+			__forceinline const bool operator == (const V4Float& ot) const { return _mm_movemask_ps(_mm_cmpeq_ps(m, ot.m)) == 0xF; }
+			__forceinline const bool operator == (const float& ot) const { return *this == V4Float(ot); }
+			__forceinline const bool operator != (const V4Float& ot) const { return _mm_movemask_ps(_mm_cmpeq_ps(m, ot.m)) != 0xF; }
+			__forceinline const bool operator != (const float& ot) const { return *this != V4Float(ot); }
 
 		};
 		__forceinline V4Float operator * (float r, const V4Float& v) { return v * r; }

@@ -42,17 +42,17 @@ namespace TX
 		__forceinline Vector3 operator + () const { return Vector3(+x, +y, +z); }
 		__forceinline Vector3 operator - () const { return Vector3(-x, -y, -z); }
 
-		__forceinline Vector3 operator + (const Vector3& rhs) const { return Vector3(x + rhs.x, y + rhs.y, z + rhs.z); }
-		__forceinline Vector3 operator - (const Vector3& rhs) const { return Vector3(x - rhs.x, y - rhs.y, z - rhs.z); }
-		__forceinline Vector3 operator * (const Vector3& rhs) const { return Vector3(x * rhs.x, y * rhs.y, z * rhs.z); }
+		__forceinline Vector3 operator + (const Vector3& ot) const { return Vector3(x + ot.x, y + ot.y, z + ot.z); }
+		__forceinline Vector3 operator - (const Vector3& ot) const { return Vector3(x - ot.x, y - ot.y, z - ot.z); }
+		__forceinline Vector3 operator * (const Vector3& ot) const { return Vector3(x * ot.x, y * ot.y, z * ot.z); }
 		__forceinline Vector3 operator * (float s) const { return Vector3(x * s, y * s, z * s); }
-		__forceinline Vector3 operator / (const Vector3& rhs) const { return Vector3(x / rhs.x, y / rhs.y, z / rhs.z); }
+		__forceinline Vector3 operator / (const Vector3& ot) const { return Vector3(x / ot.x, y / ot.y, z / ot.z); }
 		__forceinline Vector3 operator / (float d) const { return Vector3(x / d, y / d, z / d); }
-		__forceinline const Vector3& operator += (const Vector3& rhs) { x += rhs.x; y += rhs.y; z += rhs.z; return *this; }
-		__forceinline const Vector3& operator -= (const Vector3& rhs) { x -= rhs.x; y -= rhs.y; z -= rhs.z; return *this; }
-		__forceinline const Vector3& operator *= (const Vector3& rhs) { x *= rhs.x; y *= rhs.y; z *= rhs.z; return *this; }
+		__forceinline const Vector3& operator += (const Vector3& ot) { x += ot.x; y += ot.y; z += ot.z; return *this; }
+		__forceinline const Vector3& operator -= (const Vector3& ot) { x -= ot.x; y -= ot.y; z -= ot.z; return *this; }
+		__forceinline const Vector3& operator *= (const Vector3& ot) { x *= ot.x; y *= ot.y; z *= ot.z; return *this; }
 		__forceinline const Vector3& operator *= (float s) { x *= s; y *= s; z *= s; return *this; }
-		__forceinline const Vector3& operator /= (const Vector3& rhs) { x /= rhs.x; y /= rhs.y; z /= rhs.z; return *this; }
+		__forceinline const Vector3& operator /= (const Vector3& ot) { x /= ot.x; y /= ot.y; z /= ot.z; return *this; }
 		__forceinline const Vector3& operator /= (float d) { x /= d; y /= d; z /= d; return *this; }
 
 		__forceinline float LengthSqr() const;
@@ -118,17 +118,17 @@ namespace TX
 		__forceinline const Vector4 operator + () const { return Vector4(+x, +y, +z, +w); }
 		__forceinline const Vector4 operator - () const { return Vector4(-x, -y, -z, -w); }
 
-		__forceinline const Vector4 operator + (const Vector4& rhs) const { return Vector4(x + rhs.x, y + rhs.y, z + rhs.z, w + rhs.w); }
-		__forceinline const Vector4 operator - (const Vector4& rhs) const { return Vector4(x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w); }
-		__forceinline const Vector4 operator * (const Vector4& rhs) const { return Vector4(x * rhs.x, y * rhs.y, z * rhs.z, w * rhs.w); }
+		__forceinline const Vector4 operator + (const Vector4& ot) const { return Vector4(x + ot.x, y + ot.y, z + ot.z, w + ot.w); }
+		__forceinline const Vector4 operator - (const Vector4& ot) const { return Vector4(x - ot.x, y - ot.y, z - ot.z, w - ot.w); }
+		__forceinline const Vector4 operator * (const Vector4& ot) const { return Vector4(x * ot.x, y * ot.y, z * ot.z, w * ot.w); }
 		__forceinline const Vector4 operator * (float s) const { return Vector4(x * s, y * s, z * s, w * s); }
-		__forceinline const Vector4 operator / (const Vector4& rhs) const { return Vector4(x / rhs.x, y / rhs.y, z / rhs.z, w / rhs.w); }
+		__forceinline const Vector4 operator / (const Vector4& ot) const { return Vector4(x / ot.x, y / ot.y, z / ot.z, w / ot.w); }
 		__forceinline const Vector4 operator / (float d) const { return Vector4(x / d, y / d, z / d, w / d); }
-		__forceinline Vector4& operator += (const Vector4& rhs) { x += rhs.x; y += rhs.y; z += rhs.z; w += rhs.w; return *this; }
-		__forceinline Vector4& operator -= (const Vector4& rhs) { x -= rhs.x; y -= rhs.y; z -= rhs.z; w -= rhs.w; return *this; }
-		__forceinline Vector4& operator *= (const Vector4& rhs) { x *= rhs.x; y *= rhs.y; z *= rhs.z; w *= rhs.w; return *this; }
+		__forceinline Vector4& operator += (const Vector4& ot) { x += ot.x; y += ot.y; z += ot.z; w += ot.w; return *this; }
+		__forceinline Vector4& operator -= (const Vector4& ot) { x -= ot.x; y -= ot.y; z -= ot.z; w -= ot.w; return *this; }
+		__forceinline Vector4& operator *= (const Vector4& ot) { x *= ot.x; y *= ot.y; z *= ot.z; w *= ot.w; return *this; }
 		__forceinline Vector4& operator *= (float s) { x *= s; y *= s; z *= s; w *= s; return *this; }
-		__forceinline Vector4& operator /= (const Vector4& rhs) { x /= rhs.x; y /= rhs.y; z /= rhs.z; w /= rhs.w; return *this; }
+		__forceinline Vector4& operator /= (const Vector4& ot) { x /= ot.x; y /= ot.y; z /= ot.z; w /= ot.w; return *this; }
 		__forceinline Vector4& operator /= (float d) { x /= d; y /= d; z /= d; z /= d; return *this; }
 
 	};
