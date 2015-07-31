@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#define ENABLE_BENCHMARK
+//#define ENABLE_BENCHMARK
 #include "Benchmarker.h"
 
 #define size 10000000

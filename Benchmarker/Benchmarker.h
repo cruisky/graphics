@@ -8,7 +8,6 @@
 #define PRECISION_HIGH   50
 #define PRECISION_LOW	 3
 
-
 namespace TX{
 	namespace Tests {
 		class Test : public Timer {
@@ -21,8 +20,6 @@ namespace TX{
 			virtual void Setup(){}
 			virtual void Cleanup(){}
 		};
-
-		template <typename T> Test* NewTest(){ return new T(); }
 
 		class TestConfig {
 		public:

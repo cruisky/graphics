@@ -1,4 +1,6 @@
 #include "stdafx.h"
+
+//#define ENABLE_BENCHMARK
 #include "Benchmarker.h"
 
 namespace TX
