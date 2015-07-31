@@ -1,0 +1,8 @@
+*			text=auto
+
+*.c			text eol=crlf
+*.cpp			text eol=crlf
+*.h			text eol=crlf
+
+*.vcxproj		text merge=union eol=crlf
+*.sln			text merge=union eol=crlf
