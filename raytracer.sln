@@ -4,12 +4,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RayTracer", "raytracer\raytracer.vcxproj", "{AA8FDED1-49CA-4DE4-B304-960A9B373B55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util\Util.vcxproj", "{E3244CFF-B604-45FB-966F-66C48ABE586A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6AFB5AFF-2CFF-4321-9F6C-96C2F32E1FF5}"
 	ProjectSection(SolutionItems) = preProject
 		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util.Tests", "Util.Tests\Util.Tests.vcxproj", "{E3751A35-A26F-438B-BC34-D7CC889EADF3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmarker", "Benchmarker\Benchmarker.vcxproj", "{229477DF-8CC4-4629-90C1-6478C3454BE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
 	EndProjectSection
 EndProject
 Global
@@ -26,6 +39,14 @@ Global
 		{E3244CFF-B604-45FB-966F-66C48ABE586A}.Debug|Win32.Build.0 = Debug|Win32
 		{E3244CFF-B604-45FB-966F-66C48ABE586A}.Release|Win32.ActiveCfg = Release|Win32
 		{E3244CFF-B604-45FB-966F-66C48ABE586A}.Release|Win32.Build.0 = Release|Win32
+		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Debug|Win32.Build.0 = Debug|Win32
+		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Release|Win32.ActiveCfg = Release|Win32
+		{E3751A35-A26F-438B-BC34-D7CC889EADF3}.Release|Win32.Build.0 = Release|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Debug|Win32.Build.0 = Debug|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Release|Win32.ActiveCfg = Release|Win32
+		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

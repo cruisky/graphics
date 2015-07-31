@@ -7,7 +7,15 @@
 
 namespace TX{
 	namespace RayTracer {
-		Color DirectLighting::Li(const Ray& ray, int depth){
+		DirectLighting::DirectLighting(const Scene *scene, int maxdepth) : Tracer(scene, maxdepth){
+			auto lights = scene_->lights;
+			auto size = lights.size();
+			printf("size=%d\n", size);
+			light_samples_.resize(lights.size());
+			bsdf_samples_.resize(lights.size());
+		}
+
+		Color DirectLighting::Li(const Ray& ray, int depth, const CameraSample& samplebuf){
 			if (depth < 0)
 				return Color::BLACK;
 			LocalGeo geom;
@@ -18,12 +26,12 @@ namespace TX{
 
 				int lightcount = scene_->lights.size();
 				for (int i = 0; i < lightcount; i++){
-					color += TraceDirectLight(ray, geom, scene_->lights[i].get(), light_samples_[i], bsdf_samples_[i]) * Math::PI;
+					color += TraceDirectLight(ray, geom, scene_->lights[i].get(), light_samples_[i](samplebuf), bsdf_samples_[i](samplebuf)) * Math::PI;
 				}
 
 				if (depth >= 0){
-					color += TraceSpecularReflect(ray, geom, depth + 1);
-					color += TraceSpecularTransmit(ray, geom, depth + 1);
+					color += TraceSpecularReflect(ray, geom, depth + 1, samplebuf);
+					color += TraceSpecularTransmit(ray, geom, depth + 1, samplebuf);
 				}
 			}
 			else {
@@ -32,16 +40,13 @@ namespace TX{
 			return color;
 		}
 
-		void DirectLighting::ProcessSamples(){
-			auto lights = scene_->lights;
-			light_samples_.resize(lights.size());
-			bsdf_samples_.resize(lights.size());
-			int offset = 0, tail = 0;
-			for (auto i = 0; i < lights.size(); i++){
+		void DirectLighting::BakeSamples(const Scene *scene, const CameraSample *samplebuf){
+			auto lights = scene->lights;
+			for (auto i = 0; i < scene_->lights.size(); i++){
 				// need equal amount of samples for light and bsdf sampling
 				// for multiple importance sampling
-				light_samples_[i] = samples_->RequestSamples(lights[i]->sample_count);
-				bsdf_samples_[i] = samples_->RequestSamples(lights[i]->sample_count);
+				light_samples_[i].RequestSamples(lights[i]->sample_count, samplebuf);
+				bsdf_samples_[i].RequestSamples(lights[i]->sample_count, samplebuf);
 			}
 		}
 	}

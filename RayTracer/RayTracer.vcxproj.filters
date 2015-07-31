@@ -117,6 +117,9 @@
     <ClInclude Include="Tracers\PathTracer.h">
       <Filter>Header Files\Tracers</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Synchronizer.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -179,8 +182,8 @@
     <ClCompile Include="Core\Light.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="misc.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Core\Synchronizer.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

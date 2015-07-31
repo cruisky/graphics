@@ -13,8 +13,8 @@ namespace TX
 		}
 
 		void AreaLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {
-			static Vector3 normal;
-			static Vector3 lightpoint;
+			Vector3 normal;
+			Vector3 lightpoint;
 			primitive->SamplePoint(lightsamples, &lightpoint, &normal);
 			wi->SetSegment(pos, lightpoint);
 			*pdf = Pdf(pos, wi->dir);

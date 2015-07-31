@@ -31,7 +31,7 @@ namespace TX {
 			}
 
 			inline float Pdf(const Vector3& point, const Vector3& dir) const {
-				static Ray localray;
+				Ray localray;
 				localray.Reset(point, dir);
 				localray.dir.Normalize();		// normalize the global ray because the length of the ray should be calculated locally (with Shape::Area())
 				transform.ToLocal(localray);
@@ -57,8 +57,6 @@ namespace TX {
 			std::shared_ptr<const BSDF>			bsdf_;
 			std::shared_ptr<const Shape>		shape_;
 			const AreaLight *					area_light_;
-			// the last calculated local ray
-			mutable Ray localray_;
 		};
 	}
 }

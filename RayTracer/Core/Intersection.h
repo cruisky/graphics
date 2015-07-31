@@ -1,7 +1,7 @@
 #pragma once
 #include "fwddecl.h"
 
-#include "Vector.h"
+#include "Math/Vector.h"
 #include "Light.h"
 #include "Primitive.h"
 
@@ -9,11 +9,12 @@ namespace TX{
 	namespace RayTracer{
 
 		// Basic info of a intersection
-		struct Intersection{
+		struct Intersection {
 		public:
 			Intersection(){}
 			inline const AreaLight *GetAreaLight() const { return prim->GetAreaLight(); }
 		public:
+			Ray localray;
 			float dist;
 			const Primitive *prim;
 		};

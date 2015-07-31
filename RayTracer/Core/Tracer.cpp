@@ -5,8 +5,8 @@
 #include "Intersection.h"
 #include "BSDF.h"
 #include "Sample.h"
-#include "Color.h"
-#include "Ray.h"
+#include "Graphics/Color.h"
+#include "Graphics/Ray.h"
 
 namespace TX
 {
@@ -32,7 +32,7 @@ namespace TX
 				}
 			}
 
-			if (light->IsDelta()) 
+			if (light->IsDelta())
 				return color;
 
 			// sample bsdf with multiple importance sampling
@@ -58,7 +58,7 @@ namespace TX
 			return color;
 		}
 
-		Color Tracer::TraceSpecularReflect(const Ray& ray, const LocalGeo& geom, int depth){
+		Color Tracer::TraceSpecularReflect(const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
 			Vector3 wo = -ray.dir, wi;
 			float pdf;
 			Color color;
@@ -67,12 +67,12 @@ namespace TX
 			if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 				Ray reflected(geom.point, wi);
 				// TODO differential
-				color = f * Li(reflected, depth) *absdot_wi_n / pdf;
+				color = f * Li(reflected, depth, samplebuf) *absdot_wi_n / pdf;
 			}
 			return color;
 		}
 
-		Color Tracer::TraceSpecularTransmit(const Ray& ray, const LocalGeo& geom, int depth){
+		Color Tracer::TraceSpecularTransmit(const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
 			Vector3 wo = -ray.dir, wi;
 			float pdf;
 			Color color;
@@ -81,7 +81,7 @@ namespace TX
 			if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 				Ray refracted(geom.point, wi);
 				//TODO differential
-				color = f * Li(refracted, depth) * absdot_wi_n / pdf;
+				color = f * Li(refracted, depth, samplebuf) * absdot_wi_n / pdf;
 			}
 			return color;
 		}

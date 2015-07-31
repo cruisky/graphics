@@ -3,31 +3,44 @@
 
 #include <memory>
 #include "Tracer.h"
+#include "Synchronizer.h"
 #include "Sampler.h"
+#include "Sample.h"
 #include "Config.h"
 
 namespace TX {
 	namespace RayTracer {
 
 		struct RendererConfig {
-			RendererConfig(TracerType tracer_type = TracerType::DirectLighting, int spp = 1, SamplerType sampler_type = SamplerType::Random) : 
-				tracer_t(tracer_type), samples_per_pixel(spp), sampler_t(sampler_type){}
+			RendererConfig(){}
 			int samples_per_pixel;
+			int width = 0, height = 0;
 			TracerType tracer_t;
 			SamplerType sampler_t;
 		};
 
-
 		class Renderer {
 		public:
-			Renderer(const RendererConfig& config);
+			Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor=nullptr);
+			void Abort();
+			void NewTask();
+			void Render(int workerId, RNG& random);
+			void RenderTiles(CameraSample& sample_buf, RNG& random);
 
-			void Render(const Scene *scene, const Camera *camera, Film *film, shared_ptr<IProgressMonitor> progress_monitor = nullptr);
-			inline const RendererConfig& Config(){ return config; }
+			inline const RendererConfig& Config(){ return config_; }
+			Renderer& Config(const RendererConfig& config);
+			Renderer& Resize(int width, int height);
+		public:
+			shared_ptr<Scene> scene;
+			shared_ptr<Film> film;
 		private:
-			RendererConfig config;
+			RendererConfig config_;
 			unique_ptr<Tracer> tracer_;
 			unique_ptr<Sampler> sampler_;
+			unique_ptr<CameraSample> sample_buf_;
+			Synchronizer thread_sync_;
+			vector<shared_ptr<RenderTask>> tasks_;
+			shared_ptr<IProgressMonitor> monitor_;
 		};
 	}
 }

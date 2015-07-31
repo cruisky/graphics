@@ -2,7 +2,7 @@
 #include "fwddecl.h"
 
 #include <memory>
-#include "Color.h"
+#include "Graphics/Color.h"
 
 namespace TX{
 	namespace RayTracer{

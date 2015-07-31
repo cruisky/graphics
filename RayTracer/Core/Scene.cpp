@@ -7,7 +7,7 @@
 
 namespace TX {
 	namespace RayTracer {
-		Scene::Scene(){
+		Scene::Scene(shared_ptr<Camera> camera) : camera(camera) {
 			primmgr_ = unique_ptr<PrimitiveManager>(new PrimitiveManager(&prims_));
 		}
 		void Scene::AddPrimitive(shared_ptr<Primitive> prim){

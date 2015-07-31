@@ -1,27 +1,28 @@
-#pragma once 
+#pragma once
 
 #include "fwddecl.h"
 #include <iostream>
-#include "Vector.h"
+#include "Math/Vector.h"
 
 namespace TX{
 	namespace RayTracer{
 		struct Sample {
-			float u, v, w; 
+			float u, v, w;
 			Sample():u(0.5f), v(0.5f), w(0.5f){}
 			Sample(RNG& rng);
 			// all values are within range [0, 1]
 			Sample(float u, float v, float w);
 		};
 		std::ostream& operator<<(std::ostream& os, const Sample& sample);
-		
+
 		// A sample buffer containing all samples for tracing a single ray.
 		class CameraSample {
 		public:
 			// Buffer size should at least the maximum number of samples being requested
 			CameraSample(int bufsize);
+			CameraSample(const CameraSample& ot);
 			// Returns a pointer to an array of at least <count> samples
-			Sample *RequestSamples(int count) const;
+			int RequestSamples(int count) const;
 			~CameraSample();
 		public:
 			int pix_x, pix_y;
@@ -41,6 +42,25 @@ namespace TX{
 			float f = nf * f_pdf, g = ng * g_pdf, f2 = f * f;
 			return f2 / (f2 + g * g);
 		}
+
+		// Just an integer
+		class SampleOffset {
+		public:
+			SampleOffset() : offset(0){}
+			SampleOffset(const SampleOffset& ot) : offset(ot.offset){}
+			SampleOffset(int count, const CameraSample *sample_buf){
+				RequestSamples(count, sample_buf);
+			}
+			void RequestSamples(int count, const CameraSample *sample_buf){
+				offset = sample_buf->RequestSamples(count);
+			}
+			const Sample * operator()(const CameraSample& sample_buf){
+				assert(offset < sample_buf.bufsize);
+				return sample_buf.buffer + offset;
+			}
+		private:
+			int offset;
+		};
 
 		namespace Sampling {
 			inline Vector3 UniformHemisphere(float u1, float u2){
@@ -98,10 +118,10 @@ namespace TX{
 				ret.z = Math::Sqrt(Math::Max(0.f, 1.f - ret.x * ret.x - ret.y * ret.y));
 				return ret;
 			}
-			inline float UniformHemispherePdf(){ return Math::TWO_PI_INV; }
-			inline float UniformSpherePdf(){ return Math::FOUR_PI_INV; }
+			inline float UniformHemispherePdf(){ return Math::TWO_PI_RCP; }
+			inline float UniformSpherePdf(){ return Math::FOUR_PI_RCP; }
 			inline float CosineHemispherePdf(float costheta, float phi){
-				return costheta * Math::PI_INV;
+				return costheta * Math::PI_RCP;
 			}
 		}
 	}
