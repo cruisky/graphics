@@ -69,32 +69,32 @@ void GUI(){
 
 	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse));
 	w_forward->transform.Rotate(90, Vector3::X);
-	w_forward->transform.Translate(0, 0, -wall_size/2.f);
+	w_forward->transform.Translate(0, 0, -wall_size/2);
 	w_forward->transform.Scale(wall_size, wall_size, 1);
 
 	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse));
 	w_back->transform.Rotate(-90, Vector3::X);
-	w_back->transform.Translate(0, 0, -wall_size/2.f);
+	w_back->transform.Translate(0, 0, -wall_size/2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
 
 	shared_ptr<Primitive> w_left(new Primitive(plane, diffuse_yellow));
 	w_left->transform.Rotate(90, Vector3::Y);
-	w_left->transform.Translate(0, 0, -wall_size/2.f);
+	w_left->transform.Translate(0, 0, -wall_size/2);
 	w_left->transform.Scale(wall_size, wall_size, 1);
 
 	shared_ptr<Primitive> w_right(new Primitive(plane, diffuse_green));
 	w_right->transform.Rotate(-90, Vector3::Y);
-	w_right->transform.Translate(0, 0, -wall_size/2.f);
+	w_right->transform.Translate(0, 0, -wall_size/2);
 	w_right->transform.Scale(wall_size, wall_size, 1);
 
 	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse));
 	w_top->transform.Rotate(180, Vector3::Y);
-	w_top->transform.Translate(0, 0, -wall_size / 2.f);
+	w_top->transform.Translate(0, 0, -wall_size/2);
 	w_top->transform.Scale(wall_size, wall_size, 1);
 
 	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_orange));
 	lamp->transform.Rotate(180, Vector3::Y);
-	lamp->transform.Translate(0, 0, -wall_size / 2.f);
+	lamp->transform.Translate(0, 0, -wall_size/2 + 0.1);
 	lamp->transform.Scale(3, 3, 1);
 
 	shared_ptr<Primitive> ball1(new Primitive(sphere, diffuse_blue));
