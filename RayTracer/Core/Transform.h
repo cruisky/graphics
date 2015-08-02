@@ -10,8 +10,13 @@ namespace TX{
 		class Transform {
 		public:
 			Transform(){}
+			Transform(const Transform& tr) : position_(tr.position_), local_world_(tr.local_world_), world_local_(tr.world_local_){}
 			~Transform(){}
-
+			inline Transform& operator = (const Transform& tr){ 
+				position_ = tr.position_;
+				local_world_ = tr.local_world_;
+				world_local_ = tr.world_local_;
+			}
 			inline Vector3 Right() const { return Matrix4x4::TVector(local_world_, Vector3::X); }
 			inline Vector3 Up() const { return Matrix4x4::TVector(local_world_, Vector3::Y); }
 			inline Vector3 Forward() const { return Matrix4x4::TVector(local_world_, -Vector3::Z); }

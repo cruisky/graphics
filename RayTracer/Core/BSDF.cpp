@@ -120,7 +120,7 @@ namespace TX{
 				*wi = geom.LocalToWorld(localwi);
 				*pdf = both ? 1.f - prob : prob;
 				if (sampled_types) *sampled_types = BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR);
-				return GetColor(geom) * (1.f - refl) / LocalCoord::AbsCosTheta(localwi);
+				return GetColor(geom) * ((1.f - refl) / LocalCoord::AbsCosTheta(localwi));
 			}
 			return Color::BLACK;
 		}

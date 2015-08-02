@@ -15,8 +15,10 @@ namespace TX
 		void AreaLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {
 			Vector3 normal;
 			Vector3 lightpoint;
+			// take a random point on the surface
 			primitive->SamplePoint(lightsamples, &lightpoint, &normal);
 			wi->SetSegment(pos, lightpoint);
+			// compute pdf & color of the ray
 			*pdf = Pdf(pos, wi->dir);
 			Emit(lightpoint, normal, -wi->dir, lightcolor);
 		}
