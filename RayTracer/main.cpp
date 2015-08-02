@@ -41,8 +41,8 @@ void GUI(){
 	/////////////////////////////////////
 	// Camera
 	shared_ptr<Camera> camera(new Camera(width, height));
-	camera->transform.Rotate(90, 0, -10);
-	camera->transform.Translate(0, 3, 5);
+	camera->transform.Rotate(90, 0, 0);
+	camera->transform.Translate(0, 3, 3);
 
 	/////////////////////////////////////////////
 	// Materials
@@ -92,22 +92,13 @@ void GUI(){
 	w_top->transform.Translate(0, 0, -wall_size / 2.f);
 	w_top->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_orange));
-	lamp->transform.Rotate(180, Vector3::Y);
-	lamp->transform.Translate(0, 0, -wall_size / 2.f);
-	lamp->transform.Scale(3, 3, 1);
-
-	shared_ptr<Primitive> ball1(new Primitive(sphere, diffuse_blue));
-	ball1->transform.Translate(-3, 0, 1);
-	shared_ptr<Primitive> ball2(new Primitive(sphere, diffuse_red));
-	ball2->transform.Translate(3, 0, 1);
-	shared_ptr<Primitive> ball3(new Primitive(sphere, mirror));
-	ball3->transform.Translate(0, 0, 1);
+	shared_ptr<Primitive> quad(new Primitive(plane, diffuse_blue));
+	quad->transform.Translate(0, 0, 2);
 
 	/////////////////////////////////////
 	// Lights
 	shared_ptr<Light> light_main(new PointLight(Color(1), 200, Vector3(0, 0, 5)));
-	shared_ptr<Light> light_lamp(new AreaLight(Color(150), lamp.get()));
+	//shared_ptr<Light> light_lamp(new AreaLight(Color(150), lamp.get()));
 
 	/////////////////////////////////////
 	// Scene
@@ -121,22 +112,18 @@ void GUI(){
 	scene->AddPrimitive(w_left);
 	scene->AddPrimitive(w_right);
 
-	scene->AddPrimitive(lamp);
+	scene->AddPrimitive(quad);
 
-	scene->AddPrimitive(ball1);
-	scene->AddPrimitive(ball2);
-	scene->AddPrimitive(ball3);
-
-	//scene->AddLight(light_main);
-	scene->AddLight(light_lamp);
+	scene->AddLight(light_main);
+	//scene->AddLight(light_lamp);
 
 	scene->Construct();
 	GUIViewer gui(scene, film);
 	RendererConfig config;
-	//config.tracer_t = TracerType::DirectLighting;
+	config.tracer_t = TracerType::DirectLighting;
 	config.width = width;
 	config.height = height;
-	config.samples_per_pixel = 16;
+	config.samples_per_pixel = 4;
 	gui.ConfigRenderer(config);
 	gui.Run();
 }
