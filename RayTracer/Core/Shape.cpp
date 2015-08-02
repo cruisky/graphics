@@ -70,10 +70,9 @@ namespace TX{
 
 		bool UnitPlane::Intersect(const Ray& lcr) const {
 			float t = -lcr.origin.z / lcr.dir.z;
-			Vector3 point = lcr.origin + t * lcr.dir;
 			if (Math::InBounds(t, lcr.t_min, lcr.t_max) &&
-				Math::InBounds(point.x, -0.5f, 0.5f) &&
-				Math::InBounds(point.y, -0.5f, 0.5f)) {
+				Math::Abs(lcr.origin.x + t * lcr.dir.x) < 0.5f &&
+				Math::Abs(lcr.origin.y + t * lcr.dir.y) < 0.5f) {
 				lcr.t_max = t;
 				return true;
 			}
@@ -86,7 +85,9 @@ namespace TX{
 
 		bool UnitPlane::Occlude(const Ray& lcr) const {
 			float t = -lcr.origin.z / lcr.dir.z;
-			return Math::InBounds(t, lcr.t_min, lcr.t_max);
+			return Math::InBounds(t, lcr.t_min, lcr.t_max) &&
+				Math::Abs(lcr.origin.x + t * lcr.dir.x) < 0.5f &&
+				Math::Abs(lcr.origin.y + t * lcr.dir.y) < 0.5f;
 		}
 
 		void UnitPlane::SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const {
