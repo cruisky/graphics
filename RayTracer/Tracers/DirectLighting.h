@@ -8,12 +8,12 @@ namespace TX{
 	namespace RayTracer{
 		class DirectLighting : public Tracer {
 		public:
-			DirectLighting(const Scene *scene, int maxdepth = 5);
+			DirectLighting(int maxdepth = 5);
 			~DirectLighting(){}
 
 			void BakeSamples(const Scene *scene, const CameraSample *samplebuf);
 		protected:
-			Color Li(const Ray& ray, int depth, const CameraSample& samplebuf);
+			Color Li(const Scene *scene, const Ray& ray, int depth, const CameraSample& samplebuf);
 
 		private:
 			std::vector<SampleOffset> light_samples_;

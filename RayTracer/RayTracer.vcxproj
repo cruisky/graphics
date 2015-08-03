@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClInclude Include="Application\GUIViewer.h" />
     <ClInclude Include="Core\Camera.h" />
-    <ClInclude Include="Core\Config.h" />
     <ClInclude Include="Core\Film.h" />
     <ClInclude Include="Core\Intersection.h" />
     <ClInclude Include="Core\Light.h" />
@@ -21,6 +20,7 @@
     <ClInclude Include="Core\Primitive.h" />
     <ClInclude Include="Core\PrimitiveManager.h" />
     <ClInclude Include="Core\Renderer.h" />
+    <ClInclude Include="Core\RendererConfig.h" />
     <ClInclude Include="Core\Sample.h" />
     <ClInclude Include="Core\Sampler.h" />
     <ClInclude Include="Core\Scene.h" />

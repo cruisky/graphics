@@ -50,8 +50,8 @@ namespace TX {
 		inline float Atan2(float y, float x) { return atan2f(y, x); }
 
 
-		template <typename T1, typename T2> inline auto Max(const T1& n1, const T2 n2) -> decltype(n1 + n2) { return n1 > n2 ? n1 : n2; }
-		template <typename T1, typename T2> inline auto Min(const T1& n1, const T2 n2) -> decltype(n1 + n2) { return n1 < n2 ? n1 : n2; }
+		template <typename T1, typename T2> inline auto Max(const T1& n1, const T2& n2) -> decltype(n1 + n2) { return n1 > n2 ? n1 : n2; }
+		template <typename T1, typename T2> inline auto Min(const T1& n1, const T2& n2) -> decltype(n1 + n2) { return n1 < n2 ? n1 : n2; }
 		template <typename T> inline int Sign(const T& n){ return (T(0) < val) - (val < T(0)); }
 		template <typename T> inline bool InBounds(const T& n, const T& min, const T& max) { return !(n < min) && !(max < n); }
 		template <typename T> inline T Clamp(const T& val, const T& min, const T& max){

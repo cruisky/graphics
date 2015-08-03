@@ -108,9 +108,6 @@
     <ClInclude Include="Tracers\DirectLighting.h">
       <Filter>Header Files\Tracers</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Config.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Samplers\RandomSampler.h">
       <Filter>Header Files\Samplers</Filter>
     </ClInclude>
@@ -118,6 +115,9 @@
       <Filter>Header Files\Tracers</Filter>
     </ClInclude>
     <ClInclude Include="Core\Synchronizer.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\RendererConfig.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>

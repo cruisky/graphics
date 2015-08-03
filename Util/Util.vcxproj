@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
+    <ClInclude Include="Graphics\Filter.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Ray.h" />
     <ClInclude Include="Graphics\stb_image.h" />

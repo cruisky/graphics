@@ -2,22 +2,12 @@
 #include "fwddecl.h"
 
 #include <memory>
-#include "Tracer.h"
 #include "Synchronizer.h"
-#include "Sampler.h"
 #include "Sample.h"
-#include "Config.h"
+#include "RendererConfig.h"
 
 namespace TX {
 	namespace RayTracer {
-
-		struct RendererConfig {
-			RendererConfig(){}
-			int samples_per_pixel;
-			int width = 0, height = 0;
-			TracerType tracer_t;
-			SamplerType sampler_t;
-		};
 
 		class Renderer {
 		public:

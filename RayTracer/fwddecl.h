@@ -2,10 +2,14 @@
 
 namespace TX{
 
-	class Ray;
 	class Color;
+	class Filter;
+	class Ray;
+
 	class Vector3;
+	class Vector4;
 	class Matrix4x4;
+
 	class RNG;
 	class Timer;
 	class IProgressMonitor;

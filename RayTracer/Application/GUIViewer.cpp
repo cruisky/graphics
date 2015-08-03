@@ -5,7 +5,7 @@
 #include "Core/Scene.h"
 #include "Core/Camera.h"
 #include "Core/Renderer.h"
-#include "Core/Config.h"
+#include "Core/RendererConfig.h"
 #include "System/Tools.h"
 
 namespace TX{

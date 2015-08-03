@@ -12,7 +12,7 @@ namespace TX
 {
 	namespace RayTracer
 	{
-		Color Tracer::TraceDirectLight(const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
+		Color Tracer::TraceDirectLight(const Scene *scene, const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
 			Vector3 wo = -ray.dir;		// dir to camera
 			Ray lightray;
 			float light_pdf, bsdf_pdf;
@@ -22,7 +22,7 @@ namespace TX
 			light->Illuminate(geom.point, lightsample, &lightray, &lightcolor, &light_pdf);
 			if (light_pdf > 0.f && lightcolor != Color::BLACK){
 				surfacecolor = geom.bsdf->Eval(lightray.dir, wo, geom);
-				if (surfacecolor != Color::BLACK && !scene_->Occlude(lightray)){
+				if (surfacecolor != Color::BLACK && !scene->Occlude(lightray)){
 					if (light->IsDelta())
 						color = surfacecolor * lightcolor * (Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf);
 					else{
@@ -43,9 +43,9 @@ namespace TX
 				if (light_pdf == 0.f)
 					return color;
 				LocalGeo geom_light;
-				if (scene_->Intersect(lightray, geom_light)){
+				if (scene->Intersect(lightray, geom_light)){
 					if (light == geom_light.GetAreaLight()){
-						scene_->PostIntersect(lightray, geom_light);
+						scene->PostIntersect(lightray, geom_light);
 						geom_light.Emit(-lightray.dir, &lightcolor);
 					}
 				}
@@ -58,7 +58,7 @@ namespace TX
 			return color;
 		}
 
-		Color Tracer::TraceSpecularReflect(const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
+		Color Tracer::TraceSpecularReflect(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
 			Vector3 wo = -ray.dir, wi;
 			float pdf;
 			Color color;
@@ -67,12 +67,12 @@ namespace TX
 			if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 				Ray reflected(geom.point, wi);
 				// TODO differential
-				color = f * Li(reflected, depth, samplebuf) *absdot_wi_n / pdf;
+				color = f * Li(scene, reflected, depth, samplebuf) *absdot_wi_n / pdf;
 			}
 			return color;
 		}
 
-		Color Tracer::TraceSpecularTransmit(const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
+		Color Tracer::TraceSpecularTransmit(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
 			Vector3 wo = -ray.dir, wi;
 			float pdf;
 			Color color;
@@ -81,7 +81,7 @@ namespace TX
 			if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 				Ray refracted(geom.point, wi);
 				//TODO differential
-				color = f * Li(refracted, depth, samplebuf) * absdot_wi_n / pdf;
+				color = f * Li(scene, refracted, depth, samplebuf) * absdot_wi_n / pdf;
 			}
 			return color;
 		}

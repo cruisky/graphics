@@ -6,12 +6,8 @@
 #include "Sample.h"
 #include "Graphics/Color.h"
 #include "Graphics/Ray.h"
-#include "Config.h"
+#include "RendererConfig.h"
 #include "System/Tools.h"
-
-#include "Tracers/DirectLighting.h"
-#include "Tracers/PathTracer.h"
-#include "Samplers/RandomSampler.h"
 
 namespace TX {
 	namespace RayTracer {
@@ -27,23 +23,12 @@ namespace TX {
 
 		Renderer& Renderer::Config(const RendererConfig& config){
 			Resize(config.width, config.height);
-			switch (config.tracer_t){
-			case TracerType::DirectLighting:
-				tracer_ = std::make_unique<DirectLighting>(scene.get());
-				break;
-			case TracerType::PathTracing:
-			default:
-				tracer_ = std::make_unique<PathTracer>(scene.get());
-			}
+			tracer_.reset(config.NewTracer());
+			sampler_.reset(config.NewSampler());
 			// generate sample offset for current tracer
 			tracer_->BakeSamples(scene.get(), sample_buf_.get());
-
-			switch (config.sampler_t){
-			case SamplerType::Random:
-			default:
-				sampler_.reset(new RandomSampler);
-			}
-			config_ = config;
+			
+config_ = config;
 			return *this;
 		}
 
@@ -104,11 +89,11 @@ namespace TX {
 						sampler_->GetSamples(&sample_buf);
 						sample_buf.pix_x = x;
 						sample_buf.pix_y = y;
-						sample_buf.x = x + sample_buf.x;
-						sample_buf.y = y + sample_buf.y;
+						sample_buf.x += x;
+						sample_buf.y += y;
 						scene->camera->GenerateRay(&ray, sample_buf);
-						tracer_->Trace(ray, sample_buf, random, &c);
-						film->Commit(sample_buf, c);
+						tracer_->Trace(scene.get(), ray, sample_buf, random, &c);
+						film->Commit(sample_buf.x, sample_buf.y, c);
 					}
 				}
 				if (monitor_) monitor_->UpdateInc();

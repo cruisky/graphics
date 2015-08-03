@@ -4,15 +4,28 @@
 #include "Sampler.h"
 #include "Sample.h"
 #include "Graphics/Color.h"
+#include "Graphics/Filter.h"
 
 namespace TX
 {
 	namespace RayTracer {
-		void Film::Commit(const CameraSample& sample, const Color& color){
-			int offset = sample.pix_y * width_ + sample.pix_x;
-			unscaled_pixels_[offset] += color;
-			weights_[offset] += 1.f;
-			// TODO filter
+		void Film::Commit(float x, float y, const Color& color){
+			using namespace Math;
+			int offset;
+			x -= 0.5f;
+			y -= 0.5f;
+			int xmin = Max(0, Ceil(x - filter_->radius));
+			int xmax = Min(Floor(x + filter_->radius), width_ - 1);
+			int ymin = Max(0, Ceil(y - filter_->radius));
+			int ymax = Min(Floor(y + filter_->radius), height_ - 1);
+			for (int j = ymin; j <= ymax; j++){
+				for (int i = xmin; i <= xmax; i++){
+					float weight = filter_->Eval(i - x, j - y);
+					offset = j * width_ + i;
+					unscaled_pixels_[offset] += color * weight;
+					weights_[offset] += weight;
+				}
+			}
 		}
 
 		void Film::Resize(int width, int height){
@@ -23,6 +36,19 @@ namespace TX
 				pixels_.reset(new Color[width * height]);
 				unscaled_pixels_.reset(new Color[width * height]);
 				weights_.reset(new float[width * height]);
+			}
+		}
+
+		void Film::SetFilter(FilterType filter_t) {
+			switch (filter_t){
+			case FilterType::BoxFilter:
+				filter_.reset(new BoxFilter);
+				break;
+			case FilterType::GaussianFilter:
+				filter_.reset(new GaussianFilter);
+				break;
+			default:
+				throw "unimplemented";
 			}
 		}
 

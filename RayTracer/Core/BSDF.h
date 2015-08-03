@@ -18,10 +18,6 @@ namespace TX{
 			BSDF_ALL				= BSDF_ALL_REFLECTION | BSDF_ALL_TRANSMISSION
 		};
 
-		inline int NumComponents(BSDFType t){
-
-		}
-
 		//
 		// BSDF
 		//

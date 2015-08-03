@@ -10,13 +10,13 @@ namespace TX{
 	namespace RayTracer{
 		const int PathTracer::SAMPLE_DEPTH = 3;
 
-		PathTracer::PathTracer(const Scene *scene, int maxdepth) : Tracer(scene, maxdepth){
+		PathTracer::PathTracer(int maxdepth) : Tracer(maxdepth){
 			light_samples_.resize(maxdepth);
 			bsdf_samples_.resize(maxdepth);
 			scatter_samples_.resize(maxdepth);
 		}
 
-		Color PathTracer::Li(const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
+		Color PathTracer::Li(const Scene *scene, const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
 			Color Le, L, pathThroughput;
 			Vector3 wo, wi;
 			float pdf;
@@ -27,15 +27,15 @@ namespace TX{
 			Le = L = Color::BLACK;
 			pathThroughput = Color::WHITE;
 
-			auto countLights = scene_->lights.size();
+			auto countLights = scene->lights.size();
 			bool specBounce = true;
 
 			pathRay = ray;
 			const Sample *lightsample, *bsdfsample, *scattersample;
 
 			for (int bounce = 0; bounce < maxdepth_; ++bounce){
-				if (scene_->Intersect(pathRay, geom)){
-					scene_->PostIntersect(pathRay, geom);
+				if (scene->Intersect(pathRay, geom)){
+					scene->PostIntersect(pathRay, geom);
 					geom.ComputeDifferentials(pathRay);
 
 					wo = -pathRay.dir;
@@ -49,7 +49,7 @@ namespace TX{
 						lightsample = light_samples_[bounce](samplebuf);
 						bsdfsample = bsdf_samples_[bounce](samplebuf);
 						int lightIdx = (int)Math::Min(lightsample->w * countLights, countLights - 1);
-						L += pathThroughput * TraceDirectLight(pathRay, geom, scene_->lights[lightIdx].get(), lightsample, bsdfsample);
+						L += pathThroughput * TraceDirectLight(scene, pathRay, geom, scene->lights[lightIdx].get(), lightsample, bsdfsample);
 					}
 					scattersample = scatter_samples_[bounce](samplebuf);
 					Color f = geom.bsdf->Scatter(wo, geom, *scattersample, &wi, &pdf, BSDF_ALL, &sampled);

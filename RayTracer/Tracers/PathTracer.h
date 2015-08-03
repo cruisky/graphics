@@ -7,11 +7,11 @@ namespace TX{
 	namespace RayTracer{
 		class PathTracer : public Tracer {
 		public:
-			PathTracer(const Scene *scene, int maxdepth = 5);
+			PathTracer(int maxdepth = 5);
 			~PathTracer(){}
 			void BakeSamples(const Scene *scene, const CameraSample *samplebuf);
 		protected:
-			Color Li(const Ray& ray, int depth, const CameraSample& samplebuf);
+			Color Li(const Scene *scene, const Ray& ray, int depth, const CameraSample& samplebuf);
 		private:
 			static const int SAMPLE_DEPTH;
 			std::vector<SampleOffset> light_samples_;

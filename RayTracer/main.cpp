@@ -11,7 +11,7 @@
 #include "System/Tools.h"
 #include "Core/Sampler.h"
 #include "Core/Sample.h"
-#include "Core/Config.h"
+#include "Core/RendererConfig.h"
 #include "Core/BSDF.h"
 #include "Core/Film.h"
 #include "Core/Renderer.h"
@@ -111,7 +111,7 @@ void GUI(){
 
 	/////////////////////////////////////
 	// Scene
-	shared_ptr<Film> film(new Film);
+	shared_ptr<Film> film(new Film(FilterType::GaussianFilter));
 	shared_ptr<Scene> scene(new Scene(camera));
 
 	scene->AddPrimitive(w_bottom);
@@ -145,6 +145,12 @@ int main(){
 	try{
 		GUI();
 	}
+	catch (int ex){
+		fprintf(stderr, "Uncaught Exception: \n\t%d\n", ex);
+	}
+	catch (char const *ex){
+		fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex);
+	}
 	catch (const std::exception& ex) {
 		fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex.what());
 	}
@@ -152,6 +158,7 @@ int main(){
 		fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex);
 	}
 	catch (...) {
-		fprintf(stderr, "Uncaught Exception: \n\t%s\n", "UNKNOWN");
+		fprintf(stderr, "Uncaught Exception\n");
 	}
+	getchar();
 }
