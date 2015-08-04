@@ -22,6 +22,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmarker", "Benchmarker\
 		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Playground", "Playground\Playground.vcxproj", "{5AEAA63C-273E-4288-9BC6-D5296D1955DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -44,6 +49,10 @@ Global
 		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Debug|Win32.Build.0 = Debug|Win32
 		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Release|Win32.ActiveCfg = Release|Win32
 		{229477DF-8CC4-4629-90C1-6478C3454BE7}.Release|Win32.Build.0 = Release|Win32
+		{5AEAA63C-273E-4288-9BC6-D5296D1955DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5AEAA63C-273E-4288-9BC6-D5296D1955DA}.Debug|Win32.Build.0 = Debug|Win32
+		{5AEAA63C-273E-4288-9BC6-D5296D1955DA}.Release|Win32.ActiveCfg = Release|Win32
+		{5AEAA63C-273E-4288-9BC6-D5296D1955DA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -25,7 +25,7 @@ namespace TX{
 		}
 
 		void GUIViewer::Config(){
-			strcpy_s(config.title, "RayTracer");
+			config.title = "RayTracer";
 			config.width = scene_->camera->Width();
 			config.height = scene_->camera->Height();
 			config.fixsize = false;

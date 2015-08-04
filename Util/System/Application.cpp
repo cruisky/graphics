@@ -23,7 +23,7 @@ namespace TX
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 		glutInitWindowSize(config.width, config.height);
 
-		glutCreateWindow(config.title);
+		glutCreateWindow(config.title.data());
 		if (glewInit() != GLEW_OK)
 			throw std::runtime_error("glewInit failed");
 

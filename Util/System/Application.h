@@ -4,12 +4,13 @@
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
 #include <cstdio>
+#include <string>
 
 namespace TX{
 	class Application {
 	public:
 		struct AppConfig {
-			char title[128];
+			std::string title;
 			int width = 800;
 			int height = 600;
 			bool fullscreen = false;
@@ -58,13 +59,13 @@ namespace TX{
 		};
 
 	public:
-		Application() : argc(1), argv(nullptr){}
+		Application() : argc(1), argv(nullptr){ config.title = "Application"; }
 		Application(int argc, char **argv) : argc(argc), argv(argv){}
 		virtual ~Application(){}
 		void Run();
 
 		// Configures the window property
-		virtual void Config(){ strcpy_s(config.title, "Application"); }
+		virtual void Config(){}
 		// Called before main loop
 		virtual void Start(){}
 		// Rendering loop, returns true if need update
