@@ -3,6 +3,8 @@
 #include "Util.h"
 #include "Math/MathUtil.h"
 
+#undef RGB
+
 namespace TX{
 	class Color {
 	public:
@@ -21,6 +23,9 @@ namespace TX{
 		Color(const Color& ot) :
 			r(ot.r), g(ot.g), b(ot.b), a(ot.a){}
 		~Color(){}
+
+		static Color RGBA(uint32 code);
+		static Color RGB(uint32 code);
 
 		inline Color& operator = (const Color& ot) { r = ot.r, g = ot.g, b = ot.b, a = ot.a; return *this; }
 

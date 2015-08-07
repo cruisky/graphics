@@ -5,6 +5,58 @@
 
 namespace TX
 {
+	class Vector2 {
+	public:
+		union{
+			struct { float x, y; };
+			struct { float u, v; };
+			float f[2];
+		};
+		static const Vector2 X;
+		static const Vector2 Y;
+		static const Vector2 Z;
+		static const Vector2 UNIT[2];
+		static const Vector2 ZERO;
+		static const Vector2 ONE;
+	public:
+		__forceinline Vector2() : x(0.f), y(0.f){}
+		__forceinline Vector2(const Vector2& ot) : x(ot.x), y(ot.y){}
+		__forceinline Vector2(float v) : x(v), y(v){}
+		__forceinline Vector2(float x, float y) : x(x), y(y){}
+		__forceinline Vector2& operator = (const Vector2& ot){ x = ot.x; y = ot.y; return *this; }
+
+		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
+		__forceinline       float& operator [] (const size_t i)       { return f[i]; }
+		
+		__forceinline bool operator == (const Vector2& ot) const { return x == ot.x && y == ot.y; }
+		__forceinline bool operator != (const Vector2& ot) const { return x != ot.x || y != ot.y; }
+		__forceinline bool operator > (const Vector2& ot) const { return x > ot.x && y > ot.y; }
+		__forceinline bool operator >= (const Vector2& ot) const { return x >= ot.x && y >= ot.y; }
+		__forceinline bool operator < (const Vector2& ot) const { return x < ot.x && y < ot.y; }
+		__forceinline bool operator <= (const Vector2& ot) const { return x <= ot.x && y <= ot.y; }
+
+		__forceinline Vector2 operator + () const { return Vector2(+x, +y); }
+		__forceinline Vector2 operator - () const { return Vector2(-x, -y); }
+		__forceinline Vector2 operator + (const Vector2& ot) const { return Vector2(x + ot.x, y + ot.y); }
+		__forceinline Vector2 operator - (const Vector2& ot) const { return Vector2(x - ot.x, y - ot.y); }
+		__forceinline Vector2 operator * (const Vector2& ot) const { return Vector2(x * ot.x, y * ot.y); }
+		__forceinline Vector2 operator / (const Vector2& ot) const { return Vector2(x / ot.x, y / ot.y); }
+
+		__forceinline const Vector2& operator += (const Vector2& ot) { x += ot.x; y += ot.y; return *this; }
+		__forceinline const Vector2& operator -= (const Vector2& ot) { x -= ot.x; y -= ot.y; return *this; }
+		__forceinline const Vector2& operator *= (const Vector2& ot) { x *= ot.x; y *= ot.y; return *this; }
+		__forceinline const Vector2& operator /= (const Vector2& ot) { x /= ot.x; y /= ot.y; return *this; }
+	};
+	__forceinline std::ostream& operator << (std::ostream& os, const Vector2& v)
+	{
+		return os << "(" << v.x << ", " << v.y << ")";
+	}
+
+	namespace Math {
+		inline auto Min(const Vector2& v1, const Vector2& v2) -> decltype(v1 + v2) { return Vector2(Math::Min(v1.x, v2.x), Math::Min(v1.y, v2.y)); }
+		inline auto Max(const Vector2& v1, const Vector2& v2) -> decltype(v1 + v2) { return Vector2(Math::Max(v1.x, v2.x), Math::Max(v1.y, v2.y)); }
+	}
+
 	class Vector3 {
 	public:
 		union{
