@@ -2,7 +2,7 @@
 #include "Graphics/Color.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "Libs/stb_image_write.h"
 
 namespace TX{
 	void Image::Write(char const *filename, const Color *data, int width, int height, bool flip_y, Format format, Channel channel){

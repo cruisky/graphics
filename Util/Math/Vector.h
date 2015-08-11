@@ -46,11 +46,22 @@ namespace TX
 		__forceinline const Vector2& operator -= (const Vector2& ot) { x -= ot.x; y -= ot.y; return *this; }
 		__forceinline const Vector2& operator *= (const Vector2& ot) { x *= ot.x; y *= ot.y; return *this; }
 		__forceinline const Vector2& operator /= (const Vector2& ot) { x /= ot.x; y /= ot.y; return *this; }
+	
+		__forceinline float LengthSqr() const;
+		__forceinline float Length() const;
+		__forceinline Vector2& Normalize();
 	};
 	__forceinline std::ostream& operator << (std::ostream& os, const Vector2& v)
 	{
 		return os << "(" << v.x << ", " << v.y << ")";
 	}
+	__forceinline float Dot(const Vector2& u, const Vector2& v){ return u.x * v.x + u.y * v.y; }
+	__forceinline float AbsDot(const Vector2& u, const Vector2& v){ return Math::Abs(Dot(u, v)); }
+	__forceinline Vector2 Normalized(const Vector2& v) { return v * Math::Rsqrt(v.LengthSqr()); }
+	__forceinline float Vector2::LengthSqr() const { return Dot(*this, *this); }
+	__forceinline float Vector2::Length() const { return Math::Sqrt(LengthSqr()); }
+	__forceinline Vector2& Vector2::Normalize() { (*this) *= Math::Rsqrt(LengthSqr()); return *this; }
+
 
 	namespace Math {
 		inline auto Min(const Vector2& v1, const Vector2& v2) -> decltype(v1 + v2) { return Vector2(Math::Min(v1.x, v2.x), Math::Min(v1.y, v2.y)); }
@@ -158,6 +169,7 @@ namespace TX
 		__forceinline Vector4() : x(0.f), y(0.f), z(0.f), w(0.f){}
 		__forceinline Vector4(float f) : x(f), y(f), z(f), w(f){}
 		__forceinline Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w){}
+		__forceinline Vector4(const float *arr) : x(arr[0]), y(arr[1]), z(arr[2]), w(arr[3]){}
 		__forceinline Vector4(const Vector4& ot) : x(ot.x), y(ot.y), z(ot.z), w(ot.w){}
 
 		__forceinline operator const float*() const { return f; }
@@ -183,10 +195,17 @@ namespace TX
 		__forceinline Vector4& operator /= (const Vector4& ot) { x /= ot.x; y /= ot.y; z /= ot.z; w /= ot.w; return *this; }
 		__forceinline Vector4& operator /= (float d) { x /= d; y /= d; z /= d; z /= d; return *this; }
 
+		__forceinline float LengthSqr() const;
+		__forceinline float Length() const;
 	};
 	__forceinline std::ostream& operator << (std::ostream& os, const Vector4& v)
 	{
 		return os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	}
 	__forceinline Vector4 operator * (float s, const Vector4& v) { return v * s; }
+
+	__forceinline float Dot(const Vector4& u, const Vector4& v){ return u.x * v.x + u.y * v.y + u.z * v.z + u.w * v.w; }
+	__forceinline float AbsDot(const Vector4& u, const Vector4& v){ return Math::Abs(Dot(u, v)); }
+	__forceinline float Vector4::LengthSqr() const { return Dot(*this, *this); }
+	__forceinline float Vector4::Length() const { return Math::Sqrt(LengthSqr()); }
 }

@@ -1,4 +1,5 @@
-#include "System/Thread.h"
+#include "Thread.h"
+#include "Memory.h"
 
 namespace TX
 {
@@ -69,8 +70,7 @@ namespace TX
 	void ThreadScheduler::DeleteInstance(){
 		if (instance){
 			instance->StopAll();
-			delete instance;
-			instance = nullptr;
+			MemDelete(instance);
 		}
 	}
 	void ThreadScheduler::StartAll(){

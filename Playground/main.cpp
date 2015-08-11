@@ -1,6 +1,7 @@
 #include "System/Application.h"
 #include "Graphics/GUI.h"
-#include "Graphics/Canvas.h"
+#include "Graphics/FontMap.h"
+#include "Math/Geometry.h"
 
 using namespace TX;
 using namespace TX::UI;
@@ -8,33 +9,49 @@ using namespace TX::UI;
 class GUIDemo : public Application {
 private:
 	Input input;
-	Rect window;
+	Rect window[3];
+	FontMap font;
 public:
 	GUIDemo(){}
 	void Start(){ 
+		font.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
+		GUI::Init(font);
+
 		input.SetScreen(config.width, config.height); 
-		window = Rect(200, 100, 500, 400);
+		window[0] = Rect(0, 0, 200, 200);
+		window[1] = Rect(200, 100, 500, 400);
+		window[2] = Rect(400, 300, 600, 600);
 	}
 	void Config(){}
 	bool Render(){
 		glClearColor(0.8f, 0.9f, 1.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glViewport(0, 0, config.width, config.height);
 		GUI::BeginFrame(input);
 		
-		DrawRect(Vector2(50, 100), Vector2(250, 150), Color::GREEN);
-		GUI::BeginWindow("New Window", window);
+		GUI::BeginWindow("Window 0", window[0]);
 
 		GUI::EndWindow();
+
+		GUI::BeginWindow("Window 1", window[1]);
+
+		GUI::EndWindow();
+
+		GUI::BeginWindow("Window 2", window[2]);
+
+		GUI::EndWindow();
+		
 		GUI::EndFrame();
 		input.Clear();
 		return true;
 	}
-	void OnMouseMove(int x, int y){ input.SetMouse(x, y); }
+	void OnMouseMove(int x, int y){ input.SetMouse((float)x, (float)y); }
 	void OnMouseButton(MouseButton button, MouseButtonState state, int x, int y){ input.SetButton(button, state); }
 	void OnKey(unsigned char c, int x, int y){ input.AddKey(c); }
 	void OnSpecialKey(KeyCode code, int x, int y){ input.AddSpecialKey(code); }
-	void OnResize(){ input.SetScreen(config.width, config.height); }
+	void OnResize(){ 
+		input.SetScreen(config.width, config.height); 
+		glViewport(0, 0, config.width, config.height);
+	}
 };
 
 int main(){

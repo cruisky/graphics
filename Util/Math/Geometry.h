@@ -1,16 +1,21 @@
 #pragma once
 
+#include "Util.h"
 #include "Vector.h"
 
 namespace TX
 {
 	struct Rect {
-		Vector2 min, max;
+		union{
+			struct { Vector2 min, max; };
+			float f[4];
+		};
 		Rect(){}
 		Rect(const Vector2& min, const Vector2& max) : min(min), max(max){}
 		Rect(const Vector4& v) : min(v.x, v.y), max(v.z, v.w){}
 		Rect(float x1, float y1, float x2, float y2) : min(x1, y1), max(x2, y2){}
 
+		inline bool Valid() const { return min <= max; }
 		inline Vector2 Center() const { return (min + max) * 0.5f; }
 		inline Vector2 Size() const { return max - min; }
 		inline float Width() const { return max.x - min.x; }
@@ -39,4 +44,38 @@ namespace TX
 	inline std::ostream& operator << (std::ostream& os, const Rect& rect){
 		os << rect.min << " - " << rect.max;
 	}
+
+	// Assumes vertices are CCW ordered
+	class Polygon {
+		struct Vertex {
+			int id;
+			bool active;
+			bool ear;
+			bool convex;
+			const Vector2 *p;
+			Vertex *next;
+			Vertex *prev;
+			float cosine;
+			Vertex() : active(true){}
+		};
+	public:
+		std::vector<Vector2> points;
+	public:
+		Polygon(){}
+		Polygon(const Vector2 *pts, int count) : points(pts, pts + count){}
+		~Polygon(){}
+	public:
+		static bool IsConvex(const Vector2& v1, const Vector2& v2, const Vector2& v3);
+	public:
+		inline const Vector2& operator [] (size_t i) const { return points[i]; }
+		inline       Vector2& operator [] (size_t i)       { return points[i]; }
+		inline size_t Count() const { return points.size(); }
+		inline void Push(const Vector2& p){ points.push_back(p); }
+		inline void Pop(){ points.pop_back(); }
+		inline void Clear(){ points.clear(); }
+		void Triangulate(uint16 *indexBuffer, uint16 idxOffset = 0) const;
+	private:
+		static void UpdateVertex(Vertex& v, Vertex *vertices, int count);
+	};
+
 }

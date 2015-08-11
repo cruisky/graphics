@@ -66,7 +66,7 @@ namespace TX{ namespace UI{
 			keyCount = 0;
 			specialKeyCount = 0;
 		}
-		inline void SetScreen(int w, int h){ screen.x = w; screen.y = h; }
+		inline void SetScreen(int w, int h){ screen.x = (float)w; screen.y = (float)h; }
 		inline void SetMouse(float x, float y){ mouse.x = x, mouse.y = y; }
 		inline void SetButton(MouseButton b, MouseButtonState s){ button = b; buttonState = s; }
 		inline void AddKey(unsigned char c){ if (keyCount < 3) key[keyCount++] = c; }

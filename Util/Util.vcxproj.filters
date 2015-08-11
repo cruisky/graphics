@@ -24,6 +24,9 @@
     <Filter Include="Source Files\SSE">
       <UniqueIdentifier>{6114fba4-15ab-4e55-ae0e-19b171efe74e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Libs">
+      <UniqueIdentifier>{af7293c4-37c0-4dd4-a5d6-41ce3f8699e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h">
@@ -33,12 +36,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Ray.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\stb_image.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\stb_image_write.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathUtil.h">
@@ -74,9 +71,6 @@
     <ClInclude Include="Misc\TestHelpers.h">
       <Filter>Source Files\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="SSE\sse_mathfun.h">
-      <Filter>Source Files\SSE</Filter>
-    </ClInclude>
     <ClInclude Include="SSE\Float.h">
       <Filter>Source Files\SSE</Filter>
     </ClInclude>
@@ -95,10 +89,28 @@
     <ClInclude Include="System\Input.h">
       <Filter>Source Files\System</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Canvas.h">
+    <ClInclude Include="Graphics\Drawing.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Rect.h">
+    <ClInclude Include="Libs\sse_mathfun.h">
+      <Filter>Source Files\Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\stb_image.h">
+      <Filter>Source Files\Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\stb_image_write.h">
+      <Filter>Source Files\Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\stb_truetype.h">
+      <Filter>Source Files\Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\FontMap.h">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Memory.h">
+      <Filter>Source Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Geometry.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
@@ -145,8 +157,14 @@
     <ClCompile Include="Graphics\GUI.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\Canvas.cpp">
+    <ClCompile Include="Graphics\Drawing.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\FontMap.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Geometry.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
