@@ -54,6 +54,7 @@ namespace TX { namespace UI { namespace GUI {
 		Widget				hotToBe;
 		Widget				active;
 		vector<Window*>		windows;
+		Vector2				widgetPos;
 
 		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
@@ -83,7 +84,7 @@ namespace TX { namespace UI { namespace GUI {
 					}
 				}
 				if (!result){
-					windows.emplace_back(new Window(id));
+					windows.push_back(new Window(id));
 					result = windows.back();
 				}
 				result->accessed = true;
@@ -93,6 +94,7 @@ namespace TX { namespace UI { namespace GUI {
 		Window* NextWindow(const char *name)		{ current.Reset(GetWindow(name)); return current.window; }
 		const Widget& NextItem()					{ current.itemId++; current.index = 0; return current; }
 		const Widget& NextIndex()					{ current.index++; return current; }
+		const void AdvanceLine(int lines = 1)       { widgetPos.y += (style.LineHeight + style.WidgetPadding) * lines; }
 		const int CompareDist(const Widget& w1, const Widget& w2) {
 			if (w1.window == w2.window) return 0;
 			if (!w1.window) return 1;
@@ -103,8 +105,11 @@ namespace TX { namespace UI { namespace GUI {
 			assert(false);	// window does not exist
 			return 0;	
 		}
+		float CenterPadding(float containerSize, float elementSize){
+			return (containerSize - elementSize) * 0.5f;
+		}
 	};
-	static State state;
+	static State G;
 
 	////////////////////////////////////////////////////////////////////
 	// Helper declaration
@@ -122,9 +127,10 @@ namespace TX { namespace UI { namespace GUI {
 	////////////////////////////////////////////////////////////////////
 
 	void Init(FontMap& font){
-		state.style.Font = &font;
+		G.style.Font = &font;
+		G.style.TextPadding = (G.style.WindowPadding - font.Height()) * 0.9f;
 		const GLchar *vertShaderSrc = R"(
-			#version 400
+			#version 430
 			uniform mat4 proj;
 			in vec2 pos;
 			in vec2 uv;
@@ -137,7 +143,7 @@ namespace TX { namespace UI { namespace GUI {
 				gl_Position = proj * vec4(pos.xy,0,1);
 			})";
 		const GLchar *fragShaderSrc = R"(
-			#version 400
+			#version 430
 			#define PRECISION 0.00001
 			uniform sampler2D tex;
 			in vec2 fragUV;
@@ -154,82 +160,82 @@ namespace TX { namespace UI { namespace GUI {
 					outCol.w = texture(tex, fragUV.st).w;
 			})";
 
-		state.program = glCreateProgram();
-		state.vertShader = glCreateShader(GL_VERTEX_SHADER);
-		state.fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(state.vertShader, 1, &vertShaderSrc, 0);
-		glShaderSource(state.fragShader, 1, &fragShaderSrc, 0);
-		glCompileShader(state.vertShader);
-		glCompileShader(state.fragShader);
-		glAttachShader(state.program, state.vertShader);
-		glAttachShader(state.program, state.fragShader);
-		glLinkProgram(state.program);
+		G.program = glCreateProgram();
+		G.vertShader = glCreateShader(GL_VERTEX_SHADER);
+		G.fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(G.vertShader, 1, &vertShaderSrc, 0);
+		glShaderSource(G.fragShader, 1, &fragShaderSrc, 0);
+		glCompileShader(G.vertShader);
+		glCompileShader(G.fragShader);
+		glAttachShader(G.program, G.vertShader);
+		glAttachShader(G.program, G.fragShader);
+		glLinkProgram(G.program);
 
-		state.locProj = glGetUniformLocation(state.program, "proj");
-		state.locTex = glGetUniformLocation(state.program, "tex");
-		state.locPos = glGetAttribLocation(state.program, "pos");
-		state.locUV = glGetAttribLocation(state.program, "uv");
-		state.locCol = glGetAttribLocation(state.program, "col");
+		G.locProj = glGetUniformLocation(G.program, "proj");
+		G.locTex = glGetUniformLocation(G.program, "tex");
+		G.locPos = glGetAttribLocation(G.program, "pos");
+		G.locUV = glGetAttribLocation(G.program, "uv");
+		G.locCol = glGetAttribLocation(G.program, "col");
 		
-		glGenBuffers(1, &state.vbo);
-		glGenBuffers(1, &state.ebo);
+		glGenBuffers(1, &G.vbo);
+		glGenBuffers(1, &G.ebo);
 
-		glGenVertexArrays(1, &state.vao);
-		glBindVertexArray(state.vao);
-		glBindBuffer(GL_ARRAY_BUFFER, state.vbo);
-		glEnableVertexAttribArray(state.locPos);
-		glEnableVertexAttribArray(state.locUV);
-		glEnableVertexAttribArray(state.locCol);
+		glGenVertexArrays(1, &G.vao);
+		glBindVertexArray(G.vao);
+		glBindBuffer(GL_ARRAY_BUFFER, G.vbo);
+		glEnableVertexAttribArray(G.locPos);
+		glEnableVertexAttribArray(G.locUV);
+		glEnableVertexAttribArray(G.locCol);
 
 #define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
-		glVertexAttribPointer(state.locPos, 2, GL_FLOAT, GL_FALSE, sizeof(DrawVert), (GLvoid*)OFFSETOF(DrawVert, pos));
-		glVertexAttribPointer(state.locUV, 2, GL_FLOAT, GL_FALSE, sizeof(DrawVert), (GLvoid*)OFFSETOF(DrawVert, uv));
-		glVertexAttribPointer(state.locCol, 4, GL_FLOAT, GL_TRUE, sizeof(DrawVert), (GLvoid*)OFFSETOF(DrawVert, col));
+		glVertexAttribPointer(G.locPos, 2, GL_FLOAT, GL_FALSE, sizeof(DrawVert), (GLvoid*)OFFSETOF(DrawVert, pos));
+		glVertexAttribPointer(G.locUV, 2, GL_FLOAT, GL_FALSE, sizeof(DrawVert), (GLvoid*)OFFSETOF(DrawVert, uv));
+		glVertexAttribPointer(G.locCol, 4, GL_FLOAT, GL_TRUE, sizeof(DrawVert), (GLvoid*)OFFSETOF(DrawVert, col));
 #undef OFFSETOF
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 	void Shutdown(){
-		for (Window *w : state.windows) MemDelete(w);
+		for (Window *w : G.windows) MemDelete(w);
 
-		if (state.vao) glDeleteVertexArrays(1, &state.vao);
-		if (state.vbo) glDeleteBuffers(1, &state.vbo);
-		if (state.ebo) glDeleteBuffers(1, &state.ebo);
-		state.vao = state.vbo = state.ebo = 0;
+		if (G.vao) glDeleteVertexArrays(1, &G.vao);
+		if (G.vbo) glDeleteBuffers(1, &G.vbo);
+		if (G.ebo) glDeleteBuffers(1, &G.ebo);
+		G.vao = G.vbo = G.ebo = 0;
 
-		glDeleteProgram(state.program);
-		glDeleteShader(state.vertShader);
-		glDeleteShader(state.fragShader);
-		state.program = state.vertShader = state.fragShader = 0;
+		glDeleteProgram(G.program);
+		glDeleteShader(G.vertShader);
+		glDeleteShader(G.fragShader);
+		G.program = G.vertShader = G.fragShader = 0;
 	}
 
 	void BeginFrame(const Input& input){
-		state.input = input;
-		state.current.Reset();
-		state.hot = state.hotToBe;
-		state.hotToBe.Reset();
+		G.input = input;
+		G.current.Reset();
+		G.hot = G.hotToBe;
+		G.hotToBe.Reset();
 
-		for (Window *w : state.windows) w->Reset();
+		for (Window *w : G.windows) w->Reset();
 	}
 	void EndFrame(){
 		// focus on the window where the active widget is located
-		if (state.active.HasValue()){
-			Window *window = state.active.window;
+		if (G.active.HasValue()){
+			Window *window = G.active.window;
 			// move the window to the end
-			if (window != state.windows.back()){
-				for (int i = 0; i < state.windows.size(); i++)
-					if (state.windows[i] == window)
-						state.windows.erase(state.windows.begin() + i);
-				state.windows.push_back(window);
+			if (window != G.windows.back()){
+				for (int i = 0; i < G.windows.size(); i++)
+					if (G.windows[i] == window)
+						G.windows.erase(G.windows.begin() + i);
+				G.windows.push_back(window);
 			}
 		}
 		// delete windows we didn't touch in this frame
-		state.windows.erase(
+		G.windows.erase(
 			std::remove_if(
-				state.windows.begin(), state.windows.end(), 
+				G.windows.begin(), G.windows.end(), 
 				[](Window *w) {bool die = !w->accessed; if (die) delete w; return die; }), 
-			state.windows.end());
+			G.windows.end());
 
 		// ============================================================
 		// backup program & texture
@@ -238,8 +244,8 @@ namespace TX { namespace UI { namespace GUI {
 		glGetIntegerv(GL_TEXTURE_BINDING_2D, &lastTexture);
 		
 		// setup
-		const float w = state.input.screen.x;
-		const float h = state.input.screen.y;
+		const float w = G.input.screen.x;
+		const float h = G.input.screen.y;
 		const Matrix4x4 orthoProjection(
 			2.f/w,	0.f,	0.f,	0.f,
 			0.f,	2.f/-h,	0.f,	0.f,
@@ -255,21 +261,21 @@ namespace TX { namespace UI { namespace GUI {
 		glActiveTexture(GL_TEXTURE0);
 
 		// Render windows
-		glUseProgram(state.program);
-		glUniform1i(state.locTex, 0);
-		glUniformMatrix4fv(state.locProj, 1, GL_FALSE, &orthoProjection[0][0]);
-		glBindVertexArray(state.vao);
-		glBindTexture(GL_TEXTURE_2D, state.style.Font->TexID());
-		for (Window *w : state.windows){
+		glUseProgram(G.program);
+		glUniform1i(G.locTex, 0);
+		glUniformMatrix4fv(G.locProj, 1, GL_FALSE, &orthoProjection[0][0]);
+		glBindVertexArray(G.vao);
+		glBindTexture(GL_TEXTURE_2D, G.style.Font->TexID());
+		for (Window *w : G.windows){
 			const DrawIdx *idxBufOffset = 0;
 			DrawList& drawList = w->drawList;
 			if (drawList.cmdBuf.size() > 0){
-				glBindBuffer(GL_ARRAY_BUFFER, state.vbo);
+				glBindBuffer(GL_ARRAY_BUFFER, G.vbo);
 				glBufferData(GL_ARRAY_BUFFER,
 					(GLsizeiptr)drawList.vtxBuf.size() * sizeof(DrawVert),
 					(GLvoid*)drawList.vtxBuf.data(),
 					GL_STREAM_DRAW);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, state.ebo);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 					(GLsizeiptr)drawList.idxBuf.size() * sizeof(DrawIdx),
 					(GLvoid*)drawList.idxBuf.data(),
@@ -302,9 +308,9 @@ namespace TX { namespace UI { namespace GUI {
 	//  +-----------------------------------+---+
 	//  1 - Header, 2 - Body, 3 - Scroll
 	void BeginWindow(const char *name, Rect& rect){
-		Window *W = state.NextWindow(name);
-		float padding = state.style.WindowPadding;
-		float textPadding = (padding - state.style.Font->Height()) * 0.7f;
+		Window *W = G.NextWindow(name);
+		float padding = G.style.WindowPadding;
+		float textPadding = G.style.TextPadding;
 		Rect header(rect.min, Vector2(rect.max.x, rect.min.y + padding));
 		Rect body(
 			Vector2(rect.min.x, rect.min.y + padding),
@@ -317,18 +323,19 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				Rect dragArea(Vector2::ZERO, state.input.screen - Vector2(padding));
-				rect.MoveTo(dragArea.ClosestPoint(state.input.mouse - state.drag));
+				Rect dragArea(Vector2::ZERO, G.input.screen - Vector2(padding));
+				rect.MoveTo(dragArea.ClosestPoint(G.input.mouse - G.drag));
 			}
 		}
 		if (IsHot() && CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
-			state.active = state.current;
-			state.drag = state.input.mouse - rect.min;
+			G.active = G.current;
+			G.drag = G.input.mouse - rect.min;
 		}
-		if (body.Contains(state.input.mouse) || header.Contains(state.input.mouse)) {
+		if (body.Contains(G.input.mouse) || header.Contains(G.input.mouse)) {
 			SetHot();
 		}
 
+		// --------
 		W->drawList.PushClipRect(rect);
 
 		// Header
@@ -336,46 +343,87 @@ namespace TX { namespace UI { namespace GUI {
 			Vector2(rect.min.x, rect.min.y + padding),
 			rect.min + Vector2(padding),
 			Vector2(rect.min.x + padding, rect.min.y),
-			state.style.Colors[Style::Palette::AccentHighlight]);
+			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddRect(
 			Vector2(rect.min.x + padding, rect.min.y),
 			Vector2(rect.max.x, rect.min.y + padding),
-			state.style.Colors[Style::Palette::AccentHighlight]);
+			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddText(
 			rect.min.x + padding + textPadding,
 			rect.min.y + padding - textPadding,
-			state.style.Font,
+			G.style.Font,
 			name,
-			state.style.Colors[Style::Palette::Text]);
+			G.style.Colors[Style::Palette::Text]);
 		// Body
 		W->drawList.AddRect(
 			Vector2(rect.min.x, rect.min.y + padding),
 			rect.max,
-			state.style.Colors[Style::Palette::Background]);
+			G.style.Colors[Style::Palette::Background]);
+
+		// Update position of the next widget
+		G.widgetPos = rect.min + Vector2(padding, padding * 2);
 	}
 
 	void EndWindow(){
+	}
+
+	bool Button(const char *name, bool enabled){
+		G.NextItem(); bool clicked = false;
+
+		Color *bgColor = &G.style.Colors[Style::Palette::Accent];
+		float textWidth = G.style.Font->GetWidth(name);
+		Rect button(G.widgetPos, G.widgetPos + Vector2(textWidth + 2.f * G.style.ButtonPadding, G.style.LineHeight));
+		bool hovering = button.Contains(G.input.mouse);
+		if (hovering) {
+			SetHot();
+		}
+		if (IsHot()){
+			bgColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
+				G.active = G.current;
+			}
+		}
+		if (IsActive()){
+			bgColor = &G.style.Colors[Style::Palette::AccentActive];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
+				ClearActive();
+				if (hovering){
+					clicked = true;
+				}
+			}
+		}
+		// ------
+		G.current.window->drawList.AddRect(button.min, button.max, *bgColor, true);
+		G.current.window->drawList.AddText(
+			button.min.x + G.style.ButtonPadding,
+			button.max.y - G.style.TextPadding,
+			G.style.Font,
+			name,
+			G.style.Colors[Style::Palette::Text]);
+
+		G.AdvanceLine();
+		return clicked;
 	}
 	////////////////////////////////////////////////////////////////////
 	// Helper implementations
 	////////////////////////////////////////////////////////////////////
 
-	bool IsHot(){ return state.hot.HasValue() && state.hot == state.current; }
-	bool IsActive(){ return state.active.HasValue() && state.active == state.current; }
+	bool IsHot(){ return G.hot.HasValue() && G.hot == G.current; }
+	bool IsActive(){ return G.active.HasValue() && G.active == G.current; }
 	void SetHot(){
-		if (!state.active.HasValue() && 
-			state.hotToBe != state.current && 
-			state.CompareDist(state.hotToBe, state.current) > 0) {
-			state.hotToBe = state.current;
+		if (!G.active.HasValue() && 
+			G.hotToBe != G.current && 
+			G.CompareDist(G.hotToBe, G.current) >= 0) {
+			G.hotToBe = G.current;
 		}
 	}
 	void SetActive(){
-		state.active = state.current;
+		G.active = G.current;
 	}
 	void ClearActive(){
-		state.active.Reset();
+		G.active.Reset();
 	}
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState){
-		return state.input.button == button && state.input.buttonState == buttonState;
+		return G.input.button == button && G.input.buttonState == buttonState;
 	}
 }}}

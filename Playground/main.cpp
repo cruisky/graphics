@@ -29,7 +29,15 @@ public:
 		GUI::BeginFrame(input);
 		
 		GUI::BeginWindow("Window 0", window[0]);
-
+		if (GUI::Button("Button 0")){
+			std::cout << "0-0 clicked" << std::endl;
+		}
+		if (GUI::Button("Button 1")){
+			std::cout << "0-1 clicked" << std::endl;
+		}
+		if (GUI::Button("Button 2")){
+			std::cout << "0-2 clicked" << std::endl;
+		}
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);

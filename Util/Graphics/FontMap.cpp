@@ -45,21 +45,39 @@ namespace TX
 			throw "failed to open file: " + std::string(file);
 		}
 	}
-	bool FontMap::GetChar(const char *ch, Vector2& pos, Rect& rect, Rect& uv) const {
+	bool FontMap::GetChar(const char *ch, Vector2& pos, Rect *rect, Rect *uv) const {
 		if (*ch >= 32 && *ch < 128){
 			stbtt_aligned_quad q;
 			stbtt_GetBakedQuad(reinterpret_cast<stbtt_bakedchar*>(data),
 				bitmapSize, bitmapSize,
 				*ch - 32, &pos.x, &pos.y, &q, 1);
-			uv.min.x = q.s0; uv.min.y = q.t0;
-			uv.max.x = q.s1; uv.max.y = q.t1;
-			rect.min.x = q.x0; rect.min.y = q.y0;
-			rect.max.x = q.x1; rect.max.y = q.y1;
+			if (uv){
+				uv->min.x = q.s0; uv->min.y = q.t0;
+				uv->max.x = q.s1; uv->max.y = q.t1;
+			}
+			if (rect){
+				rect->min.x = q.x0; rect->min.y = q.y0;
+				rect->max.x = q.x1; rect->max.y = q.y1;
+			}
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
-
+	float FontMap::GetWidth(char c) const {
+		Rect r; Vector2 pos;
+		if (GetChar(&c, pos, &r)){
+			return pos.x;
+		}
+		else {
+			return 0.f;
+		}
+	}
+	float FontMap::GetWidth(const char *str) const {
+		Rect r;
+		Vector2 pos;
+		while (*str && GetChar(str++, pos, &r));
+		return pos.x;
+	}
 }

@@ -84,7 +84,7 @@ namespace TX
 		int length = std::strlen(text);
 		PrimReserve(length * 6, length * 4);
 		while (*text){
-			if (font->GetChar(text++, pos, rect, uv)){
+			if (font->GetChar(text++, pos, &rect, &uv)){
 				PrimRectUV(rect.min, rect.max, uv.min, uv.max, color);
 			}
 		}

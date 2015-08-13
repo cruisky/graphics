@@ -21,23 +21,27 @@ namespace TX {
 				};
 				float		WindowPadding;
 				float		WidgetPadding;
+				float		ButtonPadding;		// horizontal padding of a button
+				float		TextPadding;		// vertical padding of text to the bottom
+				float		LineHeight;
 				Color		Colors[Palette::COUNT];
 				FontMap		*Font;
 				Style(){
 					WindowPadding = 18;
-					WidgetPadding = 10;
+					WidgetPadding = 4;
+					ButtonPadding = 12;
+					LineHeight = 20;
 
 					Colors[Palette::Background] = Color::RGBA(0x0000007F);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Text] = Color::RGB(0xFFFFFF);
-					Colors[Palette::Hint] = Color::RGB(0x616161CC);
-					Colors[Palette::Accent] = Color::RGBA(0x01579BCC);				// Light Blue 900
-					Colors[Palette::AccentHighlight] = Color::RGBA(0x0277BDCC);		// Light Blue 800
-					Colors[Palette::AccentActive] = Color::RGBA(0x039BE5CC);		// Light Blue 600
+					Colors[Palette::Hint] = Color::RGB(0x616161);
+					Colors[Palette::Accent] = Color::RGB(0x01579B);				// Light Blue 900
+					Colors[Palette::AccentHighlight] = Color::RGB(0x0277BD);	// Light Blue 800
+					Colors[Palette::AccentActive] = Color::RGB(0x039BE5);		// Light Blue 600
 				}
 			};
 
-			Style& GetStyle();
 			void Init(FontMap& font);
 			void Shutdown();
 			void BeginFrame(const Input& input);
