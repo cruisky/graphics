@@ -11,6 +11,8 @@ private:
 	Input input;
 	Rect window[3];
 	FontMap font;
+	float floatSliderValue;
+	float floatSliderValue2;
 public:
 	GUIDemo(){}
 	void Start(){ 
@@ -38,9 +40,14 @@ public:
 		if (GUI::Button("Button 2")){
 			std::cout << "0-2 clicked" << std::endl;
 		}
+		GUI::FloatSlider("FloatSlider", &floatSliderValue, 0, 100);
+
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);
+
+		GUI::FloatSlider("FloatSlider", &floatSliderValue, -100, 100);
+		GUI::FloatSlider("FloatSlider", &floatSliderValue2, 0, 10);
 
 		GUI::EndWindow();
 

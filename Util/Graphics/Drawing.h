@@ -38,7 +38,7 @@ namespace TX
 
 		void AddRect(const Vector2& tl, const Vector2& br, const Color& color, bool fill = true, float thick = 1.f);
 		void AddTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& color, bool fill = true, float thick = 1.f);
-		void AddText(float x, float y, const FontMap *font, const char *text, const Color& color);
+		Vector2 AddText(float x, float y, const FontMap *font, const char *text, const Color& color);
 		void AddPolyLine(const Vector2* points, const int count, const Color& color, bool closed, float thick = 1.f);
 		void AddPolyFilled(const Vector2* points, const int count, const Color& color);
 

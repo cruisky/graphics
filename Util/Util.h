@@ -2,10 +2,13 @@
 #pragma warning(disable: 4800)
 
 #include <cmath>
+#include <string>
 #include <vector>
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <stdexcept>
 #include <algorithm>
 

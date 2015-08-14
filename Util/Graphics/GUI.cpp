@@ -15,6 +15,7 @@ namespace TX { namespace UI { namespace GUI {
 		DrawList		drawList;
 		bool			accessed;
 		void Reset(){ accessed = false; drawList.Clear(); }
+		const Rect& GetRect(){ return drawList.clipRectStack.back(); }
 		static uint32 GetID(const char *name){
 			// sdbm
 			uint32 hash = 0;
@@ -49,13 +50,13 @@ namespace TX { namespace UI { namespace GUI {
 	struct State {
 		Style				style;
 		Input				input;
+		vector<Window*>		windows;
 		Widget				current;
 		Widget				hot;
 		Widget				hotToBe;
 		Widget				active;
-		vector<Window*>		windows;
-		Vector2				widgetPos;
 
+		Vector2				widgetPos;
 		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
 		// OpenGL related
@@ -128,6 +129,7 @@ namespace TX { namespace UI { namespace GUI {
 
 	void Init(FontMap& font){
 		G.style.Font = &font;
+		G.style.WindowPadding = Math::Max(G.style.WindowPadding, font.Height() + 4.f);	// adjust window padding according to font height
 		G.style.TextPadding = (G.style.WindowPadding - font.Height()) * 0.9f;
 		const GLchar *vertShaderSrc = R"(
 			#version 430
@@ -360,7 +362,8 @@ namespace TX { namespace UI { namespace GUI {
 			rect.max,
 			G.style.Colors[Style::Palette::Background]);
 
-		// Update position of the next widget
+		// Update clip rect
+		W->drawList.PushClipRect(Rect(rect).Shrink(padding));
 		G.widgetPos = rect.min + Vector2(padding, padding * 2);
 	}
 
@@ -380,7 +383,7 @@ namespace TX { namespace UI { namespace GUI {
 		if (IsHot()){
 			bgColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
-				G.active = G.current;
+				SetActive();
 			}
 		}
 		if (IsActive()){
@@ -403,6 +406,61 @@ namespace TX { namespace UI { namespace GUI {
 
 		G.AdvanceLine();
 		return clicked;
+	}
+
+	bool FloatSlider(const char *name, float *pos, float min, float max){
+		G.NextItem(); bool changed = false;
+		G.widgetPos.y += G.style.WidgetPadding;		// needs double padding
+
+		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
+		float sliderSize = G.style.LineHeight * 0.5f;
+		float halfSliderSize = sliderSize * 0.5f;
+		Rect hotArea(
+			G.widgetPos.x, G.widgetPos.y + sliderSize,
+			G.current.window->GetRect().max.x, G.widgetPos.y + G.style.LineHeight);
+		Vector2 slider(G.widgetPos.x + halfSliderSize, G.widgetPos.y + G.style.LineHeight * 0.75f);
+		*pos = Math::Clamp(*pos, min, max);
+		float length = hotArea.Width() - sliderSize;
+		float offset = (*pos - min) / (max - min) * length;
+
+		bool hovering = hotArea.Contains(G.input.mouse);
+		if (hovering)
+			SetHot();
+		if (IsHot()){
+			sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN))
+				SetActive();
+		}
+		if (IsActive()){
+			sliderColor = &G.style.Colors[Style::Palette::AccentActive];
+			offset = Math::Clamp(G.input.mouse.x - slider.x, 0.f, length);
+			float newPos = (offset / length) * (max - min) + min;
+			if (newPos != *pos){
+				*pos = newPos;
+				changed = true;
+			}
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP))
+				ClearActive();
+		}
+		
+		// ------
+		Vector2 points[2] = { slider, slider + Vector2(length, 0.f) };
+		slider.x += offset;
+		G.current.window->drawList.AddPolyLine(points, 2, *sliderColor, false, 3.f);
+		G.current.window->drawList.AddRect(
+			slider - halfSliderSize,
+			slider + halfSliderSize,
+			*sliderColor,
+			true);
+		std::ostringstream text;
+		text << name << ":  " << std::setprecision(3) << std::fixed <<  *pos;
+		G.current.window->drawList.AddText(
+			hotArea.min.x, hotArea.min.y - G.style.TextPadding, 
+			G.style.Font, text.str().data(),
+			G.style.Colors[Style::Palette::Text]);
+
+		G.AdvanceLine();
+		return changed;
 	}
 	////////////////////////////////////////////////////////////////////
 	// Helper implementations

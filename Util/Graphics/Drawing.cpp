@@ -30,16 +30,15 @@ namespace TX
 
 	void DrawList::UpdateClipRect(){
 		DrawCmd *cmd = cmdBuf.size() ? &cmdBuf.back() : nullptr;
-		if (!cmd || cmd->idxCount != 0){
+		if (!cmd || cmd->idxCount != 0){	// push first cmd / pop cmd
 			AddDrawCmd();
 		}
 		else {
 			const Rect& clipRect = clipRectStack.size() ? clipRectStack.back() : NullClipRect;
-			const Rect& secondLast = cmdBuf.data()[cmdBuf.size() - 2].clipRect;
-			if (cmdBuf.size() > 1 && (Vector4(secondLast.f) - Vector4(clipRect.f)).Length() < 1e-4f)
-				cmdBuf.pop_back();
+			if (cmdBuf.size() > 1 && (Vector4(cmdBuf.data()[cmdBuf.size() - 2].clipRect.f) - Vector4(clipRect.f)).Length() < 1e-4f)
+				cmdBuf.pop_back();			// avoid duplicate
 			else
-				cmd->clipRect = clipRect;
+				cmd->clipRect = clipRect;	// do nothing
 		}
 	}
 
@@ -77,8 +76,8 @@ namespace TX
 			PathStroke(color, true, thick);
 		}
 	}
-	void DrawList::AddText(float x, float y, const FontMap *font, const char *text, const Color& color){
-		if (color.a == 0.f) return;
+	Vector2 DrawList::AddText(float x, float y, const FontMap *font, const char *text, const Color& color){
+		if (color.a == 0.f) return Vector2(x, y);
 		Vector2 pos(x, y);
 		Rect rect, uv;
 		int length = std::strlen(text);
@@ -88,7 +87,7 @@ namespace TX
 				PrimRectUV(rect.min, rect.max, uv.min, uv.max, color);
 			}
 		}
-
+		return pos;
 	}
 	void DrawList::AddPolyLine(const Vector2* points, const int count, const Color& color, bool closed, float thick){
 		if (color.a == 0.f || count < 2) return;

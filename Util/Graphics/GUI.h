@@ -28,8 +28,8 @@ namespace TX {
 				FontMap		*Font;
 				Style(){
 					WindowPadding = 18;
-					WidgetPadding = 4;
-					ButtonPadding = 12;
+					WidgetPadding = 6;
+					ButtonPadding = 10;
 					LineHeight = 20;
 
 					Colors[Palette::Background] = Color::RGBA(0x0000007F);
@@ -50,7 +50,7 @@ namespace TX {
 			void EndWindow();
 
 			bool Button(const char *name, bool enabled = true);
-			bool Slider(const char *name, float *pos, float min, float max, float step, bool enabled = true);
+			bool FloatSlider(const char *name, float *pos, float min, float max);
 		}
 	}
 }
