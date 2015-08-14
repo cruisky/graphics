@@ -40,14 +40,20 @@ public:
 		if (GUI::Button("Button 2")){
 			std::cout << "0-2 clicked" << std::endl;
 		}
-		GUI::FloatSlider("FloatSlider", &floatSliderValue, 0, 100);
+		if (GUI::FloatSlider("FloatSlider1", &floatSliderValue, 0, 100)){
+			std::cout << "floatSlider1 changed to " << floatSliderValue << std::endl;
+		}
 
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);
 
-		GUI::FloatSlider("FloatSlider", &floatSliderValue, -100, 100);
-		GUI::FloatSlider("FloatSlider", &floatSliderValue2, 0, 10);
+		if (GUI::FloatSlider("FloatSlider1", &floatSliderValue, -100, 100)){
+			std::cout << "floatSlider1 changed to " << floatSliderValue << std::endl;
+		}
+		if (GUI::FloatSlider("FloatSlider2", &floatSliderValue2, 0, 10)){
+			std::cout << "floatSlider2 changed to " << floatSliderValue2 << std::endl;
+		}
 
 		GUI::EndWindow();
 

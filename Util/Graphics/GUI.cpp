@@ -413,8 +413,10 @@ namespace TX { namespace UI { namespace GUI {
 		G.widgetPos.y += G.style.WidgetPadding;		// needs double padding
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
+		Color *trackColor = sliderColor;
 		float sliderSize = G.style.LineHeight * 0.5f;
 		float halfSliderSize = sliderSize * 0.5f;
+
 		Rect hotArea(
 			G.widgetPos.x, G.widgetPos.y + sliderSize,
 			G.current.window->GetRect().max.x, G.widgetPos.y + G.style.LineHeight);
@@ -427,11 +429,12 @@ namespace TX { namespace UI { namespace GUI {
 		if (hovering)
 			SetHot();
 		if (IsHot()){
-			sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			trackColor = sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN))
 				SetActive();
 		}
 		if (IsActive()){
+			trackColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			sliderColor = &G.style.Colors[Style::Palette::AccentActive];
 			offset = Math::Clamp(G.input.mouse.x - slider.x, 0.f, length);
 			float newPos = (offset / length) * (max - min) + min;
@@ -446,14 +449,14 @@ namespace TX { namespace UI { namespace GUI {
 		// ------
 		Vector2 points[2] = { slider, slider + Vector2(length, 0.f) };
 		slider.x += offset;
-		G.current.window->drawList.AddPolyLine(points, 2, *sliderColor, false, 3.f);
+		G.current.window->drawList.AddPolyLine(points, 2, *trackColor, false, 3.f);
 		G.current.window->drawList.AddRect(
 			slider - halfSliderSize,
 			slider + halfSliderSize,
 			*sliderColor,
 			true);
 		std::ostringstream text;
-		text << name << ":  " << std::setprecision(3) << std::fixed <<  *pos;
+		text << name << ":  " << std::setprecision(4) << std::fixed <<  *pos;
 		G.current.window->drawList.AddText(
 			hotArea.min.x, hotArea.min.y - G.style.TextPadding, 
 			G.style.Font, text.str().data(),
