@@ -32,13 +32,13 @@ namespace TX {
 					ButtonPadding = 10;
 					LineHeight = 20;
 
-					Colors[Palette::Background] = Color::RGBA(0x0000007F);
+					Colors[Palette::Background] = Color::RGBA(0x00000099);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Text] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Hint] = Color::RGB(0x616161);
-					Colors[Palette::Accent] = Color::RGB(0x01579B);				// Light Blue 900
-					Colors[Palette::AccentHighlight] = Color::RGB(0x0277BD);	// Light Blue 800
-					Colors[Palette::AccentActive] = Color::RGB(0x039BE5);		// Light Blue 600
+					Colors[Palette::Accent] = Color::RGB(0x00B0FF);				// Light Blue A400
+					Colors[Palette::AccentHighlight] = Color::RGB(0x40C4FF);	// Light Blue A200
+					Colors[Palette::AccentActive] = Color::RGB(0x80D8FF);		// Light Blue A100
 				}
 			};
 
