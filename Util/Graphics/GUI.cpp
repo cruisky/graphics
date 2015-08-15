@@ -116,6 +116,8 @@ namespace TX { namespace UI { namespace GUI {
 	// Helper declaration
 	////////////////////////////////////////////////////////////////////
 
+	typedef std::string (Tagger)(const char* tagName, void *val);
+
 	bool IsHot();
 	bool IsActive();
 	void SetHot();
@@ -408,7 +410,8 @@ namespace TX { namespace UI { namespace GUI {
 		return clicked;
 	}
 
-	bool FloatSlider(const char *name, float *val, float min, float max, float step){
+	template <typename T>
+	bool Slider(const char *name, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
 		G.widgetPos.y += G.style.WidgetPadding;		// needs double padding
 
@@ -433,9 +436,9 @@ namespace TX { namespace UI { namespace GUI {
 		if (IsActive()){
 			trackColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			sliderColor = &G.style.Colors[Style::Palette::AccentActive];
-			float newVal = Math::Lerp(Math::Clamp(G.input.mouse.x - slider.x, 0.f, length) / length, min, max);
+			T newVal = Math::Lerp(Math::Clamp(G.input.mouse.x - slider.x, 0.f, length) / length, min, max);
 			if (step > Math::EPSILON){
-				newVal = Math::Clamp(Math::Round((newVal - min) / step) * step + min, min, max);
+				newVal = Math::Clamp(Math::Round(float(newVal - min) / step) * step + min, min, max);
 			}
 			if (newVal != *val){
 				*val = newVal;
@@ -444,8 +447,8 @@ namespace TX { namespace UI { namespace GUI {
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP))
 				ClearActive();
 		}
-		float offset = Math::Clamp((*val - min) / (max - min) * length, 0.f, length);
-		
+		float offset = Math::Clamp(float(*val - min) / (max - min) * length, 0.f, length);
+
 		// ------
 		Vector2 points[2] = { slider, slider + Vector2(length, 0.f) };
 		slider.x += offset;
@@ -455,16 +458,31 @@ namespace TX { namespace UI { namespace GUI {
 			slider + halfSliderSize,
 			*sliderColor,
 			true);
-		std::ostringstream text;
-		text << name << ":  " << std::setprecision(4) << std::fixed << *val;
 		G.current.window->drawList.AddText(
-			hotArea.min.x, hotArea.min.y - G.style.TextPadding, 
-			G.style.Font, text.str().data(),
+			hotArea.min.x, hotArea.min.y - G.style.TextPadding,
+			G.style.Font, getTag(name, val).data(),
 			G.style.Colors[Style::Palette::Text]);
 
 		G.AdvanceLine();
 		return changed;
 	}
+
+	bool FloatSlider(const char *name, float *val, float min, float max, float step){
+		return Slider<float>(name, val, min, max, step, [](const char *name, void *v){
+			std::ostringstream text;
+			text << name << ":  " << std::setprecision(4) << std::fixed << *((float *)v);
+			return text.str();
+		});
+	}
+
+	bool IntSlider(const char *name, int *val, int min, int max, int step){
+		return Slider<int>(name, val, min, max, step, [](const char *name, void *v){
+			std::ostringstream text;
+			text << name << ":  " << *((int *)v);
+			return text.str();
+		});
+	}
+
 	////////////////////////////////////////////////////////////////////
 	// Helper implementations
 	////////////////////////////////////////////////////////////////////
