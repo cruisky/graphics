@@ -46,6 +46,8 @@ public:
 			GUI::IntSlider("Int Slider (with fixed step)", intSliderValue, 0, 100, 17);
 			GUI::IntSlider("Int Slider", intSliderValue, 0, 100);
 		
+			GUI::Divider();
+
 			GUI::RadioButton("Item 0", radioValue, 0);
 			GUI::RadioButton("Item 1", radioValue, 1);
 			GUI::RadioButton("Item 2", radioValue, 2);

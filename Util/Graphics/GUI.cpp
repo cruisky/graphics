@@ -371,6 +371,20 @@ namespace TX { namespace UI { namespace GUI {
 	void EndWindow(){
 	}
 
+	void Divider(){
+		Vector2 points[2];
+		const Rect& clipRect = G.current.window->GetRect();
+		points[0] = G.widgetPos;
+		points[1].x = clipRect.max.x;
+		points[1].y = G.widgetPos.y;
+		G.current.window->drawList.AddPolyLine(
+			points, 2,
+			G.style.Colors[Style::Palette::Hint],
+			false, 1.f);
+		G.widgetPos.y += G.style.WidgetPadding;
+	}
+
+
 	bool Button(const char *name, bool enabled){
 		G.NextItem(); bool clicked = false;
 
