@@ -36,13 +36,13 @@ namespace TX {
 					WidgetPadding = 8;
 					LineHeight = 20;
 
-					Colors[Palette::Background] = Color::RGBA(0x00000099);
+					Colors[Palette::Background] = Color::RGBA(0x212121BD);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Text] = Color::RGB(0xFFFFFF);
-					Colors[Palette::Hint] = Color::RGB(0x616161);
-					Colors[Palette::Accent] = Color::RGB(0x0091EA);				// Light Blue A700
-					Colors[Palette::AccentHighlight] = Color::RGB(0x00B0FF);	// Light Blue A400
-					Colors[Palette::AccentActive] = Color::RGB(0x80D8FF);		// Light Blue A100
+					Colors[Palette::Hint] = Color::RGBA(0xFFFFFF7F);
+					Colors[Palette::Accent] = Color::RGBA(0x0091EABD);			// Light Blue A700
+					Colors[Palette::AccentHighlight] = Color::RGBA(0x00B0FFBD);	// Light Blue A400
+					Colors[Palette::AccentActive] = Color::RGBA(0x80D8FFBD);	// Light Blue A100
 				}
 				void Update(){
 					if (Font){
