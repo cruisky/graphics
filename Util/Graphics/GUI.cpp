@@ -486,12 +486,8 @@ namespace TX { namespace UI { namespace GUI {
 		Color *holeColor = &G.style.Colors[Style::Palette::Accent];
 		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
 
-		if (hotArea.Contains(G.input.mouse)){
-			SetHot();
-		}
-		else {
-			ClearActive();
-		}
+		if (hotArea.Contains(G.input.mouse)) SetHot();
+		else ClearActive();
 		if (IsHot()){
 			holeColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
@@ -512,12 +508,12 @@ namespace TX { namespace UI { namespace GUI {
 		Vector2 center = hotArea.Center();
 		G.current.window->drawList.AddCircle(
 			center,
-			G.style.FormWidgetSize * 0.5f,
+			G.style.FormWidgetRadius,
 			*holeColor, true);
 		if (val == itemVal){
 			G.current.window->drawList.AddCircle(
 				center,
-				G.style.FormWidgetSelectedSize * 0.5f,
+				G.style.FormWidgetSelectedRadius,
 				G.style.Colors[Style::Palette::AccentActive],
 				true);
 		}
@@ -528,6 +524,52 @@ namespace TX { namespace UI { namespace GUI {
 			name,
 			G.style.Colors[Style::Palette::Text]);
 		
+		G.AdvanceLine();
+		return changed;
+	}
+	bool CheckBox(const char *name, bool& val){
+		G.NextItem(); bool changed = false;
+
+		Color *boxColor = &G.style.Colors[Style::Palette::Accent];
+		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+
+		if (hotArea.Contains(G.input.mouse)) SetHot();
+		else ClearActive();
+		if (IsHot()){
+			boxColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
+				SetActive();
+			}
+		}
+		if (IsActive()){
+			boxColor = &G.style.Colors[Style::Palette::AccentActive];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
+				ClearActive();
+				val = !val;
+				changed = true;
+			}
+		}
+
+		// -----------
+		Vector2 center = hotArea.Center();
+		G.current.window->drawList.AddRect(
+			center - G.style.FormWidgetRadius,
+			center + G.style.FormWidgetRadius,
+			*boxColor, true);
+		if (val){
+			G.current.window->drawList.AddRect(
+				center - G.style.FormWidgetSelectedRadius,
+				center + G.style.FormWidgetSelectedRadius,
+				G.style.Colors[Style::Palette::AccentActive],
+				true);
+		}
+		G.current.window->drawList.AddText(
+			hotArea.max.x + G.style.TextPaddingX,
+			hotArea.max.y - G.style.TextPaddingY,
+			G.style.Font,
+			name,
+			G.style.Colors[Style::Palette::Text]);
+
 		G.AdvanceLine();
 		return changed;
 	}

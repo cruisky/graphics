@@ -27,8 +27,8 @@ namespace TX {
 				// -------- auto adjusted -------
 				float		TextPaddingX;		// horizontal padding of text (similar to tab)
 				float		TextPaddingY;		// vertical padding of text to the bottom
-				float		FormWidgetSize;		// radio button, checkbox
-				float		FormWidgetSelectedSize;
+				float		FormWidgetRadius;		// radio button, checkbox
+				float		FormWidgetSelectedRadius;
 
 				FontMap		*Font;
 				Style(){
@@ -50,8 +50,8 @@ namespace TX {
 						TextPaddingX = Font->Height() * 0.5f;
 						TextPaddingY = (WindowPadding - Font->Height()) * 0.9f;
 					}
-					FormWidgetSize = LineHeight * 0.85f;
-					FormWidgetSelectedSize = FormWidgetSize * 0.5f;
+					FormWidgetRadius = LineHeight * 0.4f;
+					FormWidgetSelectedRadius = FormWidgetRadius * 0.5f;
 				}
 			};
 
@@ -66,6 +66,7 @@ namespace TX {
 			bool FloatSlider(const char *name, float& val, float min, float max, float step = 0.f);
 			bool IntSlider(const char *name, int& val, int min, int max, int step = 0);
 			bool RadioButton(const char *name, int& val, int itemVal);
+			bool CheckBox(const char *name, bool& val);
 		}
 	}
 }
