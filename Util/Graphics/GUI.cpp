@@ -408,7 +408,7 @@ namespace TX { namespace UI { namespace GUI {
 		return clicked;
 	}
 
-	bool FloatSlider(const char *name, float *pos, float min, float max){
+	bool FloatSlider(const char *name, float *val, float min, float max, float step){
 		G.NextItem(); bool changed = false;
 		G.widgetPos.y += G.style.WidgetPadding;		// needs double padding
 
@@ -421,12 +421,9 @@ namespace TX { namespace UI { namespace GUI {
 			G.widgetPos.x, G.widgetPos.y + sliderSize,
 			G.current.window->GetRect().max.x, G.widgetPos.y + G.style.LineHeight);
 		Vector2 slider(G.widgetPos.x + halfSliderSize, G.widgetPos.y + G.style.LineHeight * 0.75f);
-		*pos = Math::Clamp(*pos, min, max);
 		float length = hotArea.Width() - sliderSize;
-		float offset = (*pos - min) / (max - min) * length;
 
-		bool hovering = hotArea.Contains(G.input.mouse);
-		if (hovering)
+		if (hotArea.Contains(G.input.mouse))
 			SetHot();
 		if (IsHot()){
 			trackColor = sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
@@ -436,15 +433,18 @@ namespace TX { namespace UI { namespace GUI {
 		if (IsActive()){
 			trackColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			sliderColor = &G.style.Colors[Style::Palette::AccentActive];
-			offset = Math::Clamp(G.input.mouse.x - slider.x, 0.f, length);
-			float newPos = (offset / length) * (max - min) + min;
-			if (newPos != *pos){
-				*pos = newPos;
+			float newVal = Math::Lerp(Math::Clamp(G.input.mouse.x - slider.x, 0.f, length) / length, min, max);
+			if (step > Math::EPSILON){
+				newVal = Math::Clamp(Math::Round((newVal - min) / step) * step + min, min, max);
+			}
+			if (newVal != *val){
+				*val = newVal;
 				changed = true;
 			}
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP))
 				ClearActive();
 		}
+		float offset = Math::Clamp((*val - min) / (max - min) * length, 0.f, length);
 		
 		// ------
 		Vector2 points[2] = { slider, slider + Vector2(length, 0.f) };
@@ -456,7 +456,7 @@ namespace TX { namespace UI { namespace GUI {
 			*sliderColor,
 			true);
 		std::ostringstream text;
-		text << name << ":  " << std::setprecision(4) << std::fixed <<  *pos;
+		text << name << ":  " << std::setprecision(4) << std::fixed << *val;
 		G.current.window->drawList.AddText(
 			hotArea.min.x, hotArea.min.y - G.style.TextPadding, 
 			G.style.Font, text.str().data(),

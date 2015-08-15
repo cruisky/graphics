@@ -11,8 +11,8 @@ private:
 	Input input;
 	Rect window[3];
 	FontMap font;
-	float floatSliderValue;
-	float floatSliderValue2;
+	float floatSliderValue1 = 10.f;
+	float floatSliderValue2 = 50.f;
 public:
 	GUIDemo(){}
 	void Start(){ 
@@ -40,16 +40,16 @@ public:
 		if (GUI::Button("Button 2")){
 			std::cout << "0-2 clicked" << std::endl;
 		}
-		if (GUI::FloatSlider("FloatSlider1", &floatSliderValue, 0, 100)){
-			std::cout << "floatSlider1 changed to " << floatSliderValue << std::endl;
+		if (GUI::FloatSlider("FloatSlider1", &floatSliderValue1, 0, 100)){
+			std::cout << "floatSlider1 changed to " << floatSliderValue1 << std::endl;
 		}
 
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);
 
-		if (GUI::FloatSlider("FloatSlider1", &floatSliderValue, -100, 100)){
-			std::cout << "floatSlider1 changed to " << floatSliderValue << std::endl;
+		if (GUI::FloatSlider("FloatSlider1 (with fixed step)", &floatSliderValue1, -100, 100, 10.f)){
+			std::cout << "floatSlider1 changed to " << floatSliderValue1 << std::endl;
 		}
 		if (GUI::FloatSlider("FloatSlider2", &floatSliderValue2, 0, 10)){
 			std::cout << "floatSlider2 changed to " << floatSliderValue2 << std::endl;

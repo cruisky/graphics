@@ -50,7 +50,7 @@ namespace TX {
 			void EndWindow();
 
 			bool Button(const char *name, bool enabled = true);
-			bool FloatSlider(const char *name, float *pos, float min, float max);
+			bool FloatSlider(const char *name, float *pos, float min, float max, float step = 0.f);
 		}
 	}
 }
