@@ -14,6 +14,7 @@ private:
 	float floatSliderValue1 = 10.f;
 	float floatSliderValue2 = 50.f;
 	int intSliderValue = 42;
+	int radioValue = 0;
 public:
 	GUIDemo(){}
 	void Start(){ 
@@ -35,17 +36,20 @@ public:
 		GUI::Button("Button 0");
 		GUI::Button("Button 1");
 		GUI::Button("Button 2");
-		GUI::FloatSlider("FloatSlider1", &floatSliderValue1, 0, 100);
+		GUI::FloatSlider("FloatSlider1", floatSliderValue1, 0, 100);
 
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);
 
-		GUI::FloatSlider("FloatSlider1 (with fixed step)", &floatSliderValue1, -100, 100, 10.f);
-		GUI::FloatSlider("FloatSlider2", &floatSliderValue2, 0, 10);
-		GUI::IntSlider("IntSlider (with fixed step)", &intSliderValue, 0, 100, 17);
-		GUI::IntSlider("IntSlider", &intSliderValue, 0, 100);
-
+		GUI::FloatSlider("FloatSlider1 (with fixed step)", floatSliderValue1, -100, 100, 10.f);
+		GUI::FloatSlider("FloatSlider2", floatSliderValue2, 0, 10);
+		GUI::IntSlider("IntSlider (with fixed step)", intSliderValue, 0, 100, 17);
+		GUI::IntSlider("IntSlider", intSliderValue, 0, 100);
+		
+		GUI::RadioButton("Item 0", radioValue, 0);
+		GUI::RadioButton("Item 1", radioValue, 1);
+		GUI::RadioButton("Item 2", radioValue, 2);
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 2", window[2]);

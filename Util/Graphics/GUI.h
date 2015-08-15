@@ -21,24 +21,37 @@ namespace TX {
 				};
 				float		WindowPadding;
 				float		WidgetPadding;
-				float		ButtonPadding;		// horizontal padding of a button
-				float		TextPadding;		// vertical padding of text to the bottom
 				float		LineHeight;
 				Color		Colors[Palette::COUNT];
+
+				// -------- auto adjusted -------
+				float		TextPaddingX;		// horizontal padding of text (similar to tab)
+				float		TextPaddingY;		// vertical padding of text to the bottom
+				float		FormWidgetSize;		// radio button, checkbox
+				float		FormWidgetSelectedSize;
+
 				FontMap		*Font;
 				Style(){
 					WindowPadding = 18;
-					WidgetPadding = 6;
-					ButtonPadding = 10;
+					WidgetPadding = 8;
 					LineHeight = 20;
 
 					Colors[Palette::Background] = Color::RGBA(0x00000099);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Text] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Hint] = Color::RGB(0x616161);
-					Colors[Palette::Accent] = Color::RGB(0x00B0FF);				// Light Blue A400
-					Colors[Palette::AccentHighlight] = Color::RGB(0x40C4FF);	// Light Blue A200
+					Colors[Palette::Accent] = Color::RGB(0x0091EA);				// Light Blue A700
+					Colors[Palette::AccentHighlight] = Color::RGB(0x00B0FF);	// Light Blue A400
 					Colors[Palette::AccentActive] = Color::RGB(0x80D8FF);		// Light Blue A100
+				}
+				void Update(){
+					if (Font){
+						WindowPadding = Math::Max(WindowPadding, Font->Height() + 4.f);	// adjust window padding according to font height
+						TextPaddingX = Font->Height() * 0.5f;
+						TextPaddingY = (WindowPadding - Font->Height()) * 0.9f;
+					}
+					FormWidgetSize = LineHeight * 0.85f;
+					FormWidgetSelectedSize = FormWidgetSize * 0.5f;
 				}
 			};
 
@@ -50,8 +63,9 @@ namespace TX {
 			void EndWindow();
 
 			bool Button(const char *name, bool enabled = true);
-			bool FloatSlider(const char *name, float *val, float min, float max, float step = 0.f);
-			bool IntSlider(const char *name, int *val, int min, int max, int step = 0);
+			bool FloatSlider(const char *name, float& val, float min, float max, float step = 0.f);
+			bool IntSlider(const char *name, int& val, int min, int max, int step = 0);
+			bool RadioButton(const char *name, int& val, int itemVal);
 		}
 	}
 }

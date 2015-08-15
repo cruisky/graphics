@@ -76,6 +76,17 @@ namespace TX
 			PathStroke(color, true, thick);
 		}
 	}
+	void DrawList::AddCircle(const Vector2& center, float radius, const Color& color, bool fill, float thick){
+		if (color.a == 0.f) return;
+		PathArc(center, radius, 0, 11);
+		if (fill){
+			PathFill(color);
+		}
+		else {
+			PathStroke(color, true, thick);
+		}
+	}
+
 	Vector2 DrawList::AddText(float x, float y, const FontMap *font, const char *text, const Color& color){
 		if (color.a == 0.f) return Vector2(x, y);
 		Vector2 pos(x, y);
@@ -136,6 +147,33 @@ namespace TX
 		}
 		vtxCurrIdx += vtxCount;
 	}
+
+	void DrawList::PathArc(const Vector2& center, float radius, int clockPos1, int clockPos2){
+		static const int VTX_COUNT = 12;
+		static Vector2 circle[VTX_COUNT];
+		static bool circleInit = false;
+
+		if (!circleInit){
+			for (int i = 0; i < VTX_COUNT; i++){
+				float deg = float(i) / VTX_COUNT * Math::TWO_PI;
+				circle[i].x = Math::Cos(deg);
+				circle[i].y = Math::Sin(deg);
+			}
+			circleInit = true;
+		}
+		if (clockPos1 > clockPos2) return;
+		if (radius < Math::EPSILON){
+			path.push_back(center);
+		}
+		else {
+			PathReserve(clockPos2 - clockPos1 + 1);
+			for (int pos = clockPos1; pos <= clockPos2; pos++){
+				const Vector2& dir = circle[pos % VTX_COUNT];
+				PathPoint(center + dir * radius);
+			}
+		}
+	}
+
 
 	void DrawList::PrimReserve(int idxCount, int vtxCount){
 		DrawCmd& cmd = cmdBuf.back();

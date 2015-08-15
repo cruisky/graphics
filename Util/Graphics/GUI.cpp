@@ -131,10 +131,9 @@ namespace TX { namespace UI { namespace GUI {
 
 	void Init(FontMap& font){
 		G.style.Font = &font;
-		G.style.WindowPadding = Math::Max(G.style.WindowPadding, font.Height() + 4.f);	// adjust window padding according to font height
-		G.style.TextPadding = (G.style.WindowPadding - font.Height()) * 0.9f;
+		G.style.Update();
 		const GLchar *vertShaderSrc = R"(
-			#version 430
+			#version 330
 			uniform mat4 proj;
 			in vec2 pos;
 			in vec2 uv;
@@ -147,7 +146,7 @@ namespace TX { namespace UI { namespace GUI {
 				gl_Position = proj * vec4(pos.xy,0,1);
 			})";
 		const GLchar *fragShaderSrc = R"(
-			#version 430
+			#version 330
 			#define PRECISION 0.00001
 			uniform sampler2D tex;
 			in vec2 fragUV;
@@ -314,7 +313,7 @@ namespace TX { namespace UI { namespace GUI {
 	void BeginWindow(const char *name, Rect& rect){
 		Window *W = G.NextWindow(name);
 		float padding = G.style.WindowPadding;
-		float textPadding = G.style.TextPadding;
+		float textPadding = G.style.TextPaddingY;
 		Rect header(rect.min, Vector2(rect.max.x, rect.min.y + padding));
 		Rect body(
 			Vector2(rect.min.x, rect.min.y + padding),
@@ -377,7 +376,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color *bgColor = &G.style.Colors[Style::Palette::Accent];
 		float textWidth = G.style.Font->GetWidth(name);
-		Rect button(G.widgetPos, G.widgetPos + Vector2(textWidth + 2.f * G.style.ButtonPadding, G.style.LineHeight));
+		Rect button(G.widgetPos, G.widgetPos + Vector2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
 		bool hovering = button.Contains(G.input.mouse);
 		if (hovering) {
 			SetHot();
@@ -400,8 +399,8 @@ namespace TX { namespace UI { namespace GUI {
 		// ------
 		G.current.window->drawList.AddRect(button.min, button.max, *bgColor, true);
 		G.current.window->drawList.AddText(
-			button.min.x + G.style.ButtonPadding,
-			button.max.y - G.style.TextPadding,
+			button.min.x + G.style.TextPaddingX,
+			button.max.y - G.style.TextPaddingY,
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
@@ -413,7 +412,6 @@ namespace TX { namespace UI { namespace GUI {
 	template <typename T>
 	bool Slider(const char *name, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
-		G.widgetPos.y += G.style.WidgetPadding;		// needs double padding
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
 		Color *trackColor = sliderColor;
@@ -459,7 +457,7 @@ namespace TX { namespace UI { namespace GUI {
 			*sliderColor,
 			true);
 		G.current.window->drawList.AddText(
-			hotArea.min.x, hotArea.min.y - G.style.TextPadding,
+			hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
 			G.style.Font, getTag(name, val).data(),
 			G.style.Colors[Style::Palette::Text]);
 
@@ -467,21 +465,73 @@ namespace TX { namespace UI { namespace GUI {
 		return changed;
 	}
 
-	bool FloatSlider(const char *name, float *val, float min, float max, float step){
-		return Slider<float>(name, val, min, max, step, [](const char *name, void *v){
+	bool FloatSlider(const char *name, float& val, float min, float max, float step){
+		return Slider<float>(name, &val, min, max, step, [](const char *name, void *v){
 			std::ostringstream text;
 			text << name << ":  " << std::setprecision(4) << std::fixed << *((float *)v);
 			return text.str();
 		});
 	}
 
-	bool IntSlider(const char *name, int *val, int min, int max, int step){
-		return Slider<int>(name, val, min, max, step, [](const char *name, void *v){
+	bool IntSlider(const char *name, int& val, int min, int max, int step){
+		return Slider<int>(name, &val, min, max, step, [](const char *name, void *v){
 			std::ostringstream text;
 			text << name << ":  " << *((int *)v);
 			return text.str();
 		});
 	}
+	bool RadioButton(const char *name, int& val, int itemVal){
+		G.NextItem(); bool changed = false;
+
+		Color *holeColor = &G.style.Colors[Style::Palette::Accent];
+		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+
+		if (hotArea.Contains(G.input.mouse)){
+			SetHot();
+		}
+		else {
+			ClearActive();
+		}
+		if (IsHot()){
+			holeColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
+				SetActive();
+			}
+		}
+		if (IsActive()){
+			holeColor = &G.style.Colors[Style::Palette::AccentActive];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
+				if (val != itemVal){
+					val = itemVal;
+					changed = true;
+				}
+				ClearActive();
+			}
+		}
+		// -----------
+		Vector2 center = hotArea.Center();
+		G.current.window->drawList.AddCircle(
+			center,
+			G.style.FormWidgetSize * 0.5f,
+			*holeColor, true);
+		if (val == itemVal){
+			G.current.window->drawList.AddCircle(
+				center,
+				G.style.FormWidgetSelectedSize * 0.5f,
+				G.style.Colors[Style::Palette::AccentActive],
+				true);
+		}
+		G.current.window->drawList.AddText(
+			hotArea.max.x + G.style.TextPaddingX,
+			hotArea.max.y - G.style.TextPaddingY,
+			G.style.Font,
+			name,
+			G.style.Colors[Style::Palette::Text]);
+		
+		G.AdvanceLine();
+		return changed;
+	}
+
 
 	////////////////////////////////////////////////////////////////////
 	// Helper implementations
@@ -500,7 +550,8 @@ namespace TX { namespace UI { namespace GUI {
 		G.active = G.current;
 	}
 	void ClearActive(){
-		G.active.Reset();
+		if (IsActive())
+			G.active.Reset();
 	}
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState){
 		return G.input.button == button && G.input.buttonState == buttonState;

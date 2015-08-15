@@ -38,6 +38,7 @@ namespace TX
 
 		void AddRect(const Vector2& tl, const Vector2& br, const Color& color, bool fill = true, float thick = 1.f);
 		void AddTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& color, bool fill = true, float thick = 1.f);
+		void AddCircle(const Vector2& center, float radius, const Color& color, bool fill = true, float thick = 1.f);
 		Vector2 AddText(float x, float y, const FontMap *font, const char *text, const Color& color);
 		void AddPolyLine(const Vector2* points, const int count, const Color& color, bool closed, float thick = 1.f);
 		void AddPolyFilled(const Vector2* points, const int count, const Color& color);
@@ -56,6 +57,7 @@ namespace TX
 			PathPoint(br); 
 			PathPoint(Vector2(tl.x, br.y)); 
 		}
+		void PathArc(const Vector2& center, float radius, int clockPos1, int clockPos2);
 	
 		void PrimReserve(int idxCount, int vtxCount);
 		void PrimRect(const Vector2& tl, const Vector2& br, const Color& c);
