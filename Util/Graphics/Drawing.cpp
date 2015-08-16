@@ -68,11 +68,13 @@ namespace TX
 	}
 	void DrawList::AddTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& color, bool fill, float thick){
 		if (color.a == 0.f) return;
-		PathPoint(v1); PathPoint(v2); PathPoint(v3);
+
 		if (fill){
-			PathFill(color);
+			PrimReserve(3, 3);
+			PrimTriangle(v1, v2, v3, color);
 		}
 		else {
+			PathPoint(v1); PathPoint(v2); PathPoint(v3);
 			PathStroke(color, true, thick);
 		}
 	}
@@ -187,6 +189,16 @@ namespace TX
 		idxBuf.resize(idxBufSize + idxCount);
 		idxPtr = idxBuf.data() + idxBufSize;
 	}
+	void DrawList::PrimTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& c){
+		idxPtr[0] = vtxCurrIdx;
+		idxPtr[1] = vtxCurrIdx + 1;
+		idxPtr[2] = vtxCurrIdx + 2;
+		idxPtr += 3;
+		PrimWriteVtx(v1, Vector2::ZERO, c);
+		PrimWriteVtx(v2, Vector2::ZERO, c);
+		PrimWriteVtx(v3, Vector2::ZERO, c);
+	}
+
 	void DrawList::PrimRect(const Vector2& tl, const Vector2& br, const Color& c){
 		idxPtr[0] = vtxCurrIdx; 
 		idxPtr[1] = vtxCurrIdx + 2; 
@@ -199,7 +211,6 @@ namespace TX
 		PrimWriteVtx(Vector2(br.x, tl.y), Vector2::ZERO, c);
 		PrimWriteVtx(br, Vector2::ZERO, c);
 		PrimWriteVtx(Vector2(tl.x, br.y), Vector2::ZERO, c);
-
 	}
 	void DrawList::PrimRectUV(const Vector2&tl, const Vector2& br, const Vector2& uvTL, const Vector2& uvBR, const Color& c){
 		idxPtr[0] = vtxCurrIdx;

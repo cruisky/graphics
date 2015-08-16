@@ -35,8 +35,6 @@ public:
 		
 		GUI::BeginWindow("Window 0", window[0]);
 			GUI::Button("Button 0");
-			GUI::Button("Button 1");
-			GUI::Button("Button 2");
 			GUI::FloatSlider("Float Slider 1", floatSliderValue1, 0, 100);
 		GUI::EndWindow();
 
@@ -52,7 +50,11 @@ public:
 			GUI::RadioButton("Item 1", radioValue, 1);
 			GUI::RadioButton("Item 2", radioValue, 2);
 
+			GUI::Divider();
+
 			GUI::CheckBox("Check Box", checkBoxValue);
+			GUI::Button("Button 1");
+
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 2", window[2]);

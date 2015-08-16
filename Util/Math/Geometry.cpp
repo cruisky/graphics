@@ -11,9 +11,9 @@ namespace TX
 		int vertCount = Count();
 		if (vertCount < 3) return;
 		if (vertCount == 3) {
-			idxBuf[0] = 0;
-			idxBuf[1] = 1;
-			idxBuf[2] = 2;
+			idxBuf[0] = idxOffset;
+			idxBuf[1] = idxOffset + 1;
+			idxBuf[2] = idxOffset + 2;
 			return;
 		}
 

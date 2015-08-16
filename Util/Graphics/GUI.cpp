@@ -331,7 +331,7 @@ namespace TX { namespace UI { namespace GUI {
 			}
 		}
 		if (IsHot() && CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
-			G.active = G.current;
+			SetActive();
 			G.drag = G.input.mouse - rect.min;
 		}
 		if (body.Contains(G.input.mouse) || header.Contains(G.input.mouse)) {
@@ -349,7 +349,7 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddRect(
 			Vector2(rect.min.x + padding, rect.min.y),
-			Vector2(rect.max.x, rect.min.y + padding),
+			header.max,
 			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddText(
 			rect.min.x + padding + textPadding,

@@ -60,6 +60,7 @@ namespace TX
 		void PathArc(const Vector2& center, float radius, int clockPos1, int clockPos2);
 	
 		void PrimReserve(int idxCount, int vtxCount);
+		void PrimTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& c);
 		void PrimRect(const Vector2& tl, const Vector2& br, const Color& c);
 		void PrimRectUV(const Vector2&tl, const Vector2& br, const Vector2& uvTL, const Vector2& uvBR, const Color& c);
 		void PrimVtx(const Vector2& pos, const Vector2& uv, const Color& c);
