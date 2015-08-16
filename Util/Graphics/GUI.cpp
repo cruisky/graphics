@@ -303,24 +303,29 @@ namespace TX { namespace UI { namespace GUI {
 		glBindTexture(GL_TEXTURE_2D, lastTexture);
 	}
 	//	+---------------------------------------+
-	//  |				1                       |
+	//  |                 1                     |
+	//  +---------------------------------------+
+	//  |                                       |
+	//  |                 2                     |
+	//  |                                   	|
 	//  +-----------------------------------+---+
-	//  |                                   |   |
-	//  |               2                   | 3 |
-	//  |                                   |   |
+	//  |                 3                 | 4 |
 	//  +-----------------------------------+---+
-	//  1 - Header, 2 - Body, 3 - Scroll
+	//  1 - Header, 2 - Body(Scrollable), 3 - Bottom, 4 - Resize
 	void BeginWindow(const char *name, Rect& rect){
 		Window *W = G.NextWindow(name);
+		W->drawList.PushClipRect(rect);
 		float padding = G.style.WindowPadding;
 		float textPadding = G.style.TextPaddingY;
 		Rect header(rect.min, Vector2(rect.max.x, rect.min.y + padding));
 		Rect body(
 			Vector2(rect.min.x, rect.min.y + padding),
-			Vector2(rect.max.x - padding, rect.max.y));
-		Rect scroll(
-			Vector2(rect.max.x - padding, rect.min.y + padding),
 			Vector2(rect.max.x, rect.max.y - padding));
+		Rect bottom(
+			Vector2(rect.min.x, rect.max.y - padding),
+			Vector2(rect.max.x - padding, rect.max.y));
+
+		#pragma region window logic
 		if (IsActive()){
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
 				ClearActive();
@@ -334,12 +339,11 @@ namespace TX { namespace UI { namespace GUI {
 			SetActive();
 			G.drag = G.input.mouse - rect.min;
 		}
-		if (body.Contains(G.input.mouse) || header.Contains(G.input.mouse)) {
+		if (body.Contains(G.input.mouse) || header.Contains(G.input.mouse) || bottom.Contains(G.input.mouse)) {
 			SetHot();
 		}
-
-		// --------
-		W->drawList.PushClipRect(rect);
+		#pragma endregion
+		#pragma region window rendering
 
 		// Header
 		W->drawList.AddTriangle(
@@ -358,11 +362,41 @@ namespace TX { namespace UI { namespace GUI {
 			name,
 			G.style.Colors[Style::Palette::Text]);
 		// Body
-		W->drawList.AddRect(
-			Vector2(rect.min.x, rect.min.y + padding),
-			rect.max,
-			G.style.Colors[Style::Palette::Background]);
+		W->drawList.AddRect(body.min, body.max, G.style.Colors[Style::Palette::Background]);
+		// Bottom
+		W->drawList.AddRect(bottom.min, bottom.max, G.style.Colors[Style::Palette::Background]);
+		#pragma endregion
 
+		// Resize handle
+		G.NextItem();
+		Rect resize(rect.max - padding, rect.max);
+		#pragma region resize handle logic
+		Color *resizeColor = &G.style.Colors[Style::Palette::Accent];
+		if (resize.Contains(G.input.mouse)){
+			SetHot();
+		}
+		if (IsHot()){
+			resizeColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
+				SetActive();
+				G.drag = G.input.mouse - rect.max;
+			}
+		}
+		if (IsActive()){
+			resizeColor = &G.style.Colors[Style::Palette::AccentActive];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
+				ClearActive();
+			}
+			else {
+				rect.max.x = Math::Max(rect.min.x + 5 * padding, G.input.mouse.x - G.drag.x);
+				rect.max.y = Math::Max(rect.min.y + 6 * padding, G.input.mouse.y - G.drag.y);
+			}
+		}
+		#pragma endregion
+		#pragma region resize handle rendering
+		W->drawList.AddTriangle(body.max, bottom.TR(), bottom.max, *resizeColor, true);
+		#pragma endregion
+		
 		// Update clip rect
 		W->drawList.PushClipRect(Rect(rect).Shrink(padding));
 		G.widgetPos = rect.min + Vector2(padding, padding * 2);
@@ -377,10 +411,12 @@ namespace TX { namespace UI { namespace GUI {
 		points[0] = G.widgetPos;
 		points[1].x = clipRect.max.x;
 		points[1].y = G.widgetPos.y;
+		#pragma region rendering
 		G.current.window->drawList.AddPolyLine(
 			points, 2,
 			G.style.Colors[Style::Palette::Hint],
 			false, 1.f);
+		#pragma endregion
 		G.widgetPos.y += G.style.WidgetPadding;
 	}
 
@@ -392,6 +428,7 @@ namespace TX { namespace UI { namespace GUI {
 		float textWidth = G.style.Font->GetWidth(name);
 		Rect button(G.widgetPos, G.widgetPos + Vector2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
 		bool hovering = button.Contains(G.input.mouse);
+		#pragma region logic
 		if (hovering) {
 			SetHot();
 		}
@@ -410,7 +447,8 @@ namespace TX { namespace UI { namespace GUI {
 				}
 			}
 		}
-		// ------
+		#pragma endregion
+		#pragma region rendering
 		G.current.window->drawList.AddRect(button.min, button.max, *bgColor, true);
 		G.current.window->drawList.AddText(
 			button.min.x + G.style.TextPaddingX,
@@ -418,7 +456,7 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
-
+		#pragma endregion
 		G.AdvanceLine();
 		return clicked;
 	}
@@ -437,7 +475,7 @@ namespace TX { namespace UI { namespace GUI {
 			G.current.window->GetRect().max.x, G.widgetPos.y + G.style.LineHeight);
 		Vector2 slider(G.widgetPos.x + halfSliderSize, G.widgetPos.y + G.style.LineHeight * 0.75f);
 		float length = hotArea.Width() - sliderSize;
-
+		#pragma region logic
 		if (hotArea.Contains(G.input.mouse))
 			SetHot();
 		if (IsHot()){
@@ -460,8 +498,8 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 		}
 		float offset = Math::Clamp(float(*val - min) / (max - min) * length, 0.f, length);
-
-		// ------
+		#pragma endregion
+		#pragma region rendering
 		Vector2 points[2] = { slider, slider + Vector2(length, 0.f) };
 		slider.x += offset;
 		G.current.window->drawList.AddPolyLine(points, 2, *trackColor, false, 3.f);
@@ -474,7 +512,7 @@ namespace TX { namespace UI { namespace GUI {
 			hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
 			G.style.Font, getTag(name, val).data(),
 			G.style.Colors[Style::Palette::Text]);
-
+		#pragma endregion
 		G.AdvanceLine();
 		return changed;
 	}
@@ -499,7 +537,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color *holeColor = &G.style.Colors[Style::Palette::Accent];
 		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
-
+		#pragma region logic
 		if (hotArea.Contains(G.input.mouse)) SetHot();
 		else ClearActive();
 		if (IsHot()){
@@ -518,7 +556,8 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 		}
-		// -----------
+		#pragma endregion
+		#pragma region rendering
 		Vector2 center = hotArea.Center();
 		G.current.window->drawList.AddCircle(
 			center,
@@ -537,7 +576,7 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
-		
+		#pragma endregion
 		G.AdvanceLine();
 		return changed;
 	}
@@ -546,7 +585,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color *boxColor = &G.style.Colors[Style::Palette::Accent];
 		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
-
+		#pragma region logic
 		if (hotArea.Contains(G.input.mouse)) SetHot();
 		else ClearActive();
 		if (IsHot()){
@@ -563,8 +602,8 @@ namespace TX { namespace UI { namespace GUI {
 				changed = true;
 			}
 		}
-
-		// -----------
+		#pragma endregion
+		#pragma region rendering
 		Vector2 center = hotArea.Center();
 		G.current.window->drawList.AddRect(
 			center - G.style.FormWidgetRadius,
@@ -583,7 +622,7 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
-
+		#pragma endregion
 		G.AdvanceLine();
 		return changed;
 	}
