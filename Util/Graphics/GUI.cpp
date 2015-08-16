@@ -307,7 +307,7 @@ namespace TX { namespace UI { namespace GUI {
 	//  +---------------------------------------+
 	//  |                                       |
 	//  |                 2                     |
-	//  |                                   	|
+	//  |                                       |
 	//  +-----------------------------------+---+
 	//  |                 3                 | 4 |
 	//  +-----------------------------------+---+
@@ -536,7 +536,9 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false;
 
 		Color *holeColor = &G.style.Colors[Style::Palette::Accent];
-		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+		Rect button(G.widgetPos, G.widgetPos + G.style.LineHeight);
+		Rect hotArea(button);
+		hotArea.max.x = G.current.window->GetRect().max.x;
 		#pragma region logic
 		if (hotArea.Contains(G.input.mouse)) SetHot();
 		else ClearActive();
@@ -558,7 +560,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		#pragma endregion
 		#pragma region rendering
-		Vector2 center = hotArea.Center();
+		Vector2 center = button.Center();
 		G.current.window->drawList.AddCircle(
 			center,
 			G.style.FormWidgetRadius,
@@ -571,8 +573,8 @@ namespace TX { namespace UI { namespace GUI {
 				true);
 		}
 		G.current.window->drawList.AddText(
-			hotArea.max.x + G.style.TextPaddingX,
-			hotArea.max.y - G.style.TextPaddingY,
+			button.max.x + G.style.TextPaddingX,
+			button.max.y - G.style.TextPaddingY,
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
@@ -584,7 +586,9 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false;
 
 		Color *boxColor = &G.style.Colors[Style::Palette::Accent];
-		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+		Rect box(G.widgetPos, G.widgetPos + G.style.LineHeight);
+		Rect hotArea(box);
+		hotArea.max.x = G.current.window->GetRect().max.x;
 		#pragma region logic
 		if (hotArea.Contains(G.input.mouse)) SetHot();
 		else ClearActive();
@@ -604,7 +608,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		#pragma endregion
 		#pragma region rendering
-		Vector2 center = hotArea.Center();
+		Vector2 center = box.Center();
 		G.current.window->drawList.AddRect(
 			center - G.style.FormWidgetRadius,
 			center + G.style.FormWidgetRadius,
@@ -617,8 +621,8 @@ namespace TX { namespace UI { namespace GUI {
 				true);
 		}
 		G.current.window->drawList.AddText(
-			hotArea.max.x + G.style.TextPaddingX,
-			hotArea.max.y - G.style.TextPaddingY,
+			box.max.x + G.style.TextPaddingX,
+			box.max.y - G.style.TextPaddingY,
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
