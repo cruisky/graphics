@@ -22,6 +22,7 @@ namespace TX {
 				float		WindowPadding;
 				float		WidgetPadding;
 				float		LineHeight;
+				float		ScrollSpeed;
 				Color		Colors[Palette::COUNT];
 
 				// -------- auto adjusted -------
@@ -35,6 +36,7 @@ namespace TX {
 					WindowPadding = 18;
 					WidgetPadding = 8;
 					LineHeight = 20;
+					ScrollSpeed = 60;
 
 					Colors[Palette::Background] = Color::RGBA(0x212121BD);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);

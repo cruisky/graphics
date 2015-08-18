@@ -14,6 +14,8 @@ namespace TX { namespace UI { namespace GUI {
 		const uint32	id;
 		DrawList		drawList;
 		bool			accessed;
+		float			contentHeight;
+		float			scroll;
 		void Reset(){ accessed = false; drawList.Clear(); }
 		const Rect& GetRect(){ return drawList.clipRectStack.back(); }
 		static uint32 GetID(const char *name){
@@ -26,7 +28,7 @@ namespace TX { namespace UI { namespace GUI {
 			return hash;
 		}
 	public:
-		Window(uint32 id) : id(id), accessed(false){}
+		Window(uint32 id) : id(id), accessed(false), scroll(0.f), contentHeight(1.f){}
 	};
 
 	// Ids that uniquely identify a widget inside a window
@@ -56,7 +58,8 @@ namespace TX { namespace UI { namespace GUI {
 		Widget				hotToBe;
 		Widget				active;
 
-		Vector2				widgetPos;
+		Vector2				initPos;	// initial widget position
+		Vector2				widgetPos;	// current widget position
 		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
 		// OpenGL related
@@ -124,7 +127,9 @@ namespace TX { namespace UI { namespace GUI {
 	void SetActive();
 	void ClearActive();
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState);
-
+	bool CheckButton(MouseButton wheel);
+	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll);
+	void Scroll(float& scroll, int step, float contentHeight);
 	////////////////////////////////////////////////////////////////////
 	// API implementation
 	////////////////////////////////////////////////////////////////////
@@ -335,9 +340,17 @@ namespace TX { namespace UI { namespace GUI {
 				rect.MoveTo(dragArea.ClosestPoint(G.input.mouse - G.drag));
 			}
 		}
-		if (IsHot() && CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
-			SetActive();
-			G.drag = G.input.mouse - rect.min;
+		if (IsHot()){
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
+				SetActive();
+				G.drag = G.input.mouse - rect.min;
+			}
+			else if (CheckButton(MouseButton::WHEEL_DOWN)){
+				Scroll(W->scroll, 1, W->contentHeight);
+			}
+			else if (CheckButton(MouseButton::WHEEL_UP)){
+				Scroll(W->scroll, -1, W->contentHeight);
+			}
 		}
 		if (body.Contains(G.input.mouse) || header.Contains(G.input.mouse) || bottom.Contains(G.input.mouse)) {
 			SetHot();
@@ -397,12 +410,30 @@ namespace TX { namespace UI { namespace GUI {
 		W->drawList.AddTriangle(body.max, bottom.TR(), bottom.max, *resizeColor, true);
 		#pragma endregion
 		
+		// Scroll bar
+		Rect scrollBarArea(
+			body.max.x - padding,
+			body.min.y,
+			body.max.x,
+			body.max.y);
+		Rect scrollRect = Rect(
+			body.min.x + padding,
+			body.min.y + G.style.WidgetPadding,
+			body.max.x - padding - G.style.WidgetPadding,
+			body.max.y);
+		float scrollRectHeight = scrollRect.Height();
+		float scrollRectCenterY = scrollRect.min.y + scrollRectHeight * 0.5f;
+		ScrollBar(scrollBarArea, scrollRectHeight, W->contentHeight, W->scroll);
+
+		float contentOffset = (W->contentHeight > scrollRectHeight) ? W->scroll * (W->contentHeight - scrollRectHeight) : 0.f;
+		G.initPos = G.widgetPos = Vector2(scrollRect.min.x, scrollRect.min.y - contentOffset);
+		
 		// Update clip rect
-		W->drawList.PushClipRect(Rect(rect).Shrink(padding));
-		G.widgetPos = rect.min + Vector2(padding, padding * 2);
+		W->drawList.PushClipRect(scrollRect);
 	}
 
 	void EndWindow(){
+		G.current.window->contentHeight = G.widgetPos.y - G.initPos.y;
 	}
 
 	void Divider(){
@@ -464,6 +495,7 @@ namespace TX { namespace UI { namespace GUI {
 	template <typename T>
 	bool Slider(const char *name, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
+		G.widgetPos.y += G.style.WidgetPadding;
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
 		Color *trackColor = sliderColor;
@@ -651,4 +683,70 @@ namespace TX { namespace UI { namespace GUI {
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState){
 		return G.input.button == button && G.input.buttonState == buttonState;
 	}
+	bool CheckButton(MouseButton button){
+		return G.input.button == button;
+	}
+
+	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll){
+		G.NextItem();
+
+		Color* barColor = &G.style.Colors[Style::Palette::Accent];
+		float areaWidth = hotArea.Width();
+		float padding = areaWidth * 0.2f;
+		float ratio = areaHeight / contentHeight;
+		float barHalfHeight = (hotArea.Height() - 2 * padding) * ratio * 0.5f;
+		float rangeStart = hotArea.min.y + padding + barHalfHeight;
+		float rangeEnd = hotArea.max.y - padding - barHalfHeight;
+
+		if (rangeStart >= rangeEnd)
+			return;
+
+		float barCenterY = Math::Lerp(scroll, rangeStart, rangeEnd);
+
+		#pragma region logic
+		if (hotArea.Contains(G.input.mouse)){
+			SetHot();
+		}
+		if (IsHot()){
+			bool hovering = Math::InBounds(
+				G.input.mouse.y, 
+				barCenterY - barHalfHeight, 
+				barCenterY + barHalfHeight);
+			if (hovering)
+				barColor = &G.style.Colors[Style::Palette::AccentHighlight];
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
+				SetActive();
+				G.drag.y = hovering ? G.input.mouse.y - barCenterY : 0.f;
+			}
+			else if (CheckButton(MouseButton::WHEEL_DOWN)){
+				Scroll(scroll, 1, contentHeight);
+			}
+			else if (CheckButton(MouseButton::WHEEL_UP)){
+				Scroll(scroll, -1, contentHeight);
+			}
+		}
+		if (IsActive()){
+			barColor = &G.style.Colors[Style::Palette::AccentActive];
+			barCenterY = Math::Clamp(G.input.mouse.y - G.drag.y, rangeStart, rangeEnd);
+			scroll = Math::InvLerp(barCenterY, rangeStart, rangeEnd);
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
+				ClearActive();
+			}
+		}
+		#pragma endregion
+
+		#pragma region rendering
+
+		Rect bar(
+			hotArea.min.x + padding,
+			barCenterY - barHalfHeight,
+			hotArea.max.x - padding,
+			barCenterY + barHalfHeight);
+		G.current.window->drawList.AddRect(bar.min, bar.max, *barColor);
+		#pragma endregion
+	}
+	void Scroll(float& scroll, int step, float contentHeight){ 
+		scroll = Math::Clamp(scroll + step * G.style.ScrollSpeed / contentHeight, 0.f, 1.f); 
+	}
+
 }}}
