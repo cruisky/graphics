@@ -419,7 +419,7 @@ namespace TX { namespace UI { namespace GUI {
 		Rect scrollRect = Rect(
 			body.min.x + padding,
 			body.min.y + G.style.WidgetPadding,
-			body.max.x - padding - G.style.WidgetPadding,
+			body.max.x - padding,
 			body.max.y);
 		float scrollRectHeight = scrollRect.Height();
 		float scrollRectCenterY = scrollRect.min.y + scrollRectHeight * 0.5f;
@@ -692,7 +692,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color* barColor = &G.style.Colors[Style::Palette::Accent];
 		float areaWidth = hotArea.Width();
-		float padding = areaWidth * 0.2f;
+		float padding = areaWidth * 0.35f;
 		float ratio = areaHeight / contentHeight;
 		float barHalfHeight = (hotArea.Height() - 2 * padding) * ratio * 0.5f;
 		float rangeStart = hotArea.min.y + padding + barHalfHeight;

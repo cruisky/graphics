@@ -35,6 +35,9 @@ public:
 		
 		GUI::BeginWindow("Window 0", window[0]);
 			GUI::Button("Button 0");
+			
+			GUI::Divider();
+			
 			GUI::FloatSlider("Float Slider 1", floatSliderValue1, 0, 100);
 		GUI::EndWindow();
 
@@ -53,6 +56,9 @@ public:
 			GUI::Divider();
 
 			GUI::CheckBox("Check Box", checkBoxValue);
+			
+			GUI::Divider();
+			
 			GUI::Button("Button 1");
 
 		GUI::EndWindow();
