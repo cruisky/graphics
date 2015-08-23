@@ -41,7 +41,7 @@ namespace TX {
 					Colors[Palette::Background] = Color::RGBA(0x212121BD);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
 					Colors[Palette::Text] = Color::RGB(0xFFFFFF);
-					Colors[Palette::Hint] = Color::RGBA(0xFFFFFF7F);
+					Colors[Palette::Hint] = Color::RGBA(0xBDBDBD7F);
 					Colors[Palette::Accent] = Color::RGBA(0x0091EABD);			// Light Blue A700
 					Colors[Palette::AccentHighlight] = Color::RGBA(0x00B0FFBD);	// Light Blue A400
 					Colors[Palette::AccentActive] = Color::RGBA(0x80D8FFBD);	// Light Blue A100
@@ -65,6 +65,7 @@ namespace TX {
 			void EndWindow();
 
 			void Divider();
+			void Text(const char *text, bool isHint = false);
 			bool Button(const char *name, bool enabled = true);
 			bool FloatSlider(const char *name, float& val, float min, float max, float step = 0.f);
 			bool IntSlider(const char *name, int& val, int min, int max, int step = 0);

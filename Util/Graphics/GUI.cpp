@@ -60,6 +60,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		Vector2				initPos;	// initial widget position
 		Vector2				widgetPos;	// current widget position
+		const Color*		currColor;
 		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
 		// OpenGL related
@@ -95,10 +96,10 @@ namespace TX { namespace UI { namespace GUI {
 			}
 			return result;
 		}
-		Window* NextWindow(const char *name)		{ current.Reset(GetWindow(name)); return current.window; }
-		const Widget& NextItem()					{ current.itemId++; current.index = 0; return current; }
-		const Widget& NextIndex()					{ current.index++; return current; }
-		const void AdvanceLine(int lines = 1)       { widgetPos.y += (style.LineHeight + style.WidgetPadding) * lines; }
+		Window* NextWindow(const char *name)						{ current.Reset(GetWindow(name)); return current.window; }
+		const Widget& NextItem()									{ current.itemId++; current.index = 0; return current; }
+		const Widget& NextIndex()									{ current.index++; return current; }
+		const void AdvanceLine(bool pad = false, int lines = 1)		{ widgetPos.y += style.LineHeight * lines; if (pad) widgetPos.y += style.WidgetPadding; }
 		const int CompareDist(const Widget& w1, const Widget& w2) {
 			if (w1.window == w2.window) return 0;
 			if (!w1.window) return 1;
@@ -120,6 +121,7 @@ namespace TX { namespace UI { namespace GUI {
 	////////////////////////////////////////////////////////////////////
 
 	typedef std::string (Tagger)(const char* tagName, void *val);
+	typedef void (StringCallback)(const std::string& str);
 
 	bool IsHot();
 	bool IsActive();
@@ -128,6 +130,7 @@ namespace TX { namespace UI { namespace GUI {
 	void ClearActive();
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState);
 	bool CheckButton(MouseButton wheel);
+	void WordWrap(const FontMap& font, const char* text, float maxWidth, StringCallback processLine);
 	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll);
 	void Scroll(float& scroll, int step, float contentHeight);
 	////////////////////////////////////////////////////////////////////
@@ -451,6 +454,22 @@ namespace TX { namespace UI { namespace GUI {
 		G.widgetPos.y += G.style.WidgetPadding;
 	}
 
+	void Text(const char *text, bool isHint){
+		G.NextItem();
+		G.currColor = &G.style.Colors[isHint ? Style::Palette::Hint : Style::Palette::Text];
+
+		#pragma region rendering
+		WordWrap(*G.style.Font, text, G.current.window->GetRect().Width(), [](const std::string& line){
+			G.AdvanceLine();
+			G.current.window->drawList.AddText(
+				G.widgetPos.x,
+				G.widgetPos.y - G.style.TextPaddingY,
+				G.style.Font,
+				line.data(), *G.currColor);
+		});
+		G.AdvanceLine(true, 0);
+		#pragma endregion
+	}
 
 	bool Button(const char *name, bool enabled){
 		G.NextItem(); bool clicked = false;
@@ -487,8 +506,8 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
+		G.AdvanceLine(true);
 		#pragma endregion
-		G.AdvanceLine();
 		return clicked;
 	}
 
@@ -544,8 +563,8 @@ namespace TX { namespace UI { namespace GUI {
 			hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
 			G.style.Font, getTag(name, val).data(),
 			G.style.Colors[Style::Palette::Text]);
+		G.AdvanceLine(true);
 		#pragma endregion
-		G.AdvanceLine();
 		return changed;
 	}
 
@@ -609,7 +628,7 @@ namespace TX { namespace UI { namespace GUI {
 			name,
 			G.style.Colors[Style::Palette::Text]);
 		#pragma endregion
-		G.AdvanceLine();
+		G.AdvanceLine(true);
 		return changed;
 	}
 	bool CheckBox(const char *name, bool& val){
@@ -654,8 +673,8 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font,
 			name,
 			G.style.Colors[Style::Palette::Text]);
+		G.AdvanceLine(true);
 		#pragma endregion
-		G.AdvanceLine();
 		return changed;
 	}
 
@@ -686,7 +705,48 @@ namespace TX { namespace UI { namespace GUI {
 	bool CheckButton(MouseButton button){
 		return G.input.button == button;
 	}
-
+	void WordWrap(const FontMap& font, const char* text, float maxWidth, StringCallback processLine){
+		std::istringstream words(text);
+		std::ostringstream line;
+		std::string word;
+		float wordWidth, spaceLeft = maxWidth;
+		const float spaceWidth = font.GetWidth(" ");
+		while (words >> word){
+			wordWidth = font.GetWidth(word.data());
+			while (word.length() > 0){
+				if (spaceLeft < wordWidth + spaceWidth){
+					if (spaceLeft == maxWidth){
+						// break down the word without hyphenation
+						int length = word.length();
+						float segWidth = 0.f;
+						int charCount = 0;
+						float charWidth = font.GetWidth(word[charCount]);
+						while (segWidth + charWidth < maxWidth && charCount < length){
+							segWidth += charWidth;
+							charWidth = font.GetWidth(word[++charCount]);
+						}
+						processLine(charCount != length ? std::string(word.begin(), word.begin() + charCount) : word);
+						wordWidth -= segWidth;
+						word.erase(0, charCount);
+					}
+					else {
+						processLine(line.str());
+					}
+					line.clear();
+					line.str("");
+					spaceLeft = maxWidth;
+				}
+				else {
+					line << word << ' ';
+					word.clear();
+					spaceLeft -= wordWidth + spaceWidth;
+				}
+			}
+		}
+		if (line.tellp() > 0){
+			processLine(line.str());
+		}
+	}
 	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll){
 		G.NextItem();
 
@@ -694,7 +754,7 @@ namespace TX { namespace UI { namespace GUI {
 		float areaWidth = hotArea.Width();
 		float padding = areaWidth * 0.35f;
 		float ratio = areaHeight / contentHeight;
-		float barHalfHeight = (hotArea.Height() - 2 * padding) * ratio * 0.5f;
+		float barHalfHeight = Math::Max(G.style.WidgetPadding, (hotArea.Height() - 2 * padding) * ratio) * 0.5f;
 		float rangeStart = hotArea.min.y + padding + barHalfHeight;
 		float rangeEnd = hotArea.max.y - padding - barHalfHeight;
 
@@ -748,5 +808,4 @@ namespace TX { namespace UI { namespace GUI {
 	void Scroll(float& scroll, int step, float contentHeight){ 
 		scroll = Math::Clamp(scroll + step * G.style.ScrollSpeed / contentHeight, 0.f, 1.f); 
 	}
-
 }}}
