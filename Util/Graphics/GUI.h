@@ -19,15 +19,14 @@ namespace TX {
 					AccentActive,
 					COUNT
 				};
-				float		WindowPadding;
-				float		WidgetPadding;
 				float		LineHeight;
-				float		ScrollBarWidth;
+				float		StrokeWidth;
 				float		ScrollSpeed;
-				float		ProgressBarWidth;
 				Color		Colors[Palette::COUNT];
 
 				// -------- auto adjusted -------
+				float		WindowPadding;
+				float		WidgetPadding;
 				float		TextPaddingX;		// horizontal padding of text (similar to tab)
 				float		TextPaddingY;		// vertical padding of text to the bottom
 				float		FormWidgetRadius;		// radio button, checkbox
@@ -36,11 +35,9 @@ namespace TX {
 				FontMap		*Font;
 				Style(){
 					WindowPadding = 18;
-					WidgetPadding = 8;
 					LineHeight = 20;
-					ScrollBarWidth = 3.f;
+					StrokeWidth = 3.f;
 					ScrollSpeed = 60;
-					ProgressBarWidth = 3.f;
 
 					Colors[Palette::Background] = Color::RGBA(0x212121BD);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
@@ -53,6 +50,7 @@ namespace TX {
 				void Update(){
 					if (Font){
 						WindowPadding = Math::Max(WindowPadding, Font->Height() + 4.f);	// adjust window padding according to font height
+						WidgetPadding = LineHeight * 0.4f;
 						TextPaddingX = Font->Height() * 0.5f;
 						TextPaddingY = (WindowPadding - Font->Height()) * 0.9f;
 					}
@@ -62,6 +60,7 @@ namespace TX {
 				inline float HalfLineHeight() const { return LineHeight * 0.5f; }
 			};
 
+			Style& GetStyle();
 			void Init(FontMap& font);
 			void Shutdown();
 			void BeginFrame(const Input& input);

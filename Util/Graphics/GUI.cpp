@@ -97,6 +97,7 @@ namespace TX { namespace UI { namespace GUI {
 			return result;
 		}
 		Window* NextWindow(const char *name)						{ current.Reset(GetWindow(name)); return current.window; }
+		const Rect& CurrentRect()									{ return current.window->GetRect(); }
 		const Widget& NextItem()									{ current.itemId++; current.index = 0; return current; }
 		const Widget& NextIndex()									{ current.index++; return current; }
 		const void AdvanceLine(bool pad = false, int lines = 1)		{ widgetPos.y += style.LineHeight * lines; if (pad) widgetPos.y += style.WidgetPadding; }
@@ -137,6 +138,7 @@ namespace TX { namespace UI { namespace GUI {
 	// API implementation
 	////////////////////////////////////////////////////////////////////
 
+	Style& GetStyle(){ return G.style; }
 	void Init(FontMap& font){
 		G.style.Font = &font;
 		G.style.Update();
@@ -404,8 +406,8 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				rect.max.x = Math::Max(rect.min.x + 5 * padding, G.input.mouse.x - G.drag.x);
-				rect.max.y = Math::Max(rect.min.y + 6 * padding, G.input.mouse.y - G.drag.y);
+				rect.max.x = Math::Max(rect.min.x + 10 * padding, G.input.mouse.x - G.drag.x);
+				rect.max.y = Math::Max(rect.min.y + 5 * padding, G.input.mouse.y - G.drag.y);
 			}
 		}
 		#pragma endregion
@@ -441,7 +443,7 @@ namespace TX { namespace UI { namespace GUI {
 
 	void Divider(){
 		Vector2 points[2];
-		const Rect& clipRect = G.current.window->GetRect();
+		const Rect& clipRect = G.CurrentRect();
 		points[0] = G.widgetPos;
 		points[1].x = clipRect.max.x;
 		points[1].y = G.widgetPos.y;
@@ -458,7 +460,7 @@ namespace TX { namespace UI { namespace GUI {
 		G.currColor = &G.style.Colors[isHint ? Style::Palette::Hint : Style::Palette::Text];
 
 		#pragma region rendering
-		WordWrap(*G.style.Font, text, G.current.window->GetRect().Width(), [](const std::string& line){
+		WordWrap(*G.style.Font, text, G.CurrentRect().Width(), [](const std::string& line){
 			G.AdvanceLine();
 			G.current.window->drawList.AddText(
 				G.widgetPos.x,
@@ -509,9 +511,8 @@ namespace TX { namespace UI { namespace GUI {
 		return clicked;
 	}
 	template <typename T>
-	bool Slider(const char *name, T *val, T min, T max, T step, Tagger getTag){
+	bool Slider(const char *name, const Vector2& pos, float width, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
-		G.widgetPos.y += G.style.WidgetPadding;
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
 		Color *trackColor = sliderColor;
@@ -519,9 +520,9 @@ namespace TX { namespace UI { namespace GUI {
 		float halfSliderSize = sliderSize / 2.f;
 
 		Rect hotArea(
-			G.widgetPos.x, G.widgetPos.y + sliderSize,
-			G.current.window->GetRect().max.x, G.widgetPos.y + G.style.LineHeight);
-		Vector2 slider(G.widgetPos.x + halfSliderSize, G.widgetPos.y + G.style.LineHeight * 0.75f);
+			pos.x, pos.y + sliderSize,
+			pos.x + width, pos.y + G.style.LineHeight);
+		Vector2 slider(pos.x + halfSliderSize, pos.y + G.style.LineHeight * 0.75f);
 		float length = hotArea.Width() - sliderSize;
 		#pragma region logic
 		if (hotArea.Contains(G.input.mouse))
@@ -549,37 +550,46 @@ namespace TX { namespace UI { namespace GUI {
 		#pragma endregion
 		#pragma region rendering
 		// Text
-		G.current.window->drawList.AddText(
-			hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
-			G.style.Font, getTag(name, val).data(),
-			G.style.Colors[Style::Palette::Text]);
+		std::string& tag = getTag(name, val);
+		if (tag.length() > 0)
+			G.current.window->drawList.AddText(
+				hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
+				G.style.Font, getTag(name, val).data(),
+				G.style.Colors[Style::Palette::Text]);
 		// Slider
 		Vector2 trackLine[2] = { slider, slider + Vector2(length, 0.f) };
 		slider.x += offset;
-		G.current.window->drawList.AddPolyLine(trackLine, 2, *trackColor, false, G.style.ScrollBarWidth);
+		G.current.window->drawList.AddPolyLine(trackLine, 2, *trackColor, false, G.style.StrokeWidth);
 		G.current.window->drawList.AddRect(
 			slider - halfSliderSize,
 			slider + halfSliderSize,
 			*sliderColor,
 			true);
 
-		G.AdvanceLine(true);
+		
 		#pragma endregion
 		return changed;
 	}
 	bool FloatSlider(const char *name, float& val, float min, float max, float step){
-		return Slider<float>(name, &val, min, max, step, [](const char *name, void *v){
+		G.AdvanceLine(true, 0);	// extra padding fix
+		bool changed = Slider<float>(name, G.widgetPos, G.CurrentRect().Width(), &val, min, max, step, [](const char *name, void *v){
 			std::ostringstream text;
 			text << name << ":  " << std::setprecision(4) << std::fixed << *((float *)v);
 			return text.str();
 		});
+		G.AdvanceLine(true);
+		return changed;
 	}
 	bool IntSlider(const char *name, int& val, int min, int max, int step){
-		return Slider<int>(name, &val, min, max, step, [](const char *name, void *v){
+		G.AdvanceLine(true, 0);	// extra padding fix
+		bool changed = Slider<int>(name, G.widgetPos, G.CurrentRect().Width(), &val, min, max, step, [](const char *name, void *v){
 			std::ostringstream text;
 			text << name << ":  " << *((int *)v);
 			return text.str();
 		});
+		G.AdvanceLine(true);
+		return changed;
+	}
 	}
 	bool RadioButton(const char *name, int& val, int itemVal){
 		G.NextItem(); bool changed = false;
@@ -679,7 +689,7 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem();
 
 		float padding = G.style.HalfLineHeight() / 2.f;
-		float fullLength = G.current.window->GetRect().max.x - G.widgetPos.x - 2.f * padding;
+		float fullLength = G.CurrentRect().max.x - G.widgetPos.x - 2.f * padding;
 		float barLength = fullLength * Math::Clamp(percent, 0.f, 1.f);
 
 		#pragma region rendering
@@ -694,9 +704,9 @@ namespace TX { namespace UI { namespace GUI {
 		line[1] = line[0] + Vector2(barLength, 0.f);
 		line[2] = line[0] + Vector2(fullLength, 0.f);
 		if (line[0].x < line[1].x)
-			G.current.window->drawList.AddPolyLine(line, 2, G.style.Colors[Style::Palette::AccentActive], false, G.style.ProgressBarWidth);
+			G.current.window->drawList.AddPolyLine(line, 2, G.style.Colors[Style::Palette::AccentActive], false, G.style.StrokeWidth);
 		if (line[1].x < line[2].x)
-			G.current.window->drawList.AddPolyLine(line + 1, 2, G.style.Colors[Style::Palette::Accent], false, G.style.ProgressBarWidth);
+			G.current.window->drawList.AddPolyLine(line + 1, 2, G.style.Colors[Style::Palette::Accent], false, G.style.StrokeWidth);
 		
 		G.AdvanceLine(true);
 		#pragma endregion
