@@ -675,7 +675,32 @@ namespace TX { namespace UI { namespace GUI {
 		#pragma endregion
 		return changed;
 	}
+	void ProgressBar(const char *name, const float& percent){
+		G.NextItem();
 
+		float padding = G.style.HalfLineHeight() / 2.f;
+		float fullLength = G.current.window->GetRect().max.x - G.widgetPos.x - 2.f * padding;
+		float barLength = fullLength * Math::Clamp(percent, 0.f, 1.f);
+
+		#pragma region rendering
+		// Text
+		G.current.window->drawList.AddText(
+			G.widgetPos.x, G.widgetPos.y + G.style.HalfLineHeight() - G.style.TextPaddingY,
+			G.style.Font, name,
+			G.style.Colors[Style::Palette::Text]);
+		// Progress bar
+		Vector2 line[3];
+		line[0] = Vector2(G.widgetPos.x + padding, G.widgetPos.y + G.style.HalfLineHeight() + padding);
+		line[1] = line[0] + Vector2(barLength, 0.f);
+		line[2] = line[0] + Vector2(fullLength, 0.f);
+		if (line[0].x < line[1].x)
+			G.current.window->drawList.AddPolyLine(line, 2, G.style.Colors[Style::Palette::AccentActive], false, G.style.ProgressBarWidth);
+		if (line[1].x < line[2].x)
+			G.current.window->drawList.AddPolyLine(line + 1, 2, G.style.Colors[Style::Palette::Accent], false, G.style.ProgressBarWidth);
+		
+		G.AdvanceLine(true);
+		#pragma endregion
+	}
 
 	////////////////////////////////////////////////////////////////////
 	// Helper implementations

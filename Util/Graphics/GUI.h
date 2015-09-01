@@ -24,6 +24,7 @@ namespace TX {
 				float		LineHeight;
 				float		ScrollBarWidth;
 				float		ScrollSpeed;
+				float		ProgressBarWidth;
 				Color		Colors[Palette::COUNT];
 
 				// -------- auto adjusted -------
@@ -39,6 +40,7 @@ namespace TX {
 					LineHeight = 20;
 					ScrollBarWidth = 3.f;
 					ScrollSpeed = 60;
+					ProgressBarWidth = 3.f;
 
 					Colors[Palette::Background] = Color::RGBA(0x212121BD);
 					Colors[Palette::Foreground] = Color::RGB(0xFFFFFF);
@@ -74,6 +76,7 @@ namespace TX {
 			bool IntSlider(const char *name, int& val, int min, int max, int step = 0);
 			bool RadioButton(const char *name, int& val, int itemVal);
 			bool CheckBox(const char *name, bool& val);
+			void ProgressBar(const char *name, const float& percent);
 		}
 	}
 }

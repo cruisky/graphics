@@ -39,6 +39,7 @@ public:
 			GUI::Divider();
 			
 			GUI::FloatSlider("Float Slider 1", floatSliderValue1, 0, 100);
+			GUI::ProgressBar("Progress Bar 2", floatSliderValue2 / 10.f);
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);
