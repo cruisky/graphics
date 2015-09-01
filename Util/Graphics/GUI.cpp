@@ -453,7 +453,6 @@ namespace TX { namespace UI { namespace GUI {
 		#pragma endregion
 		G.widgetPos.y += G.style.WidgetPadding;
 	}
-
 	void Text(const char *text, bool isHint){
 		G.NextItem();
 		G.currColor = &G.style.Colors[isHint ? Style::Palette::Hint : Style::Palette::Text];
@@ -470,7 +469,6 @@ namespace TX { namespace UI { namespace GUI {
 		G.AdvanceLine(true, 0);
 		#pragma endregion
 	}
-
 	bool Button(const char *name, bool enabled){
 		G.NextItem(); bool clicked = false;
 
@@ -510,7 +508,6 @@ namespace TX { namespace UI { namespace GUI {
 		#pragma endregion
 		return clicked;
 	}
-
 	template <typename T>
 	bool Slider(const char *name, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
@@ -518,8 +515,8 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
 		Color *trackColor = sliderColor;
-		float sliderSize = G.style.LineHeight * 0.5f;
-		float halfSliderSize = sliderSize * 0.5f;
+		float sliderSize = G.style.HalfLineHeight();
+		float halfSliderSize = sliderSize / 2.f;
 
 		Rect hotArea(
 			G.widgetPos.x, G.widgetPos.y + sliderSize,
@@ -551,23 +548,25 @@ namespace TX { namespace UI { namespace GUI {
 		float offset = Math::Clamp(float(*val - min) / (max - min) * length, 0.f, length);
 		#pragma endregion
 		#pragma region rendering
-		Vector2 points[2] = { slider, slider + Vector2(length, 0.f) };
+		// Text
+		G.current.window->drawList.AddText(
+			hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
+			G.style.Font, getTag(name, val).data(),
+			G.style.Colors[Style::Palette::Text]);
+		// Slider
+		Vector2 trackLine[2] = { slider, slider + Vector2(length, 0.f) };
 		slider.x += offset;
-		G.current.window->drawList.AddPolyLine(points, 2, *trackColor, false, 3.f);
+		G.current.window->drawList.AddPolyLine(trackLine, 2, *trackColor, false, G.style.ScrollBarWidth);
 		G.current.window->drawList.AddRect(
 			slider - halfSliderSize,
 			slider + halfSliderSize,
 			*sliderColor,
 			true);
-		G.current.window->drawList.AddText(
-			hotArea.min.x, hotArea.min.y - G.style.TextPaddingY,
-			G.style.Font, getTag(name, val).data(),
-			G.style.Colors[Style::Palette::Text]);
+
 		G.AdvanceLine(true);
 		#pragma endregion
 		return changed;
 	}
-
 	bool FloatSlider(const char *name, float& val, float min, float max, float step){
 		return Slider<float>(name, &val, min, max, step, [](const char *name, void *v){
 			std::ostringstream text;
@@ -575,7 +574,6 @@ namespace TX { namespace UI { namespace GUI {
 			return text.str();
 		});
 	}
-
 	bool IntSlider(const char *name, int& val, int min, int max, int step){
 		return Slider<int>(name, &val, min, max, step, [](const char *name, void *v){
 			std::ostringstream text;

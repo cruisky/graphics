@@ -22,6 +22,7 @@ namespace TX {
 				float		WindowPadding;
 				float		WidgetPadding;
 				float		LineHeight;
+				float		ScrollBarWidth;
 				float		ScrollSpeed;
 				Color		Colors[Palette::COUNT];
 
@@ -36,6 +37,7 @@ namespace TX {
 					WindowPadding = 18;
 					WidgetPadding = 8;
 					LineHeight = 20;
+					ScrollBarWidth = 3.f;
 					ScrollSpeed = 60;
 
 					Colors[Palette::Background] = Color::RGBA(0x212121BD);
@@ -55,6 +57,7 @@ namespace TX {
 					FormWidgetRadius = LineHeight * 0.4f;
 					FormWidgetSelectedRadius = FormWidgetRadius * 0.5f;
 				}
+				inline float HalfLineHeight() const { return LineHeight * 0.5f; }
 			};
 
 			void Init(FontMap& font);
