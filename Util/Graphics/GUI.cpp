@@ -590,6 +590,61 @@ namespace TX { namespace UI { namespace GUI {
 		G.AdvanceLine(true);
 		return changed;
 	}
+	bool ColorSlider(const char *name, Color &val, Color::Channel channel){
+		G.NextItem(); bool changed = false;
+		G.AdvanceLine(true, 0);	// extra padding fix
+
+		auto updateColor = [&val, &changed](const Color& newVal){
+			if (newVal != val){
+				changed = true;
+				val = newVal;
+			}
+		};
+		int sliderCount = static_cast<int>(channel);
+		Rect sampleArea(G.widgetPos, G.widgetPos + Vector2(G.style.HalfLineHeight(), G.style.LineHeight));
+		Vector2 sliderPos(sampleArea.max.x + G.style.WidgetPadding, G.widgetPos.y);
+		float sliderWidth = (G.CurrentRect().max.x - sliderPos.x - (sliderCount - 1) * G.style.WidgetPadding) / sliderCount;
+		
+		#pragma region logic
+		Color temp = val.Convert(channel);
+		updateColor(temp);
+
+		if (sampleArea.Contains(G.input.mouse)){
+			SetHot();
+		}
+		if (IsHot() && !IsActive()){
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN))
+				SetActive();
+		}
+		if (IsActive()){
+			// picking pixel color
+			glReadPixels(int(G.input.mouse.x), int(G.input.mouse.y), 1, 1, GL_RGB, GL_FLOAT, &temp);
+			std::cout << temp << std::endl;
+			updateColor(temp.Convert(channel, false));
+			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP))
+				ClearActive();
+		}
+		#pragma endregion
+		#pragma region rendering color sample
+		// background
+		G.current.window->drawList.AddRect(sampleArea.min, sampleArea.max, Color::WHITE);
+		// sample
+		G.current.window->drawList.AddRect(sampleArea.min, sampleArea.max, val);
+		#pragma endregion
+
+		#pragma region rendering slider(s)
+		for (int i = 0; i < sliderCount; i++){
+			const char *tag = i == 0 ? name : "";
+			changed |= Slider<float>(tag, sliderPos, sliderWidth, &val[i], 0.f, 1.f, 0.f, [](const char *name, void *v){
+				return std::string(name);
+			});
+			sliderPos.x += sliderWidth + G.style.WidgetPadding;
+		}
+
+		G.AdvanceLine(true);
+		#pragma endregion
+
+		return changed;
 	}
 	bool RadioButton(const char *name, int& val, int itemVal){
 		G.NextItem(); bool changed = false;

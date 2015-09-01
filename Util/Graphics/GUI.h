@@ -3,6 +3,7 @@
 #include "System/Input.h"
 #include "Math/Geometry.h"
 #include "Color.h"
+#include "Image.h"
 #include "FontMap.h"
 
 namespace TX {
@@ -73,6 +74,7 @@ namespace TX {
 			bool Button(const char *name, bool enabled = true);
 			bool FloatSlider(const char *name, float& val, float min, float max, float step = 0.f);
 			bool IntSlider(const char *name, int& val, int min, int max, int step = 0);
+			bool ColorSlider(const char *name, Color &col, Color::Channel channel = Color::Channel::RGB);
 			bool RadioButton(const char *name, int& val, int itemVal);
 			bool CheckBox(const char *name, bool& val);
 			void ProgressBar(const char *name, const float& percent);

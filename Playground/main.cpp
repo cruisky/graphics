@@ -40,6 +40,13 @@ public:
 			
 			GUI::FloatSlider("Float Slider 1", floatSliderValue1, 0, 100);
 			GUI::ProgressBar("Progress Bar 2", floatSliderValue2 / 10.f);
+
+			GUI::Divider();
+
+			GUI::FloatSlider("Background Opacity", GUI::GetStyle().Colors[GUI::Style::Palette::Background].a, 0.1f, 1.f);
+			GUI::ColorSlider("Style: Accent", GUI::GetStyle().Colors[GUI::Style::Palette::Accent], Color::Channel::RGB);
+			GUI::ColorSlider("Style: Highlight", GUI::GetStyle().Colors[GUI::Style::Palette::AccentHighlight], Color::Channel::RGB);
+			GUI::ColorSlider("Style: Active", GUI::GetStyle().Colors[GUI::Style::Palette::AccentActive], Color::Channel::RGB);
 		GUI::EndWindow();
 
 		GUI::BeginWindow("Window 1", window[1]);
