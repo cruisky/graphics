@@ -3,7 +3,6 @@
 #include "System/Input.h"
 #include "Math/Geometry.h"
 #include "Color.h"
-#include "Image.h"
 #include "FontMap.h"
 
 namespace TX {
