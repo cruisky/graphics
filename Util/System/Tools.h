@@ -2,7 +2,6 @@
 
 #include "Util.h"
 #include "Thread.h"
-#include <chrono>
 
 namespace TX{
 	class Timer

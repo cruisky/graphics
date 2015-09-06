@@ -61,5 +61,6 @@ namespace TX {
 		inline int Ceil(float n) { int t = int(n); return t + (t < n); }
 		inline int Round(float n) { return n > 0 ? Floor(n + 0.5f) : Ceil(n - 0.5f); }
 		inline float Lerp(float t, float v1, float v2){ return (1.f - t) * v1 + t * v2; }
+		inline float InvLerp(float v, float v1, float v2){ return (v - v1) / (v2 - v1); }
 	}
 }

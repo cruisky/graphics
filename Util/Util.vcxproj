@@ -53,6 +53,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,6 +79,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,18 +88,24 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
     <ClInclude Include="Graphics\Filter.h" />
+    <ClInclude Include="Graphics\FontMap.h" />
+    <ClInclude Include="Graphics\GUI.h" />
     <ClInclude Include="Graphics\Image.h" />
+    <ClInclude Include="Graphics\Drawing.h" />
     <ClInclude Include="Graphics\Ray.h" />
-    <ClInclude Include="Graphics\stb_image.h" />
-    <ClInclude Include="Graphics\stb_image_write.h" />
+    <ClInclude Include="Libs\sse_mathfun.h" />
+    <ClInclude Include="Libs\stb_image.h" />
+    <ClInclude Include="Libs\stb_image_write.h" />
+    <ClInclude Include="Libs\stb_truetype.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Geometry.h" />
     <ClInclude Include="Math\Random.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Misc\RandomData.h" />
@@ -106,16 +114,21 @@
     <ClInclude Include="SSE\Bool.h" />
     <ClInclude Include="SSE\Float.h" />
     <ClInclude Include="SSE\Int.h" />
-    <ClInclude Include="SSE\sse_mathfun.h" />
     <ClInclude Include="System\Application.h" />
+    <ClInclude Include="System\Input.h" />
+    <ClInclude Include="System\Memory.h" />
     <ClInclude Include="System\Thread.h" />
     <ClInclude Include="System\Tools.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\Color.cpp" />
+    <ClCompile Include="Graphics\Drawing.cpp" />
+    <ClCompile Include="Graphics\FontMap.cpp" />
+    <ClCompile Include="Graphics\GUI.cpp" />
     <ClCompile Include="Graphics\Image.cpp" />
     <ClCompile Include="Graphics\Ray.cpp" />
+    <ClCompile Include="Math\Geometry.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />

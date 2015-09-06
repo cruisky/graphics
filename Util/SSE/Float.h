@@ -5,7 +5,7 @@
 #include "Util.h"
 #include <intrin.h>
 #include "Math/MathUtil.h"
-#include "sse_mathfun.h"
+#include "Libs/sse_mathfun.h"
 #include "Bool.h"
 
 namespace TX {

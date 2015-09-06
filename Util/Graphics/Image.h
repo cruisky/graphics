@@ -1,16 +1,11 @@
 #pragma once
 
 #include "Util.h"
+#include "Color.h"
 
 namespace TX{
-	class Color;
-
 	class Image {
 	public:
-		enum Channel {
-			Y = 1, YA, RGB, RGBA
-		};
-
 		enum Format {
 			BMP, PNG
 		};
@@ -22,6 +17,6 @@ namespace TX{
 			int height,
 			bool flip_y = false,
 			Format format = BMP,
-			Channel channel = RGB);
+			Color::Channel channel = Color::Channel::RGB);
 	};
 }

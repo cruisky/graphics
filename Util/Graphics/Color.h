@@ -3,8 +3,14 @@
 #include "Util.h"
 #include "Math/MathUtil.h"
 
+#undef RGB
+
 namespace TX{
 	class Color {
+	public:
+		enum class Channel{
+			Y = 1, YA, RGB, RGBA
+		};
 	public:
 		static const Color BLACK;
 		static const Color WHITE;
@@ -12,7 +18,11 @@ namespace TX{
 		static const Color GREEN;
 		static const Color BLUE;
 	public:
-		float r, g, b, a;
+		union{
+			struct{ float r, g, b, a; };
+			float v[4];
+		};
+		
 		Color() :
 			r(0.f), g(0.f), b(0.f), a(1.f) {}
 		Color(float gray, float a = 1.f) :
@@ -22,7 +32,12 @@ namespace TX{
 			r(ot.r), g(ot.g), b(ot.b), a(ot.a){}
 		~Color(){}
 
+		static Color RGBA(uint32 code);
+		static Color RGB(uint32 code);
+
 		inline Color& operator = (const Color& ot) { r = ot.r, g = ot.g, b = ot.b, a = ot.a; return *this; }
+		inline const float& operator [] (size_t i) const { return v[i]; }
+		inline       float& operator [] (size_t i)       { return v[i]; }
 
 		inline Color operator + (const Color& ot) const { return Color(r + ot.r, g + ot.g, b + ot.b); }
 		inline Color operator - (const Color& ot) const { return Color(r - ot.r, g - ot.g, b - ot.b); }
@@ -45,6 +60,16 @@ namespace TX{
 			g = Math::Clamp(g, 0.f, 1.f);
 			b = Math::Clamp(b, 0.f, 1.f);
 			return *this;
+		}
+		inline Color Convert(Channel channel, bool keepAlpha = true){
+			switch (channel){
+			case Channel::Y:
+			case Channel::YA:
+				return Color(Luminance(), keepAlpha ? a : 1.f);
+			case Channel::RGB:
+			case Channel::RGBA:
+				return Color(r, g, b, keepAlpha ? a : 1.f);
+			}
 		}
 	};
 

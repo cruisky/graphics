@@ -1,7 +1,6 @@
 #pragma once
 
 namespace TX{
-
 	class Color;
 	class Filter;
 	class Ray;
