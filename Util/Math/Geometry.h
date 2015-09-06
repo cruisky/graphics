@@ -34,7 +34,12 @@ namespace TX
 		inline Rect& Add(const Vector2& p) { min = Math::Min(min, p); max = Math::Max(max, p); return *this; }
 		inline Rect& Add(const Rect& r) { min = Math::Min(min, r.min); max = Math::Max(max, r.max); return *this; }
 		inline Rect& Round() { min.x = (float)(int)min.x; min.y = (float)(int)min.y; max.x = (float)(int)max.x; max.y = (float)(int)max.y; return *this; }
-		inline Rect& Clip(const Rect& clip) { min = Math::Max(min, clip.min); max = Math::Min(max, clip.max); return *this; }
+		inline Rect& Clip(const Rect& clip) { 
+			bool overlapping = Overlaps(clip);
+			min = overlapping ? Math::Max(min, clip.min) : Vector2(0.f); 
+			max = overlapping ? Math::Min(max, clip.max) : Vector2(0.f); 
+			return *this; 
+		}
 		inline Vector2 ClosestPoint(const Vector2& p, bool onEdge = true) const {
 			if (!onEdge && Contains(p)) return p;
 			return Math::Max(Math::Min(p, max), min);

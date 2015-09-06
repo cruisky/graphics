@@ -43,7 +43,13 @@ namespace TX
 	}
 
 	void DrawList::PushClipRect(const Rect& rect){
-		clipRectStack.push_back(rect);
+		if (clipRectStack.empty()){
+			clipRectStack.push_back(rect);
+		}
+		else {
+			// restrict clip rect to inside the previous one
+			clipRectStack.push_back(Rect(rect).Clip(clipRectStack.back()));
+		}
 		UpdateClipRect();
 	}
 	void DrawList::PushClipRectFullScreen(){
