@@ -27,7 +27,7 @@
 #include "Math/MathUtil.h"
 #include "Math/Matrix.h"
 #include "Math/Random.h"
-#include "Math/Rect.h"
+#include "Math/Geometry.h"
 #include "Math/Vector.h"
 
 using std::shared_ptr; 

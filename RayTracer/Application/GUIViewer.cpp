@@ -41,12 +41,12 @@ namespace TX{
 			return true;
 		}
 
-		void GUIViewer::OnMouseButton(Button button, ButtonState state, int x, int y) {
+		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, int x, int y) {
 			FlipY(&y);
 
-			if (state == ButtonState::DOWN){
+			if (state == MouseButtonState::DOWN){
 				switch (button){
-				case Button::LEFT:
+				case MouseButton::LEFT:
 					Color c = film_->Get(x, y);
 					printf("(%3d, %3d), (%1.3f, %1.3f, %1.3f)\n", x, y, c.r, c.g, c.b); break;
 				}

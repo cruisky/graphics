@@ -34,7 +34,7 @@ using namespace TX;
 using namespace TX::RayTracer;
 
 // NOTE: Rotate -> Translate -> Scale
-void GUI(){
+void GUIMain(){
 	int width = 320;
 	int height = 240;
 
@@ -143,7 +143,7 @@ void GUI(){
 
 int main(){
 	try{
-		GUI();
+		GUIMain();
 	}
 	catch (int ex){
 		fprintf(stderr, "Uncaught Exception: \n\t%d\n", ex);

@@ -2,6 +2,9 @@
 
 #include "Util.h"
 #include <Windows.h>
+#undef near
+#undef far
+
 #include <thread>
 #include <deque>
 #include <atomic>
