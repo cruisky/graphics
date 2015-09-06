@@ -131,6 +131,8 @@ namespace TX { namespace UI { namespace GUI {
 	void ClearActive();
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState);
 	bool CheckButton(MouseButton wheel);
+	bool CheckSpecialKey(KeyCode code);
+	bool CheckModifier(Modifier code);
 	void WordWrap(const FontMap& font, const char* text, float maxWidth, StringCallback processLine);
 	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll);
 	void Scroll(float& scroll, int step, float contentHeight);
@@ -792,6 +794,15 @@ namespace TX { namespace UI { namespace GUI {
 	}
 	bool CheckButton(MouseButton button){
 		return G.input.button == button;
+	}
+	bool CheckSpecialKey(KeyCode key){
+		for (int i = 0; i < G.input.specialKeyCount; i++)
+			if (G.input.specialKey[i] == key)
+				return true;
+		return false;
+	}
+	bool CheckModifier(Modifier code){
+		return G.input.modifier[static_cast<int>(code)];
 	}
 	void WordWrap(const FontMap& font, const char* text, float maxWidth, StringCallback processLine){
 		std::istringstream words(text);

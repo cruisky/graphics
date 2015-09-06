@@ -51,25 +51,35 @@ namespace TX{ namespace UI{
 		ALT_L = GLUT_KEY_ALT_L,
 		ALT_R = GLUT_KEY_ALT_R
 	};
+	enum class Modifier {
+		SHIFT = 0,
+		ALT = 1,
+		CTRL = 2
+	};
 	struct Input {
 		Vector2 screen;
 		Vector2 mouse;
 		MouseButton button;
 		MouseButtonState buttonState;
 		int scroll;
-		unsigned char key[3]; int keyCount;
+		unsigned char key;
 		KeyCode specialKey[3]; int specialKeyCount;
+		bool modifier[3];
 
 		inline void Clear(){
 			button = MouseButton::NONE;
 			scroll = 0;
-			keyCount = 0;
+			ClearKey();
 			specialKeyCount = 0;
+			modifier[0] = modifier[1] = modifier[2] = false;
 		}
 		inline void SetScreen(int w, int h){ screen.x = (float)w; screen.y = (float)h; }
 		inline void SetMouse(float x, float y){ mouse.x = x, mouse.y = y; }
 		inline void SetButton(MouseButton b, MouseButtonState s){ button = b; buttonState = s; }
-		inline void AddKey(unsigned char c){ if (keyCount < 3) key[keyCount++] = c; }
+		inline bool HasKey(){ return key != 0; }
+		inline void AddKey(unsigned char c){ if (!key) key = c; }
+		inline void ClearKey(){ key = 0; }
 		inline void AddSpecialKey(KeyCode code){ if (specialKeyCount < 3) specialKey[specialKeyCount++] = code; }
+		inline void SetModifier(Modifier code){ modifier[static_cast<int>(code)] = true; }
 	};
 }}

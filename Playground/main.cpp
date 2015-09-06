@@ -87,11 +87,25 @@ public:
 	}
 	void OnMouseMove(int x, int y){ input.SetMouse((float)x, (float)y); }
 	void OnMouseButton(MouseButton button, MouseButtonState state, int x, int y){ input.SetButton(button, state); }
-	void OnKey(unsigned char c, int x, int y){ input.AddKey(c); }
-	void OnSpecialKey(KeyCode code, int x, int y){ input.AddSpecialKey(code); }
+	void OnKey(unsigned char c, int x, int y){ input.AddKey(c); UpdateModifier(); }
+	void OnSpecialKey(KeyCode code, int x, int y){ input.AddSpecialKey(code); UpdateModifier(); }
 	void OnResize(){ 
 		input.SetScreen(config.width, config.height); 
 		glViewport(0, 0, config.width, config.height);
+	}
+private:
+	void UpdateModifier(){
+		switch (glutGetModifiers()){
+		case GLUT_ACTIVE_SHIFT:
+			input.SetModifier(Modifier::SHIFT);
+			break;
+		case GLUT_ACTIVE_ALT:
+			input.SetModifier(Modifier::ALT);
+			break;
+		case GLUT_ACTIVE_CTRL:
+			input.SetModifier(Modifier::CTRL);
+			break;
+		}
 	}
 };
 
