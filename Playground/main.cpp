@@ -15,6 +15,7 @@ private:
 	float floatSliderValue2 = 50.f;
 	int intSliderValue = 42;
 	int radioValue = 0;
+	std::string textValue = "0123456789";
 	bool checkBoxValue;
 public:
 	GUIDemo(){}
@@ -75,6 +76,7 @@ public:
 		GUI::EndWindow();
 
 		GUI::BeginWindow("IMGUI", window[2]);
+			GUI::TextField("TextField", textValue, true);
 			GUI::Text(R"xx(IMGUI is a non-retained mode of graphical interface programming. IMGUI is useful when the interface structure is implicit in the program behavior, rather than being an a priori externalized artifact, and is common in games and possibly other soft real-time graphical applications.
 				The GUI toolkit is responsible for drawing and reporting i/o, but does not retain a model of widget structures itself. It may or may not track internal state over time, or have a stateful interface (like OpenGL), or be object-oriented, but in all cases the GUI structure and i/o is driven by application-side processes at runtime.
 				A typical use might be to attach GUI elements to 3d objects during rendering, interleaving calls to the IMGUI widgets with the 3d rendering calls, so as to produce all graphical output with a single traversal of the data structures. In cases where organization is needed across multiple GUI elements (for example, name labels that should not overlap), the toolkit may build a representation over time and then be asked to draw everything at once.

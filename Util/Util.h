@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include <chrono>
+#include <ctime>
+#include <cctype>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>

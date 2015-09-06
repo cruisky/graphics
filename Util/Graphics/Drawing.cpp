@@ -95,18 +95,20 @@ namespace TX
 		}
 	}
 
-	Vector2 DrawList::AddText(float x, float y, const FontMap *font, const char *text, const Color& color){
-		if (color.a == 0.f) return Vector2(x, y);
+	float DrawList::AddText(float x, float y, const FontMap *font, const char *text, const Color& color, GlyphPosMap * posMap){
+		if (color.a == 0.f) return x;
+		if (posMap)
+			posMap->Clear();
 		Vector2 pos(x, y);
 		Rect rect, uv;
 		int length = std::strlen(text);
 		PrimReserve(length * 6, length * 4);
 		while (*text){
-			if (font->GetChar(text++, pos, &rect, &uv)){
+			if (font->GetChar(text++, pos, &rect, &uv, posMap)){
 				PrimRectUV(rect.min, rect.max, uv.min, uv.max, color);
 			}
 		}
-		return pos;
+		return pos.x - x;
 	}
 	void DrawList::AddPolyLine(const Vector2* points, const int count, const Color& color, bool closed, float thick){
 		if (color.a == 0.f || count < 2) return;

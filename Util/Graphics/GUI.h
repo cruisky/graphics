@@ -77,6 +77,7 @@ namespace TX {
 			bool RadioButton(const char *name, int& val, int itemVal);
 			bool CheckBox(const char *name, bool& val);
 			void ProgressBar(const char *name, const float& percent);
+			bool TextField(const char *name, std::string& text, bool selectAllOnActive = false);
 		}
 	}
 }
