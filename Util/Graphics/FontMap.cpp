@@ -8,6 +8,41 @@
 
 namespace TX
 {
+	float GlyphPosMap::GetWidth(int index, int count) const {
+		int max = map.size() - 1;
+		if (max <= 0) return 0.f;
+		int begin = Math::Clamp(index, 0, max);
+		int end = Math::Clamp(index + count, 0, max);
+		return begin == end ? 0.f : map[end] - map[begin];
+	}
+
+	int GlyphPosMap::GetIndex(float offset) const {
+		auto ceiling = std::lower_bound(map.begin(), map.end(), offset);
+		if (ceiling != map.begin() && ceiling != map.end()){
+			return (*ceiling - offset) < (offset - *(ceiling - 1)) ? 
+				(ceiling - map.begin()) : 
+				(ceiling - 1 - map.begin());
+		}
+		else {
+			return Math::Clamp(
+				int(ceiling - map.begin()), 
+				0, 
+				int(map.size() - 1));
+		}
+	}
+
+	void GlyphPosMap::Recalculate(const FontMap *font, const char *text){
+		Clear();
+		Vector2 pos;
+		int length = std::strlen(text);
+		map.reserve(length + 1);
+
+		while (*text){
+			font->GetChar(text++, pos, nullptr, nullptr, this);
+		}
+	}
+
+
 	FontMap::FontMap() {
 		// initialize font texture
 		glGenTextures(1, &texID);
@@ -45,12 +80,15 @@ namespace TX
 			throw "failed to open file: " + std::string(file);
 		}
 	}
-	bool FontMap::GetChar(const char *ch, Vector2& pos, Rect *rect, Rect *uv) const {
+	bool FontMap::GetChar(const char *ch, Vector2& pos, Rect *rect, Rect *uv, GlyphPosMap *posMap) const {
 		if (*ch >= 32 && *ch < 128){
+			float left = pos.x;
 			stbtt_aligned_quad q;
 			stbtt_GetBakedQuad(reinterpret_cast<stbtt_bakedchar*>(data),
 				bitmapSize, bitmapSize,
 				*ch - 32, &pos.x, &pos.y, &q, 1);
+			if (posMap)
+				posMap->Append(pos.x - left);
 			if (uv){
 				uv->min.x = q.s0; uv->min.y = q.t0;
 				uv->max.x = q.s1; uv->max.y = q.t1;
