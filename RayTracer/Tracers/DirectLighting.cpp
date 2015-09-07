@@ -23,8 +23,8 @@ namespace TX{
 				}
 
 				if (depth >= 0){
-					color += TraceSpecularReflect(scene, ray, geom, depth + 1, samplebuf);
-					color += TraceSpecularTransmit(scene, ray, geom, depth + 1, samplebuf);
+					color += TraceSpecularReflect(scene, ray, geom, depth - 1, samplebuf);
+					color += TraceSpecularTransmit(scene, ray, geom, depth - 1, samplebuf);
 				}
 			}
 			else {

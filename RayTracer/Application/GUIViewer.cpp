@@ -119,22 +119,21 @@ namespace TX{
 		}
 
 		void GUIViewer::ProgressReporterJob(){
+			#ifndef _DEBUG
 			bool prev_status = false, status;
 			while (true){
 				Sleep(100);
 				status = monitor_->InProgress();
 				if (status || prev_status){
-#ifndef _DEBUG
 					system("CLS");
-#else
 					printf("============================================\n");
-#endif
 					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
 					printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
 					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
 					prev_status = status;
 				}
 			}
+			#endif
 		}
 		void GUIViewer::FlipY(int *y) { *y = film_->Height() - *y - 1; }
 		void GUIViewer::FlipX(int *x) { *x = film_->Width() - *x - 1; }

@@ -22,10 +22,16 @@ namespace TX{
 			float e2 = lcr.origin.LengthSqr();
 			float d2 = lcr.dir.LengthSqr();
 			float de = Dot(lcr.dir, lcr.origin);
-			float delta_quarter = de * de - d2 * (e2 - 1.f);
+			float det = de * de - d2 * (e2 - 1.f);		// delta / 4
 			
-			if (delta_quarter > 0){
-				float t = -(de + Math::Sqrt(delta_quarter)) / d2;
+			if (det > 0.f){
+				det = Math::Sqrt(det);
+				float t = -(de + det) / d2;
+				if (Math::InBounds(t, lcr.t_min, lcr.t_max)){
+					lcr.t_max = t;
+					return true;
+				}
+				t = -(de - det) / d2;
 				if (Math::InBounds(t, lcr.t_min, lcr.t_max)){
 					lcr.t_max = t;
 					return true;
@@ -42,9 +48,13 @@ namespace TX{
 			float e2 = lcr.origin.LengthSqr();
 			float d2 = lcr.dir.LengthSqr();
 			float de = Dot(lcr.dir, lcr.origin);
-			float delta_quarter = de * de - d2 * (e2 - 1.f);
-			float t = -(de + Math::Sqrt(delta_quarter)) / d2;
-			return delta_quarter > 0.f && Math::InBounds(t, lcr.t_min, lcr.t_max);
+			float det = de * de - d2 * (e2 - 1.f);		// delta / 4
+			if (det > 0.f){
+				det = Math::Sqrt(det);
+				return Math::InBounds(-(de + det) / d2, lcr.t_min, lcr.t_max) ||
+					Math::InBounds(-(de - det) / d2, lcr.t_min, lcr.t_max);
+			}
+			return false;
 		}
 
 		void UnitSphere::SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const {
