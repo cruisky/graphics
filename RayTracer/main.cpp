@@ -41,17 +41,18 @@ void GUIMain(){
 	/////////////////////////////////////
 	// Camera
 	shared_ptr<Camera> camera(new Camera(width, height));
-	camera->transform.Rotate(90, 0, -10);
-	camera->transform.Translate(0, 3, 5);
+	camera->transform.Rotate(90, 0, 0);
+	camera->transform.Translate(0, 2, 4);
 
 	/////////////////////////////////////////////
 	// Materials
-	shared_ptr<BSDF> diffuse_blue(new Diffuse(Color(0.2, 0.5, 1.0)));
-	shared_ptr<BSDF> diffuse_red(new Diffuse(Color(1.0, 0.3, 0.3)));
+	shared_ptr<BSDF> diffuse_blue(new Diffuse(Color(0.25, 0.25, 0.75)));
+	shared_ptr<BSDF> diffuse_red(new Diffuse(Color(0.75, 0.25, 0.25)));
 	shared_ptr<BSDF> diffuse_green(new Diffuse(Color(0.2, 0.7, 0.2)));
-	shared_ptr<BSDF> diffuse_yellow(new Diffuse(Color(0.9, 0.8, 0.3)));
+	shared_ptr<BSDF> diffuse_yellow(new Diffuse(Color(0.7, 0.6, 0.3)));
 	shared_ptr<BSDF> diffuse_orange(new Diffuse(Color(0.7, 0.4, 0.1)));
-	shared_ptr<BSDF> diffuse(new Diffuse);
+	shared_ptr<BSDF> diffuse_gray(new Diffuse(Color(0.75)));
+	shared_ptr<BSDF> diffuse_black(new Diffuse(Color::BLACK));
 	shared_ptr<BSDF> mirror(new Mirror);
 	shared_ptr<BSDF> glass(new Dielectric);
 	shared_ptr<BSDF> blueglass(new Dielectric(Color(0.2, 0.5, 1.0)));
@@ -63,55 +64,56 @@ void GUIMain(){
 	shared_ptr<UnitSphere> sphere(new UnitSphere);
 	shared_ptr<UnitPlane> plane(new UnitPlane);
 
-	int wall_size = 15;
-	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse));
+	int wall_size = 9;
+	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_gray));
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse));
+	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_gray));
 	w_forward->transform.Rotate(90, Vector3::X);
 	w_forward->transform.Translate(0, 0, -wall_size/2);
 	w_forward->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse));
+	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_gray));
 	w_back->transform.Rotate(-90, Vector3::X);
 	w_back->transform.Translate(0, 0, -wall_size/2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_left(new Primitive(plane, diffuse_yellow));
+	shared_ptr<Primitive> w_left(new Primitive(plane, diffuse_red));
 	w_left->transform.Rotate(90, Vector3::Y);
 	w_left->transform.Translate(0, 0, -wall_size/2);
 	w_left->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_right(new Primitive(plane, diffuse_green));
+	shared_ptr<Primitive> w_right(new Primitive(plane, diffuse_blue));
 	w_right->transform.Rotate(-90, Vector3::Y);
 	w_right->transform.Translate(0, 0, -wall_size/2);
 	w_right->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse));
+	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse_gray));
 	w_top->transform.Rotate(180, Vector3::Y);
 	w_top->transform.Translate(0, 0, -wall_size/2);
 	w_top->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_orange));
+	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_black));
 	lamp->transform.Rotate(180, Vector3::Y);
-	lamp->transform.Translate(0, 0, -wall_size/2 + 0.1);
-	lamp->transform.Scale(3, 3, 1);
+	lamp->transform.Translate(0, 0, -wall_size/2);
+	lamp->transform.Scale(2, 2, 1);
 
-	shared_ptr<Primitive> ball1(new Primitive(sphere, diffuse_blue));
-	ball1->transform.Translate(-3, 0, 1);
-	shared_ptr<Primitive> ball2(new Primitive(sphere, diffuse_red));
-	ball2->transform.Translate(3, 0, 1);
+	shared_ptr<Primitive> ball1(new Primitive(sphere, glass));
+	ball1->transform.Translate(-2, 0, 3);
+	//ball1->transform.Scale(0.5, 0.5, 0.5);
+	shared_ptr<Primitive> ball2(new Primitive(sphere, glass));
+	ball2->transform.Translate(2.5, 0, 1);
 	shared_ptr<Primitive> ball3(new Primitive(sphere, mirror));
 	ball3->transform.Translate(0, 0, 1);
 
 	/////////////////////////////////////
 	// Lights
 	shared_ptr<Light> light_main(new PointLight(Color(1), 200, Vector3(0, 0, 5)));
-	shared_ptr<Light> light_lamp(new AreaLight(Color(150), lamp.get()));
+	shared_ptr<Light> light_lamp(new AreaLight(Color(30), lamp.get()));
 
 	/////////////////////////////////////
 	// Scene
-	shared_ptr<Film> film(new Film(FilterType::GaussianFilter));
+	shared_ptr<Film> film(new Film);// (FilterType::GaussianFilter));
 	shared_ptr<Scene> scene(new Scene(camera));
 
 	scene->AddPrimitive(w_bottom);
@@ -136,7 +138,11 @@ void GUIMain(){
 	//config.tracer_t = TracerType::DirectLighting;
 	config.width = width;
 	config.height = height;
-	config.samples_per_pixel = 16;
+#ifndef _DEBUG
+	config.samples_per_pixel = 3000;
+#else
+	config.samples_per_pixel = 4;
+#endif
 	gui.ConfigRenderer(config);
 	gui.Run();
 }

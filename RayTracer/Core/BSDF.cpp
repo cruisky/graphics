@@ -118,7 +118,7 @@ namespace TX{
 					cost = -cost;
 				localwi = Vector3(eta * -localwo.x, eta * -localwo.y, cost);
 				*wi = geom.LocalToWorld(localwi);
-				*pdf = both ? 1.f - prob : prob;
+				*pdf = both ? 1.f - prob : 1.f;
 				if (sampled_types) *sampled_types = BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR);
 				return GetColor(geom) * ((1.f - refl) / LocalCoord::AbsCosTheta(localwi));
 			}

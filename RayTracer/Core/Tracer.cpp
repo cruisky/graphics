@@ -20,9 +20,9 @@ namespace TX
 
 			// sample light sources with multiple importance sampling
 			light->Illuminate(geom.point, lightsample, &lightray, &lightcolor, &light_pdf);
-			if (light_pdf > 0.f && lightcolor != Color::BLACK){
+			if (light_pdf > 0.f && lightcolor != Color::BLACK && !scene->Occlude(lightray)){
 				surfacecolor = geom.bsdf->Eval(lightray.dir, wo, geom);
-				if (surfacecolor != Color::BLACK && !scene->Occlude(lightray)){
+				if (surfacecolor != Color::BLACK){
 					if (light->IsDelta())
 						color = surfacecolor * lightcolor * (Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf);
 					else{
@@ -39,6 +39,7 @@ namespace TX
 			BSDFType sampled;
 			surfacecolor = geom.bsdf->Scatter(wo, geom, *bsdfsample, &(lightray.dir), &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR), &sampled);
 			if (bsdf_pdf > 0.f && surfacecolor != Color::BLACK){
+				lightcolor = Color::BLACK;
 				light_pdf = light->Pdf(geom.point, lightray.dir);
 				if (light_pdf == 0.f)
 					return color;
