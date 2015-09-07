@@ -35,9 +35,13 @@ using namespace TX::RayTracer;
 
 // NOTE: Rotate -> Translate -> Scale
 void GUIMain(){
+#ifndef _DEBUG
+	int width = 800;
+	int height = 600;
+#else
 	int width = 320;
 	int height = 240;
-
+#endif
 	/////////////////////////////////////
 	// Camera
 	shared_ptr<Camera> camera(new Camera(width, height));
@@ -46,18 +50,19 @@ void GUIMain(){
 
 	/////////////////////////////////////////////
 	// Materials
-	shared_ptr<BSDF> diffuse_blue(new Diffuse(Color(0.25, 0.25, 0.75)));
-	shared_ptr<BSDF> diffuse_red(new Diffuse(Color(0.75, 0.25, 0.25)));
+	shared_ptr<BSDF> diffuse_blue(new Diffuse(Color(0.29, 0.29, 0.53)));
+	shared_ptr<BSDF> diffuse_red(new Diffuse(Color(0.725, 0.26, 0.24)));
 	shared_ptr<BSDF> diffuse_green(new Diffuse(Color(0.2, 0.7, 0.2)));
 	shared_ptr<BSDF> diffuse_yellow(new Diffuse(Color(0.7, 0.6, 0.3)));
 	shared_ptr<BSDF> diffuse_orange(new Diffuse(Color(0.7, 0.4, 0.1)));
 	shared_ptr<BSDF> diffuse_gray(new Diffuse(Color(0.75)));
 	shared_ptr<BSDF> diffuse_black(new Diffuse(Color::BLACK));
+	shared_ptr<BSDF> diffuse_white(new Diffuse(Color::WHITE));
 	shared_ptr<BSDF> mirror(new Mirror);
 	shared_ptr<BSDF> glass(new Dielectric);
-	shared_ptr<BSDF> blueglass(new Dielectric(Color(0.2, 0.5, 1.0)));
-	shared_ptr<BSDF> greenglass(new Dielectric(Color::GREEN));
-	shared_ptr<BSDF> redglass(new Dielectric(Color(1.0, 0.3, 0.3)));
+	shared_ptr<BSDF> glass_blue(new Dielectric(Color(0.2, 0.5, 1.0)));
+	shared_ptr<BSDF> glass_green(new Dielectric(Color(0.3, 1.0, 0.6)));
+	shared_ptr<BSDF> glass_red(new Dielectric(Color(1.0, 0.3, 0.3)));
 
 	///////////////////////////////////////////
 	// Shapes & Primitives
@@ -95,16 +100,19 @@ void GUIMain(){
 
 	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_black));
 	lamp->transform.Rotate(180, Vector3::Y);
-	lamp->transform.Translate(0, 0, -wall_size/2);
+	lamp->transform.Translate(0, 0, -wall_size/2 + 0.05);
 	lamp->transform.Scale(2, 2, 1);
 
-	shared_ptr<Primitive> ball1(new Primitive(sphere, glass));
-	ball1->transform.Translate(-2, 0, 3);
-	//ball1->transform.Scale(0.5, 0.5, 0.5);
-	shared_ptr<Primitive> ball2(new Primitive(sphere, glass));
-	ball2->transform.Translate(2.5, 0, 1);
+	shared_ptr<Primitive> ball0(new Primitive(sphere, glass_green));
+	ball0->transform.Translate(0, 0, 1);
+	shared_ptr<Primitive> ball1(new Primitive(sphere, mirror));
+	ball1->transform.Translate(-2.5, 0, 0);
+	shared_ptr<Primitive> ball2(new Primitive(sphere, mirror));
+	ball2->transform.Translate(2.5, 0, 0);
 	shared_ptr<Primitive> ball3(new Primitive(sphere, mirror));
-	ball3->transform.Translate(0, 0, 1);
+	ball3->transform.Translate(-1.5, 2.5, 0);
+	shared_ptr<Primitive> ball4(new Primitive(sphere, mirror));
+	ball4->transform.Translate(1.5, 2.5, 0);
 
 	/////////////////////////////////////
 	// Lights
@@ -113,7 +121,7 @@ void GUIMain(){
 
 	/////////////////////////////////////
 	// Scene
-	shared_ptr<Film> film(new Film);// (FilterType::GaussianFilter));
+	shared_ptr<Film> film(new Film(FilterType::BoxFilter));
 	shared_ptr<Scene> scene(new Scene(camera));
 
 	scene->AddPrimitive(w_bottom);
@@ -125,9 +133,11 @@ void GUIMain(){
 
 	scene->AddPrimitive(lamp);
 
+	scene->AddPrimitive(ball0);
 	scene->AddPrimitive(ball1);
 	scene->AddPrimitive(ball2);
 	scene->AddPrimitive(ball3);
+	scene->AddPrimitive(ball4);
 
 	//scene->AddLight(light_main);
 	scene->AddLight(light_lamp);
@@ -139,7 +149,7 @@ void GUIMain(){
 	config.width = width;
 	config.height = height;
 #ifndef _DEBUG
-	config.samples_per_pixel = 3000;
+	config.samples_per_pixel = 1000;
 #else
 	config.samples_per_pixel = 4;
 #endif
