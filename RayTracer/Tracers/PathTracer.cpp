@@ -17,15 +17,12 @@ namespace TX{
 		}
 
 		Color PathTracer::Li(const Scene *scene, const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
-			Color Le, L, pathThroughput;
+			Color Le, L, pathThroughput = Color::WHITE;
 			Vector3 wo, wi;
 			float pdf;
 			BSDFType sampled;
 			Ray pathRay;
 			LocalGeo geom;
-
-			Le = L = Color::BLACK;
-			pathThroughput = Color::WHITE;
 
 			auto countLights = scene->lights.size();
 			bool specBounce = true;
@@ -40,7 +37,7 @@ namespace TX{
 
 					wo = -pathRay.dir;
 
-					if (bounce == 0 || specBounce){
+					if (specBounce){
 						geom.Emit(-pathRay.dir, &Le);
 						L += Le * pathThroughput;
 					}

@@ -33,8 +33,8 @@ namespace TX {
 			inline float Pdf(const Vector3& point, const Vector3& dir) const {
 				Ray localray;
 				localray.Reset(point, dir);
-				localray.dir.Normalize();		// normalize the global ray because the length of the ray should be calculated locally (with Shape::Area())
 				transform.ToLocal(localray);
+				localray.dir.Normalize();		// normalize the local ray so that after intersection, t value will be the local distance
 				return shape_->Pdf(localray);
 			}
 

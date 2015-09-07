@@ -14,7 +14,7 @@ namespace TX{
 			inline void Trace(const Scene *scene, const Ray& ray, const CameraSample& samples, RNG& rng, Color *color){
 				rng_ = &rng;
 				*color = Li(scene, ray, maxdepth_, samples);
-				color->Clamp();
+				//color->Clamp();
 			}
 
 			virtual void BakeSamples(const Scene *scene, const CameraSample *samples) = 0;
