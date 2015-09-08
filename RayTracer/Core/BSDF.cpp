@@ -106,14 +106,14 @@ namespace TX{
 			// reflectance
 			float refl = Reflectance(cosi, cost);
 			float prob = 0.5f * refl + 0.25f;
-			if (sample.w <= prob && both || reflection && !both){			// sample reflection
+			if (refl > 0.f && (sample.w <= prob && both || reflection && !both)){			// sample reflection
 				localwi = Vector3(-localwo.x, -localwo.y, localwo.z);
 				*wi = geom.LocalToWorld(localwi);
 				*pdf = both ? prob : 1.f;
 				if (sampled_types) *sampled_types = BSDFType(BSDF_REFLECTION | BSDF_SPECULAR);
 				return GetColor(geom).Luminance() * refl / LocalCoord::AbsCosTheta(localwi);
 			}
-			else if(sample.w > prob && both || transmission && !both){		// sample refraction
+			else if(refl < 1.f && (sample.w > prob && both || transmission && !both)){		// sample refraction
 				if (eta == eta_)	// entering
 					cost = -cost;
 				localwi = Vector3(eta * -localwo.x, eta * -localwo.y, cost);

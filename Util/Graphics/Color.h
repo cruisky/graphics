@@ -50,10 +50,10 @@ namespace TX{
 		inline Color& operator *= (const float s) { r *= s; g *= s; b *= s; return *this; }
 		inline Color& operator /= (const float d) { r /= d; g /= d; b /= d; return *this; }
 
-
 		inline bool operator == (const Color ot) const { return r == ot.r && g == ot.g && b == ot.b && a == ot.a; }
 		inline bool operator != (const Color ot) const { return r != ot.r || g != ot.g || b != ot.b || a != ot.a; }
 
+		inline bool Valid() const { return Math::Valid(r) && Math::Valid(g) && Math::Valid(b); }
 		inline float Luminance() const { return 0.2126f * r + 0.7152f * g + 0.0722f * b; }
 		inline Color& Clamp() {
 			r = Math::Clamp(r, 0.f, 1.f);

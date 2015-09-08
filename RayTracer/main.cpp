@@ -73,12 +73,12 @@ void GUIMain(){
 	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_gray));
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_gray));
+	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_yellow));
 	w_forward->transform.Rotate(90, Vector3::X);
 	w_forward->transform.Translate(0, 0, -wall_size/2);
 	w_forward->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_gray));
+	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_green));
 	w_back->transform.Rotate(-90, Vector3::X);
 	w_back->transform.Translate(0, 0, -wall_size/2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
@@ -103,16 +103,12 @@ void GUIMain(){
 	lamp->transform.Translate(0, 0, -wall_size/2 + 0.05);
 	lamp->transform.Scale(2, 2, 1);
 
-	shared_ptr<Primitive> ball0(new Primitive(sphere, glass_green));
+	shared_ptr<Primitive> ball0(new Primitive(sphere, glass));
 	ball0->transform.Translate(0, 0, 1);
 	shared_ptr<Primitive> ball1(new Primitive(sphere, mirror));
 	ball1->transform.Translate(-2.5, 0, 0);
 	shared_ptr<Primitive> ball2(new Primitive(sphere, mirror));
 	ball2->transform.Translate(2.5, 0, 0);
-	shared_ptr<Primitive> ball3(new Primitive(sphere, mirror));
-	ball3->transform.Translate(-1.5, 2.5, 0);
-	shared_ptr<Primitive> ball4(new Primitive(sphere, mirror));
-	ball4->transform.Translate(1.5, 2.5, 0);
 
 	/////////////////////////////////////
 	// Lights
@@ -121,7 +117,7 @@ void GUIMain(){
 
 	/////////////////////////////////////
 	// Scene
-	shared_ptr<Film> film(new Film(FilterType::BoxFilter));
+	shared_ptr<Film> film(new Film(FilterType::GaussianFilter));
 	shared_ptr<Scene> scene(new Scene(camera));
 
 	scene->AddPrimitive(w_bottom);
@@ -136,8 +132,7 @@ void GUIMain(){
 	scene->AddPrimitive(ball0);
 	scene->AddPrimitive(ball1);
 	scene->AddPrimitive(ball2);
-	scene->AddPrimitive(ball3);
-	scene->AddPrimitive(ball4);
+
 
 	//scene->AddLight(light_main);
 	scene->AddLight(light_lamp);
@@ -149,7 +144,7 @@ void GUIMain(){
 	config.width = width;
 	config.height = height;
 #ifndef _DEBUG
-	config.samples_per_pixel = 1000;
+	config.samples_per_pixel = 400;
 #else
 	config.samples_per_pixel = 4;
 #endif

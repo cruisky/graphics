@@ -35,7 +35,7 @@ namespace TX{
 			t_min = eps_origin;
 			t_max = dir.Length();
 			dir /= t_max;
-			t_max -= eps_dest;
+			t_max = Math::Max(t_min, t_max - eps_dest);
 			return *this;
 		}
 

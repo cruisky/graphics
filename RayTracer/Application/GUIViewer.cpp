@@ -81,7 +81,7 @@ namespace TX{
 
 
 		void GUIViewer::AttemptMoveCamera(Direction dir){
-			float dist = 1.f;
+			float dist = 0.1f;
 			Vector3 movement;
 			switch (dir){
 			case Direction::UP: movement = Vector3(0.f, 0.f, -dist); break;
@@ -94,7 +94,7 @@ namespace TX{
 		}
 
 		void GUIViewer::AttemptPanCamera(Direction dir){
-			float degree = 10.f;
+			float degree = 2.f;
 			Vector3 axis;
 			switch (dir){
 			case Direction::UP: axis = Vector3::X; break;

@@ -11,6 +11,9 @@ namespace TX
 	namespace RayTracer {
 		void Film::Commit(float x, float y, const Color& color){
 			using namespace Math;
+#ifndef _DEBUG
+			if (!color.Valid()) return;
+#endif
 			int offset;
 			x -= 0.5f;
 			y -= 0.5f;
