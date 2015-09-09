@@ -1,7 +1,7 @@
 #include "stdafx.h"
-
 #include "PrimitiveManager.h"
 #include "Primitive.h"
+
 namespace TX
 {
 	namespace RayTracer

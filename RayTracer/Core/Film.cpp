@@ -1,10 +1,7 @@
 #include "stdafx.h"
-
 #include "Film.h"
 #include "Sampler.h"
 #include "Sample.h"
-#include "Graphics/Color.h"
-#include "Graphics/Filter.h"
 
 namespace TX
 {

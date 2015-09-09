@@ -4,10 +4,7 @@
 #include "Camera.h"
 #include "Film.h"
 #include "Sample.h"
-#include "Graphics/Color.h"
-#include "Graphics/Ray.h"
 #include "RendererConfig.h"
-#include "System/Tools.h"
 
 namespace TX {
 	namespace RayTracer {

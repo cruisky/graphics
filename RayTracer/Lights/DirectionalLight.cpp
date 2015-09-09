@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "DirectionalLight.h"
 #include "Core/Intersection.h"
-#include "Graphics/Color.h"
 
 namespace TX {
 	namespace RayTracer {

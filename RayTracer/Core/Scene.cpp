@@ -3,7 +3,6 @@
 #include "PrimitiveManager.h"
 #include "Primitive.h"
 #include "Intersection.h"
-#include <memory>
 
 namespace TX {
 	namespace RayTracer {

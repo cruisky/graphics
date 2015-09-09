@@ -1,14 +1,10 @@
 #pragma warning(disable: 4244)
 #pragma warning(disable: 4305)
 
-#include "Math/Matrix.h"
-#include "Math/Vector.h"
 #include "stdafx.h"
 #include "Core/transform.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
-#include "Math/Random.h"
-#include "System/Tools.h"
 #include "Core/Sampler.h"
 #include "Core/Sample.h"
 #include "Core/RendererConfig.h"
@@ -73,12 +69,12 @@ void GUIMain(){
 	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_gray));
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_yellow));
+	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_gray));
 	w_forward->transform.Rotate(90, Vector3::X);
 	w_forward->transform.Translate(0, 0, -wall_size/2);
 	w_forward->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_green));
+	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_gray));
 	w_back->transform.Rotate(-90, Vector3::X);
 	w_back->transform.Translate(0, 0, -wall_size/2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
@@ -88,7 +84,7 @@ void GUIMain(){
 	w_left->transform.Translate(0, 0, -wall_size/2);
 	w_left->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_right(new Primitive(plane, diffuse_blue));
+	shared_ptr<Primitive> w_right(new Primitive(plane, diffuse_yellow));
 	w_right->transform.Rotate(-90, Vector3::Y);
 	w_right->transform.Translate(0, 0, -wall_size/2);
 	w_right->transform.Scale(wall_size, wall_size, 1);
@@ -103,12 +99,12 @@ void GUIMain(){
 	lamp->transform.Translate(0, 0, -wall_size/2 + 0.05);
 	lamp->transform.Scale(2, 2, 1);
 
-	shared_ptr<Primitive> ball0(new Primitive(sphere, glass));
-	ball0->transform.Translate(0, 0, 1);
-	shared_ptr<Primitive> ball1(new Primitive(sphere, mirror));
-	ball1->transform.Translate(-2.5, 0, 0);
-	shared_ptr<Primitive> ball2(new Primitive(sphere, mirror));
-	ball2->transform.Translate(2.5, 0, 0);
+	shared_ptr<Primitive> ball1(new Primitive(sphere, glass));
+	ball1->transform.Translate(-2, 0, 3);
+	shared_ptr<Primitive> ball2(new Primitive(sphere, glass));
+	ball2->transform.Translate(2.5, 0, 2);
+	shared_ptr<Primitive> ball3(new Primitive(sphere, mirror));
+	ball3->transform.Translate(-0.5, 0.5, 1);
 
 	/////////////////////////////////////
 	// Lights
@@ -129,10 +125,9 @@ void GUIMain(){
 
 	scene->AddPrimitive(lamp);
 
-	scene->AddPrimitive(ball0);
 	scene->AddPrimitive(ball1);
 	scene->AddPrimitive(ball2);
-
+	scene->AddPrimitive(ball3);
 
 	//scene->AddLight(light_main);
 	scene->AddLight(light_lamp);
@@ -140,11 +135,11 @@ void GUIMain(){
 	scene->Construct();
 	GUIViewer gui(scene, film);
 	RendererConfig config;
-	//config.tracer_t = TracerType::DirectLighting;
+	config.tracer_t = TracerType::DirectLighting;
 	config.width = width;
 	config.height = height;
 #ifndef _DEBUG
-	config.samples_per_pixel = 400;
+	config.samples_per_pixel = 1000;
 #else
 	config.samples_per_pixel = 4;
 #endif

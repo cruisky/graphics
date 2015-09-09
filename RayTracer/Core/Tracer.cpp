@@ -1,12 +1,9 @@
 #include "stdafx.h"
-
 #include "Tracer.h"
 #include "Scene.h"
 #include "Intersection.h"
 #include "BSDF.h"
 #include "Sample.h"
-#include "Graphics/Color.h"
-#include "Graphics/Ray.h"
 
 namespace TX
 {

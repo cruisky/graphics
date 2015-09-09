@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Math/Vector.h"
 #include "BSDF.h"
 #include "Intersection.h"
 #include "Primitive.h"

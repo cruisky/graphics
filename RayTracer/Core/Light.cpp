@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Light.h"
-
 #include "Primitive.h"
 
 namespace TX
