@@ -25,7 +25,7 @@ namespace TX
 		};
 
 		struct RenderTile {
-			static const int SIZE = 32;
+			static const int SIZE = 64;
 			const int xmin, ymin, xmax, ymax;
 			RenderTile(int xmin, int ymin, int xmax, int ymax)
 				: xmin(xmin), ymin(ymin), xmax(xmax), ymax(ymax){}

@@ -9,7 +9,7 @@ namespace TX
 {
 	namespace RayTracer
 	{
-		Color Tracer::TraceDirectLight(const Scene *scene, const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
+		Color Tracer::EstimateDirect(const Scene *scene, const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
 			Vector3 wo = -ray.dir;		// dir to camera
 			Ray lightray;
 			float light_pdf, bsdf_pdf;

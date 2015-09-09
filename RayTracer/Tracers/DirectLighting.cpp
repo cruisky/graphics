@@ -18,8 +18,8 @@ namespace TX{
 				scene->PostIntersect(ray, geom);
 				geom.ComputeDifferentials(ray);
 
-				for (int i = 0; i < light_samples_.size(); i++){
-					color += TraceDirectLight(scene, ray, geom, scene->lights[i].get(), light_samples_[i](samplebuf), bsdf_samples_[i](samplebuf)) * Math::PI;
+				for (auto light = scene->lights.begin(); light < scene->lights.end(); light++){
+					color += EstimateDirect(scene, ray, geom, light->get(), &Sample(), &Sample());
 				}
 
 				if (depth >= 0){
@@ -29,20 +29,13 @@ namespace TX{
 			}
 			else {
 				// TODO environment map
+				color = Color(ray.dir.x, ray.dir.y, ray.dir.z) * 0.5f + 0.5f;
 			}
 			return color;
 		}
 
 		void DirectLighting::BakeSamples(const Scene *scene, const CameraSample *samplebuf){
-			light_samples_.resize(scene->lights.size());
-			bsdf_samples_.resize(scene->lights.size());
-			auto lights = scene->lights;
-			for (auto i = 0; i < scene->lights.size(); i++){
-				// need equal amount of samples for light and bsdf sampling
-				// for multiple importance sampling
-				light_samples_[i].RequestSamples(lights[i]->sample_count, samplebuf);
-				bsdf_samples_[i].RequestSamples(lights[i]->sample_count, samplebuf);
-			}
+			return;
 		}
 	}
 }

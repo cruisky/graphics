@@ -108,8 +108,8 @@ void GUIMain(){
 
 	/////////////////////////////////////
 	// Lights
-	shared_ptr<Light> light_main(new PointLight(Color(1), 200, Vector3(0, 0, 5)));
-	shared_ptr<Light> light_lamp(new AreaLight(Color(30), lamp.get()));
+	shared_ptr<Light> light_main(new PointLight(Color(3), 200, Vector3(0, 0, wall_size / 2 - 0.1)));
+	//shared_ptr<Light> light_lamp(new AreaLight(Color(30), lamp.get()));
 
 	/////////////////////////////////////
 	// Scene
@@ -117,20 +117,20 @@ void GUIMain(){
 	shared_ptr<Scene> scene(new Scene(camera));
 
 	scene->AddPrimitive(w_bottom);
-	scene->AddPrimitive(w_top);
+	//scene->AddPrimitive(w_top);
 	scene->AddPrimitive(w_forward);
 	scene->AddPrimitive(w_back);
 	scene->AddPrimitive(w_left);
 	scene->AddPrimitive(w_right);
 
-	scene->AddPrimitive(lamp);
+	//scene->AddPrimitive(lamp);
 
 	scene->AddPrimitive(ball1);
 	scene->AddPrimitive(ball2);
 	scene->AddPrimitive(ball3);
 
-	//scene->AddLight(light_main);
-	scene->AddLight(light_lamp);
+	scene->AddLight(light_main);
+	//scene->AddLight(light_lamp);
 
 	scene->Construct();
 	GUIViewer gui(scene, film);
@@ -139,7 +139,7 @@ void GUIMain(){
 	config.width = width;
 	config.height = height;
 #ifndef _DEBUG
-	config.samples_per_pixel = 1000;
+	config.samples_per_pixel = 1;
 #else
 	config.samples_per_pixel = 4;
 #endif

@@ -46,7 +46,7 @@ namespace TX{
 						lightsample = light_samples_[bounce](samplebuf);
 						bsdfsample = bsdf_samples_[bounce](samplebuf);
 						int lightIdx = (int)Math::Min(lightsample->w * countLights, countLights - 1);
-						L += pathThroughput * TraceDirectLight(scene, pathRay, geom, scene->lights[lightIdx].get(), lightsample, bsdfsample);
+						L += pathThroughput * EstimateDirect(scene, pathRay, geom, scene->lights[lightIdx].get(), lightsample, bsdfsample);
 					}
 					scattersample = scatter_samples_[bounce](samplebuf);
 					Color f = geom.bsdf->Scatter(wo, geom, *scattersample, &wi, &pdf, BSDF_ALL, &sampled);
@@ -67,6 +67,7 @@ namespace TX{
 				else {
 					if (specBounce){
 						// TODO environment light
+						L += pathThroughput * (Color(ray.dir.x, ray.dir.y, ray.dir.z) * 0.5f + 0.5f);
 					}
 					break;
 				}

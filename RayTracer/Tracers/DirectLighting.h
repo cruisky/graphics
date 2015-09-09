@@ -14,10 +14,6 @@ namespace TX{
 			void BakeSamples(const Scene *scene, const CameraSample *samplebuf);
 		protected:
 			Color Li(const Scene *scene, const Ray& ray, int depth, const CameraSample& samplebuf);
-
-		private:
-			std::vector<SampleOffset> light_samples_;
-			std::vector<SampleOffset> bsdf_samples_;
 		};
 	}
 }
