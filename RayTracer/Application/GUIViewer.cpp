@@ -126,7 +126,6 @@ namespace TX{
 				status = monitor_->InProgress();
 				if (status || prev_status){
 					system("CLS");
-					printf("============================================\n");
 					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
 					printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
 					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());

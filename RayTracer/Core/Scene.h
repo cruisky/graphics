@@ -24,7 +24,7 @@ namespace TX{
 
 		public:
 			vector<shared_ptr<Light>> lights;
-			shared_ptr<RayTracer::Camera> camera;
+			shared_ptr<Camera> camera;
 		private:
 			unique_ptr<PrimitiveManager> primmgr_;
 			vector<shared_ptr<Primitive>> prims_;
