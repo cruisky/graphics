@@ -79,7 +79,7 @@ void GUIMain(){
 	w_back->transform.Translate(0, 0, -wall_size/2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_left(new Primitive(plane, diffuse_red));
+	shared_ptr<Primitive> w_left(new Primitive(plane, diffuse_blue));
 	w_left->transform.Rotate(90, Vector3::Y);
 	w_left->transform.Translate(0, 0, -wall_size/2);
 	w_left->transform.Scale(wall_size, wall_size, 1);
@@ -99,7 +99,7 @@ void GUIMain(){
 	lamp->transform.Translate(0, 0, -wall_size/2 + 0.05);
 	lamp->transform.Scale(2, 2, 1);
 
-	shared_ptr<Primitive> ball1(new Primitive(sphere, glass));
+	shared_ptr<Primitive> ball1(new Primitive(sphere, diffuse_red));
 	ball1->transform.Translate(-2, 0, 3);
 	shared_ptr<Primitive> ball2(new Primitive(sphere, glass));
 	ball2->transform.Translate(2.5, 0, 2);
@@ -108,8 +108,8 @@ void GUIMain(){
 
 	/////////////////////////////////////
 	// Lights
-	shared_ptr<Light> light_main(new PointLight(Color(3), 200, Vector3(0, 0, wall_size / 2 - 0.1)));
-	//shared_ptr<Light> light_lamp(new AreaLight(Color(30), lamp.get()));
+	//shared_ptr<Light> light_main(new PointLight(Color(3), 200, Vector3(0, 0, wall_size / 2 - 0.1)));
+	shared_ptr<Light> light_lamp(new AreaLight(Color(30), lamp.get()));
 
 	/////////////////////////////////////
 	// Scene
@@ -117,29 +117,29 @@ void GUIMain(){
 	shared_ptr<Scene> scene(new Scene(camera));
 
 	scene->AddPrimitive(w_bottom);
-	//scene->AddPrimitive(w_top);
+	scene->AddPrimitive(w_top);
 	scene->AddPrimitive(w_forward);
 	scene->AddPrimitive(w_back);
 	scene->AddPrimitive(w_left);
 	scene->AddPrimitive(w_right);
 
-	//scene->AddPrimitive(lamp);
+	scene->AddPrimitive(lamp);
 
 	scene->AddPrimitive(ball1);
 	scene->AddPrimitive(ball2);
 	scene->AddPrimitive(ball3);
 
-	scene->AddLight(light_main);
-	//scene->AddLight(light_lamp);
+	//scene->AddLight(light_main);
+	scene->AddLight(light_lamp);
 
 	scene->Construct();
 	GUIViewer gui(scene, film);
 	RendererConfig config;
-	config.tracer_t = TracerType::DirectLighting;
+	//config.tracer_t = TracerType::DirectLighting;
 	config.width = width;
 	config.height = height;
 #ifndef _DEBUG
-	config.samples_per_pixel = 1;
+	config.samples_per_pixel = 500;
 #else
 	config.samples_per_pixel = 4;
 #endif
