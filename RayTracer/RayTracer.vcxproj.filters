@@ -26,6 +26,9 @@
     <Filter Include="Source Files\Samplers">
       <UniqueIdentifier>{9bd813e1-e750-4287-b000-42c24f7a68b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Libs">
+      <UniqueIdentifier>{dd82c0a0-ef4e-4789-8d22-cb5851392f31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Transform.h">
@@ -103,6 +106,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Libs\tiny_obj_loader.h">
+      <Filter>Source Files\Libs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -170,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\tiny_obj_loader.cpp">
+      <Filter>Source Files\Libs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

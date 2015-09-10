@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Util.h"
 #include <ctime>
+#include "Util.h"
 
 namespace TX{
 	class RNG {

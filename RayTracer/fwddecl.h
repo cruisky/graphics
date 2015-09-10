@@ -1,19 +1,8 @@
 #pragma once
 
+#include "Util.h"
+
 namespace TX{
-	class Color;
-	class Filter;
-	class Ray;
-
-	class Vector3;
-	class Vector4;
-	class Matrix4x4;
-
-	class RNG;
-	class Timer;
-	class IProgressMonitor;
-	class ProgressMonitor;
-
 	namespace RayTracer
 	{
 		class BSDF;

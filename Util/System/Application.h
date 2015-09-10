@@ -1,11 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/freeglut_ext.h>
-#include <cstdio>
-#include <string>
-#include "Math/Vector.h"
+#include "Util.h"
 #include "Input.h"
 
 namespace TX{

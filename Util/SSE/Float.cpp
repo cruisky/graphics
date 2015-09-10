@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Float.h"
 
 namespace TX

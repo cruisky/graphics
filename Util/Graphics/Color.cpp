@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Graphics/Color.h"
 
 namespace TX{

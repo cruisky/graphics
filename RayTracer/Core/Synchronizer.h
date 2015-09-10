@@ -46,7 +46,7 @@ namespace TX
 
 		private:
 			std::vector<RenderTile> tiles;
-			int currentTile;
+			uint currentTile;
 			Lock syncLock;
 			std::atomic_int preRenderCount, postRenderCount;	// number of threads that reached the barrier
 			std::vector<HANDLE> preRenderEvents, postRenderEvents;

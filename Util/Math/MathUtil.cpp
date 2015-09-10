@@ -1,5 +1,5 @@
+#include "UtilStdAfx.h"
 #include "Math/MathUtil.h"
-#include <limits>
 
 namespace TX{
 	namespace Math{

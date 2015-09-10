@@ -113,6 +113,7 @@
     <ClInclude Include="Math\Geometry.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="UtilStdAfx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\Color.cpp">
@@ -165,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="Math\Geometry.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilStdAfx.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

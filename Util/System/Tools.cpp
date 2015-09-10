@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "System/Tools.h"
 
 namespace TX

@@ -1,6 +1,5 @@
-﻿#include "System/Application.h"
-#include <stdexcept>
-#include <cstdio>
+﻿#include "UtilStdAfx.h"
+#include "System/Application.h"
 
 namespace TX
 {

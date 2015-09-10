@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Drawing.h"
 
 namespace TX

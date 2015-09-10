@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Geometry.h"
 #include "System/Memory.h"
 

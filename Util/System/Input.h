@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Util.h"
+#include "Math/Vector.h"
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
-#include "Math/Vector.h"
 
 namespace TX{ namespace UI{
 	enum class MouseButton {

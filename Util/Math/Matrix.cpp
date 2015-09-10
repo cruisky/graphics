@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
 #include "Graphics/Ray.h"

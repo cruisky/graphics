@@ -1,4 +1,4 @@
-#include "Util.h"
+#include "UtilStdAfx.h"
 #include "GUI.h"
 #include "System/Memory.h"
 #include "Math/Vector.h"
@@ -11,16 +11,16 @@ using std::vector;
 namespace TX { namespace UI { namespace GUI {
 	class Window {
 	public:
-		const uint32	id;
+		const uint		id;
 		DrawList		drawList;
 		bool			accessed;
 		float			contentHeight;
 		float			scroll;
 		void Reset(){ accessed = false; drawList.Clear(); }
 		const Rect& GetRect(){ return drawList.clipRectStack.back(); }
-		static uint32 GetID(const char *name){
+		static uint GetID(const char *name){
 			// sdbm
-			uint32 hash = 0;
+			uint hash = 0;
 			char c;
 			while (c = *name++){
 				hash = c + (hash << 6) + (hash << 16) - hash;	// hash(i) = hash(i - 1) * 65599 + str[i]; 
@@ -28,14 +28,14 @@ namespace TX { namespace UI { namespace GUI {
 			return hash;
 		}
 	public:
-		Window(uint32 id) : id(id), accessed(false), scroll(0.f), contentHeight(1.f){}
+		Window(uint id) : id(id), accessed(false), scroll(0.f), contentHeight(1.f){}
 	};
 
 	// Ids that uniquely identify a widget inside a window
 	struct Widget {
 		Window*		window = nullptr;
-		uint32		itemId = 0;
-		uint32		index = 0;
+		uint		itemId = 0;
+		uint		index = 0;
 		Widget() : window(nullptr), itemId(0), index(0){}
 		Widget(const Widget& ot) : window(ot.window), itemId(ot.itemId), index(ot.index){}
 		Widget& operator = (const Widget& ot){ window = ot.window; itemId = ot.itemId; index = ot.index; return *this; }
@@ -64,13 +64,13 @@ namespace TX { namespace UI { namespace GUI {
 		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
 		struct {
-			std::string *buffer;
-			std::string clipboard;
-			GlyphPosMap glyphPosMap;	// size = len + 1
-			Widget id;
-			float offset;
-			int cursor;					// [0, len]
-			int selectionBegin;
+			std::string*	buffer;
+			std::string		clipboard;
+			GlyphPosMap		glyphPosMap;	// size = len + 1
+			Widget			id;
+			float			offset;
+			uint			cursor;			// [0, len]
+			uint			selectionBegin;
 
 			bool Edit(char ch){
 				bool changed = false;
@@ -194,7 +194,7 @@ namespace TX { namespace UI { namespace GUI {
 			Window *result = nullptr;
 			if (name){
 				// search for existing windows
-				uint32 id = Window::GetID(name);
+				uint id = Window::GetID(name);
 				for (Window *w : windows){
 					if (w->id == id){
 						result = w;
@@ -352,7 +352,7 @@ namespace TX { namespace UI { namespace GUI {
 			Window *window = G.active.window;
 			// move the window to the end
 			if (window != G.windows.back()){
-				for (int i = 0; i < G.windows.size(); i++)
+				for (uint i = 0; i < G.windows.size(); i++)
 					if (G.windows[i] == window)
 						G.windows.erase(G.windows.begin() + i);
 				G.windows.push_back(window);
@@ -650,7 +650,7 @@ namespace TX { namespace UI { namespace GUI {
 		if (IsActive()){
 			trackColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			sliderColor = &G.style.Colors[Style::Palette::AccentActive];
-			T newVal = Math::Lerp(Math::Clamp(G.input.mouse.x - slider.x, 0.f, length) / length, min, max);
+			T newVal = T(Math::Lerp(Math::Clamp(G.input.mouse.x - slider.x, 0.f, length) / length, float(min), float(max)));
 			if (step > Math::EPSILON){
 				newVal = Math::Clamp(Math::Round(float(newVal - min) / step) * step + min, min, max);
 			}

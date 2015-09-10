@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Bool.h"
 
 namespace TX

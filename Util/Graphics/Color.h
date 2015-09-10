@@ -1,9 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include "Util.h"
 #include "Math/MathUtil.h"
 
-#undef RGB
+#ifdef RGB
+	#undef RGB
+#endif
 
 namespace TX{
 	class Color {
@@ -70,6 +73,7 @@ namespace TX{
 			case Channel::RGBA:
 				return Color(r, g, b, keepAlpha ? a : 1.f);
 			}
+			return Color::BLACK;
 		}
 	};
 

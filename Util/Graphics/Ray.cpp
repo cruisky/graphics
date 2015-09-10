@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Graphics/Ray.h"
 
 namespace TX{

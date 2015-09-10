@@ -47,7 +47,7 @@ config_ = config;
 		}
 
 		void Renderer::NewTask(){
-			if (monitor_) monitor_->Reset(config_.samples_per_pixel * thread_sync_.TileCount());
+			if (monitor_) monitor_->Reset(float(config_.samples_per_pixel * thread_sync_.TileCount()));
 			film->Reset();
 			thread_sync_.Resume();
 			for (auto i = 0; i < ThreadScheduler::Instance()->ThreadCount(); i++){
