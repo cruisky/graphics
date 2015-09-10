@@ -66,11 +66,12 @@ config_ = config;
 				thread_sync_.PostRenderSync(workerId);
 
 				if (workerId == 0){
-					film->ScalePixels();
+					if(i % 10 == 0) film->ScalePixels();
 					thread_sync_.ResetTiles();
 				}
 			}
 			if (workerId == 0){
+				film->ScalePixels();
 				if (monitor_) monitor_->Finish();
 			}
 		}

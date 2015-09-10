@@ -7,7 +7,7 @@ namespace TX{
 	namespace RayTracer{
 		class PathTracer : public Tracer {
 		public:
-			PathTracer(int maxdepth = 5);
+			PathTracer(int maxdepth = 6);
 			~PathTracer(){}
 			void BakeSamples(const Scene *scene, const CameraSample *samplebuf);
 		protected:
