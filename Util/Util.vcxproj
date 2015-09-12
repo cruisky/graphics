@@ -47,7 +47,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(VCInstallDir)UnitTest\include</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -73,7 +73,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;.</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(VCInstallDir)UnitTest\include</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -100,11 +100,20 @@
     <ClInclude Include="Graphics\GUI.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Drawing.h" />
-    <ClInclude Include="Graphics\Ray.h" />
+    <ClInclude Include="Rendering\Obj.h" />
+    <ClInclude Include="Rendering\BSDF.h" />
+    <ClInclude Include="Rendering\Camera.h" />
+    <ClInclude Include="Rendering\Film.h" />
+    <ClInclude Include="Rendering\Intersection.h" />
+    <ClInclude Include="Rendering\Light.h" />
+    <ClInclude Include="Rendering\Primitive.h" />
+    <ClInclude Include="Rendering\PrimitiveManager.h" />
+    <ClInclude Include="Math\Ray.h" />
     <ClInclude Include="Libs\sse_mathfun.h" />
     <ClInclude Include="Libs\stb_image.h" />
     <ClInclude Include="Libs\stb_image_write.h" />
     <ClInclude Include="Libs\stb_truetype.h" />
+    <ClInclude Include="Libs\tiny_obj_loader.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Geometry.h" />
@@ -113,6 +122,14 @@
     <ClInclude Include="Misc\RandomData.h" />
     <ClInclude Include="Misc\CppUnitTestHelpers.h" />
     <ClInclude Include="Misc\TestHelpers.h" />
+    <ClInclude Include="Rendering\RenderingFwd.h" />
+    <ClInclude Include="Rendering\Sample.h" />
+    <ClInclude Include="Rendering\Sampler.h" />
+    <ClInclude Include="Rendering\Scene.h" />
+    <ClInclude Include="Rendering\SceneObject.h" />
+    <ClInclude Include="Rendering\Shape.h" />
+    <ClInclude Include="Rendering\Tracer.h" />
+    <ClInclude Include="Rendering\Transform.h" />
     <ClInclude Include="SSE\Bool.h" />
     <ClInclude Include="SSE\Float.h" />
     <ClInclude Include="SSE\Int.h" />
@@ -130,12 +147,26 @@
     <ClCompile Include="Graphics\FontMap.cpp" />
     <ClCompile Include="Graphics\GUI.cpp" />
     <ClCompile Include="Graphics\Image.cpp" />
-    <ClCompile Include="Graphics\Ray.cpp" />
+    <ClCompile Include="Rendering\Obj.cpp" />
+    <ClCompile Include="Rendering\BSDF.cpp" />
+    <ClCompile Include="Rendering\Camera.cpp" />
+    <ClCompile Include="Rendering\Film.cpp" />
+    <ClCompile Include="Rendering\Intersection.cpp" />
+    <ClCompile Include="Rendering\Light.cpp" />
+    <ClCompile Include="Rendering\Primitive.cpp" />
+    <ClCompile Include="Rendering\PrimitiveManager.cpp" />
+    <ClCompile Include="Math\Ray.cpp" />
+    <ClCompile Include="Libs\tiny_obj_loader.cpp" />
     <ClCompile Include="Math\Geometry.cpp" />
     <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Misc\RandomData.cpp" />
+    <ClCompile Include="Rendering\Sample.cpp" />
+    <ClCompile Include="Rendering\Scene.cpp" />
+    <ClCompile Include="Rendering\Shape.cpp" />
+    <ClCompile Include="Rendering\Tracer.cpp" />
+    <ClCompile Include="Rendering\Transform.cpp" />
     <ClCompile Include="SSE\Bool.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />

@@ -24,7 +24,7 @@
 #include "Math/MathUtil.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
-#include "Graphics/Ray.h"
+#include "Math/Ray.h"
 #include "Graphics/Color.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

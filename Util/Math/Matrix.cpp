@@ -1,7 +1,7 @@
 #include "UtilStdAfx.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
-#include "Graphics/Ray.h"
+#include "Math/Ray.h"
 
 namespace TX{
 	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4(
