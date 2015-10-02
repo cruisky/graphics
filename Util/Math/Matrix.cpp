@@ -4,6 +4,12 @@
 #include "Math/Ray.h"
 
 namespace TX{
+	const Matrix3x3 Matrix3x3::IDENTITY = Matrix3x3(
+		1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		0.f, 0.f, 1.f);
+
+
 	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4(
 		1.f, 0.f, 0.f, 0.f,
 		0.f, 1.f, 0.f, 0.f,

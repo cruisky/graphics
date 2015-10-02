@@ -27,7 +27,7 @@ namespace TX
 	// Math
 	struct Rect; class Polygon;
 	class Vector2; class Vector3; class Vector4;
-	class Matrix4x4;
+	class Matrix3x3; class Matrix4x4;
 	class RNG;
 
 	// SSE

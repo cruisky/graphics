@@ -30,6 +30,12 @@ namespace TX
 			Camera& SetNearClipPlane(float near);
 			Camera& SetFarClipPlane(float far);
 			Camera& SetOrtho(bool ortho);
+			inline const Matrix4x4& CameraToScreen() const { return cam_screen_; }
+			inline const Matrix4x4& ScreenToCamera() const { return screen_cam_; }
+			inline const Matrix4x4& ScreenToViewport() const { return screen_viewport_; }
+			inline const Matrix4x4& ViewportToScreen() const { return viewport_screen_; }
+			inline const Matrix4x4& CameraToViewport() const { return cam_viewport_; }
+			inline const Matrix4x4& ViewportToCamera() const { return viewport_cam_; }
 		
 		private:
 			// Updates the camera-screen matrices
