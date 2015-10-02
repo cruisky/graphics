@@ -150,6 +150,7 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\RenderingFwd.h" />
+    <ClInclude Include="Graphics\GLUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UtilStdAfx.cpp">
@@ -246,6 +247,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GLUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

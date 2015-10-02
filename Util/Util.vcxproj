@@ -97,6 +97,7 @@
     <ClInclude Include="Graphics\Color.h" />
     <ClInclude Include="Graphics\Filter.h" />
     <ClInclude Include="Graphics\FontMap.h" />
+    <ClInclude Include="Graphics\GLUtils.h" />
     <ClInclude Include="Graphics\GUI.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Drawing.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Graphics\Color.cpp" />
     <ClCompile Include="Graphics\Drawing.cpp" />
     <ClCompile Include="Graphics\FontMap.cpp" />
+    <ClCompile Include="Graphics\GLUtils.cpp" />
     <ClCompile Include="Graphics\GUI.cpp" />
     <ClCompile Include="Graphics\Image.cpp" />
     <ClCompile Include="Rendering\Obj.cpp" />
