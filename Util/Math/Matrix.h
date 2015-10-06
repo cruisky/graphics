@@ -86,6 +86,8 @@ namespace TX{
 
 		__forceinline const Vector3& operator[](int rowi) const { return row[rowi]; }
 		__forceinline Vector3& operator[](int rowi){ return row[rowi]; }
+		__forceinline operator float*(){ return &row[0][0]; }
+		__forceinline operator const float*() const { return &row[0][0]; }
 
 		__forceinline Matrix3x3 Transpose() const{
 			return Matrix3x3(
@@ -201,6 +203,8 @@ namespace TX{
 
 		__forceinline const Vector4& operator[](int rowi) const { return row[rowi]; }
 		__forceinline Vector4& operator[](int rowi){ return row[rowi]; }
+		__forceinline operator float*(){ return &row[0][0]; }
+		__forceinline operator const float*() const { return &row[0][0]; }
 
 		__forceinline Matrix4x4 Transpose() const{
 			return Matrix4x4(

@@ -79,5 +79,17 @@ namespace TX
 			delete[] buffer;
 			return log;
 		}
+
+		void Mesh::Upload(const Rendering::ObjMesh& mesh){
+			if (mesh.vertices.size() > 0){
+				vertices.Data(mesh.vertices.size() * sizeof(mesh.vertices[0]), mesh.vertices.data());
+			}
+			if (mesh.normals.size() > 0){
+				normals.Data(mesh.normals.size() * sizeof(mesh.normals[0]), mesh.normals.data());
+			}
+			if (mesh.indices.size() > 0){
+				indices.Data(mesh.indices.size() * sizeof(mesh.indices[0]), mesh.indices.data());
+			}
+		}
 	}
 }

@@ -23,6 +23,8 @@
     <None Include="test.mtl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="phong.vs.glsl" />
+    <None Include="phong.fs.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="test.obj">

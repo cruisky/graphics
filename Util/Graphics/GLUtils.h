@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "Util.h"
+#include "Rendering/Obj.h"
 
 namespace TX
 {
@@ -9,7 +10,7 @@ namespace TX
 	{
 		class Object {
 		public:
-			GLuint id = 0;
+			GLuint id;
 			inline operator GLuint() { return id; }
 		};
 
@@ -56,6 +57,16 @@ namespace TX
 			void BindAttribLoc(const char *name, GLuint index);
 			void Link();
 			std::string GetLog();
+		};
+
+		class Mesh{
+		public:
+			Buffer<GL_ARRAY_BUFFER> vertices;
+			Buffer<GL_ARRAY_BUFFER> normals;
+			Buffer<GL_ELEMENT_ARRAY_BUFFER> indices;
+		public:
+			Mesh(){}
+			void Upload(const Rendering::ObjMesh& mesh);
 		};
 	}
 }

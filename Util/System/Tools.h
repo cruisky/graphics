@@ -3,7 +3,9 @@
 #include "Util.h"
 #include "Thread.h"
 
-namespace TX{
+namespace TX {
+	std::string ReadAllLines(const std::string& file);
+
 	class Timer
 	{
 	public:
