@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util.h"
+#include <iostream>
 #include "MathUtil.h"
 
 namespace TX
@@ -26,8 +26,11 @@ namespace TX
 		__forceinline Vector2& operator = (const Vector2& ot){ x = ot.x; y = ot.y; return *this; }
 
 		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
-		__forceinline       float& operator [] (const size_t i)       { return f[i]; }
-		
+		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
+
+		__forceinline explicit operator const float*() const { return f; }
+		__forceinline explicit operator		  float*()       { return f; }
+
 		__forceinline bool operator == (const Vector2& ot) const { return x == ot.x && y == ot.y; }
 		__forceinline bool operator != (const Vector2& ot) const { return x != ot.x || y != ot.y; }
 		__forceinline bool operator > (const Vector2& ot) const { return x > ot.x && y > ot.y; }
@@ -97,6 +100,9 @@ namespace TX
 
 		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
 		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
+
+		__forceinline explicit operator const float*() const { return f; }
+		__forceinline explicit operator		  float*()       { return f; }
 
 		__forceinline bool operator == (const Vector3& ot) const { return x == ot.x && y == ot.y && z == ot.z; }
 		__forceinline bool operator != (const Vector3& ot) const { return x != ot.x || y != ot.y || z != ot.z; }
@@ -172,8 +178,11 @@ namespace TX
 		__forceinline Vector4(const float *arr) : x(arr[0]), y(arr[1]), z(arr[2]), w(arr[3]){}
 		__forceinline Vector4(const Vector4& ot) : x(ot.x), y(ot.y), z(ot.z), w(ot.w){}
 
-		__forceinline operator const float*() const { return f; }
-		__forceinline operator float*()       { return f; }
+		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
+		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
+		
+		__forceinline explicit operator const float*() const { return f; }
+		__forceinline explicit operator float*()       { return f; }
 
 		__forceinline bool operator == (const Vector4& ot) const { return x == ot.x && y == ot.y && z == ot.z && w == ot.w; }
 		__forceinline bool operator != (const Vector4& ot) const { return x != ot.x || y != ot.y || z != ot.z || w != ot.w; }

@@ -1,8 +1,15 @@
+#include "UtilStdAfx.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
-#include "Graphics/Ray.h"
+#include "Math/Ray.h"
 
 namespace TX{
+	const Matrix3x3 Matrix3x3::IDENTITY = Matrix3x3(
+		1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		0.f, 0.f, 1.f);
+
+
 	const Matrix4x4 Matrix4x4::IDENTITY = Matrix4x4(
 		1.f, 0.f, 0.f, 0.f,
 		0.f, 1.f, 0.f, 0.f,
@@ -10,16 +17,15 @@ namespace TX{
 		0.f, 0.f, 0.f, 1.f);
 
 	Matrix4x4 Matrix4x4::Translate(const Vector3& v){
-		return Matrix4x4(
-			1.f, 0.f, 0.f, v.x,
-			0.f, 1.f, 0.f, v.y,
-			0.f, 0.f, 1.f, v.z,
-			0.f, 0.f, 0.f, 1.f
-		);
+		return Translate(v.x, v.y, v.z);
 	}
 
 	Matrix4x4 Matrix4x4::Translate(float x, float y, float z){
-		return Translate(Vector3(x, y, z));
+		return Matrix4x4(
+			1.f, 0.f, 0.f, x,
+			0.f, 1.f, 0.f, y,
+			0.f, 0.f, 1.f, z,
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(float angle, const Vector3& axis){
@@ -35,9 +41,13 @@ namespace TX{
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(const Vector3& angle){
-		float x = Math::ToRad(angle.x);
-		float y = Math::ToRad(angle.y);
-		float z = Math::ToRad(angle.z);
+		return Rotate(angle.x, angle.y, angle.z);
+	}
+
+	Matrix4x4 Matrix4x4::Rotate(float degx, float degy, float degz){
+		float x = Math::ToRad(degx);
+		float y = Math::ToRad(degy);
+		float z = Math::ToRad(degz);
 		float sx = Math::Sin(x);
 		float sy = Math::Sin(y);
 		float sz = Math::Sin(z);
@@ -49,10 +59,6 @@ namespace TX{
 			sz*cy, sz*sy*sx + cz*cx, sz*sy*cx - cz*sx, 0.f,
 			-sy, cy*sx, cy*cx, 0.f,
 			0.f, 0.f, 0.f, 1.f);
-	}
-
-	Matrix4x4 Matrix4x4::Rotate(float x, float y, float z){
-		return Rotate(Vector3(x, y, z));
 	}
 	Matrix4x4 Matrix4x4::LookAt(const Vector3& pEye, const Vector3& pTarget, const Vector3& up){
 		assert(pEye != pTarget);
@@ -67,16 +73,15 @@ namespace TX{
 	}
 
 	Matrix4x4 Matrix4x4::Scale(const Vector3& s){
-		return Matrix4x4(
-			s.x, 0.f, 0.f, 0.f,
-			0.f, s.y, 0.f, 0.f,
-			0.f, 0.f, s.z, 0.f,
-			0.f, 0.f, 0.f, 1.f
-			);
+		return Scale(s.x, s.y, s.z);
 	}
 
 	Matrix4x4 Matrix4x4::Scale(float x, float y, float z){
-		return Scale(Vector3(x, y, z));
+		return Matrix4x4(
+			x, 0.f, 0.f, 0.f,
+			0.f, y, 0.f, 0.f,
+			0.f, 0.f, z, 0.f,
+			0.f, 0.f, 0.f, 1.f);
 	}
 
 	Matrix4x4 Matrix4x4::Orthographic(float ratio, float size, float an, float af){

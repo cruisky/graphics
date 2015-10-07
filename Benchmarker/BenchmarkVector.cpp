@@ -13,9 +13,9 @@ namespace TX
 				a = RandomVector4(), b = RandomVector4();
 			}
 			BM_BODY(){
-				__m128 x = _mm_loadu_ps(a), y = _mm_loadu_ps(b);
+				__m128 x = _mm_loadu_ps((float *)a), y = _mm_loadu_ps((float *)b);
 				x = _mm_mul_ps(x, y);
-				_mm_storeu_ps(a, x);
+				_mm_storeu_ps((float *)a, x);
 			}
 		};
 

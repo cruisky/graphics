@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Thread.h"
 #include "Memory.h"
 
@@ -91,7 +92,7 @@ namespace TX
 		taskLock.WaitAndLock();
 		taskAvailable.WakeAll();
 		taskLock.Unlock();
-		for (int i = 0; i < threads.size(); i++){
+		for (uint i = 0; i < threads.size(); i++){
 			threads[i].Stop();
 		}
 	}

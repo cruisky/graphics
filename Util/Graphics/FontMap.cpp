@@ -1,6 +1,5 @@
+#include "UtilStdAfx.h"
 #include "FontMap.h"
-
-#include <fstream>
 #include "System/Memory.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION 
@@ -58,7 +57,7 @@ namespace TX
 		std::ifstream in(file, std::ifstream::ate | std::ifstream::binary);
 		if (in.is_open()){
 			std::streampos size = in.tellg();
-			char *buf = new char[size];
+			char *buf = new char[static_cast<size_t>(size)];
 			AutoDeleteArray<char> _(buf);
 			in.seekg(0, std::ios::beg);
 			in.read(buf, size);

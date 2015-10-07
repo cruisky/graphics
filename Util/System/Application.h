@@ -1,11 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/freeglut_ext.h>
-#include <cstdio>
-#include <string>
-#include "Math/Vector.h"
+#include "Util.h"
 #include "Input.h"
 
 namespace TX{
@@ -40,32 +35,18 @@ namespace TX{
 			virtual void OnExit(){}
 
 		protected:
-			float ElapsedTime(){ return glutGet(GLUT_ELAPSED_TIME) / 1000.f; }
-			void Exit(){ OnExit(); glutLeaveMainLoop(); }
+			float ElapsedTime();
+			void Exit();
 			// Wrappers
 		private:
 			static const char * GetVersion();
-			static inline void GLUTRender() {
-				if (app->Render()){
-					glutPostRedisplay();
-				}
-				glutSwapBuffers();
-			}
-			static inline void GLUTKey(unsigned char key, int x, int y)		{ app->OnKey(key, x, y); }
-			static inline void GLUTSpecial(int key, int x, int y)			{ app->OnSpecialKey(KeyCode(key), x, y); }
-			static inline void GLUTMouseDrag(int x, int y)					{ app->OnMouseMove(x, y); }
-			static inline void GLUTMouseMove(int x, int y)					{ app->OnMouseMove(x, y); }
-			static inline void GLUTMouseButton(int b, int s, int x, int y)	{ app->OnMouseButton(MouseButton(b), MouseButtonState(s), x, y); }
-			static inline void GLUTResize(int w, int h)	{
-				if (w != app->config.width || h != app->config.height){
-					if (!app->config.fixsize){
-						app->config.width = w;
-						app->config.height = h;
-						app->OnResize();
-					}
-					glutReshapeWindow(app->config.width, app->config.height);
-				}
-			}
+			static void GLUTRender();
+			static void GLUTKey(unsigned char key, int x, int y);
+			static void GLUTSpecial(int key, int x, int y);
+			static void GLUTMouseDrag(int x, int y);
+			static void GLUTMouseMove(int x, int y);
+			static void GLUTMouseButton(int b, int s, int x, int y);
+			static void GLUTResize(int w, int h);
 		protected:
 			AppConfig config;
 		private:

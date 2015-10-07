@@ -5,10 +5,118 @@
 #include "Vector.h"
 
 namespace TX{
+	class Matrix3x3 {
+	public:
+		static const Matrix3x3 IDENTITY;
+	private:
+		Vector3 row[3];
+	public:
+		Matrix3x3(){
+			row[0] = Vector3::X;
+			row[1] = Vector3::Y;
+			row[2] = Vector3::Z;
+		}
+		Matrix3x3(const Vector3& r0, const Vector3& r1, const Vector3& r2){
+			row[0] = r0;
+			row[1] = r1;
+			row[2] = r2;
+		}
+		Matrix3x3(const Matrix3x3& ot) : Matrix3x3(ot[0], ot[1], ot[2]){}
+		Matrix3x3(
+			float m00, float m01, float m02,
+			float m10, float m11, float m12,
+			float m20, float m21, float m22)
+			: Matrix3x3(
+			Vector3(m00, m01, m02),
+			Vector3(m10, m11, m12),
+			Vector3(m20, m21, m22)){}
+		~Matrix3x3(){}
+
+		__forceinline Matrix3x3& operator = (const Matrix3x3& ot){
+			memcpy_s(row, sizeof(row), ot.row, 3 * sizeof(Vector4));
+			return *this;
+		}
+
+		__forceinline Matrix3x3 operator + (const Matrix3x3& ot) const{
+			return Matrix3x3(
+				row[0] + ot[0],
+				row[1] + ot[1],
+				row[2] + ot[2]);
+		}
+		__forceinline Matrix3x3 operator - (const Matrix3x3& ot) const{
+			return Matrix3x3(
+				row[0] - ot[0],
+				row[1] - ot[1],
+				row[2] - ot[2]);
+		}
+		__forceinline Matrix3x3 operator * (const Matrix3x3& ot) const {
+			Matrix3x3 result;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					result[i][j] =
+					row[i][0] * ot[0][j] +
+					row[i][1] * ot[1][j] +
+					row[i][2] * ot[2][j];
+			return result;
+		}
+		__forceinline const Matrix3x3& operator += (const Matrix3x3& ot){
+			row[0] += ot[0];
+			row[1] += ot[1];
+			row[2] += ot[2];
+			return *this;
+		}
+		__forceinline const Matrix3x3& operator -= (const Matrix3x3& ot){
+			row[0] -= ot[0];
+			row[1] -= ot[1];
+			row[2] -= ot[2];
+			return *this;
+		}
+		__forceinline const Matrix3x3& operator *= (const Matrix3x3& ot) {
+			Vector3 temp;
+			for (int i = 0; i < 3; i++){
+				for (int j = 0; j < 3; j++)
+					temp[j] =
+					row[i][0] * ot[0][j] +
+					row[i][1] * ot[1][j] +
+					row[i][2] * ot[2][j];
+				row[i] = temp;
+			}
+			return *this;
+		}
+
+		__forceinline const Vector3& operator[](int rowi) const { return row[rowi]; }
+		__forceinline Vector3& operator[](int rowi){ return row[rowi]; }
+		__forceinline operator float*(){ return &row[0][0]; }
+		__forceinline operator const float*() const { return &row[0][0]; }
+
+		__forceinline Matrix3x3 Transpose() const{
+			return Matrix3x3(
+				row[0][0], row[1][0], row[2][0],
+				row[0][1], row[1][1], row[2][1],
+				row[0][2], row[1][2], row[2][2]);
+		}
+
+		inline Matrix3x3 Inverse() const {
+			//TODO
+		}
+	};
+
+	inline std::ostream& operator << (std::ostream& os, const Matrix3x3& m){
+		for (int i = 0; i < 3; i++){
+			for (int j = 0; j < 3; j++)
+				os << m[i][j] << "\t";
+			os << std::endl;
+		}
+		return os;
+	}
+
+
 	// 4x4 row-major matrix using right-handed coordinate system
 	class Matrix4x4 {
 	public:
 		static const Matrix4x4 IDENTITY;
+	private:
+		Vector4 row[4];
 	public:
 		Matrix4x4(){
 			row[0] = Vector4::X;
@@ -95,6 +203,8 @@ namespace TX{
 
 		__forceinline const Vector4& operator[](int rowi) const { return row[rowi]; }
 		__forceinline Vector4& operator[](int rowi){ return row[rowi]; }
+		__forceinline operator float*(){ return &row[0][0]; }
+		__forceinline operator const float*() const { return &row[0][0]; }
 
 		__forceinline Matrix4x4 Transpose() const{
 			return Matrix4x4(
@@ -106,8 +216,8 @@ namespace TX{
 
 		inline Matrix4x4 Inverse() const {
 			Matrix4x4 result;
-			const float *src = *row;
-			float *dst = result[0];
+			const float *src = (const float *)*row;
+			float *dst = (float *)result[0];
 			// Intel AP-928
 			__m128 minor0, minor1, minor2, minor3;
 			__m128 row0, row1, row2, row3;
@@ -229,8 +339,6 @@ namespace TX{
 		static Matrix4x4 Perspective(float ratio, float fov, float near, float far);
 		// Viewport matrix
 		static Matrix4x4 Viewport(float resx, float resy);
-	private:
-		Vector4 row[4];
 	};
 
 	inline std::ostream& operator << (std::ostream& os, const Matrix4x4& m){

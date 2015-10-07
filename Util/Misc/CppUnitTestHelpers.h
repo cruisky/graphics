@@ -6,7 +6,7 @@
 #include "Misc/TestHelpers.h"
 #include "System/Tools.h"
 #include "Graphics/Color.h"
-#include "Graphics/Ray.h"
+#include "Math/Ray.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
 

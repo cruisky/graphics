@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphics/Color.h"
-#include "Graphics/Ray.h"
+#include "Math/Ray.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
 #include "Math/Random.h"

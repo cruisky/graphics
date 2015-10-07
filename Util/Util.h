@@ -1,22 +1,9 @@
 #pragma once
 #pragma warning(disable: 4800)
 
-#include <cmath>
-#include <string>
-#include <vector>
-#include <cassert>
-#include <chrono>
-#include <ctime>
-#include <cctype>
-#include <cstdlib>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#include <stdexcept>
-#include <algorithm>
-
 namespace TX
 {
+	typedef unsigned int	 uint;
 	typedef	signed	 __int8	 int8;
 	typedef unsigned __int8	 uint8;
 	typedef signed	 __int16 int16;
@@ -25,4 +12,46 @@ namespace TX
 	typedef unsigned __int32 uint32;
 	typedef	signed	 __int64 int64;
 	typedef unsigned __int64 uint64;
+
+	// Graphics
+	class BSDF;
+	class Camera;
+	class Color;
+	class Film;
+	class Filter;
+	class FontMap;
+	class Image;
+	class Intersection; class LocalGeo;
+	class Light;
+	class ObjMaterial; class ObjMesh; class ObjShape;
+	class Primitive;
+	class PrimitiveManager;
+	class Scene;
+	class SceneObject;
+	class Shape;
+	class Tracer;
+	class Transform;
+
+	// Math
+	struct Rect; class Polygon;
+	class Matrix3x3; class Matrix4x4;
+	class RNG;
+	class Ray;
+	class Sample; class CameraSample;
+	class Sampler;
+	class Vector2; class Vector3; class Vector4;
+
+	// SSE
+	namespace SSE{
+		struct V4Bool;
+		struct V4Float;
+		struct V4Int;
+	}
+
+	// System
+	namespace UI{
+		class Application;
+		struct Input;
+	}
+	class Timer;
 }

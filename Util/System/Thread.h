@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Util.h"
+
+#define NOMINMAX
 #include <Windows.h>
 #undef near
 #undef far
 
+#include <vector>
 #include <thread>
 #include <deque>
 #include <atomic>

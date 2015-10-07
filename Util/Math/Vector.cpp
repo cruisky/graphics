@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Vector.h"
 
 namespace TX {

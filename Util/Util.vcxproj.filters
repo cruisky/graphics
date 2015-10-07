@@ -9,88 +9,13 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Graphics">
-      <UniqueIdentifier>{338da112-e261-41de-9a32-9651ece5f82c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\System">
-      <UniqueIdentifier>{9444f573-d977-4892-8219-d72c3deb50ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{2ed0669e-ceb9-4f63-a214-f15512e12358}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Misc">
-      <UniqueIdentifier>{3dc20c17-1d02-4961-9542-8fb8398e30cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SSE">
-      <UniqueIdentifier>{6114fba4-15ab-4e55-ae0e-19b171efe74e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Libs">
       <UniqueIdentifier>{af7293c4-37c0-4dd4-a5d6-41ce3f8699e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graphics\Color.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Image.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Ray.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MathUtil.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Matrix.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="System\Application.h">
-      <Filter>Source Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="System\Thread.h">
-      <Filter>Source Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="System\Tools.h">
-      <Filter>Source Files\System</Filter>
-    </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Misc\RandomData.h">
-      <Filter>Source Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Random.h">
-      <Filter>Source Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Misc\CppUnitTestHelpers.h">
-      <Filter>Source Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Misc\TestHelpers.h">
-      <Filter>Source Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="SSE\Float.h">
-      <Filter>Source Files\SSE</Filter>
-    </ClInclude>
-    <ClInclude Include="SSE\Int.h">
-      <Filter>Source Files\SSE</Filter>
-    </ClInclude>
-    <ClInclude Include="SSE\Bool.h">
-      <Filter>Source Files\SSE</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Filter.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\GUI.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="System\Input.h">
-      <Filter>Source Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Drawing.h">
-      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Libs\sse_mathfun.h">
       <Filter>Source Files\Libs</Filter>
@@ -104,67 +29,229 @@
     <ClInclude Include="Libs\stb_truetype.h">
       <Filter>Source Files\Libs</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\FontMap.h">
-      <Filter>Source Files\Graphics</Filter>
+    <ClInclude Include="Graphics\Color.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="System\Memory.h">
-      <Filter>Source Files\System</Filter>
+    <ClInclude Include="Graphics\Drawing.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Filter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\FontMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GUI.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Image.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\Geometry.h">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathUtil.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Random.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\CppUnitTestHelpers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\RandomData.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\TestHelpers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SSE\Bool.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SSE\Float.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SSE\Int.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Application.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Memory.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Thread.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Tools.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\tiny_obj_loader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilStdAfx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Ray.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GLUtils.h" />
+    <ClInclude Include="Graphics\BSDF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Camera.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Film.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Intersection.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Light.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Obj.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Primitive.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\PrimitiveManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Scene.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\SceneObject.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Shape.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Tracer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Transform.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Sample.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Sampler.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="UtilStdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\tiny_obj_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Graphics\Color.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Image.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Ray.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\MathUtil.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Matrix.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="System\Application.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="System\Thread.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="System\Tools.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Math\Vector.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Misc\RandomData.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="SSE\Bool.cpp">
-      <Filter>Source Files\SSE</Filter>
-    </ClCompile>
-    <ClCompile Include="SSE\Float.cpp">
-      <Filter>Source Files\SSE</Filter>
-    </ClCompile>
-    <ClCompile Include="SSE\Int.cpp">
-      <Filter>Source Files\SSE</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\GUI.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Drawing.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\FontMap.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Image.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Math\Geometry.cpp">
-      <Filter>Source Files\Math</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MathUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc\RandomData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SSE\Bool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SSE\Float.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SSE\Int.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Ray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GLUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\BSDF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Film.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Intersection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Obj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Primitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\PrimitiveManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Tracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Sample.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

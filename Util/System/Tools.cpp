@@ -1,7 +1,14 @@
+#include "UtilStdAfx.h"
 #include "System/Tools.h"
 
 namespace TX
 {
+	std::string ReadAllLines(const std::string& file){
+		std::stringstream buf;
+		buf << std::ifstream(file).rdbuf();
+		return buf.str();
+	}
+
 	void ProgressMonitor::Reset(float total){
 		timer_.reset();
 		in_progress_ = true;
