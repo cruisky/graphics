@@ -1,28 +1,26 @@
 #include "stdafx.h"
 #include "DirectionalLight.h"
-#include "Rendering/Intersection.h"
+#include "Graphics/Intersection.h"
 
 namespace TX {
-	namespace Rendering {
-		DirectionalLight::DirectionalLight(const Color& intensity, int sample_count) : Light(sample_count), intensity(intensity){}
-		DirectionalLight::DirectionalLight(const Color& intensity, const Vector3& dir, int sample_count) :
-			Light(sample_count), intensity(intensity) {
-			transform.LookAt(dir);
-		}
+	DirectionalLight::DirectionalLight(const Color& intensity, int sample_count) : Light(sample_count), intensity(intensity){}
+	DirectionalLight::DirectionalLight(const Color& intensity, const Vector3& dir, int sample_count) :
+		Light(sample_count), intensity(intensity) {
+		transform.LookAt(dir);
+	}
 
-		void DirectionalLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {
-			// the position of a directional light can be everywhere, so we only need to transform the direction
-			*wi = Ray(pos, Matrix4x4::TVector(transform.LocalToWorldMatrix(), Vector3(0.f, 0.f, 1.f)));
-			*lightcolor = intensity;
-			*pdf = 1.f;
-		}
+	void DirectionalLight::Illuminate(const Vector3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {
+		// the position of a directional light can be everywhere, so we only need to transform the direction
+		*wi = Ray(pos, Matrix4x4::TVector(transform.LocalToWorldMatrix(), Vector3(0.f, 0.f, 1.f)));
+		*lightcolor = intensity;
+		*pdf = 1.f;
+	}
 
-		float DirectionalLight::Pdf(const Vector3& pos, const Vector3& dir) const{
-			return 0.f;
-		}		
+	float DirectionalLight::Pdf(const Vector3& pos, const Vector3& dir) const{
+		return 0.f;
+	}		
 		
-		bool DirectionalLight::IsDelta() const {
-			return true;
-		}
+	bool DirectionalLight::IsDelta() const {
+		return true;
 	}
 }

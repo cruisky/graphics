@@ -80,7 +80,7 @@ namespace TX
 			return log;
 		}
 
-		void Mesh::Upload(const Rendering::ObjMesh& mesh){
+		void Mesh::Upload(const ObjMesh& mesh){
 			if (mesh.vertices.size() > 0){
 				vertices.Data(mesh.vertices.size() * sizeof(mesh.vertices[0]), mesh.vertices.data());
 			}

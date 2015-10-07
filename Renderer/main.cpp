@@ -1,16 +1,16 @@
 #include "stdafx.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
-#include "Rendering/Transform.h"
-#include "Rendering/Sampler.h"
-#include "Rendering/Sample.h"
-#include "Rendering/BSDF.h"
-#include "Rendering/Film.h"
-#include "Rendering/Tracer.h"
-#include "Rendering/Scene.h"
-#include "Rendering/Camera.h"
-#include "Rendering/Primitive.h"
-#include "Rendering/Light.h"
+#include "Graphics/Transform.h"
+#include "Math/Sampler.h"
+#include "Math/Sample.h"
+#include "Graphics/BSDF.h"
+#include "Graphics/Film.h"
+#include "Graphics/Tracer.h"
+#include "Graphics/Scene.h"
+#include "Graphics/Camera.h"
+#include "Graphics/Primitive.h"
+#include "Graphics/Light.h"
 
 #include "Core/RendererConfig.h"
 #include "Core/Renderer.h"
@@ -25,7 +25,7 @@
 
 using namespace std;
 using namespace TX;
-using namespace TX::Rendering;
+using namespace TX::UI;
 
 #pragma warning(disable: 4244)
 #pragma warning(disable: 4305)

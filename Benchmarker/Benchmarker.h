@@ -10,7 +10,7 @@
 
 namespace TX{
 	namespace Tests {
-		class Test : public Timer {
+		class Test : protected Timer {
 		public:
 			Test(){}
 			virtual ~Test(){}

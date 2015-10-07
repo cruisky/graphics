@@ -14,21 +14,32 @@ namespace TX
 	typedef unsigned __int64 uint64;
 
 	// Graphics
+	class BSDF;
+	class Camera;
 	class Color;
-	struct DrawList; struct DrawCmd; struct DrawVert;
+	class Film;
 	class Filter;
-	class FontMap; class GlyphPosMap;
-	namespace UI{ namespace GUI{
-		struct Style;
-	}}
+	class FontMap;
 	class Image;
-	class Ray;
+	class Intersection; class LocalGeo;
+	class Light;
+	class ObjMaterial; class ObjMesh; class ObjShape;
+	class Primitive;
+	class PrimitiveManager;
+	class Scene;
+	class SceneObject;
+	class Shape;
+	class Tracer;
+	class Transform;
 
 	// Math
 	struct Rect; class Polygon;
-	class Vector2; class Vector3; class Vector4;
 	class Matrix3x3; class Matrix4x4;
 	class RNG;
+	class Ray;
+	class Sample; class CameraSample;
+	class Sampler;
+	class Vector2; class Vector3; class Vector4;
 
 	// SSE
 	namespace SSE{
@@ -42,8 +53,5 @@ namespace TX
 		class Application;
 		struct Input;
 	}
-	//class Thread; class WorkerThread; class Lock; class LockGuard; class Condition; class Task; class ThreadScheduler;
 	class Timer;
-	class IProgressMonitor;
-	class ProgressMonitor;
 }

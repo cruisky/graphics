@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include "Util.h"
-#include "Rendering/Obj.h"
+#include "Graphics/Obj.h"
 
 namespace TX
 {
@@ -66,7 +66,7 @@ namespace TX
 			Buffer<GL_ELEMENT_ARRAY_BUFFER> indices;
 		public:
 			Mesh(){}
-			void Upload(const Rendering::ObjMesh& mesh);
+			void Upload(const ObjMesh& mesh);
 		};
 	}
 }

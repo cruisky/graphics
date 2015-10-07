@@ -1,5 +1,5 @@
-#include "Rendering/Obj.h"
-#include "Rendering/Camera.h"
+#include "Graphics/Obj.h"
+#include "Graphics/Camera.h"
 #include "System/Application.h"
 #include "System/Tools.h"
 #include "Graphics/GLUtils.h"
@@ -9,7 +9,6 @@
 namespace TX
 {
 	using namespace UI;
-	using namespace Rendering;
 	class ObjViewer : public Application {
 	private:
 		enum Attribute{
@@ -56,14 +55,14 @@ namespace TX
 
 			// set up camera
 			camera = std::make_shared<Camera>(config.width, config.height);
-			camera->transform.Translate(0.0, 0.8, 2.f);
+			camera->transform.Translate(0.f, 0.8f, 2.f);
 
 			// load object data
-			Rendering::LoadObj(shapes, materials, "teapot.obj", "./");
+			LoadObj(shapes, materials, "teapot.obj", "./");
 
 			// create buffers for each mesh object
 			meshes.resize(shapes.size());
-			for (int i = 0; i < shapes.size(); i++){
+			for (uint i = 0; i < shapes.size(); i++){
 				meshes[i].Upload(shapes[i].mesh);
 			}
 			

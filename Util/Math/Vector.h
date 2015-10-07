@@ -180,7 +180,7 @@ namespace TX
 
 		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
 		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
-
+		
 		__forceinline explicit operator const float*() const { return f; }
 		__forceinline explicit operator float*()       { return f; }
 

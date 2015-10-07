@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "GUIViewer.h"
 
-#include "Rendering/Film.h"
-#include "Rendering/Scene.h"
-#include "Rendering/Camera.h"
+#include "Graphics/Film.h"
+#include "Graphics/Scene.h"
+#include "Graphics/Camera.h"
 
 namespace TX{
-	namespace Rendering{
+	namespace UI{
 		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Film> film) :
 			Application(), scene_(scene), film_(film){
 			// Progress monitor
@@ -116,7 +116,7 @@ namespace TX{
 		}
 
 		void GUIViewer::ProgressReporterJob(){
-			#ifndef _DEBUG
+#ifndef _DEBUG
 			bool prev_status = false, status;
 			while (true){
 				Sleep(100);
@@ -129,10 +129,9 @@ namespace TX{
 					prev_status = status;
 				}
 			}
-			#endif
+#endif
 		}
 		void GUIViewer::FlipY(int *y) { *y = film_->Height() - *y - 1; }
 		void GUIViewer::FlipX(int *x) { *x = film_->Width() - *x - 1; }
-
 	}
 }

@@ -1,17 +1,15 @@
 #pragma once
 
-#include "Rendering/Sampler.h"
+#include "Math/Sampler.h"
 
 namespace TX{
-	namespace Rendering{
-		class RandomSampler : public Sampler {
-		public:
-			RandomSampler(){}
-			~RandomSampler(){}
+	class RandomSampler : public Sampler {
+	public:
+		RandomSampler(){}
+		~RandomSampler(){}
 
-			void GetSamples(CameraSample *sample);
-		private:
-			RNG rng;
-		};
-	}
+		void GetSamples(CameraSample *sample);
+	private:
+		RNG rng;
+	};
 }

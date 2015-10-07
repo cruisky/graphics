@@ -6,9 +6,8 @@
 #include "Core/Renderer.h"
 
 namespace TX{
-	namespace Rendering{
-		using namespace UI;
-
+	namespace UI
+	{
 		class GUIViewer : public Application {
 		public:
 			enum class Direction{
@@ -20,9 +19,9 @@ namespace TX{
 			void Config();
 			GUIViewer& ConfigRenderer(RendererConfig config);
 			bool Render();
-			void OnMouseButton(MouseButton button, MouseButtonState state, int x, int y);
+			void OnMouseButton(UI::MouseButton button, UI::MouseButtonState state, int x, int y);
 			void OnKey(unsigned char c, int x, int y);
-			void OnSpecialKey(KeyCode code, int x, int y);
+			void OnSpecialKey(UI::KeyCode code, int x, int y);
 			void OnResize();
 		private:
 			void AttemptMoveCamera(Direction dir);
