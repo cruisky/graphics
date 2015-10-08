@@ -15,28 +15,30 @@ namespace TX{
 			};
 		public:
 			GUIViewer(shared_ptr<Scene> scene, shared_ptr<Film> film);
+			GUIViewer& ConfigRenderer(RendererConfig config);
+		protected:
 			void Start();
 			void Config();
-			GUIViewer& ConfigRenderer(RendererConfig config);
 			bool Render();
-			void OnMouseButton(UI::MouseButton button, UI::MouseButtonState state, int x, int y);
-			void OnKey(unsigned char c, int x, int y);
-			void OnSpecialKey(UI::KeyCode code, int x, int y);
+			void OnMouseButton(MouseButton button, MouseButtonState state, int mods);
+			void OnKey(KeyCode code, KeyState state, Modifiers modifiers);
 			void OnResize();
+			void OnExit();
 		private:
 			void AttemptMoveCamera(Direction dir);
 			void AttemptPanCamera(Direction dir);
 			void AttemptBarrelRollCamera(bool clockwise);
 			void InvalidateFrame();
 			void ProgressReporterJob();
-			void FlipY(int *y);
-			void FlipX(int *x);
+			void FlipY(float *y);
+			void FlipX(float *x);
 		private:
 			shared_ptr<Scene> scene_;
 			shared_ptr<Film> film_;
 			unique_ptr<Renderer> renderer_;
 			shared_ptr<IProgressMonitor> monitor_;
 			std::thread progress_reporter_job_;
+			bool progress_reporting;
 		};
 	}
 }

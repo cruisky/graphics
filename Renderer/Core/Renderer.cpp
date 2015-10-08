@@ -9,12 +9,17 @@
 namespace TX {
 	Renderer::Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor)
 		: scene(scene), film(film), monitor_(monitor) {
+		ThreadScheduler::Instance()->StartAll();
 		// Sample buffer
 		sample_buf_ = std::make_unique<CameraSample>(10);	// should be enough to trace a ray
 		// Config renderer
 		Config(config);
 		// Init tiled rendering synchronizer
 		thread_sync_.Init(config_.width, config_.height);
+	}
+	Renderer::~Renderer(){
+		Abort();
+		ThreadScheduler::Instance()->StopAll();
 	}
 
 	Renderer& Renderer::Config(const RendererConfig& config){

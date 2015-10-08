@@ -1,6 +1,5 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "Math/Geometry.h"
 
 namespace TX
@@ -32,11 +31,11 @@ namespace TX
 		bool GetChar(const char *ch, Vector2& pos, Rect *rect, Rect *uv = nullptr, GlyphPosMap *posMap = nullptr) const;
 		float GetWidth(char c) const;
 		float GetWidth(const char *str) const;
-		inline GLuint TexID() const { return texID; }
+		inline uint TexID() const { return texID; }
 		inline float Height() const { return fontHeight; }
 	private:
 		static const int bitmapSize = 512;	// no guarantee this fits
-		GLuint texID;
+		uint texID;
 		float fontHeight;
 		void *data;
 	};

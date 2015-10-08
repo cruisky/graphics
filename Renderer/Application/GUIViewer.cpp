@@ -11,12 +11,12 @@ namespace TX{
 			Application(), scene_(scene), film_(film){
 			// Progress monitor
 			monitor_ = std::make_shared<ProgressMonitor>();
-			// Start worker threads
-			ThreadScheduler::Instance()->StartAll();
+			// Renderer
 			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, film, monitor_);
 		}
 
 		void GUIViewer::Start(){
+			progress_reporting = true;
 			progress_reporter_job_ = std::thread(&GUIViewer::ProgressReporterJob, this);
 			InvalidateFrame();
 		}
@@ -37,43 +37,44 @@ namespace TX{
 			glDrawPixels(config.width, config.height, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
 			return true;
 		}
-
-		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, int x, int y) {
-			FlipY(&y);
+		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, int mods) {
+			Vector2 cursor;
+			GetCursorPos(&cursor.x, &cursor.y);
+			std::cout << "Cursor: " << cursor << std::endl;
+			FlipY(&cursor.y);
 
 			if (state == MouseButtonState::DOWN){
 				switch (button){
 				case MouseButton::LEFT:
-					Color c = film_->Get(x, y);
-					printf("(%3d, %3d), (%1.3f, %1.3f, %1.3f)\n", x, y, c.r, c.g, c.b); break;
+					Color c = film_->Get(int(cursor.x), int(cursor.y));
+					printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b); break;
 				}
 			}
 		}
 
-		void GUIViewer::OnKey(unsigned char c, int x, int y){
-			switch (toupper(c)){
-			case 'W': AttemptMoveCamera(Direction::UP); break;
-			case 'S': AttemptMoveCamera(Direction::DOWN); break;
-			case 'A': AttemptMoveCamera(Direction::LEFT); break;
-			case 'D': AttemptMoveCamera(Direction::RIGHT); break;
-			case 'Q': AttemptBarrelRollCamera(false); break;
-			case 'E': AttemptBarrelRollCamera(true); break;
-			case 27: Exit(); break;			// escape
-			}
-		}
-
-		void GUIViewer::OnSpecialKey(KeyCode code, int x, int y){
+		void GUIViewer::OnKey(KeyCode code, KeyState state, Modifiers modifiers){
 			switch (code){
 			case KeyCode::UP: AttemptPanCamera(Direction::UP); break;
 			case KeyCode::DOWN: AttemptPanCamera(Direction::DOWN); break;
 			case KeyCode::LEFT: AttemptPanCamera(Direction::LEFT); break;
 			case KeyCode::RIGHT: AttemptPanCamera(Direction::RIGHT); break;
+			case KeyCode::W: AttemptMoveCamera(Direction::UP); break;
+			case KeyCode::S: AttemptMoveCamera(Direction::DOWN); break;
+			case KeyCode::A: AttemptMoveCamera(Direction::LEFT); break;
+			case KeyCode::D: AttemptMoveCamera(Direction::RIGHT); break;
+			case KeyCode::Q: AttemptBarrelRollCamera(false); break;
+			case KeyCode::E: AttemptBarrelRollCamera(true); break;
+			case KeyCode::ESCAPE: Exit(); break;
 			}
 		}
 
 		void GUIViewer::OnResize(){
 			renderer_->Resize(config.width, config.height);
 			InvalidateFrame();
+		}
+		void GUIViewer::OnExit(){
+			progress_reporting = false;
+			progress_reporter_job_.join();
 		}
 
 
@@ -118,7 +119,7 @@ namespace TX{
 		void GUIViewer::ProgressReporterJob(){
 #ifndef _DEBUG
 			bool prev_status = false, status;
-			while (true){
+			while (progress_reporting){
 				Sleep(100);
 				status = monitor_->InProgress();
 				if (status || prev_status){
@@ -129,9 +130,10 @@ namespace TX{
 					prev_status = status;
 				}
 			}
+			printf("Terminated at %3.3f%%. \n", monitor_->Progress() * 100.f);
 #endif
 		}
-		void GUIViewer::FlipY(int *y) { *y = film_->Height() - *y - 1; }
-		void GUIViewer::FlipX(int *x) { *x = film_->Width() - *x - 1; }
+		void GUIViewer::FlipY(float *y) { *y = film_->Height() - *y - 1; }
+		void GUIViewer::FlipX(float *x) { *x = film_->Width() - *x - 1; }
 	}
 }

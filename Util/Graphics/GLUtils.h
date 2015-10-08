@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "Util.h"
+#include <GL/glew.h>
 #include "Graphics/Obj.h"
 
 namespace TX
