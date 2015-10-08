@@ -27,8 +27,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjViewer", "ObjViewer\ObjV
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer", "Renderer\Renderer.vcxproj", "{AA8FDED1-49CA-4DE4-B304-960A9B373B55}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfwdemo", "glfwdemo\glfwdemo.vcxproj", "{A31D3BC5-DE31-41D5-B69D-ECC9BF24A9FF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -59,10 +57,6 @@ Global
 		{AA8FDED1-49CA-4DE4-B304-960A9B373B55}.Debug|Win32.Build.0 = Debug|Win32
 		{AA8FDED1-49CA-4DE4-B304-960A9B373B55}.Release|Win32.ActiveCfg = Release|Win32
 		{AA8FDED1-49CA-4DE4-B304-960A9B373B55}.Release|Win32.Build.0 = Release|Win32
-		{A31D3BC5-DE31-41D5-B69D-ECC9BF24A9FF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A31D3BC5-DE31-41D5-B69D-ECC9BF24A9FF}.Debug|Win32.Build.0 = Debug|Win32
-		{A31D3BC5-DE31-41D5-B69D-ECC9BF24A9FF}.Release|Win32.ActiveCfg = Release|Win32
-		{A31D3BC5-DE31-41D5-B69D-ECC9BF24A9FF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
