@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
-#include "Graphics/Transform.h"
+#include "Math/Transform.h"
 #include "Math/Sampler.h"
 #include "Math/Sample.h"
 #include "Graphics/BSDF.h"
