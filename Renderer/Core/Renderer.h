@@ -8,6 +8,7 @@ namespace TX {
 	class Renderer {
 	public:
 		Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor=nullptr);
+		~Renderer();
 		void Abort();
 		void NewTask();
 		void Render(int workerId, RNG& random);

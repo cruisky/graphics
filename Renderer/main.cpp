@@ -168,5 +168,7 @@ int main(){
 	catch (...) {
 		fprintf(stderr, "Uncaught Exception\n");
 	}
+	fprintf(stdout, "Press enter to exit.\n");
 	getchar();
+	return 0;
 }

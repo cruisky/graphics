@@ -19,11 +19,12 @@ private:
 	bool checkBoxValue;
 public:
 	GUIDemo(){}
+protected:
 	void Start(){ 
 		font.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
 		GUI::Init(font);
 
-		input.SetScreen(config.width, config.height); 
+		input.SetWindow(config.width, config.height); 
 		window[0] = Rect(0, 0, 200, 200);
 		window[1] = Rect(200, 100, 500, 400);
 		window[2] = Rect(400, 300, 600, 600);
@@ -87,28 +88,15 @@ public:
 		input.Clear();
 		return true;
 	}
-	void OnMouseMove(int x, int y){ input.SetMouse((float)x, (float)y); }
-	void OnMouseButton(MouseButton button, MouseButtonState state, int x, int y){ input.SetButton(button, state); }
-	void OnKey(unsigned char c, int x, int y){ input.AddKey(c); UpdateModifier(); }
-	void OnSpecialKey(KeyCode code, int x, int y){ input.AddSpecialKey(code); UpdateModifier(); }
-	void OnResize(){ 
-		input.SetScreen(config.width, config.height); 
-		glViewport(0, 0, config.width, config.height);
+	void OnMouseMove(float x, float y){ input.SetCursor(x, y); }
+	void OnMouseScroll(float vx, float vy){ input.scroll = vy; }
+	void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods){ input.SetButton(button, state); }
+	void OnText(uint code, Modifiers modifiers){
+		input.SetText(code); 
+		input.AddModifiers(modifiers); 
 	}
-private:
-	void UpdateModifier(){
-		switch (glutGetModifiers()){
-		case GLUT_ACTIVE_SHIFT:
-			input.SetModifier(Modifier::SHIFT);
-			break;
-		case GLUT_ACTIVE_ALT:
-			input.SetModifier(Modifier::ALT);
-			break;
-		case GLUT_ACTIVE_CTRL:
-			input.SetModifier(Modifier::CTRL);
-			break;
-		}
-	}
+	void OnKey(KeyCode code, KeyState state, Modifiers modifiers){ input.SetKeyCode(code, state); input.AddModifiers(modifiers); }
+	void OnResize(){ input.SetWindow(config.width, config.height); }
 };
 
 int main(){
