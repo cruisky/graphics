@@ -21,7 +21,7 @@ namespace TX
 
 		void Benchmarker::RunAll(){
 			double total;
-			printf("============ Benchmarking %d tests =============\n\n", Instance()->configs.size());
+			std::printf("============ Benchmarking %d tests =============\n\n", Instance()->configs.size());
 			for (auto config : Instance()->configs){
 				Test *test = config->NewTest();
 				total = 0;
@@ -31,10 +31,10 @@ namespace TX
 #endif
 				for (uint i = 0; i < config->runs; i++)
 					total += test->Run(config->iters);
-				printf("%-20s\t\t%f ms\n", config->name, total / config->runs);
+				std::printf("%-20s\t\t%f ms\n", config->name, total / config->runs);
 				delete test;
 			}
-			printf("\n============ All tests finished =============\n");
+			std::printf("\n============ All tests finished =============\n");
 		}
 	}
 }

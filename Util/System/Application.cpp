@@ -41,7 +41,7 @@ namespace TX
 			{
 				throw std::runtime_error("glewInit failed");
 			}
-			printf("OpenGL Version: \t%s\n", GetVersion());
+			std::printf("OpenGL Version: \t%s\n", GetVersion());
 
 			Start();
 
