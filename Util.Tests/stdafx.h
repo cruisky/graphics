@@ -14,8 +14,7 @@
 #include <string>
 #include <cstdarg>
 #include <cstdlib>
-#include "Misc/CppUnitTestHelpers.h"
-#include "Misc/TestHelpers.h"
+#include "CppUnitTestHelpers.h"
 #include "Misc/RandomData.h"
 #include "System/Tools.h"
 #include "Math/Random.h"

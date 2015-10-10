@@ -112,7 +112,7 @@ namespace TX { namespace UI { namespace GUI {
 			int SelectionLeft(){ return Math::Min(selectionBegin, cursor); }
 			int SelectionRight(){ return Math::Max(selectionBegin, cursor); }
 			int AdvanceWords(int steps){
-				int i = cursor;
+				auto i = cursor;
 				if (buffer->length() == 0 || steps == 0) return cursor;
 
 				while (steps > 0){		// towards the right
