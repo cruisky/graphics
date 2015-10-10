@@ -5,6 +5,7 @@
 #include "Math/Sample.h"
 
 namespace TX{
+	using namespace Math;
 	//
 	// BSDF
 	//
@@ -26,16 +27,15 @@ namespace TX{
 			t);
 	}
 
-
 	//
 	// Diffuse
 	//
 	Color Diffuse::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
-		Vector3 localwo = geom.WorldToLocal(wo).Normalize();
+		Vector3 localwo = Normalize(geom.WorldToLocal(wo));
 		Vector3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
 		if (localwo.z < 0.f)
 			localwi.z *= -1.f;
-		*wi = geom.LocalToWorld(localwi).Normalize();
+		*wi = Normalize(geom.LocalToWorld(localwi));
 		if (!Valid(wo, *wi, geom.normal, &types)){
 			*pdf = 0.f;
 			return Color::BLACK;
@@ -46,13 +46,13 @@ namespace TX{
 	}
 
 	float Diffuse::Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
-		return Math::PI_RCP;
+		return 1.f / PI;
 	}
 
 	float Diffuse::Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
 		if (!LocalCoord::SameHemisphere(localwo, localwi))
 			return 0.f;
-		return LocalCoord::AbsCosTheta(localwi) * Math::PI_RCP;
+		return LocalCoord::AbsCosTheta(localwi) * PI_RCP;
 	}
 
 		
@@ -136,11 +136,11 @@ namespace TX{
 	float Dielectric::Refract(float cosi, float *eta) const{
 		float e = (cosi > 0.f) ? eta_ : eta_inv_;	// determine whether the ray is entering the surface
 		if (eta) *eta = e;
-		return Math::Sqrt(Math::Max(0.f, 1.f - e * e * (1.f - cosi * cosi)));
+		return Sqrt(Max(0.f, 1.f - e * e * (1.f - cosi * cosi)));
 	}
 	float Dielectric::Reflectance(float cosi, float cost) const {
 		if (cost == 0.f) return 1.f;	// total internal reflection
-		cosi = Math::Abs(cosi);
+		cosi = Abs(cosi);
 		float etci = etat_ * cosi, etct = etat_ * cost,
 			eici = etai_ * cosi, eict = etai_ * cost;
 		float para = (etci - eict) / (etci + eict);

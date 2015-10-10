@@ -3,6 +3,7 @@
 namespace TX{
 	namespace Tests
 	{
+		using namespace Math;
 		TEST_CLASS(Vector3Tests)
 		{
 		public:
@@ -23,12 +24,12 @@ namespace TX{
 
 			TEST_METHOD(NormalizeTest){
 				repeat(i, 100){
-					Assertions::AreClose(1.f, RandomVector3(false).Normalize().Length());
+					Assertions::AreClose(1.f, Length(Normalize(RandomVector3(false))));
 				}
 			}
 			TEST_METHOD(NormalizedTest){
 				repeat(i, 100){
-					Assertions::AreClose(1.f, Normalized(RandomVector3(false)).Length());
+					Assertions::AreClose(1.f, Length(Normalize(RandomVector3(false))));
 				}
 			}
 			TEST_METHOD(DotTest){
@@ -54,8 +55,8 @@ namespace TX{
 				repeat(i, 100){
 					Vector3 v = RandomVector3();
 					float expected = Dot(v, v);
-					Assertions::AreClose(expected, v.LengthSqr());
-					Assertions::AreClose(Math::Sqrt(expected), v.Length());
+					Assertions::AreClose(expected, LengthSqr(v));
+					Assertions::AreClose(Math::Sqrt(expected), Length(v));
 				}
 			}
 		};

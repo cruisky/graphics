@@ -38,7 +38,7 @@ namespace TX{
 		virtual float Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type = BSDF_ALL) const = 0;
 		virtual float Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type = BSDF_ALL) const = 0;
 		inline bool Valid(const Vector3& wo, const Vector3& wi, const Vector3& normal, BSDFType *t) const{
-			if (Dot(wo, normal) * Dot(wi, normal) < 0.f)
+			if (Math::Dot(wo, normal) * Math::Dot(wi, normal) < 0.f)
 				*t = BSDFType(*t & ~BSDF_REFLECTION);
 			else
 				*t = BSDFType(*t & ~BSDF_TRANSMISSION);

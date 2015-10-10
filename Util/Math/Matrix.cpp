@@ -4,6 +4,8 @@
 #include "Math/Ray.h"
 
 namespace TX{
+	using namespace Math;
+
 	const Matrix3x3 Matrix3x3::IDENTITY = Matrix3x3(
 		1.f, 0.f, 0.f,
 		0.f, 1.f, 0.f,
@@ -30,9 +32,9 @@ namespace TX{
 
 	Matrix4x4 Matrix4x4::Rotate(float angle, const Vector3& axis){
 		Vector3 a(axis);
-		a.Normalize();
-		angle = Math::ToRad(angle);
-		float c = Math::Cos(angle), s = Math::Sin(angle), c1 = 1 - c;
+		a = Normalize(a);
+		angle = ToRad(angle);
+		float c = Cos(angle), s = Sin(angle), c1 = 1 - c;
 		return Matrix4x4(
 			a.x*a.x*c1 + c, a.x*a.y*c1 - a.z*s, a.x*a.z*c1 + a.y*s, 0.f,
 			a.x*a.y*c1 + a.z*s, a.y*a.y*c1 + c, a.y*a.z*c1 - a.x*s, 0.f,
@@ -45,15 +47,15 @@ namespace TX{
 	}
 
 	Matrix4x4 Matrix4x4::Rotate(float degx, float degy, float degz){
-		float x = Math::ToRad(degx);
-		float y = Math::ToRad(degy);
-		float z = Math::ToRad(degz);
-		float sx = Math::Sin(x);
-		float sy = Math::Sin(y);
-		float sz = Math::Sin(z);
-		float cx = Math::Cos(x);
-		float cy = Math::Cos(y);
-		float cz = Math::Cos(z);
+		float x = ToRad(degx);
+		float y = ToRad(degy);
+		float z = ToRad(degz);
+		float sx = Sin(x);
+		float sy = Sin(y);
+		float sz = Sin(z);
+		float cx = Cos(x);
+		float cy = Cos(y);
+		float cz = Cos(z);
 		return Matrix4x4(
 			cz*cy, cz*sy*sx - sz*cx, cz*sy*cx + sz*sx, 0.f,
 			sz*cy, sz*sy*sx + cz*cx, sz*sy*cx - cz*sx, 0.f,
@@ -62,8 +64,8 @@ namespace TX{
 	}
 	Matrix4x4 Matrix4x4::LookAt(const Vector3& pEye, const Vector3& pTarget, const Vector3& up){
 		assert(pEye != pTarget);
-		Vector3 zaxis = (pEye - pTarget).Normalize();	// -z forward
-		Vector3 xaxis = Cross(up, zaxis).Normalize();
+		Vector3 zaxis = Normalize(pEye - pTarget);	// -z forward
+		Vector3 xaxis = Normalize(Cross(up, zaxis));
 		Vector3 yaxis = Cross(zaxis, xaxis);
 		return Matrix4x4(
 			xaxis.x, xaxis.y, xaxis.z, -Dot(xaxis, pEye),
@@ -97,7 +99,7 @@ namespace TX{
 
 	Matrix4x4 Matrix4x4::Perspective(float ratio, float fov, float an, float af){
 		assert(an > 0 && af > 0);
-		float t = Math::Tan(Math::ToRad(fov) / 2.f) * an;		// top
+		float t = Tan(ToRad(fov) / 2.f) * an;		// top
 		float r = ratio * t;									// right
 		return Matrix4x4(
 			Vector4(an / r, 0.f, 0.f, 0.f),

@@ -33,8 +33,8 @@ namespace TX {
 		void PostIntersect(const Ray& localray, LocalGeo& geo) const;
 		bool Occlude(const Ray& localray) const;
 
-		float Area() const { return Math::FOUR_PI; }
-		float Pdf(const Vector3& point) const { return Math::FOUR_PI_RCP; }
+		float Area() const { return 4 * Math::PI; }
+		float Pdf(const Vector3& point) const { return 1.f / Area(); }
 		void SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const;
 		void SamplePoint(const Sample *sample, const Vector3& localeye, Vector3 *out, Vector3 *normal) const;
 

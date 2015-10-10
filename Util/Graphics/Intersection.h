@@ -24,8 +24,8 @@ namespace TX{
 		void Emit(const Vector3& wo, Color *out) const;
 
 		inline void ComputeDifferentials(const Ray& ray) {
-			u = Cross(Math::Abs(normal.x) > 0.1f ? Vector3::Y : Vector3::X, normal).Normalize();
-			v = Cross(normal, u);
+			u = Math::Normalize(Math::Cross(Math::Abs(normal.x) > 0.1f ? Vector3::Y : Vector3::X, normal));
+			v = Math::Cross(normal, u);
 			// TODO
 		}
 		inline Vector3 WorldToLocal(const Vector3& vec) const {

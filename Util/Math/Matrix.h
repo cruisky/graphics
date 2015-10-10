@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Util.h"
-#include "MathUtil.h"
+#include "Base.h"
 #include "Vector.h"
 
 namespace TX{
@@ -32,24 +32,26 @@ namespace TX{
 			Vector3(m20, m21, m22)){}
 		~Matrix3x3(){}
 
-		__forceinline Matrix3x3& operator = (const Matrix3x3& ot){
-			memcpy_s(row, sizeof(row), ot.row, 3 * sizeof(Vector4));
+		inline Matrix3x3& operator = (const Matrix3x3& ot){
+			row[0] = ot[0];
+			row[1] = ot[1];
+			row[2] = ot[2];
 			return *this;
 		}
 
-		__forceinline Matrix3x3 operator + (const Matrix3x3& ot) const{
+		inline Matrix3x3 operator + (const Matrix3x3& ot) const{
 			return Matrix3x3(
 				row[0] + ot[0],
 				row[1] + ot[1],
 				row[2] + ot[2]);
 		}
-		__forceinline Matrix3x3 operator - (const Matrix3x3& ot) const{
+		inline Matrix3x3 operator - (const Matrix3x3& ot) const{
 			return Matrix3x3(
 				row[0] - ot[0],
 				row[1] - ot[1],
 				row[2] - ot[2]);
 		}
-		__forceinline Matrix3x3 operator * (const Matrix3x3& ot) const {
+		inline Matrix3x3 operator * (const Matrix3x3& ot) const {
 			Matrix3x3 result;
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++)
@@ -59,19 +61,19 @@ namespace TX{
 					row[i][2] * ot[2][j];
 			return result;
 		}
-		__forceinline const Matrix3x3& operator += (const Matrix3x3& ot){
+		inline const Matrix3x3& operator += (const Matrix3x3& ot){
 			row[0] += ot[0];
 			row[1] += ot[1];
 			row[2] += ot[2];
 			return *this;
 		}
-		__forceinline const Matrix3x3& operator -= (const Matrix3x3& ot){
+		inline const Matrix3x3& operator -= (const Matrix3x3& ot){
 			row[0] -= ot[0];
 			row[1] -= ot[1];
 			row[2] -= ot[2];
 			return *this;
 		}
-		__forceinline const Matrix3x3& operator *= (const Matrix3x3& ot) {
+		inline const Matrix3x3& operator *= (const Matrix3x3& ot) {
 			Vector3 temp;
 			for (int i = 0; i < 3; i++){
 				for (int j = 0; j < 3; j++)
@@ -84,12 +86,12 @@ namespace TX{
 			return *this;
 		}
 
-		__forceinline const Vector3& operator[](int rowi) const { return row[rowi]; }
-		__forceinline Vector3& operator[](int rowi){ return row[rowi]; }
-		__forceinline operator float*(){ return &row[0][0]; }
-		__forceinline operator const float*() const { return &row[0][0]; }
+		inline const Vector3& operator[](int rowi) const { return row[rowi]; }
+		inline Vector3& operator[](int rowi){ return row[rowi]; }
+		inline operator float*(){ return &row[0][0]; }
+		inline operator const float*() const { return &row[0][0]; }
 
-		__forceinline Matrix3x3 Transpose() const{
+		inline Matrix3x3 Transpose() const{
 			return Matrix3x3(
 				row[0][0], row[1][0], row[2][0],
 				row[0][1], row[1][1], row[2][1],
@@ -143,26 +145,29 @@ namespace TX{
 			Vector4(m30, m31, m32, m33)){}
 		~Matrix4x4(){}
 
-		__forceinline Matrix4x4& operator = (const Matrix4x4& ot){
-			memcpy_s(row, sizeof(row), ot.row, 4 * sizeof(Vector4));
+		inline Matrix4x4& operator = (const Matrix4x4& ot){
+			row[0] = ot[0];
+			row[1] = ot[1];
+			row[2] = ot[2];
+			row[3] = ot[3];
 			return *this;
 		}
 
-		__forceinline Matrix4x4 operator + (const Matrix4x4& ot) const{
+		inline Matrix4x4 operator + (const Matrix4x4& ot) const{
 			return Matrix4x4(
 				row[0] + ot[0],
 				row[1] + ot[1],
 				row[2] + ot[2],
 				row[3] + ot[3]);
 		}
-		__forceinline Matrix4x4 operator - (const Matrix4x4& ot) const{
+		inline Matrix4x4 operator - (const Matrix4x4& ot) const{
 			return Matrix4x4(
 				row[0] - ot[0],
 				row[1] - ot[1],
 				row[2] - ot[2],
 				row[3] - ot[3]);
 		}
-		__forceinline Matrix4x4 operator * (const Matrix4x4& ot) const {
+		inline Matrix4x4 operator * (const Matrix4x4& ot) const {
 			Matrix4x4 result;
 			for (int i = 0; i < 4; i++)
 				for (int j = 0; j < 4; j++)
@@ -173,21 +178,21 @@ namespace TX{
 					row[i][3] * ot[3][j];
 			return result;
 		}
-		__forceinline const Matrix4x4& operator += (const Matrix4x4& ot){
+		inline const Matrix4x4& operator += (const Matrix4x4& ot){
 			row[0] += ot[0];
 			row[1] += ot[1];
 			row[2] += ot[2];
 			row[3] += ot[3];
 			return *this;
 		}
-		__forceinline const Matrix4x4& operator -= (const Matrix4x4& ot){
+		inline const Matrix4x4& operator -= (const Matrix4x4& ot){
 			row[0] -= ot[0];
 			row[1] -= ot[1];
 			row[2] -= ot[2];
 			row[3] -= ot[3];
 			return *this;
 		}
-		__forceinline const Matrix4x4& operator *= (const Matrix4x4& ot) {
+		inline const Matrix4x4& operator *= (const Matrix4x4& ot) {
 			Vector4 temp;
 			for (int i = 0; i < 4; i++){
 				for (int j = 0; j < 4; j++)
@@ -201,12 +206,12 @@ namespace TX{
 			return *this;
 		}
 
-		__forceinline const Vector4& operator[](int rowi) const { return row[rowi]; }
-		__forceinline Vector4& operator[](int rowi){ return row[rowi]; }
-		__forceinline operator float*(){ return &row[0][0]; }
-		__forceinline operator const float*() const { return &row[0][0]; }
+		inline const Vector4& operator[](int rowi) const { return row[rowi]; }
+		inline Vector4& operator[](int rowi){ return row[rowi]; }
+		inline operator float*(){ return &row[0][0]; }
+		inline operator const float*() const { return &row[0][0]; }
 
-		__forceinline Matrix4x4 Transpose() const{
+		inline Matrix4x4 Transpose() const{
 			return Matrix4x4(
 				row[0][0], row[1][0], row[2][0], row[3][0],
 				row[0][1], row[1][1], row[2][1], row[3][1],
@@ -298,7 +303,7 @@ namespace TX{
 		}
 
 		// Transforms a point
-		static __forceinline Vector3 TPoint(const Matrix4x4& m, const Vector3& p){
+		static inline Vector3 TPoint(const Matrix4x4& m, const Vector3& p){
 			// apply translation
 			return Vector3(
 				p.x * m[0][0] + p.y * m[0][1] + p.z * m[0][2] + m[0][3],
@@ -306,7 +311,7 @@ namespace TX{
 				p.x * m[2][0] + p.y * m[2][1] + p.z * m[2][2] + m[2][3]);
 		}
 		// Transforms a vector
-		static __forceinline Vector3 TVector(const Matrix4x4& m, const Vector3& v){
+		static inline Vector3 TVector(const Matrix4x4& m, const Vector3& v){
 			// ignore translation
 			return Vector3(
 				v.x * m[0][0] + v.y * m[0][1] + v.z * m[0][2],
@@ -314,7 +319,7 @@ namespace TX{
 				v.x * m[2][0] + v.y * m[2][1] + v.z * m[2][2]);
 		}
 		// Transforms a normal vector with an already inverted matrix, the result is not normalized
-		static __forceinline Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n){
+		static inline Vector3 TNormal(const Matrix4x4& m_inv, const Vector3& n){
 			// multiply the transpose
 			return Vector3(
 				n.x * m_inv[0][0] + n.y * m_inv[1][0] + n.z * m_inv[2][0],

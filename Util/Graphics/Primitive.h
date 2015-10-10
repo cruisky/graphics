@@ -31,7 +31,7 @@ namespace TX {
 			Ray localray;
 			localray.Reset(point, dir);
 			transform.ToLocal(localray);
-			localray.dir.Normalize();		// normalize the local ray so that after intersection, t value will be the local distance
+			localray.dir = Math::Normalize(localray.dir);		// normalize the local ray so that after intersection, t value will be the local distance
 			return shape_->Pdf(localray);
 		}
 

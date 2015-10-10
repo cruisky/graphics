@@ -36,7 +36,7 @@ namespace TX
 		}
 		else {
 			const Rect& clipRect = clipRectStack.size() ? clipRectStack.back() : NullClipRect;
-			if (cmdBuf.size() > 1 && (Vector4(cmdBuf.data()[cmdBuf.size() - 2].clipRect.f) - Vector4(clipRect.f)).Length() < 1e-4f)
+			if (cmdBuf.size() > 1 && Math::Length(Vector4(cmdBuf.data()[cmdBuf.size() - 2].clipRect.f) - Vector4(clipRect.f)) < 1e-4f)
 				cmdBuf.pop_back();			// avoid duplicate
 			else
 				cmd->clipRect = clipRect;	// do nothing
@@ -123,7 +123,7 @@ namespace TX
 			const Vector2& p1 = points[i];
 			const Vector2& p2 = points[j];
 			Vector2 dir(p2 - p1);
-			dir.Normalize();
+			dir = Math::Normalize(dir);
 			const Vector2 d = dir * (thick * 0.5f);
 			
 			vtxPtr[0].pos.x = p1.x + d.y; vtxPtr[0].pos.y = p1.y - d.x; vtxPtr[0].uv = uv; vtxPtr[0].col = color;
@@ -166,7 +166,7 @@ namespace TX
 
 		if (!circleInit){
 			for (int i = 0; i < VTX_COUNT; i++){
-				float deg = float(i) / VTX_COUNT * Math::TWO_PI;
+				float deg = float(i) / VTX_COUNT * (2 * Math::PI);
 				circle[i].x = Math::Cos(deg);
 				circle[i].y = Math::Sin(deg);
 			}

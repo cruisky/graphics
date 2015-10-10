@@ -23,7 +23,7 @@
 #include "Util/Graphics/GUI.h"
 #include "Util/Graphics/Image.h"
 
-#include "Util/Math/MathUtil.h"
+#include "Util/Math/Base.h"
 #include "Util/Math/Matrix.h"
 #include "Util/Math/Random.h"
 #include "Util/Math/Ray.h"

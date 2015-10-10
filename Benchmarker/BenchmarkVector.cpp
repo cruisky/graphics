@@ -32,8 +32,8 @@ namespace TX
 		BM_CLASS(Scalar4_Mult){
 			float a[4], b[4];
 			BM_SETUP(){
-				memcpy(a, RandomVector4().f, 4 * sizeof(float));
-				memcpy(b, RandomVector4().f, 4 * sizeof(float));
+				std::memcpy(a, RandomVector4().data, 4 * sizeof(float));
+				std::memcpy(b, RandomVector4().data, 4 * sizeof(float));
 			}
 			BM_BODY(){
 				a[0] *= b[0]; a[1] *= b[1];	a[2] *= b[2]; a[3] *= b[3];

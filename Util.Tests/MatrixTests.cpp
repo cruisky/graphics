@@ -90,7 +90,7 @@ namespace TX
 
 				// rotation around axis
 				repeat(i, 100){
-					float rad = RandomFloat(0, Math::TWO_PI);
+					float rad = RandomFloat(0, 2 * Math::PI);
 					float deg = Math::ToDeg(rad);
 					m = Matrix4x4::Rotate(deg, Vector3::Z);
 					n = Matrix4x4::Rotate(deg, Vector3::X);

@@ -4,6 +4,7 @@
 #include "Math/Ray.h"
 
 namespace TX{
+	using namespace Math;
 	class Transform {
 	public:
 		Transform(){}
@@ -37,7 +38,7 @@ namespace TX{
 		// Transforms a local ray to world space and normalize it.
 		inline void ToWorld(Ray& ray) const {
 			ray.origin = Matrix4x4::TPoint(local_world_, ray.origin);
-			ray.dir = Matrix4x4::TVector(local_world_, ray.dir).Normalize();
+			ray.dir = Normalize(Matrix4x4::TVector(local_world_, ray.dir));
 		}
 
 		// Transforms a global ray to local space WITHOUT normalizing it (so that t_max is valid)

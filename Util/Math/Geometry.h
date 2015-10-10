@@ -11,11 +11,12 @@ namespace TX
 			struct { Vector2 min, max; };
 			float f[4];
 		};
-		Rect(){}
+		Rect() : min(), max(){}
+		~Rect(){}
 		Rect(const Rect& ot) : min(ot.min), max(ot.max) {}
+		Rect(float x1, float y1, float x2, float y2) : min(x1, y1), max(x2, y2) {}
 		Rect(const Vector2& min, const Vector2& max) : min(min), max(max){}
 		Rect(const Vector4& v) : min(v.x, v.y), max(v.z, v.w){}
-		Rect(float x1, float y1, float x2, float y2) : min(x1, y1), max(x2, y2){}
 
 		inline Rect& operator = (const Rect& ot) { min = ot.min; max = ot.max; return *this; }
 

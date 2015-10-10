@@ -4,6 +4,8 @@ namespace TX
 {
 	namespace Tests
 	{
+		using namespace TX::Math;
+
 		TEST_CLASS(RayTests){
 		public:
 			TEST_METHOD(SetSegmentTest){
@@ -15,7 +17,7 @@ namespace TX
 					do{ 
 						dest = RandomVector3(); 
 						dir_exp = dest - origin;
-					} while (dir_exp.Length() < 1e-2f);
+					} while (Length(dir_exp) < 1e-2f);
 
 					if (i < 10){
 						// default epsilons
@@ -30,9 +32,9 @@ namespace TX
 					}
 
 					Assertions::AreClose(origin, ray.origin);					// origin
-					Assertions::AreClose(dir_exp/dir_exp.Length(), ray.dir);	// dir
+					Assertions::AreClose(dir_exp/Length(dir_exp), ray.dir);		// dir
 					Assertions::AreClose(eps1, ray.t_min);						// t_min
-					Assertions::AreClose(dir_exp.Length() - eps2, ray.t_max);	// t_max
+					Assertions::AreClose(Length(dir_exp) - eps2, ray.t_max);	// t_max
 				}
 			}
 		};

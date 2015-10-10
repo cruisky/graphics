@@ -42,7 +42,7 @@ namespace TX
 				Logger::WriteMessage(s.c_str());
 			}
 
-			template<typename T, typename... Args>
+			template <typename T, typename... Args>
 			inline void Log(const T& t, const Args&... args)
 			{
 				std::string s(TX::Str(t));

@@ -21,7 +21,7 @@ namespace TX
 		Emit(lightpoint, normal, -wi->dir, lightcolor);
 	}
 	void AreaLight::Emit(const Vector3& pos, const Vector3& normal, const Vector3& wo, Color *out) const {
-		*out = Dot(normal, wo) > 0.f ? intensity : 0.f;
+		*out = Math::Dot(normal, wo) > 0.f ? intensity : 0.f;
 	}
 
 	float AreaLight::Pdf(const Vector3& pos, const Vector3& dir) const {

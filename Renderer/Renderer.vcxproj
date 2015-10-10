@@ -103,7 +103,7 @@
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>

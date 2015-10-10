@@ -1,6 +1,6 @@
 #pragma once
 #include "System/Thread.h"
-#include "Math/MathUtil.h"
+#include "Math/Base.h"
 #include "Math/Random.h"
 
 namespace TX

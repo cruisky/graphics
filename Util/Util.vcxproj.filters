@@ -18,7 +18,6 @@
     <ClCompile Include="Math\Ray.cpp" />
     <ClCompile Include="Libs\tiny_obj_loader.cpp" />
     <ClCompile Include="Math\Geometry.cpp" />
-    <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Misc\RandomData.cpp" />
@@ -57,7 +56,6 @@
     <ClInclude Include="Libs\stb_image_write.h" />
     <ClInclude Include="Libs\stb_truetype.h" />
     <ClInclude Include="Libs\tiny_obj_loader.h" />
-    <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Geometry.h" />
     <ClInclude Include="Math\Random.h" />
@@ -80,5 +78,6 @@
     <ClInclude Include="Util.h" />
     <ClInclude Include="UtilStdAfx.h" />
     <ClInclude Include="Math\Transform.h" />
+    <ClInclude Include="Math\Base.h" />
   </ItemGroup>
 </Project>

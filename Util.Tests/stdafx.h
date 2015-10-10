@@ -20,7 +20,7 @@
 #include "Math/Random.h"
 
 // Area to test
-#include "Math/MathUtil.h"
+#include "Math/Base.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
 #include "Math/Ray.h"
