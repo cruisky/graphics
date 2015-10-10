@@ -64,9 +64,9 @@ namespace TX
 		GLuint Program::GetUniformLoc(const char *name) { return glGetUniformLocation(id, name); }
 		void Program::SetUniform(GLuint loc, int v) { glUniform1i(loc, v); }
 		void Program::SetUniform(GLuint loc, float v) { glUniform1f(loc, v); }
-		void Program::SetUniform(GLuint loc, const Vector2& v) { glUniform2f(loc, v.x, v.y); }
-		void Program::SetUniform(GLuint loc, const Vector3& v) { glUniform3f(loc, v.x, v.y, v.z); }
-		void Program::SetUniform(GLuint loc, const Vector4& v) { glUniform4f(loc, v.x, v.y, v.z, v.w); }
+		void Program::SetUniform(GLuint loc, const Vec2& v) { glUniform2f(loc, v.x, v.y); }
+		void Program::SetUniform(GLuint loc, const Vec3& v) { glUniform3f(loc, v.x, v.y, v.z); }
+		void Program::SetUniform(GLuint loc, const Vec4& v) { glUniform4f(loc, v.x, v.y, v.z, v.w); }
 		void Program::SetUniform(GLuint loc, const Matrix3x3& v, bool transpose) { glUniformMatrix3fv(loc, 9, transpose, (const float *)(v[0])); }
 		void Program::SetUniform(GLuint loc, const Matrix4x4& v, bool transpose) { glUniformMatrix4fv(loc, 16, transpose, (const float *)(v[0])); }
 		void Program::BindAttribLoc(const char *name, GLuint index){ glBindAttribLocation(id, index, name); }

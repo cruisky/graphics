@@ -159,8 +159,8 @@ namespace TX{ namespace UI{
 		HOLD = GLFW_REPEAT
 	};
 	struct Input {
-		Vector2 window;
-		Vector2 cursor;
+		Vec2 window;
+		Vec2 cursor;
 		MouseButton button;
 		MouseButtonState buttonState;
 		float scroll;

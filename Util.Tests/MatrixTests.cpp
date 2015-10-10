@@ -69,45 +69,45 @@ namespace TX
 
 			TEST_METHOD(TranslateTest){
 				repeat(i, 100){
-					Vector3 sample = RandomVector3();
-					Vector3 translation = RandomVector3();
+					Vec3 sample = RandomVec3();
+					Vec3 translation = RandomVec3();
 					Matrix4x4 m = Matrix4x4::Translate(translation);
 					Assertions::AreClose(sample + translation, Matrix4x4::TPoint(m, sample));
-					Assertions::AreClose(sample, Matrix4x4::TVector(m, sample));	// vector should not change
+					Assertions::AreClose(sample, Matrix4x4::TVec(m, sample));	// vector should not change
 					Assertions::AreClose(sample, Matrix4x4::TNormal(m, sample));	// normal should not change
 				}
 			}
 
 			TEST_METHOD(RotateTest){
 				Matrix4x4 m, n;
-				Vector3 input = Vector3::X;
+				Vec3 input = Vec3::X;
 
 				// euler rotation
 				m = Matrix4x4::Rotate(0, 90, 0);
 				Assertions::AreClose(m, Matrix4x4::Rotate(0, 90, 0));
-				Assertions::AreClose(Vector3(0, 0, -1), Matrix4x4::TVector(m, input));
-				Assertions::AreClose(Vector3(0, 0, -1), Matrix4x4::TNormal(m.Inverse(), input));
+				Assertions::AreClose(Vec3(0, 0, -1), Matrix4x4::TVec(m, input));
+				Assertions::AreClose(Vec3(0, 0, -1), Matrix4x4::TNormal(m.Inverse(), input));
 
 				// rotation around axis
 				repeat(i, 100){
 					float rad = RandomFloat(0, 2 * Math::PI);
 					float deg = Math::ToDeg(rad);
-					m = Matrix4x4::Rotate(deg, Vector3::Z);
-					n = Matrix4x4::Rotate(deg, Vector3::X);
+					m = Matrix4x4::Rotate(deg, Vec3::Z);
+					n = Matrix4x4::Rotate(deg, Vec3::X);
 					Assertions::AreClose(Matrix4x4::Rotate(0, 0, deg), m);
 					Assertions::AreClose(Matrix4x4::Rotate(deg, 0, 0), n);
-					Assertions::AreClose(Vector3(Math::Cos(rad), Math::Sin(rad), 0), Matrix4x4::TVector(m, input));
+					Assertions::AreClose(Vec3(Math::Cos(rad), Math::Sin(rad), 0), Matrix4x4::TVec(m, input));
 				}
 			}
 
 			TEST_METHOD(ScaleTest){
 				repeat(i, 100){
-					Vector3 sample = RandomVector3();
-					Vector3 scale = RandomVector3();
-					Vector3 expected(sample.x * scale.x, sample.y * scale.y, sample.z * scale.z);
+					Vec3 sample = RandomVec3();
+					Vec3 scale = RandomVec3();
+					Vec3 expected(sample.x * scale.x, sample.y * scale.y, sample.z * scale.z);
 					Matrix4x4 m = Matrix4x4::Scale(scale);
 					Assertions::AreClose(expected, Matrix4x4::TPoint(m, sample));
-					Assertions::AreClose(expected, Matrix4x4::TVector(m, sample));
+					Assertions::AreClose(expected, Matrix4x4::TVec(m, sample));
 				}
 			}
 		};

@@ -62,22 +62,22 @@ namespace TX{
 	};
 
 	namespace Sampling {
-		inline Vector3 UniformHemisphere(float u1, float u2){
+		inline Vec3 UniformHemisphere(float u1, float u2){
 			float r = Math::Sqrt(Math::Max(0.f, 1.f - u1 * u1));		// radius [0, 1]
 			float phi = 2.f * Math::PI * u2;								// angle
-			return Vector3(r * Math::Cos(phi), r * Math::Sin(phi), u1);
+			return Vec3(r * Math::Cos(phi), r * Math::Sin(phi), u1);
 		}
-		inline Vector3 UniformSphere(float u1, float u2){
+		inline Vec3 UniformSphere(float u1, float u2){
 			float z = 1.f - 2.f * u1;									// radius [-1, 1]
 			float r = Math::Sqrt(Math::Max(0.f, 1.f - z * z));
 			float phi = 2.f * Math::PI * u2;
-			return Vector3(r * Math::Cos(phi), r * Math::Sin(phi), z);
+			return Vec3(r * Math::Cos(phi), r * Math::Sin(phi), z);
 		}
-		inline Vector3 UniformCone(float u1, float u2, float max_costheta){
+		inline Vec3 UniformCone(float u1, float u2, float max_costheta){
 			float costheta = Math::Lerp(max_costheta, 1.0f, u1);
 			float sintheta = sqrtf(1.f - costheta * costheta);
 			float phi = 2.f * Math::PI * u2;
-			return Vector3(Math::Cos(phi) * sintheta, Math::Sin(phi) * sintheta, costheta);
+			return Vec3(Math::Cos(phi) * sintheta, Math::Sin(phi) * sintheta, costheta);
 		}
 		inline void UniformDisk(float u1, float u2, float *x, float *y){
 			float r = Math::Sqrt(u1);
@@ -111,8 +111,8 @@ namespace TX{
 			*u = r * Math::Cos(phi);
 			*v = r * Math::Sin(phi);
 		}
-		inline Vector3 CosineHemisphere(float u1, float u2){
-			Vector3 ret;
+		inline Vec3 CosineHemisphere(float u1, float u2){
+			Vec3 ret;
 			ConcentricDisk(u1, u2, &ret.x, &ret.y);
 			ret.z = Math::Sqrt(Math::Max(0.f, 1.f - ret.x * ret.x - ret.y * ret.y));
 			return ret;

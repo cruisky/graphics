@@ -19,7 +19,6 @@
     <ClCompile Include="Libs\tiny_obj_loader.cpp" />
     <ClCompile Include="Math\Geometry.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
-    <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Misc\RandomData.cpp" />
     <ClCompile Include="Math\Sample.cpp" />
     <ClCompile Include="Graphics\Scene.cpp" />

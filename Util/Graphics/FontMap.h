@@ -28,7 +28,7 @@ namespace TX
 		FontMap();
 		~FontMap();
 		void Load(const char* file, float fontHeight=12.f);
-		bool GetChar(const char *ch, Vector2& pos, Rect *rect, Rect *uv = nullptr, GlyphPosMap *posMap = nullptr) const;
+		bool GetChar(const char *ch, Vec2& pos, Rect *rect, Rect *uv = nullptr, GlyphPosMap *posMap = nullptr) const;
 		float GetWidth(char c) const;
 		float GetWidth(const char *str) const;
 		inline uint TexID() const { return texID; }

@@ -4,11 +4,11 @@
 
 namespace TX
 {
-	void ObjMesh::LoadQuad(float length, const Vector3& position, const Vector3& rotation, const Vector3& scale){
+	void ObjMesh::LoadQuad(float length, const Vec3& position, const Vec3& rotation, const Vec3& scale){
 		//TODO
 	}
 
-	void ObjMesh::LoadSphere(float radius, const Vector3& position, const Vector3& rotation, const Vector3& scale){
+	void ObjMesh::LoadSphere(float radius, const Vec3& position, const Vec3& rotation, const Vec3& scale){
 		//TODO
 	}
 

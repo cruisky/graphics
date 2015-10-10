@@ -15,13 +15,13 @@ namespace TX {
 		// Surface area.
 		virtual float Area() const = 0;
 		// Pdf of a point at this shape.
-		virtual float Pdf(const Vector3& localpoint) const { return 1.f / Area(); }
+		virtual float Pdf(const Vec3& localpoint) const { return 1.f / Area(); }
 		// Pdf of a ray emitting from this shape.
 		virtual float Pdf(const Ray& localwi) const;
 		// General sampling.
-		virtual void SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal/* = nullptr*/) const = 0;
+		virtual void SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal/* = nullptr*/) const = 0;
 		// Samples only from points that are visible from the eye.
-		virtual void SamplePoint(const Sample *sample, const Vector3& localeye, Vector3 *out, Vector3 *normal) const{
+		virtual void SamplePoint(const Sample *sample, const Vec3& localeye, Vec3 *out, Vec3 *normal) const{
 			SamplePoint(sample, out, normal);
 		}
 	};
@@ -34,9 +34,9 @@ namespace TX {
 		bool Occlude(const Ray& localray) const;
 
 		float Area() const { return 4 * Math::PI; }
-		float Pdf(const Vector3& point) const { return 1.f / Area(); }
-		void SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const;
-		void SamplePoint(const Sample *sample, const Vector3& localeye, Vector3 *out, Vector3 *normal) const;
+		float Pdf(const Vec3& point) const { return 1.f / Area(); }
+		void SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal) const;
+		void SamplePoint(const Sample *sample, const Vec3& localeye, Vec3 *out, Vec3 *normal) const;
 
 	};
 
@@ -48,7 +48,7 @@ namespace TX {
 		bool Occlude(const Ray& localray) const;
 
 		float Area() const { return 1.f; }
-		float Pdf(const Vector3& point) const { return 1.f; }
-		void SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const;
+		float Pdf(const Vec3& point) const { return 1.f; }
+		void SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal) const;
 	};
 }

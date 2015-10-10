@@ -23,30 +23,30 @@ namespace TX
 		inline Color RandomColor(float absmax = 1.f){
 			return Color(rng.Float(), rng.Float(), rng.Float()) * absmax;
 		}
-		inline Vector3 RandomVector3(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true){
-			return Vector3(
+		inline Vec3 RandomVec3(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true){
+			return Vec3(
 				RandomFloat(absmin, absmax, bothsign),
 				RandomFloat(absmin, absmax, bothsign),
 				RandomFloat(absmin, absmax, bothsign));
 		}
-		inline Vector4 RandomVector4(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true){
-			return Vector4(
+		inline Vec4 RandomVec4(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true){
+			return Vec4(
 				RandomFloat(absmin, absmax, bothsign),
 				RandomFloat(absmin, absmax, bothsign),
 				RandomFloat(absmin, absmax, bothsign),
 				RandomFloat(absmin, absmax, bothsign));
 		}
 		inline Ray RandomRay(float lengthmax = 1e2f){
-			Vector3 origin = RandomVector3();
-			Vector3 dir = RandomVector3(0.1f, lengthmax);
+			Vec3 origin = RandomVec3();
+			Vec3 dir = RandomVec3(0.1f, lengthmax);
 			return Ray(origin, dir);
 		}
 		inline Matrix4x4 RandomMatrix(float absmax = 10.f){
 			return Matrix4x4(
-				RandomVector4(0, absmax, true),
-				RandomVector4(0, absmax, true),
-				RandomVector4(0, absmax, true),
-				RandomVector4(0, absmax, true)
+				RandomVec4(0, absmax, true),
+				RandomVec4(0, absmax, true),
+				RandomVec4(0, absmax, true),
+				RandomVec4(0, absmax, true)
 				);
 		}
 

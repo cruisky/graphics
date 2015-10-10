@@ -38,7 +38,7 @@ namespace TX{
 			return true;
 		}
 		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, int mods) {
-			Vector2 cursor;
+			Vec2 cursor;
 			GetCursorPos(&cursor.x, &cursor.y);
 			std::cout << "Cursor: " << cursor << std::endl;
 			FlipY(&cursor.y);
@@ -80,12 +80,12 @@ namespace TX{
 
 		void GUIViewer::AttemptMoveCamera(Direction dir){
 			float dist = 0.1f;
-			Vector3 movement;
+			Vec3 movement;
 			switch (dir){
-			case Direction::UP: movement = Vector3(0.f, 0.f, -dist); break;
-			case Direction::DOWN: movement = Vector3(0.f, 0.f, dist); break;
-			case Direction::LEFT: movement = Vector3(-dist, 0.f, 0.f); break;
-			case Direction::RIGHT: movement = Vector3(dist, 0.f, 0.f); break;
+			case Direction::UP: movement = Vec3(0.f, 0.f, -dist); break;
+			case Direction::DOWN: movement = Vec3(0.f, 0.f, dist); break;
+			case Direction::LEFT: movement = Vec3(-dist, 0.f, 0.f); break;
+			case Direction::RIGHT: movement = Vec3(dist, 0.f, 0.f); break;
 			}
 			scene_->camera->transform.Translate(movement);
 			InvalidateFrame();
@@ -93,12 +93,12 @@ namespace TX{
 
 		void GUIViewer::AttemptPanCamera(Direction dir){
 			float degree = 2.f;
-			Vector3 axis;
+			Vec3 axis;
 			switch (dir){
-			case Direction::UP: axis = Vector3::X; break;
-			case Direction::DOWN: axis = -Vector3::X; break;
-			case Direction::LEFT: axis = Vector3::Y; break;
-			case Direction::RIGHT: axis = -Vector3::Y; break;
+			case Direction::UP: axis = Vec3::X; break;
+			case Direction::DOWN: axis = -Vec3::X; break;
+			case Direction::LEFT: axis = Vec3::Y; break;
+			case Direction::RIGHT: axis = -Vec3::Y; break;
 			}
 			scene_->camera->transform.Rotate(degree, axis);
 			InvalidateFrame();
@@ -106,7 +106,7 @@ namespace TX{
 
 		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
 			float degree = clockwise ? 10.f : -10.f;
-			scene_->camera->transform.Rotate(degree, -Vector3::Z);
+			scene_->camera->transform.Rotate(degree, -Vec3::Z);
 			InvalidateFrame();
 		}
 

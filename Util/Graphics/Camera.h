@@ -19,10 +19,10 @@ namespace TX
 		inline bool IsOrtho() const { return is_ortho_; }
 
 		// Transforms point from screen to world (on the near plane)
-		Vector3 ScreenToWorldPoint(const Vector3& pix) const;
+		Vec3 ScreenToWorldPoint(const Vec3& pix) const;
 		// Transforms point from world to screen.
 		// z component is in canonical view volume unit
-		Vector3 WorldToScreenPoint(const Vector3& point) const;
+		Vec3 WorldToScreenPoint(const Vec3& point) const;
 
 		Camera& Resize(int w, int h);
 		Camera& SetFOV(float fov);

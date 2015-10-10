@@ -15,7 +15,7 @@ namespace TX
 	}
 
 	Color Tracer::EstimateDirect(const Scene *scene, const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
-		Vector3 wo = -ray.dir;		// dir to camera
+		Vec3 wo = -ray.dir;		// dir to camera
 		Ray lightray;
 		float light_pdf, bsdf_pdf;
 		Color color, lightcolor, surfacecolor;
@@ -62,7 +62,7 @@ namespace TX
 	}
 
 	Color Tracer::TraceSpecularReflect(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
-		Vector3 wo = -ray.dir, wi;
+		Vec3 wo = -ray.dir, wi;
 		float pdf;
 		Color color;
 		Color f = geom.bsdf->Scatter(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_REFLECTION | BSDF_SPECULAR));
@@ -76,7 +76,7 @@ namespace TX
 	}
 
 	Color Tracer::TraceSpecularTransmit(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
-		Vector3 wo = -ray.dir, wi;
+		Vec3 wo = -ray.dir, wi;
 		float pdf;
 		Color color;
 		Color f = geom.bsdf->Scatter(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR));

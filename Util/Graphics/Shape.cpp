@@ -55,12 +55,12 @@ namespace TX{
 		return false;
 	}
 
-	void UnitSphere::SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const {
+	void UnitSphere::SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal) const {
 		*out = Sampling::UniformSphere(sample->u, sample->v);
 		*normal = *out;
 	}
 
-	void UnitSphere::SamplePoint(const Sample *sample, const Vector3& localeye, Vector3 *point, Vector3 *normal) const{
+	void UnitSphere::SamplePoint(const Sample *sample, const Vec3& localeye, Vec3 *point, Vec3 *normal) const{
 		float distSqr = LengthSqr(localeye);
 		// sample the sphere uniformly if eye is inside the sphere 
 		if (distSqr < 1.f + Ray::EPSILON)
@@ -88,7 +88,7 @@ namespace TX{
 	}
 
 	void UnitPlane::PostIntersect(const Ray& lcr, LocalGeo& geo) const {
-		geo.normal = Vector3::Z;// .Normalize();
+		geo.normal = Vec3::Z;// .Normalize();
 	}
 
 	bool UnitPlane::Occlude(const Ray& lcr) const {
@@ -98,10 +98,10 @@ namespace TX{
 			Abs(lcr.origin.y + t * lcr.dir.y) < 0.5f;
 	}
 
-	void UnitPlane::SamplePoint(const Sample *sample, Vector3 *out, Vector3 *normal) const {
+	void UnitPlane::SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal) const {
 		out->x = Lerp(sample->u, -0.5f, 0.5f);
 		out->y = Lerp(sample->v, -0.5f, 0.5f);
 		out->z = 0.f;
-		*normal = Vector3::Z;
+		*normal = Vec3::Z;
 	}
 }

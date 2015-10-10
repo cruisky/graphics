@@ -66,7 +66,7 @@ namespace TX
 			inline void AreClose(double expected, double actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
 				Assert::AreEqual(expected, actual, TOLERANCE_DBL, message, pLineInfo);
 			}
-			inline void AreClose(const Vector4& expected, const Vector4& actual, const wchar_t *msg = nullptr){
+			inline void AreClose(const Vec4& expected, const Vec4& actual, const wchar_t *msg = nullptr){
 				repeat(i, 4){
 					Assert::AreEqual(expected[i], actual[i], TOLERANCE_FLT, msg ? msg : Msg::EQ(expected[i], actual[i]));
 				}
@@ -76,7 +76,7 @@ namespace TX
 				Assert::AreEqual(expected.g, actual.g, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.b, actual.b, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
 			}
-			inline void AreClose(const Vector3& expected, const Vector3& actual, const wchar_t *msg = nullptr){
+			inline void AreClose(const Vec3& expected, const Vec3& actual, const wchar_t *msg = nullptr){
 				Assert::AreEqual(expected.x, actual.x, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.y, actual.y, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
 				Assert::AreEqual(expected.z, actual.z, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));

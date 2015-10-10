@@ -58,10 +58,10 @@ namespace TX { namespace UI { namespace GUI {
 		Widget				hotToBe;
 		Widget				active;
 
-		Vector2				initPos;	// initial widget position
-		Vector2				widgetPos;	// current widget position
+		Vec2				initPos;	// initial widget position
+		Vec2				widgetPos;	// current widget position
 		const Color*		currColor;
-		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
+		Vec2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
 		struct {
 			std::string*	buffer;
@@ -475,13 +475,13 @@ namespace TX { namespace UI { namespace GUI {
 		W->drawList.PushClipRect(rect);
 		float padding = G.style.WindowPadding;
 		float textPadding = G.style.TextPaddingY;
-		Rect header(rect.min, Vector2(rect.max.x, rect.min.y + padding));
+		Rect header(rect.min, Vec2(rect.max.x, rect.min.y + padding));
 		Rect body(
-			Vector2(rect.min.x, rect.min.y + padding),
-			Vector2(rect.max.x, rect.max.y - padding));
+			Vec2(rect.min.x, rect.min.y + padding),
+			Vec2(rect.max.x, rect.max.y - padding));
 		Rect bottom(
-			Vector2(rect.min.x, rect.max.y - padding),
-			Vector2(rect.max.x - padding, rect.max.y));
+			Vec2(rect.min.x, rect.max.y - padding),
+			Vec2(rect.max.x - padding, rect.max.y));
 
 		#pragma region window logic
 		if (IsActive()){
@@ -489,7 +489,7 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				Rect dragArea(Vector2::ZERO, G.input.window - Vector2(padding));
+				Rect dragArea(Vec2::ZERO, G.input.window - Vec2(padding));
 				rect.MoveTo(dragArea.ClosestPoint(G.input.cursor - G.drag));
 			}
 		}
@@ -510,12 +510,12 @@ namespace TX { namespace UI { namespace GUI {
 
 		// Header
 		W->drawList.AddTriangle(
-			Vector2(rect.min.x, rect.min.y + padding),
-			rect.min + Vector2(padding),
-			Vector2(rect.min.x + padding, rect.min.y),
+			Vec2(rect.min.x, rect.min.y + padding),
+			rect.min + Vec2(padding),
+			Vec2(rect.min.x + padding, rect.min.y),
 			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddRect(
-			Vector2(rect.min.x + padding, rect.min.y),
+			Vec2(rect.min.x + padding, rect.min.y),
 			header.max,
 			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddText(
@@ -576,7 +576,7 @@ namespace TX { namespace UI { namespace GUI {
 		ScrollBar(scrollBarArea, scrollRectHeight, W->contentHeight, W->scroll);
 
 		float contentOffset = (W->contentHeight > scrollRectHeight) ? W->scroll * (W->contentHeight - scrollRectHeight) : 0.f;
-		G.initPos = G.widgetPos = Vector2(scrollRect.min.x, scrollRect.min.y - contentOffset);
+		G.initPos = G.widgetPos = Vec2(scrollRect.min.x, scrollRect.min.y - contentOffset);
 		
 		// Update clip rect
 		W->drawList.PushClipRect(scrollRect);
@@ -587,7 +587,7 @@ namespace TX { namespace UI { namespace GUI {
 	}
 
 	void Divider(){
-		Vector2 points[2];
+		Vec2 points[2];
 		const Rect& clipRect = G.CurrentRect();
 		points[0] = G.widgetPos;
 		points[1].x = clipRect.max.x;
@@ -621,7 +621,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color *bgColor = &G.style.Colors[Style::Palette::Accent];
 		float textWidth = G.style.Font->GetWidth(name);
-		Rect button(G.widgetPos, G.widgetPos + Vector2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
+		Rect button(G.widgetPos, G.widgetPos + Vec2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
 		bool hovering = button.Contains(G.input.cursor);
 		#pragma region logic
 		if (hovering) {
@@ -656,7 +656,7 @@ namespace TX { namespace UI { namespace GUI {
 		return clicked;
 	}
 	template <typename T>
-	bool Slider(const char *name, const Vector2& pos, float width, T *val, T min, T max, T step, Tagger getTag){
+	bool Slider(const char *name, const Vec2& pos, float width, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
@@ -667,7 +667,7 @@ namespace TX { namespace UI { namespace GUI {
 		Rect hotArea(
 			pos.x, pos.y + sliderSize,
 			pos.x + width, pos.y + G.style.LineHeight);
-		Vector2 slider(pos.x + halfSliderSize, pos.y + G.style.LineHeight * 0.75f);
+		Vec2 slider(pos.x + halfSliderSize, pos.y + G.style.LineHeight * 0.75f);
 		float length = hotArea.Width() - sliderSize;
 		#pragma region logic
 		if (hotArea.Contains(G.input.cursor))
@@ -702,7 +702,7 @@ namespace TX { namespace UI { namespace GUI {
 				G.style.Font, getTag(name, val).data(),
 				G.style.Colors[Style::Palette::Text]);
 		// Slider
-		Vector2 trackLine[2] = { slider, slider + Vector2(length, 0.f) };
+		Vec2 trackLine[2] = { slider, slider + Vec2(length, 0.f) };
 		slider.x += offset;
 		G.current.window->drawList.AddPolyLine(trackLine, 2, *trackColor, false, G.style.StrokeWidth);
 		G.current.window->drawList.AddRect(
@@ -744,8 +744,8 @@ namespace TX { namespace UI { namespace GUI {
 			}
 		};
 		int sliderCount = static_cast<int>(channel);
-		Rect sampleArea(G.widgetPos, G.widgetPos + Vector2(G.style.HalfLineHeight(), G.style.LineHeight));
-		Vector2 sliderPos(sampleArea.max.x + G.style.WidgetPadding, G.widgetPos.y);
+		Rect sampleArea(G.widgetPos, G.widgetPos + Vec2(G.style.HalfLineHeight(), G.style.LineHeight));
+		Vec2 sliderPos(sampleArea.max.x + G.style.WidgetPadding, G.widgetPos.y);
 		float sliderWidth = (G.CurrentRect().max.x - sliderPos.x - (sliderCount - 1) * G.style.WidgetPadding) / sliderCount;
 		
 		#pragma region logic
@@ -793,7 +793,7 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false;
 
 		Color *holeColor = &G.style.Colors[Style::Palette::Accent];
-		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+		Rect hotArea(G.widgetPos, G.widgetPos + Vec2(G.style.LineHeight));
 		#pragma region logic
 		if (hotArea.Contains(G.input.cursor)) SetHot();
 		else ClearActive();
@@ -815,7 +815,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		#pragma endregion
 		#pragma region rendering
-		Vector2 center = hotArea.Center();
+		Vec2 center = hotArea.Center();
 		G.current.window->drawList.AddCircle(
 			center,
 			G.style.FormWidgetRadius,
@@ -841,7 +841,7 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false;
 
 		Color *boxColor = &G.style.Colors[Style::Palette::Accent];
-		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+		Rect hotArea(G.widgetPos, G.widgetPos + Vec2(G.style.LineHeight));
 		#pragma region logic
 		if (hotArea.Contains(G.input.cursor)) SetHot();
 		else ClearActive();
@@ -861,7 +861,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		#pragma endregion
 		#pragma region rendering
-		Vector2 center = hotArea.Center();
+		Vec2 center = hotArea.Center();
 		G.current.window->drawList.AddRect(
 			center - G.style.FormWidgetRadius,
 			center + G.style.FormWidgetRadius,
@@ -897,10 +897,10 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font, name,
 			G.style.Colors[Style::Palette::Text]);
 		// Progress bar
-		Vector2 line[3];
-		line[0] = Vector2(G.widgetPos.x + padding, G.widgetPos.y + G.style.HalfLineHeight() + padding);
-		line[1] = line[0] + Vector2(barLength, 0.f);
-		line[2] = line[0] + Vector2(fullLength, 0.f);
+		Vec2 line[3];
+		line[0] = Vec2(G.widgetPos.x + padding, G.widgetPos.y + G.style.HalfLineHeight() + padding);
+		line[1] = line[0] + Vec2(barLength, 0.f);
+		line[2] = line[0] + Vec2(fullLength, 0.f);
 		if (line[0].x < line[1].x)
 			G.current.window->drawList.AddPolyLine(line, 2, G.style.Colors[Style::Palette::AccentActive], false, G.style.StrokeWidth);
 		if (line[1].x < line[2].x)
@@ -913,11 +913,11 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false; bool cursorUpdated = false;
 
 		G.AdvanceLine();
-		Vector2 tagPos = G.widgetPos;
+		Vec2 tagPos = G.widgetPos;
 		G.widgetPos.y += G.style.TextPaddingY;
-		Rect bgArea(G.widgetPos, Vector2(G.CurrentRect().max.x, G.widgetPos.y + G.style.LineHeight));
+		Rect bgArea(G.widgetPos, Vec2(G.CurrentRect().max.x, G.widgetPos.y + G.style.LineHeight));
 		Rect textArea(bgArea);
-		textArea.Shrink(Vector2(G.style.TextPaddingY, 0.f));
+		textArea.Shrink(Vec2(G.style.TextPaddingY, 0.f));
 
 		#pragma region logic
 		bool hovering = textArea.Contains(G.input.cursor);
@@ -1065,11 +1065,11 @@ namespace TX { namespace UI { namespace GUI {
 			// selection
 			if (G.textEdit.HasSelection()){
 				G.current.window->drawList.AddRect(
-					Vector2(
+					Vec2(
 						textArea.min.x + G.textEdit.LocatePos(G.textEdit.SelectionLeft()),
 						textArea.min.y + G.style.TextPaddingY / 2
 					),
-					Vector2(
+					Vec2(
 						textArea.min.x + G.textEdit.LocatePos(G.textEdit.SelectionRight()),
 						textArea.max.y - G.style.TextPaddingY / 2
 					),
@@ -1088,9 +1088,9 @@ namespace TX { namespace UI { namespace GUI {
 			// blinking cursor
 			if (timeSinceLastCursorUpdate % 1000 / 500 == 0){
 				float cursorPos = textArea.min.x + G.textEdit.LocatePos(G.textEdit.cursor);
-				Vector2 cursorLine[2] = {
-					Vector2(cursorPos, textArea.min.y + G.style.TextPaddingY / 2),
-					Vector2(cursorPos, textArea.max.y - G.style.TextPaddingY / 2)
+				Vec2 cursorLine[2] = {
+					Vec2(cursorPos, textArea.min.y + G.style.TextPaddingY / 2),
+					Vec2(cursorPos, textArea.max.y - G.style.TextPaddingY / 2)
 				};
 				G.current.window->drawList.AddPolyLine(cursorLine, 2, G.style.Colors[Style::Palette::Foreground], false, 1.f);
 			}

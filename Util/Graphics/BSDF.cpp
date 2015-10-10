@@ -9,7 +9,7 @@ namespace TX{
 	//
 	// BSDF
 	//
-	Color BSDF::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType t) const {
+	Color BSDF::Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType t) const {
 		if (!Valid(wo, wi, geom.normal, &t))
 			return 0.f;
 		return GetColor(geom) * Eval(
@@ -18,7 +18,7 @@ namespace TX{
 			t);
 	}
 
-	float BSDF::Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType t) const {
+	float BSDF::Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType t) const {
 		if (!Valid(wo, wi, geom.normal, &t))
 			return 0.f;
 		return Pdf(
@@ -30,9 +30,9 @@ namespace TX{
 	//
 	// Diffuse
 	//
-	Color Diffuse::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
-		Vector3 localwo = Normalize(geom.WorldToLocal(wo));
-		Vector3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
+	Color Diffuse::Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
+		Vec3 localwo = Normalize(geom.WorldToLocal(wo));
+		Vec3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
 		if (localwo.z < 0.f)
 			localwi.z *= -1.f;
 		*wi = Normalize(geom.LocalToWorld(localwi));
@@ -45,11 +45,11 @@ namespace TX{
 		return GetColor(geom) * Eval(localwo, localwi, types);
 	}
 
-	float Diffuse::Eval(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
+	float Diffuse::Eval(const Vec3& localwo, const Vec3& localwi, BSDFType type) const{
 		return 1.f / PI;
 	}
 
-	float Diffuse::Pdf(const Vector3& localwo, const Vector3& localwi, BSDFType type) const{
+	float Diffuse::Pdf(const Vec3& localwo, const Vec3& localwi, BSDFType type) const{
 		if (!LocalCoord::SameHemisphere(localwo, localwi))
 			return 0.f;
 		return LocalCoord::AbsCosTheta(localwi) * PI_RCP;
@@ -59,28 +59,28 @@ namespace TX{
 	//
 	// Mirror
 	//
-	Color Mirror::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type) const {
+	Color Mirror::Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type) const {
 		return Color::BLACK;
 	}
-	float Mirror::Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type) const {
+	float Mirror::Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type) const {
 		return 0.f;
 	}
-	Color Mirror::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const {
+	Color Mirror::Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const {
 		if (!SubtypeOf(types)){
 			*pdf = 0.f;
 			return Color::BLACK;
 		}
-		Vector3 localwo(geom.WorldToLocal(wo));
-		Vector3 localwi(-localwo.x, -localwo.y, localwo.z);
+		Vec3 localwo(geom.WorldToLocal(wo));
+		Vec3 localwi(-localwo.x, -localwo.y, localwo.z);
 		*wi = geom.LocalToWorld(localwi);
 		*pdf = 1.f;
 		if (sampled_types) *sampled_types = type_;
 		return GetColor(geom) / LocalCoord::AbsCosTheta(localwi);
 	}
-	float Mirror::Eval(const Vector3& wo, const Vector3& wi, BSDFType type) const {
+	float Mirror::Eval(const Vec3& wo, const Vec3& wi, BSDFType type) const {
 		return 0.f;
 	}
-	float Mirror::Pdf(const Vector3& wo, const Vector3& wi, BSDFType type) const {
+	float Mirror::Pdf(const Vec3& wo, const Vec3& wi, BSDFType type) const {
 		return 0.f;
 	}
 
@@ -88,7 +88,7 @@ namespace TX{
 	//
 	// Dielectric
 	//
-	Color Dielectric::Scatter(const Vector3& wo, const LocalGeo& geom, const Sample& sample, Vector3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
+	Color Dielectric::Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
 		bool reflection = (types & (BSDF_REFLECTION | BSDF_SPECULAR)) == (BSDF_REFLECTION | BSDF_SPECULAR);
 		bool transmission = (types & (BSDF_TRANSMISSION | BSDF_SPECULAR)) == (BSDF_TRANSMISSION | BSDF_SPECULAR);
 		if (!reflection && !transmission){
@@ -96,7 +96,7 @@ namespace TX{
 			return Color::BLACK;
 		}
 		bool both = reflection == transmission;
-		Vector3 localwo(geom.WorldToLocal(wo)), localwi;
+		Vec3 localwo(geom.WorldToLocal(wo)), localwi;
 		// angle of refraction
 		float eta;
 		float cosi = LocalCoord::CosTheta(localwo), cost = Refract(cosi, &eta);
@@ -104,7 +104,7 @@ namespace TX{
 		float refl = Reflectance(cosi, cost);
 		float prob = 0.5f * refl + 0.25f;
 		if (refl > 0.f && (sample.w <= prob && both || reflection && !both)){			// sample reflection
-			localwi = Vector3(-localwo.x, -localwo.y, localwo.z);
+			localwi = Vec3(-localwo.x, -localwo.y, localwo.z);
 			*wi = geom.LocalToWorld(localwi);
 			*pdf = both ? prob : 1.f;
 			if (sampled_types) *sampled_types = BSDFType(BSDF_REFLECTION | BSDF_SPECULAR);
@@ -113,7 +113,7 @@ namespace TX{
 		else if(refl < 1.f && (sample.w > prob && both || transmission && !both)){		// sample refraction
 			if (eta == eta_)	// entering
 				cost = -cost;
-			localwi = Vector3(eta * -localwo.x, eta * -localwo.y, cost);
+			localwi = Vec3(eta * -localwo.x, eta * -localwo.y, cost);
 			*wi = geom.LocalToWorld(localwi);
 			*pdf = both ? 1.f - prob : 1.f;
 			if (sampled_types) *sampled_types = BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR);
@@ -121,16 +121,16 @@ namespace TX{
 		}
 		return Color::BLACK;
 	}
-	Color Dielectric::Eval(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type) const {
+	Color Dielectric::Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type) const {
 		return Color::BLACK;
 	}
-	float Dielectric::Pdf(const Vector3& wo, const Vector3& wi, const LocalGeo& geom, BSDFType type) const {
+	float Dielectric::Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type) const {
 		return 0.f;
 	}
-	float Dielectric::Eval(const Vector3& wo, const Vector3& wi, BSDFType type) const{
+	float Dielectric::Eval(const Vec3& wo, const Vec3& wi, BSDFType type) const{
 		return 0.f;
 	}
-	float Dielectric::Pdf(const Vector3& wo, const Vector3& wi, BSDFType type) const{
+	float Dielectric::Pdf(const Vec3& wo, const Vec3& wi, BSDFType type) const{
 		return 0.f;
 	}
 	float Dielectric::Refract(float cosi, float *eta) const{

@@ -4,7 +4,7 @@
 
 namespace TX
 {
-	bool Polygon::IsConvex(const Vector2& v1, const Vector2& v2, const Vector2& v3){
+	bool Polygon::IsConvex(const Vec2& v1, const Vec2& v2, const Vec2& v3){
 		return ((v3.y - v1.y) * (v2.x - v1.x)) > ((v3.x - v1.x) * (v2.y - v1.y));
 	}
 

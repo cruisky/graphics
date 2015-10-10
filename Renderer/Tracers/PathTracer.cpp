@@ -17,7 +17,7 @@ namespace TX{
 
 	Color PathTracer::Li(const Scene *scene, const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
 		Color Le, L, pathThroughput = Color::WHITE;
-		Vector3 wo, wi;
+		Vec3 wo, wi;
 		float pdf;
 		BSDFType sampled;
 		Ray pathRay;

@@ -23,11 +23,11 @@ namespace TX {
 		// Test if this object occludes the ray.
 		bool Occlude(const Ray& ray) const;
 			
-		inline float Pdf(const Vector3& point) const { 
+		inline float Pdf(const Vec3& point) const { 
 			return shape_->Pdf(Matrix4x4::TPoint(transform.WorldToLocalMatrix(), point));
 		}
 
-		inline float Pdf(const Vector3& point, const Vector3& dir) const {
+		inline float Pdf(const Vec3& point, const Vec3& dir) const {
 			Ray localray;
 			localray.Reset(point, dir);
 			transform.ToLocal(localray);
@@ -35,13 +35,13 @@ namespace TX {
 			return shape_->Pdf(localray);
 		}
 
-		inline void SamplePoint(const Sample *sample, Vector3 *point, Vector3 *normal/* = nullptr */) const {
+		inline void SamplePoint(const Sample *sample, Vec3 *point, Vec3 *normal/* = nullptr */) const {
 			shape_->SamplePoint(sample, point, normal);
 			*point = Matrix4x4::TPoint(transform.LocalToWorldMatrix(), *point);
 			*normal = Matrix4x4::TNormal(transform.WorldToLocalMatrix(), *normal);	// use inverse when transforming normal
 		}
 
-		inline void SamplePoint(const Sample *sample, const Vector3& eye, Vector3 *point, Vector3 *normal) const {
+		inline void SamplePoint(const Sample *sample, const Vec3& eye, Vec3 *point, Vec3 *normal) const {
 			shape_->SamplePoint(sample, Matrix4x4::TPoint(transform.WorldToLocalMatrix(), eye), point, normal);
 			*point = Matrix4x4::TPoint(transform.LocalToWorldMatrix(), *point);
 			*normal = Matrix4x4::TNormal(transform.WorldToLocalMatrix(), *normal);	// use inverse when transforming normal

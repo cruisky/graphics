@@ -11,11 +11,11 @@ namespace TX
 			TEST_METHOD(SetSegmentTest){
 				Ray ray;
 				float eps1, eps2;
-				Vector3 origin, dest, dir_exp;
+				Vec3 origin, dest, dir_exp;
 				repeat(i, 20){
-					origin = RandomVector3();
+					origin = RandomVec3();
 					do{ 
-						dest = RandomVector3(); 
+						dest = RandomVec3(); 
 						dir_exp = dest - origin;
 					} while (Length(dir_exp) < 1e-2f);
 

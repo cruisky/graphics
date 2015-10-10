@@ -135,8 +135,8 @@ namespace TX
 		inline Vec<2, T> Max(const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Max(v1.x, v2.x), Max(v1.y, v2.y)); }
 	}
 
-	typedef Vec<2, float> Vector2;
-	typedef Vec<2, int> Vector2i;
+	typedef Vec<2, float> Vec2;
+	typedef Vec<2, int> Vec2i;
 
 	template <typename T>
 	class Vec <3, T> {
@@ -208,7 +208,7 @@ namespace TX
 	namespace Math {
 		template <typename T>
 		inline Vec<3, T> Cross(const Vec<3, T>& lhs, const Vec<3, T>& rhs) {
-			return Vector3(
+			return Vec3(
 				lhs.y * rhs.z - lhs.z * rhs.y,
 				lhs.z * rhs.x - lhs.x * rhs.z,
 				lhs.x * rhs.y - lhs.y * rhs.x);
@@ -233,8 +233,8 @@ namespace TX
 		inline Vec<3, T> Max(const Vec<3, T>& v1, const Vec<3, T>& v2) { return Vec<3, T>(Max(v1.x, v2.x), Max(v1.y, v2.y), Max(v1.z, v2.z)); }
 	}
 
-	typedef Vec<3, float> Vector3;
-	typedef Vec<3, int> Vector3i;
+	typedef Vec<3, float> Vec3;
+	typedef Vec<3, int> Vec3i;
 
 	template <typename T>
 	class Vec <4, T> {
@@ -327,6 +327,6 @@ namespace TX
 		inline Vec<4, T> Max(const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Max(v1.x, v2.x), Max(v1.y, v2.y), Max(v1.z, v2.z), Max(v1.w, v2.w)); }
 	}
 
-	typedef Vec<4, float> Vector4;
-	typedef Vec<4, int> Vector4i;
+	typedef Vec<4, float> Vec4;
+	typedef Vec<4, int> Vec4i;
 }
