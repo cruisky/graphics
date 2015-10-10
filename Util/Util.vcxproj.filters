@@ -26,7 +26,6 @@
     <ClCompile Include="Graphics\Scene.cpp" />
     <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Graphics\Tracer.cpp" />
-    <ClCompile Include="Graphics\Transform.cpp" />
     <ClCompile Include="SSE\Bool.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />
@@ -34,6 +33,7 @@
     <ClCompile Include="System\Thread.cpp" />
     <ClCompile Include="System\Tools.cpp" />
     <ClCompile Include="UtilStdAfx.cpp" />
+    <ClCompile Include="Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
@@ -71,7 +71,6 @@
     <ClInclude Include="Graphics\SceneObject.h" />
     <ClInclude Include="Graphics\Shape.h" />
     <ClInclude Include="Graphics\Tracer.h" />
-    <ClInclude Include="Graphics\Transform.h" />
     <ClInclude Include="SSE\Bool.h" />
     <ClInclude Include="SSE\Float.h" />
     <ClInclude Include="SSE\Int.h" />
@@ -82,5 +81,6 @@
     <ClInclude Include="System\Tools.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="UtilStdAfx.h" />
+    <ClInclude Include="Math\Transform.h" />
   </ItemGroup>
 </Project>

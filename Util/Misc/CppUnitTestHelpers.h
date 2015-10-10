@@ -26,7 +26,7 @@ namespace TX
 				static char buf[512];
 				va_list ap;
 				va_start(ap, fmt);
-				vsprintf_s(buf, fmt, ap);
+				std::vsprintf(buf, fmt, ap);
 				va_end(ap);
 				Logger::WriteMessage(buf);
 			}

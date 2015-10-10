@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Graphics/Color.h"
 #include "Graphics/Image.h"
-#include "Graphics/Transform.h"
+#include "Math/Transform.h"
 #include "Math/Sampler.h"
 #include "Math/Sample.h"
 #include "Graphics/BSDF.h"
@@ -154,21 +154,21 @@ int main(){
 		GUIMain();
 	}
 	catch (int ex){
-		fprintf(stderr, "Uncaught Exception: \n\t%d\n", ex);
+		std::fprintf(stderr, "Uncaught Exception: \n\t%d\n", ex);
 	}
 	catch (char const *ex){
-		fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex);
+		std::fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex);
 	}
 	catch (const std::exception& ex) {
-		fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex.what());
+		std::fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex.what());
 	}
 	catch (const std::string& ex) {
-		fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex.c_str());
+		std::fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex.c_str());
 	}
 	catch (...) {
-		fprintf(stderr, "Uncaught Exception\n");
+		std::fprintf(stderr, "Uncaught Exception\n");
 	}
-	fprintf(stdout, "Press enter to exit.\n");
+	std::fprintf(stdout, "Press enter to exit.\n");
 	getchar();
 	return 0;
 }

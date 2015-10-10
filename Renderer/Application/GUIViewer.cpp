@@ -47,7 +47,7 @@ namespace TX{
 				switch (button){
 				case MouseButton::LEFT:
 					Color c = film_->Get(int(cursor.x), int(cursor.y));
-					printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b); break;
+					std::printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b); break;
 				}
 			}
 		}
@@ -124,13 +124,13 @@ namespace TX{
 				status = monitor_->InProgress();
 				if (status || prev_status){
 					system("CLS");
-					printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
-					printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
-					if (!status) printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
+					std::printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
+					std::printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
+					if (!status) std::printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
 					prev_status = status;
 				}
 			}
-			printf("Terminated at %3.3f%%. \n", monitor_->Progress() * 100.f);
+			std::printf("Terminated at %3.3f%%. \n", monitor_->Progress() * 100.f);
 #endif
 		}
 		void GUIViewer::FlipY(float *y) { *y = film_->Height() - *y - 1; }
