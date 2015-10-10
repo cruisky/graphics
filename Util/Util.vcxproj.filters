@@ -32,6 +32,7 @@
     <ClCompile Include="System\Tools.cpp" />
     <ClCompile Include="UtilStdAfx.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
@@ -78,5 +79,6 @@
     <ClInclude Include="UtilStdAfx.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Base.h" />
+    <ClInclude Include="Math\Quaternion.h" />
   </ItemGroup>
 </Project>

@@ -58,10 +58,8 @@ namespace TX {
 	};
 
 	template<typename T>
-	void Str_(std::ostringstream& ss, const T& obj){
-		ss << obj;
-	}
-
+	void Str_(std::ostringstream& ss, const T& obj){ ss << obj; }
+	
 	template<typename T, typename... Args>
 	void Str_(std::ostringstream& ss, const T& obj, Args&&... args){
 		Str_(ss, obj);
@@ -73,5 +71,11 @@ namespace TX {
 		std::ostringstream ss;
 		Str_(ss, std::forward<Args>(args)...);
 		return ss.str();
+	}
+
+	template<typename... Args>
+	std::wstring WStr(Args&&... args) {
+		auto str = Str(std::forward<Args>(args)...);
+		return std::wstring(str.begin(), str.end());
 	}
 }

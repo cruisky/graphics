@@ -23,6 +23,7 @@
 #include "Math/Base.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
+#include "Math/Quaternion.h"
 #include "Math/Ray.h"
 #include "Graphics/Color.h"
 

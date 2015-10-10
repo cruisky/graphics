@@ -25,9 +25,26 @@ namespace TX {
 		static struct {
 			constexpr operator float() const { return std::numeric_limits<float>::infinity(); }
 		} INF;
+		/*
+		 * The smallest increment from 1.0
+		 */
 		static struct {
 			constexpr operator float() const { return std::numeric_limits<float>::epsilon(); }
 		} EPSILON;
+		/*
+		 * The minimum positive normalized value.
+		 */
+		static struct {
+			template <typename T> constexpr operator T() const { return std::numeric_limits<T>::min(); }
+		} MIN;
+		/*
+		* The maximum finite value.
+		*/
+		static struct {
+			template <typename T> constexpr operator T() const { return std::numeric_limits<T>::max(); }
+		} MAX;
+
+
 
 		///////////////////////////////////////////////////////////////////////
 		// Functions
@@ -57,8 +74,8 @@ namespace TX {
 			//return 1.0f / Math::Sqrt(n);
 		}
 
-		inline float ToRad(float deg) { return deg / 180.f * Math::PI; }
-		inline float ToDeg(float rad) { return rad * 180.f / Math::PI; }
+		constexpr inline float ToRad(float deg) { return deg / 180.f * Math::PI; }
+		constexpr inline float ToDeg(float rad) { return rad * 180.f / Math::PI; }
 		inline float Sin(float r) { return sinf(r); }
 		inline float Cos(float r) { return cosf(r); }
 		inline float Tan(float r) { return tanf(r); }

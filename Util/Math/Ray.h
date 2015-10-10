@@ -3,14 +3,13 @@
 #include "Math/Vector.h"
 
 namespace TX {
-	using namespace Math;
 	class Ray {
 	public:
 		static const float EPSILON;
 	public:
-		Ray() : t_min(EPSILON), t_max(INF){}
-		Ray(const Vec3& origin, const Vec3& vdir, float t_max = INF, float t_min = EPSILON) :
-			origin(origin), dir(Normalize(vdir)), t_min(t_min), t_max(t_max){}
+		Ray() : t_min(EPSILON), t_max(Math::INF){}
+		Ray(const Vec3& origin, const Vec3& vdir, float t_max = Math::INF, float t_min = EPSILON) :
+			origin(origin), dir(Math::Normalize(vdir)), t_min(t_min), t_max(t_max){}
 		Ray(const Ray& ot) :
 			origin(ot.origin), dir(ot.dir), t_min(ot.t_min), t_max(ot.t_max){}
 		~Ray(){}
@@ -19,7 +18,7 @@ namespace TX {
 		bool operator ==(const Ray& ot);
 
 		// Reset the value of this ray, without normalizing direction vector.
-		inline Ray& Reset(const Vec3& origin = Vec3::ZERO, const Vec3& dir = Vec3::Z, float t_max = INF, float t_min = EPSILON){
+		inline Ray& Reset(const Vec3& origin = Vec3::ZERO, const Vec3& dir = Vec3::Z, float t_max = Math::INF, float t_min = EPSILON){
 			this->t_min = t_min;
 			this->t_max = t_max;
 			this->origin = origin;
@@ -32,9 +31,9 @@ namespace TX {
 			origin = orig;
 			dir = dest - orig;
 			t_min = eps_origin;
-			t_max = Length(dir);
+			t_max = Math::Length(dir);
 			dir /= t_max;
-			t_max = Max(t_min, t_max - eps_dest);
+			t_max = Math::Max(t_min, t_max - eps_dest);
 			return *this;
 		}
 

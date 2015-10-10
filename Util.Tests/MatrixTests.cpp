@@ -38,14 +38,6 @@ namespace TX
 					0, 0, 0, 1);
 				Matrix4x4 res = example.Inverse();
 				Assertions::AreClose(inverse, res);
-
-				Matrix4x4 t = Matrix4x4(
-					0, 0, 1, 0,
-					0, 1, 0, 0,
-					-1, 0, 0, 0,
-					0, 0, 0, 1);
-				Msg::Log(t);
-				Msg::Log(t.Inverse());
 				repeat(i, 100){
 					Matrix4x4 m = RandomMatrix();
 					Matrix4x4 m_i = m.Inverse();

@@ -26,10 +26,10 @@ namespace TX
 			surfacecolor = geom.bsdf->Eval(lightray.dir, wo, geom);
 			if (surfacecolor != Color::BLACK){
 				if (light->IsDelta())
-					color = surfacecolor * lightcolor * (Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf);
+					color = surfacecolor * lightcolor * (Math::AbsDot(lightray.dir, geom.normal) / light_pdf);
 				else{
 					bsdf_pdf = geom.bsdf->Pdf(wo, lightray.dir, geom);
-					color = surfacecolor * lightcolor * (Math::Abs(Dot(lightray.dir, geom.normal)) / light_pdf * PowerHeuristic(1, light_pdf, 1, bsdf_pdf));
+					color = surfacecolor * lightcolor * (Math::AbsDot(lightray.dir, geom.normal) / light_pdf * PowerHeuristic(1, light_pdf, 1, bsdf_pdf));
 				}
 			}
 		}
@@ -55,7 +55,7 @@ namespace TX
 			//else
 			//	light->Emit(lightray, &lightcolor);
 			if (lightcolor != Color::BLACK){
-				color += surfacecolor * lightcolor * Math::Abs(Dot(lightray.dir, geom.normal)) * PowerHeuristic(1, bsdf_pdf, 1, light_pdf) / bsdf_pdf;
+				color += surfacecolor * lightcolor * Math::AbsDot(lightray.dir, geom.normal) * PowerHeuristic(1, bsdf_pdf, 1, light_pdf) / bsdf_pdf;
 			}
 		}
 		return color;
@@ -66,7 +66,7 @@ namespace TX
 		float pdf;
 		Color color;
 		Color f = geom.bsdf->Scatter(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_REFLECTION | BSDF_SPECULAR));
-		float absdot_wi_n = Math::Abs(Dot(wi, geom.normal));
+		float absdot_wi_n = Math::AbsDot(wi, geom.normal);
 		if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 			Ray reflected(geom.point, wi);
 			// TODO differential
@@ -80,7 +80,7 @@ namespace TX
 		float pdf;
 		Color color;
 		Color f = geom.bsdf->Scatter(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR));
-		float absdot_wi_n = Math::Abs(Dot(wi, geom.normal));
+		float absdot_wi_n = Math::AbsDot(wi, geom.normal);
 		if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 			Ray refracted(geom.point, wi);
 			//TODO differential

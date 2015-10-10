@@ -7,6 +7,7 @@
 #include "System/Tools.h"
 #include "Graphics/Color.h"
 #include "Math/Ray.h"
+#include "Math/Quaternion.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
 
@@ -21,12 +22,8 @@ namespace TX
 {
 	namespace Tests
 	{
-		namespace Msg{
-			inline std::wstring WStr(const std::string& str){
-				return std::wstring(str.begin(), str.end());
-			}
-			
-			inline void LogFormat(const char *fmt, ...){
+		namespace Msg {
+			inline void LogFormat(const char *fmt, ...) {
 				static char buf[512];
 				va_list ap;
 				va_start(ap, fmt);
@@ -51,39 +48,58 @@ namespace TX
 			}
 
 			template <typename T>
-			inline const wchar_t* EQ(const T& expected, const T& actual, std::string msg = ""){
-				return WStr(Str("Expected<", expected, ">, Actual<", actual, "> ", msg)).c_str();
+			inline std::string EQ(const T& expected, const T& actual, const std::string& msg = std::string()) {
+				return Str("\nExpected: <", expected, ">\nActual: <", actual, ">\n", msg);
+			}
+
+			template <typename T>
+			inline const wchar_t* EQ_(const T& expected, const T& actual, const std::string& msg = std::string()) {
+				return WStr(EQ(expected, actual, msg)).c_str();
 			}
 		}
 
 		namespace Assertions {
-			const float TOLERANCE_FLT = 1e-3f;
-			const double TOLERANCE_DBL = 1e-6;
+			static const struct {
+				constexpr inline operator float() const { return 1e-3f; }
+				constexpr inline operator double() const { return 1e-6; }
+			} TOLERANCE;
 
-			inline void AreClose(float expected, float actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
-				Assert::AreEqual(expected, actual, TOLERANCE_FLT, message, pLineInfo);
+			inline void AreClose(float expected, float actual, const std::string& msg = std::string()) {
+				Assert::AreEqual(expected, actual, float(TOLERANCE), Msg::EQ_(expected, actual, msg), NULL);
 			}
-			inline void AreClose(double expected, double actual, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL){
-				Assert::AreEqual(expected, actual, TOLERANCE_DBL, message, pLineInfo);
-			}
-			inline void AreClose(const Vec4& expected, const Vec4& actual, const wchar_t *msg = nullptr){
-				repeat(i, 4){
-					Assert::AreEqual(expected[i], actual[i], TOLERANCE_FLT, msg ? msg : Msg::EQ(expected[i], actual[i]));
+			inline void AreClose(const Quaternion& expected, const Quaternion& actual, const std::string& msg = std::string()) {
+#define signof(f) ((f) >= 0 ? 1 : -1)
+				// might get a negative version, but they are still equivalent
+				bool negate = false;
+				repeat(i, 4) {
+					if (Math::Abs(expected.q[i] - actual.q[i]) > float(TOLERANCE) && signof(expected.w) != signof(actual.w)){
+					negate = true;
+					}
+				}
+#undef signof
+				repeat(i, 4) {
+					Assert::AreEqual(
+						negate ? -expected.q[i] : expected.q[i],
+						actual.q[i], TOLERANCE, Msg::EQ_(expected, actual, msg));
 				}
 			}
-			inline void AreClose(const Color& expected, const Color& actual, const wchar_t *msg = nullptr){
-				Assert::AreEqual(expected.r, actual.r, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
-				Assert::AreEqual(expected.g, actual.g, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
-				Assert::AreEqual(expected.b, actual.b, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+			inline void AreClose(const Vec4& expected, const Vec4& actual, const std::string& msg = std::string()){
+				repeat(i, 4)
+					Assert::AreEqual(expected[i], actual[i], TOLERANCE, Msg::EQ_(expected, actual, msg));
+
 			}
-			inline void AreClose(const Vec3& expected, const Vec3& actual, const wchar_t *msg = nullptr){
-				Assert::AreEqual(expected.x, actual.x, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
-				Assert::AreEqual(expected.y, actual.y, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
-				Assert::AreEqual(expected.z, actual.z, TOLERANCE_FLT, msg ? msg : Msg::EQ(expected, actual));
+			inline void AreClose(const Color& expected, const Color& actual, const std::string& msg = std::string()) {
+				Assert::AreEqual(expected.r, actual.r, TOLERANCE, Msg::EQ_(expected, actual, msg));
+				Assert::AreEqual(expected.g, actual.g, TOLERANCE, Msg::EQ_(expected, actual, msg));
+				Assert::AreEqual(expected.b, actual.b, TOLERANCE, Msg::EQ_(expected, actual, msg));
 			}
-			inline void AreClose(const Matrix4x4& expected, const Matrix4x4& actual, const wchar_t *msg = nullptr){
+			inline void AreClose(const Vec3& expected, const Vec3& actual, const std::string& msg = std::string()){
+				repeat(i, 3)
+					Assert::AreEqual(expected[i], actual[i], TOLERANCE, Msg::EQ_(expected, actual, msg));
+			}
+			inline void AreClose(const Matrix4x4& expected, const Matrix4x4& actual, const std::string& msg = std::string()){
 				repeat(i, 4){
-					Assertions::AreClose(expected[i], actual[i], msg ? msg : Msg::EQ(expected, actual));
+					Assertions::AreClose(expected[i], actual[i], Msg::EQ(expected, actual, msg));
 				}
 			}
 		}
