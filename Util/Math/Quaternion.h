@@ -94,6 +94,10 @@ namespace TX
 		 * Computes the quaternion from euler angle rotation in ZYX order.
 		 */
 		static inline Quaternion Euler(const Vec3& euler);
+		/*
+		* Computes the quaternion from euler angle rotation in ZYX order.
+		*/
+		static inline Quaternion Euler(float x, float y, float z);
 		static inline Quaternion RotationMatrix(const Matrix4x4& mat);
 		static inline Quaternion AngleAxis(float angle, const Vec3& nAxis);
 		static inline Quaternion FromToRotation(const Vec3& nFromDir, const Vec3& nToDir);
@@ -121,7 +125,10 @@ namespace TX
 	}
 
 	inline Quaternion Quaternion::Euler(const Vec3& euler) {
-		Vec3 h = euler * 0.5f;
+		return Euler(euler.x, euler.y, euler.z);
+	}
+	inline Quaternion Quaternion::Euler(float x, float y, float z) {
+		Vec3 h(x * 0.5f, y * 0.5f, z * 0.5f);
 		float cz = Math::Cos(h.z);
 		float cy = Math::Cos(h.y);
 		float cx = Math::Cos(h.x);

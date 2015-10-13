@@ -4,14 +4,14 @@ namespace TX {
 	class Shape {
 	public:
 		virtual ~Shape(){};
-		// Check if ray intersects the shape, if so modifies the 
+		// Check if ray intersects the shape, if so modifies the
 		// length(t_max) of the ray.
 		virtual bool Intersect(const Ray& localray) const = 0;
 		// computes surface normal without normalizing
 		virtual void PostIntersect(const Ray& localray, LocalGeo& geo) const = 0;
 		// Only checks intersection.
 		virtual bool Occlude(const Ray& localray) const = 0;
-			
+
 		// Surface area.
 		virtual float Area() const = 0;
 		// Pdf of a point at this shape.
@@ -42,6 +42,7 @@ namespace TX {
 
 	class UnitPlane : public Shape {
 	public:
+		/* Constructs a unit plane on xy plane */
 		UnitPlane(){}
 		bool Intersect(const Ray& localray) const;
 		void PostIntersect(const Ray& localray, LocalGeo& geo) const;

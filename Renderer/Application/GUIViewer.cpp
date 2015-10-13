@@ -49,13 +49,6 @@ namespace TX{
 				case MouseButton::LEFT:
 					Color c = film_->Get(int(cursor.x), int(cursor.y));
 					std::printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b);
-
-					std::cout << "-----Camera Transform-----" << std::endl;
-					std::cout << camera_->transform << std::endl;
-					std::cout << "-----Camera WorldToLocal-----" << std::endl;
-					std::cout << camera_->transform.WorldToLocalMatrix() << std::endl;
-					std::cout << "-----Camera LocalToWorld-----" << std::endl;
-					std::cout << camera_->transform.LocalToWorldMatrix() << std::endl;
 					break;
 				}
 			}
@@ -64,16 +57,16 @@ namespace TX{
 		void GUIViewer::OnKey(KeyCode code, KeyState state, Modifiers modifiers){
 			if (state == KeyState::DOWN || state == KeyState::HOLD) {
 				switch (code) {
-				case KeyCode::UP: AttemptPanCamera(Direction::UP); break;
-				case KeyCode::DOWN: AttemptPanCamera(Direction::DOWN); break;
-				case KeyCode::LEFT: AttemptPanCamera(Direction::LEFT); break;
-				case KeyCode::RIGHT: AttemptPanCamera(Direction::RIGHT); break;
-				case KeyCode::W: AttemptMoveCamera(Direction::UP); break;
-				case KeyCode::S: AttemptMoveCamera(Direction::DOWN); break;
-				case KeyCode::A: AttemptMoveCamera(Direction::LEFT); break;
-				case KeyCode::D: AttemptMoveCamera(Direction::RIGHT); break;
-				case KeyCode::Q: AttemptBarrelRollCamera(false); break;
-				case KeyCode::E: AttemptBarrelRollCamera(true); break;
+				case KeyCode::UP: AttemptPanTiltCamera(Direction::UP); break;
+				case KeyCode::DOWN: AttemptPanTiltCamera(Direction::DOWN); break;
+				case KeyCode::LEFT: AttemptPanTiltCamera(Direction::LEFT); break;
+				case KeyCode::RIGHT: AttemptPanTiltCamera(Direction::RIGHT); break;
+				case KeyCode::W: AttemptDollyCrabCamera(Direction::UP); break;
+				case KeyCode::S: AttemptDollyCrabCamera(Direction::DOWN); break;
+				case KeyCode::A: AttemptDollyCrabCamera(Direction::LEFT); break;
+				case KeyCode::D: AttemptDollyCrabCamera(Direction::RIGHT); break;
+				case KeyCode::Q: AttemptRollCamera(false); break;
+				case KeyCode::E: AttemptRollCamera(true); break;
 				case KeyCode::ESCAPE: Exit(); break;
 				}
 			}
@@ -89,7 +82,7 @@ namespace TX{
 		}
 
 
-		void GUIViewer::AttemptMoveCamera(Direction dir){
+		void GUIViewer::AttemptDollyCrabCamera(Direction dir){
 			float dist = 0.1f;
 			Vec3 movement;
 			switch (dir){
@@ -102,7 +95,7 @@ namespace TX{
 			InvalidateFrame();
 		}
 
-		void GUIViewer::AttemptPanCamera(Direction dir){
+		void GUIViewer::AttemptPanTiltCamera(Direction dir){
 			float rad = Math::ToRad(2.f);
 			Vec3 axis;
 			switch (dir){
@@ -111,13 +104,13 @@ namespace TX{
 			case Direction::LEFT: axis = Vec3::Y; break;
 			case Direction::RIGHT: axis = -Vec3::Y; break;
 			}
-			camera_->transform.Rotate(rad, axis);
+			camera_->transform.Rotate(Quaternion::AngleAxis(rad, axis));
 			InvalidateFrame();
 		}
 
-		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
+		void GUIViewer::AttemptRollCamera(bool clockwise){
 			float rad = Math::ToRad(clockwise ? 10.f : -10.f);
-			camera_->transform.Rotate(rad, -Vec3::Z);
+			camera_->transform.Rotate(Quaternion::AngleAxis(rad, -Vec3::Z));
 			InvalidateFrame();
 		}
 

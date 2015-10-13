@@ -6,7 +6,7 @@ namespace TX {
 	DirectionalLight::DirectionalLight(const Color& intensity, int sample_count) : Light(sample_count), intensity(intensity){}
 	DirectionalLight::DirectionalLight(const Color& intensity, const Vec3& dir, int sample_count) :
 		Light(sample_count), intensity(intensity) {
-		transform.LookAt(dir, Vec3::UP);
+		transform.SetRotation(Quaternion::LookRotation(dir, Vec3::UP));
 	}
 
 	void DirectionalLight::Illuminate(const Vec3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {
@@ -18,8 +18,8 @@ namespace TX {
 
 	float DirectionalLight::Pdf(const Vec3& pos, const Vec3& dir) const{
 		return 0.f;
-	}		
-		
+	}
+
 	bool DirectionalLight::IsDelta() const {
 		return true;
 	}

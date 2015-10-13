@@ -25,9 +25,9 @@ namespace TX{
 			void OnResize();
 			void OnExit();
 		private:
-			void AttemptMoveCamera(Direction dir);
-			void AttemptPanCamera(Direction dir);
-			void AttemptBarrelRollCamera(bool clockwise);
+			void AttemptDollyCrabCamera(Direction dir);
+			void AttemptPanTiltCamera(Direction dir);
+			void AttemptRollCamera(bool clockwise);
 			void InvalidateFrame();
 			void ProgressReporterJob();
 			void FlipY(float *y);
