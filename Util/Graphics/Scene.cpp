@@ -5,7 +5,7 @@
 #include "Intersection.h"
 
 namespace TX {
-	Scene::Scene(std::shared_ptr<Camera> camera) : camera(camera) {
+	Scene::Scene() {
 		primmgr_ = std::unique_ptr<PrimitiveManager>(new PrimitiveManager(&prims_));
 	}
 	void Scene::AddPrimitive(std::shared_ptr<Primitive> prim){
@@ -15,6 +15,12 @@ namespace TX {
 		lights.push_back(light);
 	}
 	void Scene::Construct(){
+		for (auto& obj : prims_) {
+			obj->transform.Update();
+		}
+		for (auto& obj : lights) {
+			obj->transform.Update();
+		}
 		primmgr_->Construct();
 	}
 	bool Scene::Intersect(const Ray& ray, Intersection& intxn) const {

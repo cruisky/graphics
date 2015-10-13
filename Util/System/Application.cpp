@@ -62,32 +62,14 @@ namespace TX
 		}
 		Application::~Application(){}
 
-		MouseButtonState	Application::Get(MouseButton button){ 
-			return MouseButtonState(glfwGetMouseButton(window, static_cast<int>(button))); 
-		}
-		bool				Application::Get(KeyCode code){ 
-			return glfwGetKey(window, static_cast<int>(code)) == GLFW_PRESS; 
-		}
-		const char *		Application::GetVersion(){ 
-			return (const char *)glGetString(GL_VERSION); 
-		}
-		float				Application::GetTime(){
-			return (float)glfwGetTime() / 1000.f; 
-		}
-		void				Application::GetCursorPos(float *x, float *y){ 
-			double dx, dy; 
-			glfwGetCursorPos(window, &dx, &dy);
-			*x = float(dx); *y = float(dy);
-		}
-		void				Application::Refresh(){ 
-			glfwPostEmptyEvent(); 
-		}
-		bool				Application::IsWindowVisible(){ 
-			return glfwGetWindowAttrib(window, GLFW_VISIBLE); 
-		}
-		void				Application::Exit(){
-			glfwSetWindowShouldClose(window, GL_TRUE); 
-		}
+		MouseButtonState	Application::Get(MouseButton button) { return MouseButtonState(glfwGetMouseButton(window, static_cast<int>(button))); }
+		bool				Application::Get(KeyCode code){ return glfwGetKey(window, static_cast<int>(code)) == GLFW_PRESS; }
+		const char *		Application::GetVersion(){ return (const char *)glGetString(GL_VERSION); }
+		float				Application::GetTime() { return (float)glfwGetTime() / 1000.f; }
+		void				Application::GetCursorPos(float *x, float *y){ double dx, dy; glfwGetCursorPos(window, &dx, &dy); *x = float(dx); *y = float(dy); }
+		void				Application::Refresh(){ glfwPostEmptyEvent(); }
+		bool				Application::IsWindowVisible(){ return glfwGetWindowAttrib(window, GLFW_VISIBLE); }
+		void				Application::Exit(){ glfwSetWindowShouldClose(window, GL_TRUE); }
 
 		Application * Application::This(GLFWwindow *window){ return (Application *)(glfwGetWindowUserPointer(window)); }
 		void Application::GLFWKey(GLFWwindow *window, int key, int scancode, int action, int mods){
@@ -99,8 +81,8 @@ namespace TX
 		void Application::GLFWCursorPos(GLFWwindow *window, double x, double y){
 			This(window)->OnMouseMove(float(x), float(y));
 		}
-		void Application::GLFWMouseButton(GLFWwindow *window, int button, int state, int mods){ 
-			This(window)->OnMouseButton(MouseButton(button), MouseButtonState(state), mods); 
+		void Application::GLFWMouseButton(GLFWwindow *window, int button, int state, int mods){
+			This(window)->OnMouseButton(MouseButton(button), MouseButtonState(state), mods);
 		}
 		void Application::GLFWMouseScroll(GLFWwindow *window, double xoff, double yoff) { This(window)->OnMouseScroll(float(xoff), float(yoff)); }
 		void Application::GLFWFramebufferSize(GLFWwindow *window, int w, int h)	{

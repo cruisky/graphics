@@ -65,7 +65,7 @@ namespace TX
 			for (uint i = 0; i < shapes.size(); i++){
 				meshes[i].Upload(shapes[i].mesh);
 			}
-			
+
 			glEnable(GL_CULL_FACE);
 			glFrontFace(GL_CCW);
 
@@ -78,6 +78,7 @@ namespace TX
 			static const GLfloat one = 1.0f;
 			glClearBufferfv(GL_DEPTH, 0, &one);
 
+			camera->transform.Update();
 			program->Use();
 
 			glUniformMatrix4fv(uniform[UNIFORM_M], 1, GL_TRUE, Matrix4x4::IDENTITY);
@@ -100,7 +101,7 @@ namespace TX
 				int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 				glDrawElements(GL_TRIANGLES, size/sizeof(uint), GL_UNSIGNED_INT, 0);
 			}
-			
+
 			return true;
 		}
 	};

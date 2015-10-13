@@ -6,7 +6,7 @@ namespace TX {
 	DirectionalLight::DirectionalLight(const Color& intensity, int sample_count) : Light(sample_count), intensity(intensity){}
 	DirectionalLight::DirectionalLight(const Color& intensity, const Vec3& dir, int sample_count) :
 		Light(sample_count), intensity(intensity) {
-		transform.LookAt(dir);
+		transform.LookAt(dir, Vec3::UP);
 	}
 
 	void DirectionalLight::Illuminate(const Vec3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const {

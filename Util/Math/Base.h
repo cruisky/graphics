@@ -45,12 +45,11 @@ namespace TX {
 		} MAX;
 
 
-
 		///////////////////////////////////////////////////////////////////////
 		// Functions
 		///////////////////////////////////////////////////////////////////////
 		template <typename T>
-		inline bool IsNAN(const T& num) { return _isnan(num); }
+		inline bool IsNAN(const T& num) { return _isnan(num) != 0; }
 		template <typename T>
 		inline bool IsINF(const T& num) { return !_finite(num); }
 		template <typename T>

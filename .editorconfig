@@ -5,7 +5,7 @@
 root = true
 
 
-[*.{h,cpp}]
+[*.{h,cpp,glsl}]
 
 # Change these settings to your own preference
 indent_style = tab

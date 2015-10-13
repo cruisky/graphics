@@ -330,9 +330,10 @@ namespace TX{
 		static Matrix4x4 Translate(const Vec3& v);
 		static Matrix4x4 Translate(float x, float y, float z);
 
-		static Matrix4x4 Rotate(const Vec3& angle);
-		static Matrix4x4 Rotate(float x, float y, float z);
-		static Matrix4x4 Rotate(float angle, const Vec3& axis);
+		static Matrix4x4 Rotate(const Vec3& rad);
+		static Matrix4x4 Rotate(float radx, float rady, float radz);
+		static Matrix4x4 Rotate(float rad, const Vec3& axis);
+
 		/*
 		 * Computes the view matrix (world -> local).
 		 * To rotate -z axis to target dir, use it's inverse (or transpose) instead.

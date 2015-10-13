@@ -75,19 +75,18 @@ namespace TX
 				Vec3 input = Vec3::X;
 
 				// euler rotation
-				m = Matrix4x4::Rotate(0, 90, 0);
-				Assertions::AreClose(m, Matrix4x4::Rotate(0, 90, 0));
+				m = Matrix4x4::Rotate(0, Math::PI/2, 0);
+				Assertions::AreClose(m, Matrix4x4::Rotate(0, Math::PI/2, 0));
 				Assertions::AreClose(Vec3(0, 0, -1), Matrix4x4::TVec(m, input));
 				Assertions::AreClose(Vec3(0, 0, -1), Matrix4x4::TNormal(m.Inverse(), input));
 
 				// rotation around axis
 				repeat(i, 100){
 					float rad = RandomFloat(0, 2 * Math::PI);
-					float deg = Math::ToDeg(rad);
-					m = Matrix4x4::Rotate(deg, Vec3::Z);
-					n = Matrix4x4::Rotate(deg, Vec3::X);
-					Assertions::AreClose(Matrix4x4::Rotate(0, 0, deg), m);
-					Assertions::AreClose(Matrix4x4::Rotate(deg, 0, 0), n);
+					m = Matrix4x4::Rotate(rad, Vec3::Z);
+					n = Matrix4x4::Rotate(rad, Vec3::X);
+					Assertions::AreClose(Matrix4x4::Rotate(0, 0, rad), m);
+					Assertions::AreClose(Matrix4x4::Rotate(rad, 0, 0), n);
 					Assertions::AreClose(Vec3(Math::Cos(rad), Math::Sin(rad), 0), Matrix4x4::TVec(m, input));
 				}
 			}

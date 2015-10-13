@@ -5,16 +5,14 @@ namespace TX
 {
 	class PrimitiveManager {
 	public:
-		PrimitiveManager(std::vector<std::shared_ptr<Primitive>> *prims){
-			prims_ = prims;
-		}
+		PrimitiveManager(std::vector<std::shared_ptr<Primitive>> *prims);
 		virtual ~PrimitiveManager(){}
 
 		virtual void Construct(){}
 
 		virtual bool Intersect(const Ray& ray, Intersection& intxn) const;
 		virtual bool Occlude(const Ray& ray) const;
-		
+
 	public:
 		std::vector<std::shared_ptr<Primitive>> *prims_;
 	};

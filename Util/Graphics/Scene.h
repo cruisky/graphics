@@ -7,8 +7,8 @@
 namespace TX{
 	class Scene{
 	public:
-		Scene(std::shared_ptr<Camera> camera);
-			
+		Scene();
+
 		void AddPrimitive(std::shared_ptr<Primitive> prim);
 		void AddLight(std::shared_ptr<Light> light);
 
@@ -21,7 +21,6 @@ namespace TX{
 
 	public:
 		std::vector<std::shared_ptr<Light>> lights;
-		std::shared_ptr<Camera> camera;
 	private:
 		std::unique_ptr<PrimitiveManager> primmgr_;
 		std::vector<std::shared_ptr<Primitive>> prims_;

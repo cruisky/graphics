@@ -11,7 +11,7 @@ namespace TX {
 	}
 
 	void PointLight::Illuminate(const Vec3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const{
-		wi->SetSegment(pos, transform.Position());
+		wi->SetSegment(pos, transform.GetPosition());
 		*lightcolor = intensity * (1.f - wi->t_max * wi->t_max * radius_sqr_inv_);	// decrease brightness by dist^2
 		*pdf = 1.f;
 	}
