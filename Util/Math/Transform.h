@@ -39,7 +39,9 @@ namespace TX{
 		inline Vec3 Right() const { return Matrix4x4::TVec(local_world_, Vec3::X); }
 		inline Vec3 Up() const { return Matrix4x4::TVec(local_world_, Vec3::Y); }
 		inline Vec3 Forward() const { return Matrix4x4::TVec(local_world_, -Vec3::Z); }
+		/// <summary> Make sure the world matrix is updated before calling this. </summary>
 		inline const Matrix4x4& WorldToLocalMatrix() const { return world_local_; }
+		/// <summary> Make sure the world matrix is updated before calling this. </summary>
 		inline const Matrix4x4& LocalToWorldMatrix() const { return local_world_; }
 
 		inline const Vec3& GetPosition() const { return data_.pos; }
@@ -56,18 +58,27 @@ namespace TX{
 		inline Transform& Scale(float x, float y, float z) { return Scale(Vec3(x, y, z)); }
 		inline Transform& LookAt(const Vec3& point, const Vec3& up) { return SetRotation(Quaternion::LookRotation(Math::Normalize(point - GetPosition()), up)); }
 
-		// Transforms a local ray to world space and normalize it.
+		/// <summary>
+		/// Transforms a local ray to world space and normalize it.
+		/// Make sure the world matrix is updated before calling this.
+		/// </summary>
 		inline void ToWorld(Ray& ray) const {
 			ray.origin = Matrix4x4::TPoint(local_world_, ray.origin);
 			ray.dir = Math::Normalize(Matrix4x4::TVec(local_world_, ray.dir));
 		}
-		// Transforms a global ray to local space WITHOUT normalizing it (so that t_max is valid)
+		/// <summary>
+		/// Transforms a global ray to local space WITHOUT normalizing it (so that t_max is valid).
+		/// Make sure the world matrix is updated before calling this.
+		/// </summary>
 		inline void ToLocal(Ray& ray) const {
 			ray.origin = Matrix4x4::TPoint(world_local_, ray.origin);
 			ray.dir = Matrix4x4::TVec(world_local_, ray.dir);
 		}
+		/// <summary>
+		/// Update the world matrix.
+		/// </summary>
+		void UpdateMatrix() const;
 		inline void MarkDirty() const { dirty_ = true; }
-		void Update() const;
 	};
 
 	inline std::ostream& operator << (std::ostream& os, const Transform& tr) {

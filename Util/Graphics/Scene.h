@@ -12,7 +12,9 @@ namespace TX{
 		void AddPrimitive(std::shared_ptr<Primitive> prim);
 		void AddLight(std::shared_ptr<Light> light);
 
-		// Initializes the scene after all lights & primitives are added
+		/// <summary>
+		/// Initializes the scene after all lights & primitives are added
+		/// </summary>
 		void Construct();
 
 		bool Intersect(const Ray& ray, Intersection& intxn) const;

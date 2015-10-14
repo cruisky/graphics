@@ -15,14 +15,14 @@ namespace TX{
 		BSDF_ALL				= BSDF_ALL_REFLECTION | BSDF_ALL_TRANSMISSION
 	};
 
-	//
-	// BSDF
-	//
+	/// <summary>
+	/// Bi-directional Scattering Distribution Function.
+	/// </summary>
 	class BSDF {
 	public:
 		BSDF(BSDFType t, const Color& c = Color::WHITE) : type_(t), color_(c){}
 		virtual ~BSDF(){}
-			
+
 		virtual Color Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const = 0;
 		inline bool SubtypeOf(BSDFType t) const { return (type_ & t) == type_; }
 		inline bool IsSpecular() const { return (BSDFType(BSDF_SPECULAR | BSDF_DIFFUSE | BSDF_GLOSSY) & type_) == BSDFType(BSDF_SPECULAR); }
@@ -30,7 +30,6 @@ namespace TX{
 			return color_;
 		}
 
-		// Wrappers
 		virtual Color Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		virtual float Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 
@@ -50,9 +49,9 @@ namespace TX{
 		const Color color_;
 	};
 
-	//
-	// Diffuse
-	//
+	/// <summary>
+	/// Diffuse BSDF.
+	/// </summary>
 	class Diffuse : public BSDF {
 	public:
 		Diffuse(const Color& c = Color::WHITE) : BSDF(BSDFType(BSDF_REFLECTION | BSDF_DIFFUSE), c){}
@@ -62,9 +61,9 @@ namespace TX{
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 	};
 
-	//
-	// Mirror
-	//
+	/// <summary>
+	/// Mirror BSDF.
+	/// </summary>
 	class Mirror : public BSDF {
 	public:
 		Mirror(const Color& c = Color::WHITE) : BSDF(BSDFType(BSDF_REFLECTION | BSDF_SPECULAR), c){}
@@ -76,9 +75,9 @@ namespace TX{
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 	};
 
-	//
-	// Dielectric
-	//
+	/// <summary>
+	/// Dielectric BSDF.
+	/// </summary>
 	class Dielectric : public BSDF{
 	public:
 		Dielectric(const Color& c = Color::WHITE, float etat = 1.5f, float etai = 1.f) :
@@ -90,8 +89,18 @@ namespace TX{
 	protected:
 		float Eval(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
-		float Refract(float cosi, float *eta = nullptr) const;		// computes cosine of out angle using Snell's law
-		float Reflectance(float cosi, float cost) const;	// Computes reflectance using Fresnel equation
+		/// <summary>
+		/// Computes cosine of out angle using Snell's law.
+		/// </summary>
+		/// <param name="cosi">Incident angle</param>
+		/// <param name="eta">Index of refraction</param>
+		float Refract(float cosi, float *eta = nullptr) const;
+		/// <summary>
+		/// Computes reflectance using Fresnel's equation.
+		/// </summary>
+		/// <param name="cosi">Incident angle</param>
+		/// <param name="cost">Reflected angle</param>
+		float Reflectance(float cosi, float cost) const;
 	private:
 		const float etai_, etat_;		// indices of refraction on each side
 		const float eta_, eta_inv_;		// convenient constants

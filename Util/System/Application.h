@@ -18,13 +18,19 @@ namespace TX{
 			Application();
 			~Application();
 			void Run();
-		
+
 		protected:
-			// Configures the window property
+			/// <summary>
+			/// Configures the window property.
+			/// </summary>
 			virtual void Config(){}
-			// Called before main loop
+			/// <summary>
+			/// Called before main loop.
+			/// </summary>
 			virtual void Start(){}
-			// Rendering loop, returns true if need update
+			/// <summary>
+			/// Rendering loop, returns true if need update.
+			/// </summary>
 			virtual bool Render(){ return false; }
 
 			virtual void OnKey(KeyCode code, KeyState state, Modifiers modifiers){}

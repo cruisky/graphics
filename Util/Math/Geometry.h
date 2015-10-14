@@ -39,11 +39,11 @@ namespace TX
 		inline Rect& Add(const Vec2& p) { min = Math::Min(min, p); max = Math::Max(max, p); return *this; }
 		inline Rect& Add(const Rect& r) { min = Math::Min(min, r.min); max = Math::Max(max, r.max); return *this; }
 		inline Rect& Round() { min.x = (float)(int)min.x; min.y = (float)(int)min.y; max.x = (float)(int)max.x; max.y = (float)(int)max.y; return *this; }
-		inline Rect& Clip(const Rect& clip) { 
+		inline Rect& Clip(const Rect& clip) {
 			bool overlapping = Overlaps(clip);
-			min = overlapping ? Math::Max(min, clip.min) : Vec2(0.f); 
-			max = overlapping ? Math::Min(max, clip.max) : Vec2(0.f); 
-			return *this; 
+			min = overlapping ? Math::Max(min, clip.min) : Vec2(0.f);
+			max = overlapping ? Math::Min(max, clip.max) : Vec2(0.f);
+			return *this;
 		}
 		inline Vec2 ClosestPoint(const Vec2& p, bool onEdge = true) const {
 			if (!onEdge && Contains(p)) return p;
@@ -55,7 +55,9 @@ namespace TX
 		os << rect.min << " - " << rect.max;
 	}
 
-	// Assumes vertices are CCW ordered
+	/// <summary>
+	/// Assumes vertices are CCW ordered.
+	/// </summary>
 	class Polygon {
 		struct Vertex {
 			int id;

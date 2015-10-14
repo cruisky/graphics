@@ -13,17 +13,23 @@ namespace TX {
 		Primitive(std::shared_ptr<const Shape> shape, std::shared_ptr<const BSDF> bsdf) : bsdf_(bsdf), shape_(shape), area_light_(nullptr){};
 		virtual ~Primitive(){}
 
-		// Checks if the global ray intersects this primitive, if so
-		// fills dist and prim in the intersection, 
-		// and modify the length (t_max) of the ray.
-		// NOTE: The dir of the global ray should be normalized.
-		bool Intersect(const Ray& ray, Intersection& intersection) const;
-		// Extracts info for the LocalGeo.
+		/// <summary>
+		/// Checks if the global ray intersects this primitive, if so
+		/// fills dist and prim in the intersection,
+		/// and modify the length (t_max) of the ray.
+		/// The dir of the global ray should be normalized.
+		/// </summary>
+		bool Intersect(const Ray& nRay, Intersection& intersection) const;
+		/// <summary>
+		/// Extracts info to the LocalGeo.
+		/// </summary>
 		void PostIntersect(const Ray& ray, LocalGeo& geo) const;
-		// Test if this object occludes the ray.
+		/// <summary>
+		/// Test if this object occludes the ray.
+		/// </summary>
 		bool Occlude(const Ray& ray) const;
-			
-		inline float Pdf(const Vec3& point) const { 
+
+		inline float Pdf(const Vec3& point) const {
 			return shape_->Pdf(Matrix4x4::TPoint(transform.WorldToLocalMatrix(), point));
 		}
 

@@ -16,10 +16,10 @@ namespace TX {
 	}
 	void Scene::Construct(){
 		for (auto& obj : prims_) {
-			obj->transform.Update();
+			obj->transform.UpdateMatrix();
 		}
 		for (auto& obj : lights) {
-			obj->transform.Update();
+			obj->transform.UpdateMatrix();
 		}
 		primmgr_->Construct();
 	}

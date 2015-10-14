@@ -38,7 +38,9 @@ namespace TX {
 	class ProgressMonitor : public IProgressMonitor {
 	public:
 		ProgressMonitor(){}
-		// Reset the total value, and start timer immediately
+		/// <summary>
+		/// Reset the <paramref name="total"/> and start the timer.
+		/// </summary>
 		void Reset(float total);
 		void Finish();
 		void Update(float current);
@@ -59,7 +61,7 @@ namespace TX {
 
 	template<typename T>
 	void Str_(std::ostringstream& ss, const T& obj){ ss << obj; }
-	
+
 	template<typename T, typename... Args>
 	void Str_(std::ostringstream& ss, const T& obj, Args&&... args){
 		Str_(ss, obj);

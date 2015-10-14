@@ -113,7 +113,9 @@ namespace TX{
 	}
 
 
-	// 4x4 row-major matrix using right-handed coordinate system
+	/// <summary>
+	/// 4x4 row-major matrix using right-handed coordinate system.
+	/// </summary>
 	class Matrix4x4 {
 	public:
 		static const Matrix4x4 IDENTITY;
@@ -302,7 +304,9 @@ namespace TX{
 			return result;
 		}
 
-		// Transforms a point
+		/// <summary>
+		/// Transforms a point.
+		/// </summary>
 		static inline Vec3 TPoint(const Matrix4x4& m, const Vec3& p){
 			// apply translation
 			return Vec3(
@@ -310,7 +314,9 @@ namespace TX{
 				p.x * m[1][0] + p.y * m[1][1] + p.z * m[1][2] + m[1][3],
 				p.x * m[2][0] + p.y * m[2][1] + p.z * m[2][2] + m[2][3]);
 		}
-		// Transforms a vector
+		/// <summary>
+		/// Transforms a vector.
+		/// </summary>
 		static inline Vec3 TVec(const Matrix4x4& m, const Vec3& v){
 			// ignore translation
 			return Vec3(
@@ -318,7 +324,9 @@ namespace TX{
 				v.x * m[1][0] + v.y * m[1][1] + v.z * m[1][2],
 				v.x * m[2][0] + v.y * m[2][1] + v.z * m[2][2]);
 		}
-		// Transforms a normal vector with an already inverted matrix, the result is not normalized
+		/// <summary>
+		/// Transforms a normal vector with an already inverted matrix, the result is not normalized.
+		/// </summary>
 		static inline Vec3 TNormal(const Matrix4x4& m_inv, const Vec3& n){
 			// multiply the transpose
 			return Vec3(
@@ -334,20 +342,26 @@ namespace TX{
 		static Matrix4x4 Rotate(float radx, float rady, float radz);
 		static Matrix4x4 Rotate(float rad, const Vec3& axis);
 
-		/*
-		 * Computes the view matrix (world -> local).
-		 * To rotate -z axis to target dir, use it's inverse (or transpose) instead.
-		 */
+		/// <summary>
+		/// Computes the view matrix (world -> local).
+		/// To rotate -z axis to target dir, use it's inverse (or transpose) instead.
+		/// </summary>
 		static Matrix4x4 LookAt(const Vec3& pEye, const Vec3& pTarget, const Vec3& up);
 
 		static Matrix4x4 Scale(const Vec3& s);
 		static Matrix4x4 Scale(float x, float y, float z);
 
-		// Orthographic projection matrix, size is a similar term to fov
+		/// <summary>
+		/// Orthographic projection matrix, size is a similar term to fov.
+		/// </summary>
 		static Matrix4x4 Orthographic(float ratio, float size, float near, float far);
-		// Perspective projection matrix, fov is vertical
+		/// <summary>
+		/// Perspective projection matrix, fov is vertical.
+		/// </summary>
 		static Matrix4x4 Perspective(float ratio, float fov, float near, float far);
-		// Viewport matrix
+		/// <summary>
+		/// Viewport matrix.
+		/// </summary>
 		static Matrix4x4 Viewport(float resx, float resy);
 	};
 

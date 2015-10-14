@@ -34,7 +34,7 @@ namespace TX{
 		return *this;
 	}
 
-	void Transform::Update() const {
+	void Transform::UpdateMatrix() const {
 		if (dirty_) {
 			// apply scale, rotation, translation in this order (by the right associativity)
 			// so that translation isn't affected by scale or rotation

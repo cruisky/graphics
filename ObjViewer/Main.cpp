@@ -78,7 +78,7 @@ namespace TX
 			static const GLfloat one = 1.0f;
 			glClearBufferfv(GL_DEPTH, 0, &one);
 
-			camera->transform.Update();
+			camera->transform.UpdateMatrix();
 			program->Use();
 
 			glUniformMatrix4fv(uniform[UNIFORM_M], 1, GL_TRUE, Matrix4x4::IDENTITY);

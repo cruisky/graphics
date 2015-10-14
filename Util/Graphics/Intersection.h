@@ -5,7 +5,9 @@
 #include "Primitive.h"
 
 namespace TX{
-	// Basic info of a intersection
+	/// <summary>
+	/// Basic info of a intersection.
+	/// </summary>
 	class Intersection {
 	public:
 		Intersection(){}
@@ -19,8 +21,9 @@ namespace TX{
 	class LocalGeo : public Intersection {
 	public:
 		LocalGeo(){}
-		// Gets the color of light ray emitted from this primitive 
-		// (if it has an arealight attached) to the given direction.
+		/// <summary>
+		/// Gets the color of light ray emitted from this primitive (if it has an arealight attached) to the given direction.
+		/// </summary>
 		void Emit(const Vec3& wo, Color *out) const;
 
 		inline void ComputeDifferentials(const Ray& ray) {

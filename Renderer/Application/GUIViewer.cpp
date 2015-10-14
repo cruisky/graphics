@@ -116,7 +116,7 @@ namespace TX{
 
 
 		void GUIViewer::InvalidateFrame(){
-			camera_->transform.Update();
+			camera_->transform.UpdateMatrix();
 			renderer_->Abort();
 			renderer_->NewTask();
 			this->Refresh();

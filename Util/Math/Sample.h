@@ -9,18 +9,24 @@ namespace TX{
 		float u, v, w;
 		Sample():u(0.5f), v(0.5f), w(0.5f){}
 		Sample(RNG& rng);
-		// all values are within range [0, 1]
+		/// <summary> All values are within range [0, 1]. </summary>
 		Sample(float u, float v, float w);
 	};
 	std::ostream& operator<<(std::ostream& os, const Sample& sample);
 
-	// A sample buffer containing all samples for tracing a single ray.
+	/// <summary>
+	/// A sample buffer containing all samples for tracing a single ray.
+	/// </summary>
 	class CameraSample {
 	public:
-		// Buffer size should at least the maximum number of samples being requested
+		/// <summary>
+		/// Buffer size should be at least the maximum number of samples being requested every time.
+		/// </summary>
 		CameraSample(int bufsize);
 		CameraSample(const CameraSample& ot);
-		// Returns a pointer to an array of at least <count> samples
+		/// <summary>
+		/// Returns a pointer to an array of at least <paramref name="count"/> samples
+		/// </summary>
 		int RequestSamples(int count) const;
 		~CameraSample();
 	public:
@@ -42,7 +48,9 @@ namespace TX{
 		return f2 / (f2 + g * g);
 	}
 
-	// Just an integer
+	/// <summary>
+	/// Pointer to a sample array.
+	/// </summary>
 	class SampleOffset {
 	public:
 		SampleOffset() : offset(0){}

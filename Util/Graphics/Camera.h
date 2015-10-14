@@ -12,16 +12,22 @@ namespace TX
 
 		inline int Width() const { return width_; }
 		inline int Height() const { return height_; }
-		// Returns fov if in perspective mode, and size if in orthographic mode
+		/// <summary>
+		/// Returns fov if in perspective mode, and size if in orthographic mode
+		/// </summary>
 		inline float FOV() const { return fov_; }
 		inline float NearClipPlane() const { return clip_near_; }
 		inline float FarClipPlane() const { return clip_far_; }
 		inline bool IsOrtho() const { return is_ortho_; }
 
-		// Transforms point from screen to world (on the near plane)
+		/// <summary>
+		/// Transforms point from screen to world (on the near plane)
+		/// </summary>
 		Vec3 ScreenToWorldPoint(const Vec3& pix) const;
-		// Transforms point from world to screen.
-		// z component is in canonical view volume unit
+		/// <summary>
+		/// ransforms point from world to screen.
+		/// z component is in canonical view volume unit
+		/// </summary>
 		Vec3 WorldToScreenPoint(const Vec3& point) const;
 
 		Camera& Resize(int w, int h);
@@ -35,13 +41,19 @@ namespace TX
 		inline const Matrix4x4& ViewportToScreen() const { return viewport_screen_; }
 		inline const Matrix4x4& CameraToViewport() const { return cam_viewport_; }
 		inline const Matrix4x4& ViewportToCamera() const { return viewport_cam_; }
-		
+
 	private:
-		// Updates the camera-screen matrices
+		/// <summary>
+		/// Updates the camera-screen matrices
+		/// </summary>
 		inline void UpdateMainMatrix();
-		// Updates the camera-viewport matrices, should also call UpdateMainMatrix() after calling this
+		/// <summary>
+		/// Updates the camera-viewport matrices, should also call UpdateMainMatrix() after calling this
+		/// </summary>
 		inline void UpdateProjection();
-		// Updates the viewport-screen matrices, should also call UpdateMainMatrix() after calling this
+		/// <summary>
+		/// Updates the viewport-screen matrices, should also call UpdateMainMatrix() after calling this
+		/// </summary>
 		inline void UpdateViewport();
 
 	private:
