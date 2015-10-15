@@ -101,6 +101,7 @@
     <ClInclude Include="Graphics\FontMap.h" />
     <ClInclude Include="Graphics\GLUtils.h" />
     <ClInclude Include="Graphics\GUI.h" />
+    <ClInclude Include="Graphics\CameraController.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Drawing.h" />
     <ClInclude Include="Graphics\Obj.h" />

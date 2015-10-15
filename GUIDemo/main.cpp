@@ -20,26 +20,28 @@ private:
 public:
 	GUIDemo(){}
 protected:
-	void Start(){ 
+	void Start(){
 		font.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
 		GUI::Init(font);
 
-		input.SetWindow(config.width, config.height); 
+		input.SetWindow(config.width, config.height);
 		window[0] = Rect(0, 0, 200, 200);
 		window[1] = Rect(200, 100, 500, 400);
 		window[2] = Rect(400, 300, 600, 600);
 	}
-	void Config(){}
+	void Config() {
+		config.fps = 120;
+	}
 	bool Render(){
 		glClearColor(0.8f, 0.9f, 1.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		GUI::BeginFrame(input);
-		
+
 		GUI::BeginWindow("Window 0", window[0]);
 			GUI::Button("Button 0");
-			
+
 			GUI::Divider();
-			
+
 			GUI::FloatSlider("Float Slider 1", floatSliderValue1, 0, 100);
 			GUI::ProgressBar("Progress Bar 2", floatSliderValue2 / 10.f);
 
@@ -60,7 +62,7 @@ protected:
 			GUI::FloatSlider("Float Slider 2", floatSliderValue2, 0, 10);
 			GUI::IntSlider("Int Slider (with fixed step)", intSliderValue, 0, 100, 17);
 			GUI::IntSlider("Int Slider", intSliderValue, 0, 100);
-		
+
 			GUI::Divider();
 
 			GUI::RadioButton("Item 0", radioValue, 0);
@@ -70,9 +72,9 @@ protected:
 			GUI::Divider();
 
 			GUI::CheckBox("Check Box", checkBoxValue);
-			
+
 			GUI::Divider();
-			
+
 			GUI::Button("Button 1");
 		GUI::EndWindow();
 
@@ -83,7 +85,7 @@ protected:
 				A typical use might be to attach GUI elements to 3d objects during rendering, interleaving calls to the IMGUI widgets with the 3d rendering calls, so as to produce all graphical output with a single traversal of the data structures. In cases where organization is needed across multiple GUI elements (for example, name labels that should not overlap), the toolkit may build a representation over time and then be asked to draw everything at once.
 				)", true);
 		GUI::EndWindow();
-		
+
 		GUI::EndFrame();
 		input.Clear();
 		return true;
@@ -92,8 +94,8 @@ protected:
 	void OnMouseScroll(float vx, float vy){ input.scroll = vy; }
 	void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods){ input.SetButton(button, state); }
 	void OnText(uint code, Modifiers modifiers){
-		input.SetText(code); 
-		input.AddModifiers(modifiers); 
+		input.SetText(code);
+		input.AddModifiers(modifiers);
 	}
 	void OnKey(KeyCode code, KeyState state, Modifiers modifiers){ input.SetKeyCode(code, state); input.AddModifiers(modifiers); }
 	void OnResize(){ input.SetWindow(config.width, config.height); }

@@ -80,5 +80,6 @@
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="Math\Base.h" />
     <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Graphics\CameraController.h" />
   </ItemGroup>
 </Project>

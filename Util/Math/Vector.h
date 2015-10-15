@@ -135,6 +135,8 @@ namespace TX
 		inline Vec<2, T> Min(const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Min(v1.x, v2.x), Min(v1.y, v2.y)); }
 		template <typename T>
 		inline Vec<2, T> Max(const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Max(v1.x, v2.x), Max(v1.y, v2.y)); }
+		template <typename T>
+		inline Vec<2, T> Lerp(float t, const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y)); }
 	}
 
 	typedef Vec<2, float> Vec2;
@@ -251,6 +253,8 @@ namespace TX
 		inline Vec<3, T> ToRad(const Vec<3, T>& v) { return Vec<3, T>(ToRad(v.x), ToRad(v.y), ToRad(v.z)); }
 		template <typename T>
 		inline Vec<3, T> ToDeg(const Vec<3, T>& v) { return Vec<3, T>(ToDeg(v.x), ToDeg(v.y), ToDeg(v.z)); }
+		template <typename T>
+		inline Vec<3, T> Lerp(float t, const Vec<3, T>& v1, const Vec<3, T>& v2) { return Vec<3, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y), Lerp(t, v1.z, v2.z)); }
 	}
 
 	typedef Vec<3, float> Vec3;
@@ -347,6 +351,8 @@ namespace TX
 		inline Vec<4, T> Min(const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Min(v1.x, v2.x), Min(v1.y, v2.y), Min(v1.z, v2.z), Min(v1.w, v2.w)); }
 		template <typename T>
 		inline Vec<4, T> Max(const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Max(v1.x, v2.x), Max(v1.y, v2.y), Max(v1.z, v2.z), Max(v1.w, v2.w)); }
+		template <typename T>
+		inline Vec<4, T> Lerp(float t, const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y), Lerp(t, v1.z, v2.z), Lerp(t, v1.w, v2.w)); }
 	}
 
 	typedef Vec<4, float> Vec4;

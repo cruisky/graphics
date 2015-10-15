@@ -1,5 +1,7 @@
 ﻿#include "UtilStdAfx.h"
 #include "System/Application.h"
+#include <thread>
+#include <chrono>
 
 namespace TX
 {
@@ -48,12 +50,14 @@ namespace TX
 			// Rendering loop
 			bool realtime = true;
 			while (!glfwWindowShouldClose(window)){
+				FrameStart();
 				realtime = Render();
 				glfwSwapBuffers(window);
 				if (realtime)
 					glfwPollEvents();
 				else
 					glfwWaitEvents();
+				FrameEnd();
 			}
 
 			OnExit();
@@ -65,7 +69,9 @@ namespace TX
 		MouseButtonState	Application::Get(MouseButton button) { return MouseButtonState(glfwGetMouseButton(window, static_cast<int>(button))); }
 		bool				Application::Get(KeyCode code){ return glfwGetKey(window, static_cast<int>(code)) == GLFW_PRESS; }
 		const char *		Application::GetVersion(){ return (const char *)glGetString(GL_VERSION); }
-		float				Application::GetTime() { return (float)glfwGetTime() / 1000.f; }
+		float				Application::GetTime() { return (float)glfwGetTime(); }
+		float				Application::GetDeltaTime() { return deltaTime; };
+		float				Application::GetFrameRate() { return 1 / deltaTime; }
 		void				Application::GetCursorPos(float *x, float *y){ double dx, dy; glfwGetCursorPos(window, &dx, &dy); *x = float(dx); *y = float(dy); }
 		void				Application::Refresh(){ glfwPostEmptyEvent(); }
 		bool				Application::IsWindowVisible(){ return glfwGetWindowAttrib(window, GLFW_VISIBLE); }
@@ -102,6 +108,18 @@ namespace TX
 		void Application::GLFWWindowIconify(GLFWwindow *window, int iconified) { This(window)->OnWindowMinimize(); }
 		void Application::GLFWError(int error, const char* desc){
 			std::cout << "GLFWError " << error << ": " << desc << std::endl;
+		}
+
+		void Application::FrameStart() {
+			float now = GetTime();
+			deltaTime = now - frameStart;
+			frameStart = now;
+		}
+
+		void Application::FrameEnd() {
+			frameEnd = GetTime();
+			int waitTime = int((frameStart + 1 / config.fps - frameEnd) * 1000);
+			std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
 		}
 	}
 }

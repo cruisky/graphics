@@ -13,6 +13,7 @@ namespace TX{
 				int height = 600;
 				bool fullscreen = false;
 				bool fixsize = false;
+				float fps = 60;
 			};
 		public:
 			Application();
@@ -50,6 +51,8 @@ namespace TX{
 			MouseButtonState	Get(MouseButton button);
 			bool				Get(KeyCode code);
 			float				GetTime();
+			float				GetDeltaTime();
+			float				GetFrameRate();
 			void				GetCursorPos(float *x, float *y);
 			void				Refresh();
 			bool				IsWindowVisible();
@@ -67,10 +70,16 @@ namespace TX{
 			static void GLFWWindowPos(GLFWwindow *window, int x, int y);
 			static void GLFWWindowIconify(GLFWwindow *window, int iconified);
 			static void GLFWError(int error, const char* desc);
+
+			void FrameStart();
+			void FrameEnd();
 		protected:
 			AppConfig config;
 		private:
 			GLFWwindow *window;
+			float frameStart;
+			float frameEnd;
+			float deltaTime;
 		};
 	}
 }

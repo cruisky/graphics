@@ -109,7 +109,7 @@ namespace TX
 		inline float Dot(const Quaternion& q1, const Quaternion q2) { return Dot(q1.q, q2.q); }
 		inline float AbsDot(const Quaternion& q1, const Quaternion q2) { return Abs(Dot(q1.q, q2.q)); }
 		inline Quaternion Normalize(const Quaternion& q) { return Quaternion(Normalize(q.q)); }
-		inline Quaternion Slerp(const Quaternion& q1, const Quaternion& q2, float t) {
+		inline Quaternion Slerp(float t, const Quaternion& q1, const Quaternion& q2) {
 			float omega = Acos(Clamp(Dot(q1, q2), -1.f, 1.f));
 			if (Abs(omega) < EPSILON)
 				omega = EPSILON;
@@ -119,7 +119,7 @@ namespace TX
 			return Quaternion(
 				q1.x * st1 + q2.x * st2,
 				q1.y * st1 + q2.y * st2,
-				q1.z * st1 + q2.y * st2,
+				q1.z * st1 + q2.z * st2,
 				q1.w * st1 + q2.w * st2);
 		}
 	}

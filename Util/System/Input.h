@@ -161,6 +161,7 @@ namespace TX{ namespace UI{
 	struct Input {
 		Vec2 window;
 		Vec2 cursor;
+		Vec2 prevCursor;
 		MouseButton button;
 		MouseButtonState buttonState;
 		float scroll;
@@ -169,20 +170,23 @@ namespace TX{ namespace UI{
 		KeyState keyState;
 		Modifiers mods;
 
+		inline bool HasText() const { return text != 0; }
+		inline bool HasKeyCode() const { return key != KeyCode::NONE; }
+		inline Vec2 GetCursorMovement() const { return cursor - prevCursor; }
+
 		inline void Clear(){
 			button = MouseButton::NONE;
 			scroll = 0.f;
-			text = 0; 
+			text = 0;
 			key = KeyCode::NONE;
 			mods = 0;
 		}
 		inline void SetWindow(int w, int h){ window.x = (float)w; window.y = (float)h; }
-		inline void SetCursor(float x, float y){ cursor.x = x, cursor.y = y; }
+		inline void SetCursor(float x, float y) { prevCursor = cursor; cursor.x = x, cursor.y = y; }
 		inline void SetButton(MouseButton b, MouseButtonState s){ button = b; buttonState = s; }
-		inline bool HasText(){ return text != 0; }
-		inline bool HasKeyCode(){ return key != KeyCode::NONE; }
-		inline void SetText(unsigned char c){ if (!text) text = c; }
+		inline void SetText(unsigned char c){ if (!HasText()) text = c; }
 		inline void SetKeyCode(KeyCode code, KeyState s){ key = code; keyState = s; }
 		inline void AddModifiers(const Modifiers& newmods){ mods |= newmods; }
+
 	};
 }}
