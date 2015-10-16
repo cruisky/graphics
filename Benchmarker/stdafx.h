@@ -10,9 +10,8 @@
 #include <stdio.h>
 #include <tchar.h>
 
-#include "Misc/TestHelpers.h"
 #include "Misc/RandomData.h"
-#include "Math/MathUtil.h"
+#include "Math/Base.h"
 #include "Math/Matrix.h"
 #include "Math/Random.h"
 #include "Math/Vector.h"

@@ -14,26 +14,27 @@ namespace TX{
 				LEFT, RIGHT, UP, DOWN
 			};
 		public:
-			GUIViewer(shared_ptr<Scene> scene, shared_ptr<Film> film);
+			GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film);
 			GUIViewer& ConfigRenderer(RendererConfig config);
 		protected:
 			void Start();
 			void Config();
 			bool Render();
-			void OnMouseButton(MouseButton button, MouseButtonState state, int mods);
+			void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods);
 			void OnKey(KeyCode code, KeyState state, Modifiers modifiers);
 			void OnResize();
 			void OnExit();
 		private:
-			void AttemptMoveCamera(Direction dir);
-			void AttemptPanCamera(Direction dir);
-			void AttemptBarrelRollCamera(bool clockwise);
+			void AttemptDollyCrabCamera(Direction dir);
+			void AttemptPanTiltCamera(Direction dir);
+			void AttemptRollCamera(bool clockwise);
 			void InvalidateFrame();
 			void ProgressReporterJob();
 			void FlipY(float *y);
 			void FlipX(float *x);
 		private:
 			shared_ptr<Scene> scene_;
+			shared_ptr<Camera> camera_;
 			shared_ptr<Film> film_;
 			unique_ptr<Renderer> renderer_;
 			shared_ptr<IProgressMonitor> monitor_;

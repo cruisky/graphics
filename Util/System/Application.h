@@ -13,18 +13,25 @@ namespace TX{
 				int height = 600;
 				bool fullscreen = false;
 				bool fixsize = false;
+				float fps = 60;
 			};
 		public:
 			Application();
 			~Application();
 			void Run();
-		
+
 		protected:
-			// Configures the window property
+			/// <summary>
+			/// Configures the window property.
+			/// </summary>
 			virtual void Config(){}
-			// Called before main loop
+			/// <summary>
+			/// Called before main loop.
+			/// </summary>
 			virtual void Start(){}
-			// Rendering loop, returns true if need update
+			/// <summary>
+			/// Rendering loop, returns true if need update.
+			/// </summary>
 			virtual bool Render(){ return false; }
 
 			virtual void OnKey(KeyCode code, KeyState state, Modifiers modifiers){}
@@ -44,6 +51,8 @@ namespace TX{
 			MouseButtonState	Get(MouseButton button);
 			bool				Get(KeyCode code);
 			float				GetTime();
+			float				GetDeltaTime();
+			float				GetFrameRate();
 			void				GetCursorPos(float *x, float *y);
 			void				Refresh();
 			bool				IsWindowVisible();
@@ -61,10 +70,17 @@ namespace TX{
 			static void GLFWWindowPos(GLFWwindow *window, int x, int y);
 			static void GLFWWindowIconify(GLFWwindow *window, int iconified);
 			static void GLFWError(int error, const char* desc);
+
+			void FrameStart();
+			void FrameEnd();
 		protected:
 			AppConfig config;
 		private:
 			GLFWwindow *window;
+			float frameStart;
+			float frameEnd;
+			float deltaTime;
+			float fps;
 		};
 	}
 }

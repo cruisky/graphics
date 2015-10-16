@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CppUnitTestHelpers.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -91,6 +92,7 @@
     <ClCompile Include="ColorTests.cpp" />
     <ClCompile Include="MathUtilTests.cpp" />
     <ClCompile Include="MatrixTests.cpp" />
+    <ClCompile Include="QuaternionTests.cpp" />
     <ClCompile Include="RayTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -38,22 +38,22 @@ namespace TX {
 
 	class ObjMesh {
 	public:
-		std::vector<Vector3>		vertices;
-		std::vector<Vector3>		normals;
-		std::vector<Vector2>		uvs;
+		std::vector<Vec3>		vertices;
+		std::vector<Vec3>		normals;
+		std::vector<Vec2>		uvs;
 		std::vector<uint>			indices;
 		std::vector<uint>			materials;
 
 		void LoadQuad(
 			float length = 1.f,
-			const Vector3& position = Vector3::ZERO,
-			const Vector3& rotation = Vector3::ZERO,
-			const Vector3& scale = Vector3::ONE);
+			const Vec3& position = Vec3::ZERO,
+			const Vec3& rotation = Vec3::ZERO,
+			const Vec3& scale = Vec3::ONE);
 		void LoadSphere(
 			float radius,
-			const Vector3& position = Vector3::ZERO,
-			const Vector3& rotation = Vector3::ZERO,
-			const Vector3& scale = Vector3::ONE);
+			const Vec3& position = Vec3::ZERO,
+			const Vec3& rotation = Vec3::ZERO,
+			const Vec3& scale = Vec3::ONE);
 		void Clear();
 
 		const uint* GetIndexOfTriangle(uint triIdx) const;

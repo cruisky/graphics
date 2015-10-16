@@ -15,7 +15,7 @@ namespace TX{
 	CameraSample::CameraSample(int bufsize) : offset_(0), bufsize(bufsize), buffer(new Sample[bufsize]){}
 	CameraSample::CameraSample(const CameraSample& ot)
 		: offset_(0), bufsize(ot.bufsize), buffer(new Sample[ot.bufsize]){
-		memcpy_s(buffer, bufsize * sizeof(Sample), ot.buffer, bufsize * sizeof(Sample));
+		std::memcpy(buffer, ot.buffer, bufsize * sizeof(Sample));
 	}
 
 	int CameraSample::RequestSamples(int count) const {

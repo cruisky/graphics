@@ -3,6 +3,7 @@
 #include "System/Application.h"
 #include "System/Tools.h"
 #include "Graphics/GLUtils.h"
+#include "Graphics/CameraController.h"
 
 #include <memory>
 
@@ -30,6 +31,12 @@ namespace TX
 		std::vector<ObjShape>							shapes;
 		std::vector<ObjMaterial>						materials;
 		std::shared_ptr<Camera>							camera;
+		std::unique_ptr<CameraController>				camera_ctrl;
+		bool											mouse_navigation;
+		Input											input;
+		const float										CAM_ROT_SPEED = 0.005f;
+		const float										CAM_ROLL_SPEED = 1.f;
+		const float										CAM_MOV_SPEED = 2.f;
 	protected:
 		void Start(){
 			// compile the program
@@ -53,9 +60,10 @@ namespace TX
 			program->BindAttribLoc("position", ATTRIB_POS);
 			program->BindAttribLoc("normal", ATTRIB_NORMAL);
 
-			// set up camera
+			// set up camera and controller
 			camera = std::make_shared<Camera>(config.width, config.height);
 			camera->transform.Translate(0.f, 0.8f, 2.f);
+			camera_ctrl = std::make_unique<CameraController>(camera->transform);
 
 			// load object data
 			LoadObj(shapes, materials, "teapot.obj", "./");
@@ -65,19 +73,52 @@ namespace TX
 			for (uint i = 0; i < shapes.size(); i++){
 				meshes[i].Upload(shapes[i].mesh);
 			}
-			
+
 			glEnable(GL_CULL_FACE);
 			glFrontFace(GL_CCW);
 
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LEQUAL);
 		}
+
+		void OnKey(KeyCode code, KeyState state, Modifiers modifiers){
+			if (state == KeyState::DOWN || state == KeyState::HOLD) {
+				Vec2 horizontal; float roll = 0; float vertical = 0;
+				switch (code) {
+				case KeyCode::W: horizontal.y = +1; break;
+				case KeyCode::S: horizontal.y = -1; break;
+				case KeyCode::A: horizontal.x = -1; break;
+				case KeyCode::D: horizontal.x = +1; break;
+				case KeyCode::Q: roll = -1; break;
+				case KeyCode::E: roll = +1; break;
+				case KeyCode::SPACE: vertical = +1; break;
+				case KeyCode::LEFT_SHIFT: vertical = -1; break;
+				}
+				float delta = GetDeltaTime();
+				camera_ctrl->HorizontalMove(delta, horizontal * CAM_MOV_SPEED);
+				camera_ctrl->Roll(delta, roll * CAM_ROLL_SPEED);
+				camera_ctrl->VerticalMove(delta, vertical * CAM_MOV_SPEED);
+			}
+		}
+
+		void OnMouseMove(float x, float y) {
+			input.SetCursor(x, y);
+			if (mouse_navigation) {
+				Vec2 mov = input.GetCursorMovement();
+				mov.x *= -1;
+				camera_ctrl->Turn(mov * CAM_ROT_SPEED);
+			}
+		}
+
 		bool Render(){
+			mouse_navigation = Get(MouseButton::RIGHT) == MouseButtonState::DOWN;
+
 			static const GLfloat gray[] = { 0.15f, 0.15f, 0.15f, 1.f };
 			glClearBufferfv(GL_COLOR, 0, gray);
 			static const GLfloat one = 1.0f;
 			glClearBufferfv(GL_DEPTH, 0, &one);
 
+			camera->transform.UpdateMatrix();
 			program->Use();
 
 			glUniformMatrix4fv(uniform[UNIFORM_M], 1, GL_TRUE, Matrix4x4::IDENTITY);
@@ -100,7 +141,7 @@ namespace TX
 				int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 				glDrawElements(GL_TRIANGLES, size/sizeof(uint), GL_UNSIGNED_INT, 0);
 			}
-			
+
 			return true;
 		}
 	};

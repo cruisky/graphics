@@ -8,8 +8,10 @@ namespace TX
 	class Sampler {
 	public:
 		virtual ~Sampler(){}
-			
-		// Fills all fields with canonical random value
+
+		/// <summary>
+		/// Fills all fields with canonical random value.
+		/// </summary>
 		virtual void GetSamples(CameraSample *sample) = 0;
 	};
 }

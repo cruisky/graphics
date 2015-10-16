@@ -1,5 +1,6 @@
 #pragma once
 #pragma warning(disable: 4800)
+#pragma warning(disable: 4005)
 
 namespace TX
 {
@@ -39,7 +40,6 @@ namespace TX
 	class Ray;
 	class Sample; class CameraSample;
 	class Sampler;
-	class Vector2; class Vector3; class Vector4;
 
 	// SSE
 	namespace SSE{

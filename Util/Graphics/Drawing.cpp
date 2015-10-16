@@ -36,7 +36,7 @@ namespace TX
 		}
 		else {
 			const Rect& clipRect = clipRectStack.size() ? clipRectStack.back() : NullClipRect;
-			if (cmdBuf.size() > 1 && (Vector4(cmdBuf.data()[cmdBuf.size() - 2].clipRect.f) - Vector4(clipRect.f)).Length() < 1e-4f)
+			if (cmdBuf.size() > 1 && Math::Length(Vec4(cmdBuf.data()[cmdBuf.size() - 2].clipRect.f) - Vec4(clipRect.f)) < 1e-4f)
 				cmdBuf.pop_back();			// avoid duplicate
 			else
 				cmd->clipRect = clipRect;	// do nothing
@@ -62,18 +62,18 @@ namespace TX
 		UpdateClipRect();
 	}
 
-	void DrawList::AddRect(const Vector2& tl, const Vector2& br, const Color& color, bool fill, float thick){
+	void DrawList::AddRect(const Vec2& tl, const Vec2& br, const Color& color, bool fill, float thick){
 		if (color.a == 0.f) return;
 		if (fill){
 			PrimReserve(6, 4);
 			PrimRect(tl, br, color);
 		}
 		else {
-			PathRect(tl + Vector2(0.5f), br + Vector2(0.5f));
+			PathRect(tl + Vec2(0.5f), br + Vec2(0.5f));
 			PathStroke(color, true, thick);
 		}
 	}
-	void DrawList::AddTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& color, bool fill, float thick){
+	void DrawList::AddTriangle(const Vec2& v1, const Vec2& v2, const Vec2& v3, const Color& color, bool fill, float thick){
 		if (color.a == 0.f) return;
 
 		if (fill){
@@ -85,7 +85,7 @@ namespace TX
 			PathStroke(color, true, thick);
 		}
 	}
-	void DrawList::AddCircle(const Vector2& center, float radius, const Color& color, bool fill, float thick){
+	void DrawList::AddCircle(const Vec2& center, float radius, const Color& color, bool fill, float thick){
 		if (color.a == 0.f) return;
 		PathArc(center, radius, 0, 11);
 		if (fill){
@@ -100,7 +100,7 @@ namespace TX
 		if (color.a == 0.f) return x;
 		if (posMap)
 			posMap->Clear();
-		Vector2 pos(x, y);
+		Vec2 pos(x, y);
 		Rect rect, uv;
 		int length = std::strlen(text);
 		PrimReserve(length * 6, length * 4);
@@ -111,20 +111,20 @@ namespace TX
 		}
 		return pos.x - x;
 	}
-	void DrawList::AddPolyLine(const Vector2* points, const int count, const Color& color, bool closed, float thick){
+	void DrawList::AddPolyLine(const Vec2* points, const int count, const Color& color, bool closed, float thick){
 		if (color.a == 0.f || count < 2) return;
 		
 		int lineCount = closed ? count : count - 1;
 		PrimReserve(lineCount * 6, lineCount * 4);
-		Vector2 uv(Vector2::ZERO);
+		Vec2 uv(Vec2::ZERO);
 		for (int i = 0; i < lineCount; i++){
 			int j = i + 1;
 			if (j == count) j = 0;
-			const Vector2& p1 = points[i];
-			const Vector2& p2 = points[j];
-			Vector2 dir(p2 - p1);
-			dir.Normalize();
-			const Vector2 d = dir * (thick * 0.5f);
+			const Vec2& p1 = points[i];
+			const Vec2& p2 = points[j];
+			Vec2 dir(p2 - p1);
+			dir = Math::Normalize(dir);
+			const Vec2 d = dir * (thick * 0.5f);
 			
 			vtxPtr[0].pos.x = p1.x + d.y; vtxPtr[0].pos.y = p1.y - d.x; vtxPtr[0].uv = uv; vtxPtr[0].col = color;
 			vtxPtr[1].pos.x = p2.x + d.y; vtxPtr[1].pos.y = p2.y - d.x; vtxPtr[1].uv = uv; vtxPtr[1].col = color;
@@ -139,10 +139,10 @@ namespace TX
 			vtxCurrIdx += 4;
 		}
 	}
-	void DrawList::AddPolyFilled(const Vector2* points, const int vtxCount, const Color& color){
+	void DrawList::AddPolyFilled(const Vec2* points, const int vtxCount, const Color& color){
 		if (color.a == 0.f || vtxCount < 3) return;
 
-		const Vector2& uv = Vector2::ZERO;
+		const Vec2& uv = Vec2::ZERO;
 		const int idxCount = (vtxCount - 2) * 3;
 
 		PrimReserve(idxCount, vtxCount);
@@ -159,14 +159,14 @@ namespace TX
 		vtxCurrIdx += vtxCount;
 	}
 
-	void DrawList::PathArc(const Vector2& center, float radius, int clockPos1, int clockPos2){
+	void DrawList::PathArc(const Vec2& center, float radius, int clockPos1, int clockPos2){
 		static const int VTX_COUNT = 12;
-		static Vector2 circle[VTX_COUNT];
+		static Vec2 circle[VTX_COUNT];
 		static bool circleInit = false;
 
 		if (!circleInit){
 			for (int i = 0; i < VTX_COUNT; i++){
-				float deg = float(i) / VTX_COUNT * Math::TWO_PI;
+				float deg = float(i) / VTX_COUNT * (2 * Math::PI);
 				circle[i].x = Math::Cos(deg);
 				circle[i].y = Math::Sin(deg);
 			}
@@ -179,7 +179,7 @@ namespace TX
 		else {
 			PathReserve(clockPos2 - clockPos1 + 1);
 			for (int pos = clockPos1; pos <= clockPos2; pos++){
-				const Vector2& dir = circle[pos % VTX_COUNT];
+				const Vec2& dir = circle[pos % VTX_COUNT];
 				PathPoint(center + dir * radius);
 			}
 		}
@@ -198,17 +198,17 @@ namespace TX
 		idxBuf.resize(idxBufSize + idxCount);
 		idxPtr = idxBuf.data() + idxBufSize;
 	}
-	void DrawList::PrimTriangle(const Vector2& v1, const Vector2& v2, const Vector2& v3, const Color& c){
+	void DrawList::PrimTriangle(const Vec2& v1, const Vec2& v2, const Vec2& v3, const Color& c){
 		idxPtr[0] = vtxCurrIdx;
 		idxPtr[1] = vtxCurrIdx + 1;
 		idxPtr[2] = vtxCurrIdx + 2;
 		idxPtr += 3;
-		PrimWriteVtx(v1, Vector2::ZERO, c);
-		PrimWriteVtx(v2, Vector2::ZERO, c);
-		PrimWriteVtx(v3, Vector2::ZERO, c);
+		PrimWriteVtx(v1, Vec2::ZERO, c);
+		PrimWriteVtx(v2, Vec2::ZERO, c);
+		PrimWriteVtx(v3, Vec2::ZERO, c);
 	}
 
-	void DrawList::PrimRect(const Vector2& tl, const Vector2& br, const Color& c){
+	void DrawList::PrimRect(const Vec2& tl, const Vec2& br, const Color& c){
 		idxPtr[0] = vtxCurrIdx; 
 		idxPtr[1] = vtxCurrIdx + 2; 
 		idxPtr[2] = vtxCurrIdx + 1;
@@ -216,12 +216,12 @@ namespace TX
 		idxPtr[4] = vtxCurrIdx + 3;
 		idxPtr[5] = vtxCurrIdx + 2;
 		idxPtr += 6;
-		PrimWriteVtx(tl, Vector2::ZERO, c);
-		PrimWriteVtx(Vector2(br.x, tl.y), Vector2::ZERO, c);
-		PrimWriteVtx(br, Vector2::ZERO, c);
-		PrimWriteVtx(Vector2(tl.x, br.y), Vector2::ZERO, c);
+		PrimWriteVtx(tl, Vec2::ZERO, c);
+		PrimWriteVtx(Vec2(br.x, tl.y), Vec2::ZERO, c);
+		PrimWriteVtx(br, Vec2::ZERO, c);
+		PrimWriteVtx(Vec2(tl.x, br.y), Vec2::ZERO, c);
 	}
-	void DrawList::PrimRectUV(const Vector2&tl, const Vector2& br, const Vector2& uvTL, const Vector2& uvBR, const Color& c){
+	void DrawList::PrimRectUV(const Vec2&tl, const Vec2& br, const Vec2& uvTL, const Vec2& uvBR, const Color& c){
 		idxPtr[0] = vtxCurrIdx;
 		idxPtr[1] = vtxCurrIdx + 2;
 		idxPtr[2] = vtxCurrIdx + 1;
@@ -230,14 +230,14 @@ namespace TX
 		idxPtr[5] = vtxCurrIdx + 2;
 		idxPtr += 6;
 		PrimWriteVtx(tl, uvTL, c);
-		PrimWriteVtx(Vector2(br.x, tl.y), Vector2(uvBR.x, uvTL.y), c);
+		PrimWriteVtx(Vec2(br.x, tl.y), Vec2(uvBR.x, uvTL.y), c);
 		PrimWriteVtx(br, uvBR, c);
-		PrimWriteVtx(Vector2(tl.x, br.y), Vector2(uvTL.x, uvBR.y), c);
+		PrimWriteVtx(Vec2(tl.x, br.y), Vec2(uvTL.x, uvBR.y), c);
 	}
-	void DrawList::PrimVtx(const Vector2& pos, const Vector2& uv, const Color& c){
+	void DrawList::PrimVtx(const Vec2& pos, const Vec2& uv, const Color& c){
 		PrimWriteIdx(vtxCurrIdx); PrimWriteVtx(pos, uv, c);
 	}
-	void DrawList::PrimWriteVtx(const Vector2& pos, const Vector2& uv, const Color& c){
+	void DrawList::PrimWriteVtx(const Vec2& pos, const Vec2& uv, const Color& c){
 		vtxPtr->pos = pos;
 		vtxPtr->uv = uv;
 		vtxPtr->col = c;

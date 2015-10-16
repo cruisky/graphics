@@ -47,7 +47,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;$(VCInstallDir)UnitTest\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -62,6 +62,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,13 +74,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;$(VCInstallDir)UnitTest\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <ShowIncludes>false</ShowIncludes>
       <PrecompiledHeaderFile>UtilStdAfx.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -91,6 +92,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -99,6 +101,7 @@
     <ClInclude Include="Graphics\FontMap.h" />
     <ClInclude Include="Graphics\GLUtils.h" />
     <ClInclude Include="Graphics\GUI.h" />
+    <ClInclude Include="Graphics\CameraController.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Drawing.h" />
     <ClInclude Include="Graphics\Obj.h" />
@@ -109,20 +112,19 @@
     <ClInclude Include="Graphics\Light.h" />
     <ClInclude Include="Graphics\Primitive.h" />
     <ClInclude Include="Graphics\PrimitiveManager.h" />
+    <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Ray.h" />
     <ClInclude Include="Libs\sse_mathfun.h" />
     <ClInclude Include="Libs\stb_image.h" />
     <ClInclude Include="Libs\stb_image_write.h" />
     <ClInclude Include="Libs\stb_truetype.h" />
     <ClInclude Include="Libs\tiny_obj_loader.h" />
-    <ClInclude Include="Math\MathUtil.h" />
+    <ClInclude Include="Math\Base.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Geometry.h" />
     <ClInclude Include="Math\Random.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Misc\RandomData.h" />
-    <ClInclude Include="Misc\CppUnitTestHelpers.h" />
-    <ClInclude Include="Misc\TestHelpers.h" />
     <ClInclude Include="Math\Sample.h" />
     <ClInclude Include="Math\Sampler.h" />
     <ClInclude Include="Graphics\Scene.h" />
@@ -156,12 +158,11 @@
     <ClCompile Include="Graphics\Light.cpp" />
     <ClCompile Include="Graphics\Primitive.cpp" />
     <ClCompile Include="Graphics\PrimitiveManager.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Ray.cpp" />
     <ClCompile Include="Libs\tiny_obj_loader.cpp" />
     <ClCompile Include="Math\Geometry.cpp" />
-    <ClCompile Include="Math\MathUtil.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
-    <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Misc\RandomData.cpp" />
     <ClCompile Include="Math\Sample.cpp" />
     <ClCompile Include="Graphics\Scene.cpp" />

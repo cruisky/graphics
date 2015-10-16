@@ -17,7 +17,7 @@ namespace TX{
 
 	Color PathTracer::Li(const Scene *scene, const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
 		Color Le, L, pathThroughput = Color::WHITE;
-		Vector3 wo, wi;
+		Vec3 wo, wi;
 		float pdf;
 		BSDFType sampled;
 		Ray pathRay;
@@ -52,7 +52,7 @@ namespace TX{
 				if (f == Color::BLACK || pdf == 0.f)
 					break;
 				specBounce = (sampled & BSDF_SPECULAR) != 0;
-				pathThroughput *= f * (Math::Abs(Dot(wi, geom.normal)) / pdf);
+				pathThroughput *= f * (Math::AbsDot(wi, geom.normal) / pdf);
 				pathRay = Ray(geom.point, wi);
 
 				// Russian Roulette

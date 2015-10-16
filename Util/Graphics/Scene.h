@@ -7,12 +7,14 @@
 namespace TX{
 	class Scene{
 	public:
-		Scene(std::shared_ptr<Camera> camera);
-			
+		Scene();
+
 		void AddPrimitive(std::shared_ptr<Primitive> prim);
 		void AddLight(std::shared_ptr<Light> light);
 
-		// Initializes the scene after all lights & primitives are added
+		/// <summary>
+		/// Initializes the scene after all lights & primitives are added
+		/// </summary>
 		void Construct();
 
 		bool Intersect(const Ray& ray, Intersection& intxn) const;
@@ -21,7 +23,6 @@ namespace TX{
 
 	public:
 		std::vector<std::shared_ptr<Light>> lights;
-		std::shared_ptr<Camera> camera;
 	private:
 		std::unique_ptr<PrimitiveManager> primmgr_;
 		std::vector<std::shared_ptr<Primitive>> prims_;

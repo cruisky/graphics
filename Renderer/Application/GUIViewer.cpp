@@ -7,12 +7,12 @@
 
 namespace TX{
 	namespace UI{
-		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Film> film) :
-			Application(), scene_(scene), film_(film){
+		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
+			Application(), scene_(scene), camera_(camera), film_(film){
 			// Progress monitor
 			monitor_ = std::make_shared<ProgressMonitor>();
 			// Renderer
-			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, film, monitor_);
+			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, camera, film, monitor_);
 		}
 
 		void GUIViewer::Start(){
@@ -22,9 +22,9 @@ namespace TX{
 		}
 
 		void GUIViewer::Config(){
-			config.title = "RayTracer";
-			config.width = scene_->camera->Width();
-			config.height = scene_->camera->Height();
+			config.title = "Renderer";
+			config.width = camera_->Width();
+			config.height = camera_->Height();
 			config.fixsize = false;
 		}
 
@@ -34,37 +34,41 @@ namespace TX{
 		}
 
 		bool GUIViewer::Render(){
-			glDrawPixels(config.width, config.height, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
-			return true;
+			if (renderer_->Running()) {
+				glDrawPixels(config.width, config.height, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
+				return true;
+			}
+			return false;
 		}
-		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, int mods) {
-			Vector2 cursor;
+		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods) {
+			Vec2 cursor;
 			GetCursorPos(&cursor.x, &cursor.y);
-			std::cout << "Cursor: " << cursor << std::endl;
 			FlipY(&cursor.y);
-
 			if (state == MouseButtonState::DOWN){
 				switch (button){
 				case MouseButton::LEFT:
 					Color c = film_->Get(int(cursor.x), int(cursor.y));
-					std::printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b); break;
+					std::printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b);
+					break;
 				}
 			}
 		}
 
 		void GUIViewer::OnKey(KeyCode code, KeyState state, Modifiers modifiers){
-			switch (code){
-			case KeyCode::UP: AttemptPanCamera(Direction::UP); break;
-			case KeyCode::DOWN: AttemptPanCamera(Direction::DOWN); break;
-			case KeyCode::LEFT: AttemptPanCamera(Direction::LEFT); break;
-			case KeyCode::RIGHT: AttemptPanCamera(Direction::RIGHT); break;
-			case KeyCode::W: AttemptMoveCamera(Direction::UP); break;
-			case KeyCode::S: AttemptMoveCamera(Direction::DOWN); break;
-			case KeyCode::A: AttemptMoveCamera(Direction::LEFT); break;
-			case KeyCode::D: AttemptMoveCamera(Direction::RIGHT); break;
-			case KeyCode::Q: AttemptBarrelRollCamera(false); break;
-			case KeyCode::E: AttemptBarrelRollCamera(true); break;
-			case KeyCode::ESCAPE: Exit(); break;
+			if (state == KeyState::DOWN || state == KeyState::HOLD) {
+				switch (code) {
+				case KeyCode::UP: AttemptPanTiltCamera(Direction::UP); break;
+				case KeyCode::DOWN: AttemptPanTiltCamera(Direction::DOWN); break;
+				case KeyCode::LEFT: AttemptPanTiltCamera(Direction::LEFT); break;
+				case KeyCode::RIGHT: AttemptPanTiltCamera(Direction::RIGHT); break;
+				case KeyCode::W: AttemptDollyCrabCamera(Direction::UP); break;
+				case KeyCode::S: AttemptDollyCrabCamera(Direction::DOWN); break;
+				case KeyCode::A: AttemptDollyCrabCamera(Direction::LEFT); break;
+				case KeyCode::D: AttemptDollyCrabCamera(Direction::RIGHT); break;
+				case KeyCode::Q: AttemptRollCamera(false); break;
+				case KeyCode::E: AttemptRollCamera(true); break;
+				case KeyCode::ESCAPE: Exit(); break;
+				}
 			}
 		}
 
@@ -78,42 +82,44 @@ namespace TX{
 		}
 
 
-		void GUIViewer::AttemptMoveCamera(Direction dir){
+		void GUIViewer::AttemptDollyCrabCamera(Direction dir){
 			float dist = 0.1f;
-			Vector3 movement;
+			Vec3 movement;
 			switch (dir){
-			case Direction::UP: movement = Vector3(0.f, 0.f, -dist); break;
-			case Direction::DOWN: movement = Vector3(0.f, 0.f, dist); break;
-			case Direction::LEFT: movement = Vector3(-dist, 0.f, 0.f); break;
-			case Direction::RIGHT: movement = Vector3(dist, 0.f, 0.f); break;
+			case Direction::UP: movement = Vec3(0.f, 0.f, -dist); break;
+			case Direction::DOWN: movement = Vec3(0.f, 0.f, dist); break;
+			case Direction::LEFT: movement = Vec3(-dist, 0.f, 0.f); break;
+			case Direction::RIGHT: movement = Vec3(dist, 0.f, 0.f); break;
 			}
-			scene_->camera->transform.Translate(movement);
+			camera_->transform.Translate(movement);
 			InvalidateFrame();
 		}
 
-		void GUIViewer::AttemptPanCamera(Direction dir){
-			float degree = 2.f;
-			Vector3 axis;
+		void GUIViewer::AttemptPanTiltCamera(Direction dir){
+			float rad = Math::ToRad(2.f);
+			Vec3 axis;
 			switch (dir){
-			case Direction::UP: axis = Vector3::X; break;
-			case Direction::DOWN: axis = -Vector3::X; break;
-			case Direction::LEFT: axis = Vector3::Y; break;
-			case Direction::RIGHT: axis = -Vector3::Y; break;
+			case Direction::UP: axis = Vec3::X; break;
+			case Direction::DOWN: axis = -Vec3::X; break;
+			case Direction::LEFT: axis = Vec3::Y; break;
+			case Direction::RIGHT: axis = -Vec3::Y; break;
 			}
-			scene_->camera->transform.Rotate(degree, axis);
+			camera_->transform.Rotate(Quaternion::AngleAxis(rad, axis));
 			InvalidateFrame();
 		}
 
-		void GUIViewer::AttemptBarrelRollCamera(bool clockwise){
-			float degree = clockwise ? 10.f : -10.f;
-			scene_->camera->transform.Rotate(degree, -Vector3::Z);
+		void GUIViewer::AttemptRollCamera(bool clockwise){
+			float rad = Math::ToRad(clockwise ? 10.f : -10.f);
+			camera_->transform.Rotate(Quaternion::AngleAxis(rad, -Vec3::Z));
 			InvalidateFrame();
 		}
 
 
 		void GUIViewer::InvalidateFrame(){
+			camera_->transform.UpdateMatrix();
 			renderer_->Abort();
 			renderer_->NewTask();
+			this->Refresh();
 		}
 
 		void GUIViewer::ProgressReporterJob(){
