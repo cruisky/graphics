@@ -58,10 +58,10 @@ namespace TX { namespace UI { namespace GUI {
 		Widget				hotToBe;
 		Widget				active;
 
-		Vector2				initPos;	// initial widget position
-		Vector2				widgetPos;	// current widget position
+		Vec2				initPos;	// initial widget position
+		Vec2				widgetPos;	// current widget position
 		const Color*		currColor;
-		Vector2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
+		Vec2				drag;		// can be either mouse offset relative to the widget being dragged, or the total amount
 
 		struct {
 			std::string*	buffer;
@@ -76,68 +76,18 @@ namespace TX { namespace UI { namespace GUI {
 				bool changed = false;
 				if (buffer){
 					bool printable = std::isprint(ch);
-					bool del = ch == 127;
-					bool backspace = ch == 8;
 
 					// editing characters
-					if (printable || del || backspace){
+					if (printable){
 						// remove selected characters
 						DeleteSelection();
 						if (printable){
 							buffer->insert(buffer->begin() + cursor++, ch);
 						}
-						else if (backspace){
-							if (!HasSelection() && cursor > 0)
-								buffer->erase(--cursor, 1);
-						}
-						else if (del){
-							if (!HasSelection() && cursor < buffer->length())
-								buffer->erase(cursor, 1);
-						}
-						ClearSelection();
 						changed = true;
-					}
-					else{
-						switch (ch){
-						case 1:		// CTRL_A
-							SelectAll();
-							break;
-						case 3:		// CTRL_C
-							if (HasSelection()){
-								int pos = SelectionLeft();
-								int len = SelectionRight() - pos;
-								clipboard.assign(*buffer, pos, len);
-							}
-							break;
-						case 22:	// CTRL_V
-							if (clipboard.length() > 0){
-								for (auto ch : clipboard){
-									Edit(ch);
-								}
-								changed = true;
-							}
-							break;
-						case 24:	// CTRL_X
-							if (HasSelection()){
-								int pos = SelectionLeft();
-								int len = SelectionRight() - pos;
-								clipboard.assign(*buffer, pos, len);
-								DeleteSelection();
-								changed = true;
-							}
-							break;
-						}
 					}
 				}
 				return changed;
-			}
-			void DeleteSelection(){
-				if (HasSelection()){
-					int pos = SelectionLeft();
-					int len = SelectionRight() - pos;
-					buffer->erase(pos, len);
-					cursor = pos;
-				}
 			}
 			void Clear(){
 				buffer = nullptr;
@@ -159,10 +109,92 @@ namespace TX { namespace UI { namespace GUI {
 			bool HasSelection() { return selectionBegin != -1 && cursor != selectionBegin; }
 			void SetCursor(int index){ cursor = Math::Clamp(index, 0, glyphPosMap.Size() - 1); }
 			void Select(int begin, int end){ selectionBegin = Math::Clamp(begin, 0, glyphPosMap.Size()); SetCursor(end); }
-			void SelectAll(){ cursor = buffer->length(); Select(0, cursor); }
 			int SelectionLeft(){ return Math::Min(selectionBegin, cursor); }
 			int SelectionRight(){ return Math::Max(selectionBegin, cursor); }
+			int AdvanceWords(int steps){
+				auto i = cursor;
+				if (buffer->length() == 0 || steps == 0) return cursor;
+
+				while (steps > 0){		// towards the right
+					while (i < buffer->length() && !std::isspace((*buffer)[i])){
+						i++;
+					}
+					while (i < buffer->length() && std::isspace((*buffer)[i])){
+						i++;
+					}
+					steps--;
+				}
+				while (steps < 0){		// towards the left
+					while (i > 0 && std::isspace((*buffer)[i - 1])){
+						i--;
+					}
+					while (i > 0 && !std::isspace((*buffer)[i - 1])){
+						i--;
+					}
+					steps++;
+				}
+				return i;
+			}
+			
+			// Common actions
+			void SelectAll(){ cursor = buffer->length(); Select(0, cursor); }
 			void ClearSelection(){ selectionBegin = -1; }
+			bool DeleteSelection(){
+				if (HasSelection()){
+					int pos = SelectionLeft();
+					int len = SelectionRight() - pos;
+					buffer->erase(pos, len);
+					cursor = pos;
+					ClearSelection();
+					return true;
+				}
+				return false;
+			}
+			void CopySelection(){
+				if (HasSelection()){
+					int pos = SelectionLeft();
+					int len = SelectionRight() - pos;
+					clipboard.assign(*buffer, pos, len);
+				}
+			}
+			bool CutSelection(){
+				if (HasSelection()){
+					int pos = SelectionLeft();
+					int len = SelectionRight() - pos;
+					clipboard.assign(*buffer, pos, len);
+					DeleteSelection();
+					return true;
+				}
+				return false;
+			}
+			bool Paste(){
+				if (clipboard.length() > 0){
+					for (auto ch : clipboard){
+						Edit(ch);
+					}
+					return true;
+				}
+				return false;
+			}
+			bool Backspace(){
+				if (DeleteSelection())
+					return true;
+				else if (cursor > 0){
+					buffer->erase(--cursor, 1);
+					return true;
+				}
+				return false;
+			}
+			bool Del(){
+				if (DeleteSelection())
+					return true;
+				else if (cursor < buffer->length()){
+					buffer->erase(cursor, 1);
+					return true;
+				}
+				return false;
+			}
+
 			// Shifts text so that cursor is always visible
 			void UpdateOffset(float width){
 				width = Math::Max(0.f, width - 3.f);
@@ -175,6 +207,7 @@ namespace TX { namespace UI { namespace GUI {
 				}
 			}
 		} textEdit;
+		long long			cursorUpdatedTime;
 
 		// OpenGL related
 		GLuint				program;
@@ -246,10 +279,10 @@ namespace TX { namespace UI { namespace GUI {
 	bool CheckMouse(MouseButton button, MouseButtonState buttonState);
 	bool CheckButton(MouseButton wheel);
 	bool CheckSpecialKey(KeyCode code);
-	bool CheckModifier(Modifier code);
+	bool CheckModifier(Modifiers code);
 	void WordWrap(const FontMap& font, const char* text, float maxWidth, StringCallback processLine);
 	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll);
-	void Scroll(float& scroll, int step, float contentHeight);
+	void Scroll(float& scroll, float step, float contentHeight);
 	////////////////////////////////////////////////////////////////////
 	// API implementation
 	////////////////////////////////////////////////////////////////////
@@ -372,8 +405,8 @@ namespace TX { namespace UI { namespace GUI {
 		glGetIntegerv(GL_TEXTURE_BINDING_2D, &lastTexture);
 		
 		// setup
-		const float w = G.input.screen.x;
-		const float h = G.input.screen.y;
+		const float w = G.input.window.x;
+		const float h = G.input.window.y;
 		const Matrix4x4 orthoProjection(
 			2.f/w,	0.f,	0.f,	0.f,
 			0.f,	2.f/-h,	0.f,	0.f,
@@ -442,13 +475,13 @@ namespace TX { namespace UI { namespace GUI {
 		W->drawList.PushClipRect(rect);
 		float padding = G.style.WindowPadding;
 		float textPadding = G.style.TextPaddingY;
-		Rect header(rect.min, Vector2(rect.max.x, rect.min.y + padding));
+		Rect header(rect.min, Vec2(rect.max.x, rect.min.y + padding));
 		Rect body(
-			Vector2(rect.min.x, rect.min.y + padding),
-			Vector2(rect.max.x, rect.max.y - padding));
+			Vec2(rect.min.x, rect.min.y + padding),
+			Vec2(rect.max.x, rect.max.y - padding));
 		Rect bottom(
-			Vector2(rect.min.x, rect.max.y - padding),
-			Vector2(rect.max.x - padding, rect.max.y));
+			Vec2(rect.min.x, rect.max.y - padding),
+			Vec2(rect.max.x - padding, rect.max.y));
 
 		#pragma region window logic
 		if (IsActive()){
@@ -456,23 +489,20 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				Rect dragArea(Vector2::ZERO, G.input.screen - Vector2(padding));
-				rect.MoveTo(dragArea.ClosestPoint(G.input.mouse - G.drag));
+				Rect dragArea(Vec2::ZERO, G.input.window - Vec2(padding));
+				rect.MoveTo(dragArea.ClosestPoint(G.input.cursor - G.drag));
 			}
 		}
 		if (IsHot()){
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
 				SetActive();
-				G.drag = G.input.mouse - rect.min;
+				G.drag = G.input.cursor - rect.min;
 			}
-			else if (CheckButton(MouseButton::WHEEL_DOWN)){
-				Scroll(W->scroll, 1, W->contentHeight);
-			}
-			else if (CheckButton(MouseButton::WHEEL_UP)){
-				Scroll(W->scroll, -1, W->contentHeight);
+			else if (G.input.scroll != 0.f){
+				Scroll(W->scroll, -G.input.scroll, W->contentHeight);
 			}
 		}
-		if (body.Contains(G.input.mouse) || header.Contains(G.input.mouse) || bottom.Contains(G.input.mouse)) {
+		if (body.Contains(G.input.cursor) || header.Contains(G.input.cursor) || bottom.Contains(G.input.cursor)) {
 			SetHot();
 		}
 		#pragma endregion
@@ -480,12 +510,12 @@ namespace TX { namespace UI { namespace GUI {
 
 		// Header
 		W->drawList.AddTriangle(
-			Vector2(rect.min.x, rect.min.y + padding),
-			rect.min + Vector2(padding),
-			Vector2(rect.min.x + padding, rect.min.y),
+			Vec2(rect.min.x, rect.min.y + padding),
+			rect.min + Vec2(padding),
+			Vec2(rect.min.x + padding, rect.min.y),
 			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddRect(
-			Vector2(rect.min.x + padding, rect.min.y),
+			Vec2(rect.min.x + padding, rect.min.y),
 			header.max,
 			G.style.Colors[Style::Palette::Accent]);
 		W->drawList.AddText(
@@ -505,14 +535,14 @@ namespace TX { namespace UI { namespace GUI {
 		Rect resize(rect.max - padding, rect.max);
 		#pragma region resize handle logic
 		Color *resizeColor = &G.style.Colors[Style::Palette::Accent];
-		if (resize.Contains(G.input.mouse)){
+		if (resize.Contains(G.input.cursor)){
 			SetHot();
 		}
 		if (IsHot()){
 			resizeColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
 				SetActive();
-				G.drag = G.input.mouse - rect.max;
+				G.drag = G.input.cursor - rect.max;
 			}
 		}
 		if (IsActive()){
@@ -521,8 +551,8 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				rect.max.x = Math::Max(rect.min.x + 10 * padding, G.input.mouse.x - G.drag.x);
-				rect.max.y = Math::Max(rect.min.y + 5 * padding, G.input.mouse.y - G.drag.y);
+				rect.max.x = Math::Max(rect.min.x + 10 * padding, G.input.cursor.x - G.drag.x);
+				rect.max.y = Math::Max(rect.min.y + 5 * padding, G.input.cursor.y - G.drag.y);
 			}
 		}
 		#pragma endregion
@@ -546,7 +576,7 @@ namespace TX { namespace UI { namespace GUI {
 		ScrollBar(scrollBarArea, scrollRectHeight, W->contentHeight, W->scroll);
 
 		float contentOffset = (W->contentHeight > scrollRectHeight) ? W->scroll * (W->contentHeight - scrollRectHeight) : 0.f;
-		G.initPos = G.widgetPos = Vector2(scrollRect.min.x, scrollRect.min.y - contentOffset);
+		G.initPos = G.widgetPos = Vec2(scrollRect.min.x, scrollRect.min.y - contentOffset);
 		
 		// Update clip rect
 		W->drawList.PushClipRect(scrollRect);
@@ -557,7 +587,7 @@ namespace TX { namespace UI { namespace GUI {
 	}
 
 	void Divider(){
-		Vector2 points[2];
+		Vec2 points[2];
 		const Rect& clipRect = G.CurrentRect();
 		points[0] = G.widgetPos;
 		points[1].x = clipRect.max.x;
@@ -591,8 +621,8 @@ namespace TX { namespace UI { namespace GUI {
 
 		Color *bgColor = &G.style.Colors[Style::Palette::Accent];
 		float textWidth = G.style.Font->GetWidth(name);
-		Rect button(G.widgetPos, G.widgetPos + Vector2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
-		bool hovering = button.Contains(G.input.mouse);
+		Rect button(G.widgetPos, G.widgetPos + Vec2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
+		bool hovering = button.Contains(G.input.cursor);
 		#pragma region logic
 		if (hovering) {
 			SetHot();
@@ -626,7 +656,7 @@ namespace TX { namespace UI { namespace GUI {
 		return clicked;
 	}
 	template <typename T>
-	bool Slider(const char *name, const Vector2& pos, float width, T *val, T min, T max, T step, Tagger getTag){
+	bool Slider(const char *name, const Vec2& pos, float width, T *val, T min, T max, T step, Tagger getTag){
 		G.NextItem(); bool changed = false;
 
 		Color *sliderColor = &G.style.Colors[Style::Palette::Accent];
@@ -637,10 +667,10 @@ namespace TX { namespace UI { namespace GUI {
 		Rect hotArea(
 			pos.x, pos.y + sliderSize,
 			pos.x + width, pos.y + G.style.LineHeight);
-		Vector2 slider(pos.x + halfSliderSize, pos.y + G.style.LineHeight * 0.75f);
+		Vec2 slider(pos.x + halfSliderSize, pos.y + G.style.LineHeight * 0.75f);
 		float length = hotArea.Width() - sliderSize;
 		#pragma region logic
-		if (hotArea.Contains(G.input.mouse))
+		if (hotArea.Contains(G.input.cursor))
 			SetHot();
 		if (IsHot()){
 			trackColor = sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
@@ -650,7 +680,7 @@ namespace TX { namespace UI { namespace GUI {
 		if (IsActive()){
 			trackColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			sliderColor = &G.style.Colors[Style::Palette::AccentActive];
-			T newVal = T(Math::Lerp(Math::Clamp(G.input.mouse.x - slider.x, 0.f, length) / length, float(min), float(max)));
+			T newVal = T(Math::Lerp(Math::Clamp(G.input.cursor.x - slider.x, 0.f, length) / length, float(min), float(max)));
 			if (step > Math::EPSILON){
 				newVal = Math::Clamp(Math::Round(float(newVal - min) / step) * step + min, min, max);
 			}
@@ -672,7 +702,7 @@ namespace TX { namespace UI { namespace GUI {
 				G.style.Font, getTag(name, val).data(),
 				G.style.Colors[Style::Palette::Text]);
 		// Slider
-		Vector2 trackLine[2] = { slider, slider + Vector2(length, 0.f) };
+		Vec2 trackLine[2] = { slider, slider + Vec2(length, 0.f) };
 		slider.x += offset;
 		G.current.window->drawList.AddPolyLine(trackLine, 2, *trackColor, false, G.style.StrokeWidth);
 		G.current.window->drawList.AddRect(
@@ -714,15 +744,15 @@ namespace TX { namespace UI { namespace GUI {
 			}
 		};
 		int sliderCount = static_cast<int>(channel);
-		Rect sampleArea(G.widgetPos, G.widgetPos + Vector2(G.style.HalfLineHeight(), G.style.LineHeight));
-		Vector2 sliderPos(sampleArea.max.x + G.style.WidgetPadding, G.widgetPos.y);
+		Rect sampleArea(G.widgetPos, G.widgetPos + Vec2(G.style.HalfLineHeight(), G.style.LineHeight));
+		Vec2 sliderPos(sampleArea.max.x + G.style.WidgetPadding, G.widgetPos.y);
 		float sliderWidth = (G.CurrentRect().max.x - sliderPos.x - (sliderCount - 1) * G.style.WidgetPadding) / sliderCount;
 		
 		#pragma region logic
 		Color temp = val.Convert(channel);
 		updateColor(temp);
 
-		if (sampleArea.Contains(G.input.mouse)){
+		if (sampleArea.Contains(G.input.cursor)){
 			SetHot();
 		}
 		if (IsHot() && !IsActive()){
@@ -731,7 +761,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		if (IsActive()){
 			// picking pixel color
-			glReadPixels(int(G.input.mouse.x), int(G.input.mouse.y), 1, 1, GL_RGB, GL_FLOAT, &temp);
+			glReadPixels(int(G.input.cursor.x), int(G.input.cursor.y), 1, 1, GL_RGB, GL_FLOAT, &temp);
 			std::cout << temp << std::endl;
 			updateColor(temp.Convert(channel, false));
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP))
@@ -763,9 +793,9 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false;
 
 		Color *holeColor = &G.style.Colors[Style::Palette::Accent];
-		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+		Rect hotArea(G.widgetPos, G.widgetPos + Vec2(G.style.LineHeight));
 		#pragma region logic
-		if (hotArea.Contains(G.input.mouse)) SetHot();
+		if (hotArea.Contains(G.input.cursor)) SetHot();
 		else ClearActive();
 		if (IsHot()){
 			holeColor = &G.style.Colors[Style::Palette::AccentHighlight];
@@ -785,7 +815,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		#pragma endregion
 		#pragma region rendering
-		Vector2 center = hotArea.Center();
+		Vec2 center = hotArea.Center();
 		G.current.window->drawList.AddCircle(
 			center,
 			G.style.FormWidgetRadius,
@@ -811,9 +841,9 @@ namespace TX { namespace UI { namespace GUI {
 		G.NextItem(); bool changed = false;
 
 		Color *boxColor = &G.style.Colors[Style::Palette::Accent];
-		Rect hotArea(G.widgetPos, G.widgetPos + Vector2(G.style.LineHeight));
+		Rect hotArea(G.widgetPos, G.widgetPos + Vec2(G.style.LineHeight));
 		#pragma region logic
-		if (hotArea.Contains(G.input.mouse)) SetHot();
+		if (hotArea.Contains(G.input.cursor)) SetHot();
 		else ClearActive();
 		if (IsHot()){
 			boxColor = &G.style.Colors[Style::Palette::AccentHighlight];
@@ -831,7 +861,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 		#pragma endregion
 		#pragma region rendering
-		Vector2 center = hotArea.Center();
+		Vec2 center = hotArea.Center();
 		G.current.window->drawList.AddRect(
 			center - G.style.FormWidgetRadius,
 			center + G.style.FormWidgetRadius,
@@ -867,10 +897,10 @@ namespace TX { namespace UI { namespace GUI {
 			G.style.Font, name,
 			G.style.Colors[Style::Palette::Text]);
 		// Progress bar
-		Vector2 line[3];
-		line[0] = Vector2(G.widgetPos.x + padding, G.widgetPos.y + G.style.HalfLineHeight() + padding);
-		line[1] = line[0] + Vector2(barLength, 0.f);
-		line[2] = line[0] + Vector2(fullLength, 0.f);
+		Vec2 line[3];
+		line[0] = Vec2(G.widgetPos.x + padding, G.widgetPos.y + G.style.HalfLineHeight() + padding);
+		line[1] = line[0] + Vec2(barLength, 0.f);
+		line[2] = line[0] + Vec2(fullLength, 0.f);
 		if (line[0].x < line[1].x)
 			G.current.window->drawList.AddPolyLine(line, 2, G.style.Colors[Style::Palette::AccentActive], false, G.style.StrokeWidth);
 		if (line[1].x < line[2].x)
@@ -880,17 +910,17 @@ namespace TX { namespace UI { namespace GUI {
 		#pragma endregion
 	}
 	bool TextField(const char *name, std::string& text, bool selectAllOnActive){
-		G.NextItem(); bool changed = false;
+		G.NextItem(); bool changed = false; bool cursorUpdated = false;
 
 		G.AdvanceLine();
-		Vector2 tagPos = G.widgetPos;
+		Vec2 tagPos = G.widgetPos;
 		G.widgetPos.y += G.style.TextPaddingY;
-		Rect bgArea(G.widgetPos, Vector2(G.CurrentRect().max.x, G.widgetPos.y + G.style.LineHeight));
+		Rect bgArea(G.widgetPos, Vec2(G.CurrentRect().max.x, G.widgetPos.y + G.style.LineHeight));
 		Rect textArea(bgArea);
-		textArea.Shrink(Vector2(G.style.TextPaddingY, 0.f));
+		textArea.Shrink(Vec2(G.style.TextPaddingY, 0.f));
 
 		#pragma region logic
-		bool hovering = textArea.Contains(G.input.mouse);
+		bool hovering = textArea.Contains(G.input.cursor);
 
 		// in the middle of selection by mouse
 		bool selecting = IsActive();
@@ -899,7 +929,7 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.mouse.x - textArea.min.x));
+				G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.cursor.x - textArea.min.x));
 				G.textEdit.UpdateOffset(textArea.Width());
 			}
 		}
@@ -916,7 +946,7 @@ namespace TX { namespace UI { namespace GUI {
 						G.textEdit.SelectAll();
 					}
 					else {
-						G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.mouse.x - textArea.min.x));
+						G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.cursor.x - textArea.min.x));
 						G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor);
 					}
 					G.textEdit.UpdateOffset(textArea.Width());
@@ -924,8 +954,9 @@ namespace TX { namespace UI { namespace GUI {
 				}
 				else {
 					// start selection
-					G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.mouse.x - textArea.min.x));
+					G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.cursor.x - textArea.min.x));
 					G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor);
+					cursorUpdated = true;
 					SetActive();
 				}
 			}
@@ -937,41 +968,91 @@ namespace TX { namespace UI { namespace GUI {
 		// editing text
 		if (IsEditing()){
 			bool ignoreMouse = false;
-			bool shift = CheckModifier(Modifier::SHIFT);
 			// Special keys
-			if (CheckSpecialKey(KeyCode::LEFT) || CheckSpecialKey(KeyCode::RIGHT)){
-				ignoreMouse = true;
-				bool left = CheckSpecialKey(KeyCode::LEFT);
-				int step = (left ? -1 : 1);
+			if (G.input.HasKeyCode() && (G.input.keyState == KeyState::DOWN || G.input.keyState == KeyState::HOLD)){
+				if (G.input.key == KeyCode::LEFT || G.input.key == KeyCode::RIGHT){
+					ignoreMouse = true;
+					bool left = G.input.key == KeyCode::LEFT;
+					int step = (left ? -1 : 1);
 
-				if (G.textEdit.HasSelection()){
-					if (shift){
-						G.textEdit.SetCursor(G.textEdit.cursor + step);
+					if (G.textEdit.HasSelection()){
+						if (G.input.mods(Modifiers::SHIFT)){
+							if (G.input.mods(Modifiers::CTRL))
+								G.textEdit.SetCursor(G.textEdit.AdvanceWords(step));
+							else
+								G.textEdit.SetCursor(G.textEdit.cursor + step);
+						}
+						else {
+							G.textEdit.SetCursor(left ? G.textEdit.SelectionLeft() : G.textEdit.SelectionRight());
+							G.textEdit.ClearSelection();
+						}
 					}
 					else {
-						G.textEdit.SetCursor(left ? G.textEdit.SelectionLeft() : G.textEdit.SelectionRight());
-						G.textEdit.ClearSelection();
+						if (G.input.mods(Modifiers::SHIFT)){
+							if (G.input.mods(Modifiers::CTRL))
+								G.textEdit.Select(G.textEdit.cursor, G.textEdit.AdvanceWords(step));
+							else
+								G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor + step);
+						}
+						else {
+							G.textEdit.ClearSelection();
+							if (G.input.mods(Modifiers::CTRL))
+								G.textEdit.SetCursor(G.textEdit.AdvanceWords(step));
+							else
+								G.textEdit.SetCursor(G.textEdit.cursor + step);
+						}
+					}
+					cursorUpdated = true;
+				}
+
+				// keys that work only with modifier
+				if (G.input.mods(Modifiers::CTRL)){
+					switch (G.input.key){
+					case KeyCode::A:
+						G.textEdit.SelectAll();
+						cursorUpdated = true;
+						break;
+					case KeyCode::C:
+						G.textEdit.CopySelection();
+						break;
+					case KeyCode::V:
+						changed |= G.textEdit.Paste();
+						break;
+					case KeyCode::X:
+						changed |= G.textEdit.CutSelection();
+						break;
 					}
 				}
-				else {
-					if (shift){
-						G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor + step);
-					}
-					else {
-						G.textEdit.ClearSelection();
-						G.textEdit.SetCursor(G.textEdit.cursor + step);
-					}
+
+				// keys that work regardless of the modifier
+				switch (G.input.key){
+				case KeyCode::DELETE:
+					if (!G.textEdit.HasSelection() && G.input.mods(Modifiers::CTRL))
+						G.textEdit.Select(G.textEdit.cursor, G.textEdit.AdvanceWords(1));
+					changed |= G.textEdit.Del();
+					break;
+				case KeyCode::BACKSPACE:
+					if (!G.textEdit.HasSelection() && G.input.mods(Modifiers::CTRL))
+						G.textEdit.Select(G.textEdit.cursor, G.textEdit.AdvanceWords(-1));
+					changed |= G.textEdit.Backspace();
 				}
 			}
 			// text input
-			if (G.input.HasKey())
-				changed |= G.textEdit.Edit(G.input.key);
+			if (G.input.HasText())
+				changed |= G.textEdit.Edit(G.input.text);
 
 			if (ignoreMouse){
 				ClearActive();
 			}
+			cursorUpdated |= changed;
 			G.textEdit.UpdateOffset(textArea.Width());
 		}
+
+		// update edit timestamp
+		auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		if (cursorUpdated)
+			G.cursorUpdatedTime = now;
+		auto timeSinceLastCursorUpdate = now - G.cursorUpdatedTime;
 		#pragma endregion
 
 		#pragma region rendering text
@@ -984,11 +1065,11 @@ namespace TX { namespace UI { namespace GUI {
 			// selection
 			if (G.textEdit.HasSelection()){
 				G.current.window->drawList.AddRect(
-					Vector2(
+					Vec2(
 						textArea.min.x + G.textEdit.LocatePos(G.textEdit.SelectionLeft()),
 						textArea.min.y + G.style.TextPaddingY / 2
 					),
-					Vector2(
+					Vec2(
 						textArea.min.x + G.textEdit.LocatePos(G.textEdit.SelectionRight()),
 						textArea.max.y - G.style.TextPaddingY / 2
 					),
@@ -1005,12 +1086,11 @@ namespace TX { namespace UI { namespace GUI {
 				G.style.Colors[Style::Palette::Text], 
 				&G.textEdit.glyphPosMap);
 			// blinking cursor
-			auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-			if (millis % 1000 / 500){
+			if (timeSinceLastCursorUpdate % 1000 / 500 == 0){
 				float cursorPos = textArea.min.x + G.textEdit.LocatePos(G.textEdit.cursor);
-				Vector2 cursorLine[2] = {
-					Vector2(cursorPos, textArea.min.y + G.style.TextPaddingY / 2),
-					Vector2(cursorPos, textArea.max.y - G.style.TextPaddingY / 2)
+				Vec2 cursorLine[2] = {
+					Vec2(cursorPos, textArea.min.y + G.style.TextPaddingY / 2),
+					Vec2(cursorPos, textArea.max.y - G.style.TextPaddingY / 2)
 				};
 				G.current.window->drawList.AddPolyLine(cursorLine, 2, G.style.Colors[Style::Palette::Foreground], false, 1.f);
 			}
@@ -1057,15 +1137,6 @@ namespace TX { namespace UI { namespace GUI {
 	}
 	bool CheckButton(MouseButton button){
 		return G.input.button == button;
-	}
-	bool CheckSpecialKey(KeyCode key){
-		for (int i = 0; i < G.input.specialKeyCount; i++)
-			if (G.input.specialKey[i] == key)
-				return true;
-		return false;
-	}
-	bool CheckModifier(Modifier code){
-		return G.input.modifier[static_cast<int>(code)];
 	}
 	void WordWrap(const FontMap& font, const char* text, float maxWidth, StringCallback processLine){
 		std::istringstream words(text);
@@ -1126,30 +1197,27 @@ namespace TX { namespace UI { namespace GUI {
 		float barCenterY = Math::Lerp(scroll, rangeStart, rangeEnd);
 
 		#pragma region logic
-		if (hotArea.Contains(G.input.mouse)){
+		if (hotArea.Contains(G.input.cursor)){
 			SetHot();
 		}
 		if (IsHot()){
 			bool hovering = Math::InBounds(
-				G.input.mouse.y, 
+				G.input.cursor.y,
 				barCenterY - barHalfHeight, 
 				barCenterY + barHalfHeight);
 			if (hovering)
 				barColor = &G.style.Colors[Style::Palette::AccentHighlight];
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::DOWN)){
 				SetActive();
-				G.drag.y = hovering ? G.input.mouse.y - barCenterY : 0.f;
+				G.drag.y = hovering ? G.input.cursor.y - barCenterY : 0.f;
 			}
-			else if (CheckButton(MouseButton::WHEEL_DOWN)){
-				Scroll(scroll, 1, contentHeight);
-			}
-			else if (CheckButton(MouseButton::WHEEL_UP)){
-				Scroll(scroll, -1, contentHeight);
+			else if (G.input.scroll != 0.f){
+				Scroll(scroll, -G.input.scroll, contentHeight);
 			}
 		}
 		if (IsActive()){
 			barColor = &G.style.Colors[Style::Palette::AccentActive];
-			barCenterY = Math::Clamp(G.input.mouse.y - G.drag.y, rangeStart, rangeEnd);
+			barCenterY = Math::Clamp(G.input.cursor.y - G.drag.y, rangeStart, rangeEnd);
 			scroll = Math::InvLerp(barCenterY, rangeStart, rangeEnd);
 			if (CheckMouse(MouseButton::LEFT, MouseButtonState::UP)){
 				ClearActive();
@@ -1167,7 +1235,7 @@ namespace TX { namespace UI { namespace GUI {
 		G.current.window->drawList.AddRect(bar.min, bar.max, *barColor);
 		#pragma endregion
 	}
-	void Scroll(float& scroll, int step, float contentHeight){ 
+	void Scroll(float& scroll, float step, float contentHeight){ 
 		scroll = Math::Clamp(scroll + step * G.style.ScrollSpeed / contentHeight, 0.f, 1.f); 
 	}
 }}}

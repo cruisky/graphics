@@ -4,7 +4,7 @@
 
 namespace TX
 {
-	bool Polygon::IsConvex(const Vector2& v1, const Vector2& v2, const Vector2& v3){
+	bool Polygon::IsConvex(const Vec2& v1, const Vec2& v2, const Vec2& v3){
 		return ((v3.y - v1.y) * (v2.x - v1.x)) > ((v3.x - v1.x) * (v2.y - v1.y));
 	}
 
@@ -78,9 +78,9 @@ namespace TX
 	void Polygon::UpdateVertex(Vertex& v2, Vertex *verts, int count) {
 		Vertex &v1 = *v2.prev, &v3 = *v2.next;
 		v2.convex = IsConvex(*v1.p, *v2.p, *v3.p);
-		v2.cosine = Dot(
-			(*v1.p - *v2.p).Normalize(),
-			(*v3.p - *v2.p).Normalize());
+		v2.cosine = Math::Dot(
+			Math::Normalize(*v1.p - *v2.p),
+			Math::Normalize(*v3.p - *v2.p));
 		if (v2.convex){
 			v2.ear = true;
 			for (int i = 0; i < count; i++){

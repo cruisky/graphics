@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/MathUtil.h"
+#include "Math/Base.h"
 
 namespace TX
 {

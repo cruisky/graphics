@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "Util.h"
-#include "Math/MathUtil.h"
+#include "Math/Base.h"
 
 #ifdef RGB
 	#undef RGB

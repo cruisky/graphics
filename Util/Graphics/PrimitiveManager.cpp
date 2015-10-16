@@ -4,6 +4,7 @@
 
 namespace TX
 {
+	PrimitiveManager::PrimitiveManager(std::vector<std::shared_ptr<Primitive>> *prims) : prims_(prims) {}
 	bool PrimitiveManager::Intersect(const Ray& ray, Intersection& intxn) const{
 		bool hasIntxn = false;
 		for (auto p : *prims_){

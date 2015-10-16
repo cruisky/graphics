@@ -6,23 +6,29 @@ namespace TX
 {
 	class Camera : public SceneObject {
 	public:
-		Camera(int width, int height, float fov = 90.f, float near = 1.f, float far = 1000.f, bool is_ortho = false);
+		Camera(int width, int height, float fov = 90.f, float near = 0.1f, float far = 1000.f, bool is_ortho = false);
 
 		void GenerateRay(Ray *out, const CameraSample& sample) const;
 
 		inline int Width() const { return width_; }
 		inline int Height() const { return height_; }
-		// Returns fov if in perspective mode, and size if in orthographic mode
+		/// <summary>
+		/// Returns fov if in perspective mode, and size if in orthographic mode
+		/// </summary>
 		inline float FOV() const { return fov_; }
 		inline float NearClipPlane() const { return clip_near_; }
 		inline float FarClipPlane() const { return clip_far_; }
 		inline bool IsOrtho() const { return is_ortho_; }
 
-		// Transforms point from screen to world (on the near plane)
-		Vector3 ScreenToWorldPoint(const Vector3& pix) const;
-		// Transforms point from world to screen.
-		// z component is in canonical view volume unit
-		Vector3 WorldToScreenPoint(const Vector3& point) const;
+		/// <summary>
+		/// Transforms point from screen to world (on the near plane)
+		/// </summary>
+		Vec3 ScreenToWorldPoint(const Vec3& pix) const;
+		/// <summary>
+		/// ransforms point from world to screen.
+		/// z component is in canonical view volume unit
+		/// </summary>
+		Vec3 WorldToScreenPoint(const Vec3& point) const;
 
 		Camera& Resize(int w, int h);
 		Camera& SetFOV(float fov);
@@ -35,13 +41,19 @@ namespace TX
 		inline const Matrix4x4& ViewportToScreen() const { return viewport_screen_; }
 		inline const Matrix4x4& CameraToViewport() const { return cam_viewport_; }
 		inline const Matrix4x4& ViewportToCamera() const { return viewport_cam_; }
-		
+
 	private:
-		// Updates the camera-screen matrices
+		/// <summary>
+		/// Updates the camera-screen matrices
+		/// </summary>
 		inline void UpdateMainMatrix();
-		// Updates the camera-viewport matrices, should also call UpdateMainMatrix() after calling this
+		/// <summary>
+		/// Updates the camera-viewport matrices, should also call UpdateMainMatrix() after calling this
+		/// </summary>
 		inline void UpdateProjection();
-		// Updates the viewport-screen matrices, should also call UpdateMainMatrix() after calling this
+		/// <summary>
+		/// Updates the viewport-screen matrices, should also call UpdateMainMatrix() after calling this
+		/// </summary>
 		inline void UpdateViewport();
 
 	private:

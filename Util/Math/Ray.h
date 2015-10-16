@@ -8,8 +8,8 @@ namespace TX {
 		static const float EPSILON;
 	public:
 		Ray() : t_min(EPSILON), t_max(Math::INF){}
-		Ray(const Vector3& origin, const Vector3& vdir, float t_max = Math::INF, float t_min = EPSILON) :
-			origin(origin), dir(vdir), t_min(t_min), t_max(t_max){ dir.Normalize(); }
+		Ray(const Vec3& origin, const Vec3& vdir, float t_max = Math::INF, float t_min = EPSILON) :
+			origin(origin), dir(Math::Normalize(vdir)), t_min(t_min), t_max(t_max){}
 		Ray(const Ray& ot) :
 			origin(ot.origin), dir(ot.dir), t_min(ot.t_min), t_max(ot.t_max){}
 		~Ray(){}
@@ -17,8 +17,10 @@ namespace TX {
 		Ray& operator = (const Ray& ot);
 		bool operator ==(const Ray& ot);
 
-		// Reset the value of this ray, without normalizing direction vector.
-		inline Ray& Reset(const Vector3& origin = Vector3::ZERO, const Vector3& dir = Vector3::Z, float t_max = Math::INF, float t_min = EPSILON){
+		/// <summary>
+		/// Reset the value of this ray, without normalizing direction vector.
+		/// </summary>
+		inline Ray& Reset(const Vec3& origin = Vec3::ZERO, const Vec3& dir = Vec3::Z, float t_max = Math::INF, float t_min = EPSILON){
 			this->t_min = t_min;
 			this->t_max = t_max;
 			this->origin = origin;
@@ -26,22 +28,26 @@ namespace TX {
 			return *this;
 		}
 
-		// Sets origin,dir,t values of this ray using two points, and normalize it.
-		inline Ray& SetSegment(const Vector3& orig, const Vector3& dest, float eps_dest = EPSILON, float eps_origin = EPSILON){
+		/// <summary>
+		/// Sets origin,dir,t values of this ray using two points, and normalize it.
+		/// </summary>
+		inline Ray& SetSegment(const Vec3& orig, const Vec3& dest, float eps_dest = EPSILON, float eps_origin = EPSILON){
 			origin = orig;
 			dir = dest - orig;
 			t_min = eps_origin;
-			t_max = dir.Length();
+			t_max = Math::Length(dir);
 			dir /= t_max;
 			t_max = Math::Max(t_min, t_max - eps_dest);
 			return *this;
 		}
 
-		// The target point
-		inline Vector3 End() const { return origin + t_max * dir; }
+		/// <summary>
+		/// The target point.
+		/// </summary>
+		inline Vec3 End() const { return origin + t_max * dir; }
 	public:
-		Vector3 origin;
-		Vector3 dir;
+		Vec3 origin;
+		Vec3 dir;
 		mutable float t_min, t_max;
 	};
 

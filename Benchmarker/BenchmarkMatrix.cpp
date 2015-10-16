@@ -42,7 +42,7 @@ namespace TX
 				a = RandomMatrix(), b = RandomMatrix();
 			}
 			BM_BODY(){
-				Vector4 temp;
+				Vec4 temp;
 				for (int i = 0; i < 4; i++){
 					for (int j = 0; j < 4; j++)
 						temp[j] =

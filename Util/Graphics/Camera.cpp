@@ -12,18 +12,18 @@ namespace TX{
 	void Camera::GenerateRay(Ray *out, const CameraSample& sample) const {
 		out->Reset();
 		// construct the ray in camera space
-		out->origin = Vector3::ZERO;
+		out->origin = Vec3::ZERO;
 		// direction to the point on near plane in camera space
-		out->dir = Matrix4x4::TPoint(screen_cam_, Vector3(sample.x, sample.y, -1.f));
+		out->dir = Matrix4x4::TPoint(screen_cam_, Vec3(sample.x, sample.y, -1.f));
 		// transforms the ray to the world space
 		transform.ToWorld(*out);
 	}
 
-	Vector3 Camera::ScreenToWorldPoint(const Vector3& pix) const{
+	Vec3 Camera::ScreenToWorldPoint(const Vec3& pix) const{
 		return Matrix4x4::TPoint(transform.LocalToWorldMatrix(),
 			Matrix4x4::TPoint(screen_cam_, pix));
 	}
-	Vector3 Camera::WorldToScreenPoint(const Vector3& point) const {
+	Vec3 Camera::WorldToScreenPoint(const Vec3& point) const {
 		return Matrix4x4::TPoint(cam_screen_,
 			Matrix4x4::TPoint(transform.WorldToLocalMatrix(), point));
 	}

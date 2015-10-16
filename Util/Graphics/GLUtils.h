@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "Util.h"
+#include <GL/glew.h>
 #include "Graphics/Obj.h"
 
 namespace TX
@@ -49,9 +49,9 @@ namespace TX
 			GLuint GetUniformLoc(const char *name);
 			void SetUniform(GLuint loc, int v);
 			void SetUniform(GLuint loc, float v);
-			void SetUniform(GLuint loc, const Vector2& v);
-			void SetUniform(GLuint loc, const Vector3& v);
-			void SetUniform(GLuint loc, const Vector4& v);
+			void SetUniform(GLuint loc, const Vec2& v);
+			void SetUniform(GLuint loc, const Vec3& v);
+			void SetUniform(GLuint loc, const Vec4& v);
 			void SetUniform(GLuint loc, const Matrix3x3& v, bool transpose);
 			void SetUniform(GLuint loc, const Matrix4x4& v, bool transpose);
 			void BindAttribLoc(const char *name, GLuint index);

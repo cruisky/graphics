@@ -32,7 +32,7 @@ namespace TX
 
 	void GlyphPosMap::Recalculate(const FontMap *font, const char *text){
 		Clear();
-		Vector2 pos;
+		Vec2 pos;
 		int length = std::strlen(text);
 		map.reserve(length + 1);
 
@@ -79,7 +79,7 @@ namespace TX
 			throw "failed to open file: " + std::string(file);
 		}
 	}
-	bool FontMap::GetChar(const char *ch, Vector2& pos, Rect *rect, Rect *uv, GlyphPosMap *posMap) const {
+	bool FontMap::GetChar(const char *ch, Vec2& pos, Rect *rect, Rect *uv, GlyphPosMap *posMap) const {
 		if (*ch >= 32 && *ch < 128){
 			float left = pos.x;
 			stbtt_aligned_quad q;
@@ -103,7 +103,7 @@ namespace TX
 		}
 	}
 	float FontMap::GetWidth(char c) const {
-		Rect r; Vector2 pos;
+		Rect r; Vec2 pos;
 		if (GetChar(&c, pos, &r)){
 			return pos.x;
 		}
@@ -113,7 +113,7 @@ namespace TX
 	}
 	float FontMap::GetWidth(const char *str) const {
 		Rect r;
-		Vector2 pos;
+		Vec2 pos;
 		while (*str && GetChar(str++, pos, &r));
 		return pos.x;
 	}

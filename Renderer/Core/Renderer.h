@@ -7,7 +7,9 @@
 namespace TX {
 	class Renderer {
 	public:
-		Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor=nullptr);
+		Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor=nullptr);
+		~Renderer();
+		bool Running();
 		void Abort();
 		void NewTask();
 		void Render(int workerId, RNG& random);
@@ -18,6 +20,7 @@ namespace TX {
 		Renderer& Resize(int width, int height);
 	public:
 		shared_ptr<Scene> scene;
+		shared_ptr<Camera> camera;
 		shared_ptr<Film> film;
 	private:
 		RendererConfig config_;

@@ -9,18 +9,24 @@ namespace TX{
 		float u, v, w;
 		Sample():u(0.5f), v(0.5f), w(0.5f){}
 		Sample(RNG& rng);
-		// all values are within range [0, 1]
+		/// <summary> All values are within range [0, 1]. </summary>
 		Sample(float u, float v, float w);
 	};
 	std::ostream& operator<<(std::ostream& os, const Sample& sample);
 
-	// A sample buffer containing all samples for tracing a single ray.
+	/// <summary>
+	/// A sample buffer containing all samples for tracing a single ray.
+	/// </summary>
 	class CameraSample {
 	public:
-		// Buffer size should at least the maximum number of samples being requested
+		/// <summary>
+		/// Buffer size should be at least the maximum number of samples being requested every time.
+		/// </summary>
 		CameraSample(int bufsize);
 		CameraSample(const CameraSample& ot);
-		// Returns a pointer to an array of at least <count> samples
+		/// <summary>
+		/// Returns a pointer to an array of at least <paramref name="count"/> samples
+		/// </summary>
 		int RequestSamples(int count) const;
 		~CameraSample();
 	public:
@@ -42,7 +48,9 @@ namespace TX{
 		return f2 / (f2 + g * g);
 	}
 
-	// Just an integer
+	/// <summary>
+	/// Pointer to a sample array.
+	/// </summary>
 	class SampleOffset {
 	public:
 		SampleOffset() : offset(0){}
@@ -62,26 +70,26 @@ namespace TX{
 	};
 
 	namespace Sampling {
-		inline Vector3 UniformHemisphere(float u1, float u2){
+		inline Vec3 UniformHemisphere(float u1, float u2){
 			float r = Math::Sqrt(Math::Max(0.f, 1.f - u1 * u1));		// radius [0, 1]
-			float phi = Math::TWO_PI * u2;								// angle
-			return Vector3(r * Math::Cos(phi), r * Math::Sin(phi), u1);
+			float phi = 2.f * Math::PI * u2;								// angle
+			return Vec3(r * Math::Cos(phi), r * Math::Sin(phi), u1);
 		}
-		inline Vector3 UniformSphere(float u1, float u2){
+		inline Vec3 UniformSphere(float u1, float u2){
 			float z = 1.f - 2.f * u1;									// radius [-1, 1]
 			float r = Math::Sqrt(Math::Max(0.f, 1.f - z * z));
-			float phi = Math::TWO_PI * u2;
-			return Vector3(r * Math::Cos(phi), r * Math::Sin(phi), z);
+			float phi = 2.f * Math::PI * u2;
+			return Vec3(r * Math::Cos(phi), r * Math::Sin(phi), z);
 		}
-		inline Vector3 UniformCone(float u1, float u2, float max_costheta){
+		inline Vec3 UniformCone(float u1, float u2, float max_costheta){
 			float costheta = Math::Lerp(max_costheta, 1.0f, u1);
 			float sintheta = sqrtf(1.f - costheta * costheta);
-			float phi = Math::TWO_PI * u2;
-			return Vector3(Math::Cos(phi) * sintheta, Math::Sin(phi) * sintheta, costheta);
+			float phi = 2.f * Math::PI * u2;
+			return Vec3(Math::Cos(phi) * sintheta, Math::Sin(phi) * sintheta, costheta);
 		}
 		inline void UniformDisk(float u1, float u2, float *x, float *y){
 			float r = Math::Sqrt(u1);
-			float theta = Math::TWO_PI * u2;
+			float theta = 2.f * Math::PI * u2;
 			*x = r * Math::Cos(theta);
 			*y = r * Math::Sin(theta);
 		}
@@ -102,23 +110,23 @@ namespace TX{
 			if (a*a > b*b)	// use squares instead of absolute values
 			{
 				r = a;
-				phi = Math::QTR_PI * (b / a);
+				phi = Math::PI / 4.f * (b / a);
 			}
 			else {
 				r = b;
-				phi = Math::QTR_PI * (a / b) + Math::HALF_PI;
+				phi = Math::PI / 4.f * (a / b) + Math::PI / 2.f;
 			}
 			*u = r * Math::Cos(phi);
 			*v = r * Math::Sin(phi);
 		}
-		inline Vector3 CosineHemisphere(float u1, float u2){
-			Vector3 ret;
+		inline Vec3 CosineHemisphere(float u1, float u2){
+			Vec3 ret;
 			ConcentricDisk(u1, u2, &ret.x, &ret.y);
 			ret.z = Math::Sqrt(Math::Max(0.f, 1.f - ret.x * ret.x - ret.y * ret.y));
 			return ret;
 		}
-		inline float UniformHemispherePdf(){ return Math::TWO_PI_RCP; }
-		inline float UniformSpherePdf(){ return Math::FOUR_PI_RCP; }
+		inline float UniformHemispherePdf(){ return Math::PI_RCP * 0.5f; }
+		inline float UniformSpherePdf(){ return Math::PI_RCP * 0.25f; }
 		inline float CosineHemispherePdf(float costheta, float phi){
 			return costheta * Math::PI_RCP;
 		}

@@ -1,220 +1,360 @@
 #pragma once
 
 #include <iostream>
-#include "MathUtil.h"
+#include "Base.h"
 
 namespace TX
 {
-	class Vector2 {
+	template<size_t N, typename T>
+	class Vec {
+	public:
+		T v[N];
+
+		inline Vec(){}
+		explicit inline Vec(const T& val){ for (auto i = 0; i < N; i++) v[i] = val; }
+		inline Vec(const Vec& ot){ this->operator=(rhs); }
+		inline Vec& operator = (const Vec& rhs){
+			for (auto i = 0; i < N; i++)
+				v[i] = rhs[i];
+			return *this;
+		}
+		template<typename U> inline Vec(const Vec<N, U>& ot){ this->operator=<U>(ot); }
+		template<typename U> inline Vec& operator = (const Vec<N, U>& ot){
+			for (auto i = 0; i < N; i++)
+				v[i] = T(ot[i]);
+			return *this;
+		}
+		inline const T& operator [] (const size_t i) const { assert(i < N); return v[i]; }
+		inline       T& operator [] (const size_t i)       { assert(i < N); return v[i]; }
+		inline explicit operator const T*() const { return v; }
+		inline explicit operator       T*()       { return v; }
+		inline bool operator == (const Vec& rhs) const {
+			for (auto i = 0; i < N; i++)
+				if (v[i] != rhs[i])
+					return false;
+			return true;
+		}
+	};
+	template<size_t N, typename T>
+	inline std::ostream& operator << (std::ostream& os, const Vec<N, T>& v){
+		os << "(";
+		for (auto i = 0; i < N - 1; i++)
+			os << v[i] << ", ";
+		return os << v[N-1] << ")";
+	}
+
+
+	template <typename T>
+	class Vec <2, T> {
 	public:
 		union{
-			struct { float x, y; };
-			struct { float u, v; };
-			float f[2];
+			struct { T x, y; };
+			struct { T u, v; };
+			T data[2];
 		};
-		static const Vector2 X;
-		static const Vector2 Y;
-		static const Vector2 Z;
-		static const Vector2 UNIT[2];
-		static const Vector2 ZERO;
-		static const Vector2 ONE;
+		static const Vec ZERO;
+		static const Vec ONE;
+		static const Vec X;
+		static const Vec Y;
+		static const Vec UNIT[2];
 	public:
-		__forceinline Vector2() : x(0.f), y(0.f){}
-		__forceinline Vector2(const Vector2& ot) : x(ot.x), y(ot.y){}
-		__forceinline Vector2(float v) : x(v), y(v){}
-		__forceinline Vector2(float x, float y) : x(x), y(y){}
-		__forceinline Vector2& operator = (const Vector2& ot){ x = ot.x; y = ot.y; return *this; }
+		inline Vec() : x(Math::ZERO), y(Math::ZERO){}
+		inline Vec(const Vec& ot) : x(ot.x), y(ot.y){}
+		explicit inline Vec(T val) : x(val), y(val){}
+		inline Vec(T x, T y) : x(x), y(y){}
+		inline Vec& operator = (const Vec& ot) { x = ot.x, y = ot.y; return *this; }
+		template<typename U>
+		inline Vec(const Vec<2, U>& ot) : x(T(ot.x)), y(T(ot.y)){}
+		template<typename U>
+		inline Vec& operator = (const Vec<2, U>& ot){ x = T(ot.x), y = T(ot.y); return *this; }
 
-		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
-		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
+		inline const T& operator [] (const size_t i) const { return data[i]; }
+		inline       T& operator [] (const size_t i)       { return data[i]; }
 
-		__forceinline explicit operator const float*() const { return f; }
-		__forceinline explicit operator		  float*()       { return f; }
+		inline explicit operator const T*() const { return data; }
+		inline explicit operator       T*()       { return data; }
 
-		__forceinline bool operator == (const Vector2& ot) const { return x == ot.x && y == ot.y; }
-		__forceinline bool operator != (const Vector2& ot) const { return x != ot.x || y != ot.y; }
-		__forceinline bool operator > (const Vector2& ot) const { return x > ot.x && y > ot.y; }
-		__forceinline bool operator >= (const Vector2& ot) const { return x >= ot.x && y >= ot.y; }
-		__forceinline bool operator < (const Vector2& ot) const { return x < ot.x && y < ot.y; }
-		__forceinline bool operator <= (const Vector2& ot) const { return x <= ot.x && y <= ot.y; }
+		inline bool operator == (const Vec& ot) const { return x == ot.x && y == ot.y; }
+		inline bool operator != (const Vec& ot) const { return x != ot.x || y != ot.y; }
+		inline bool operator < (const Vec& ot) const { return x < ot.x && y < ot.y; }
+		inline bool operator > (const Vec& ot) const { return x > ot.x && y > ot.y; }
+		inline bool operator <= (const Vec& ot) const { return x <= ot.x && y <= ot.y; }
+		inline bool operator >= (const Vec& ot) const { return x >= ot.x && y >= ot.y; }
 
-		__forceinline Vector2 operator + () const { return Vector2(+x, +y); }
-		__forceinline Vector2 operator - () const { return Vector2(-x, -y); }
-		__forceinline Vector2 operator + (const Vector2& ot) const { return Vector2(x + ot.x, y + ot.y); }
-		__forceinline Vector2 operator - (const Vector2& ot) const { return Vector2(x - ot.x, y - ot.y); }
-		__forceinline Vector2 operator * (const Vector2& ot) const { return Vector2(x * ot.x, y * ot.y); }
-		__forceinline Vector2 operator / (const Vector2& ot) const { return Vector2(x / ot.x, y / ot.y); }
+		inline Vec operator + () const { return Vec(+x, +y); }
+		inline Vec operator - () const { return Vec(-x, -y); }
+		inline Vec operator + (T s) const { return Vec(x + s, y + s); }
+		inline Vec operator + (const Vec& ot) const { return Vec(x + ot.x, y + ot.y); }
+		inline Vec operator - (T s) const { return Vec(x - s, y - s); }
+		inline Vec operator - (const Vec& ot) const { return Vec(x - ot.x, y - ot.y); }
+		inline Vec operator * (T s) const { return Vec(x * s, y * s); }
+		inline Vec operator * (const Vec& ot) const { return Vec(x * ot.x, y * ot.y); }
+		inline Vec operator / (T s) const { return operator*(T(Math::ONE) / s); }
+		inline Vec operator / (const Vec& ot) const { return Vec(x / ot.x, y / ot.y); }
 
-		__forceinline const Vector2& operator += (const Vector2& ot) { x += ot.x; y += ot.y; return *this; }
-		__forceinline const Vector2& operator -= (const Vector2& ot) { x -= ot.x; y -= ot.y; return *this; }
-		__forceinline const Vector2& operator *= (const Vector2& ot) { x *= ot.x; y *= ot.y; return *this; }
-		__forceinline const Vector2& operator /= (const Vector2& ot) { x /= ot.x; y /= ot.y; return *this; }
-	
-		__forceinline float LengthSqr() const;
-		__forceinline float Length() const;
-		__forceinline Vector2& Normalize();
+		inline const Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; return *this; }
+		inline const Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; return *this; }
+		inline const Vec& operator *= (T s) { x *= s; y *= s; return *this; }
+		inline const Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; return *this; }
+		inline const Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline const Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; return *this; }
 	};
-	__forceinline std::ostream& operator << (std::ostream& os, const Vector2& v)
-	{
-		return os << "(" << v.x << ", " << v.y << ")";
-	}
-	__forceinline float Dot(const Vector2& u, const Vector2& v){ return u.x * v.x + u.y * v.y; }
-	__forceinline float AbsDot(const Vector2& u, const Vector2& v){ return Math::Abs(Dot(u, v)); }
-	__forceinline Vector2 Normalized(const Vector2& v) { return v * Math::Rsqrt(v.LengthSqr()); }
-	__forceinline float Vector2::LengthSqr() const { return Dot(*this, *this); }
-	__forceinline float Vector2::Length() const { return Math::Sqrt(LengthSqr()); }
-	__forceinline Vector2& Vector2::Normalize() { (*this) *= Math::Rsqrt(LengthSqr()); return *this; }
 
+	template <typename T> const Vec<2, T> Vec<2, T>::ZERO(Math::ZERO);
+	template <typename T> const Vec<2, T> Vec<2, T>::ONE(Math::ONE);
+	template <typename T> const Vec<2, T> Vec<2, T>::X(Math::ONE, Math::ZERO);
+	template <typename T> const Vec<2, T> Vec<2, T>::Y(Math::ZERO, Math::ONE);
+	template <typename T> const Vec<2, T> Vec<2, T>::UNIT[2] = {
+		Vec<2, T>(Math::ONE, Math::ZERO),
+		Vec<2, T>(Math::ZERO, Math::ONE)
+	};
+
+	template <typename T>
+	inline std::ostream& operator << (std::ostream& os, const Vec<2, T>& v){ return os << "(" << v.x << ", " << v.y << ")"; }
+	template <typename T>
+	inline Vec<2, T> operator * (T s, const Vec<2, T>& v) { return v * s; }
 
 	namespace Math {
-		inline auto Min(const Vector2& v1, const Vector2& v2) -> decltype(v1 + v2) { return Vector2(Math::Min(v1.x, v2.x), Math::Min(v1.y, v2.y)); }
-		inline auto Max(const Vector2& v1, const Vector2& v2) -> decltype(v1 + v2) { return Vector2(Math::Max(v1.x, v2.x), Math::Max(v1.y, v2.y)); }
+		template <typename T>
+		inline Vec<2, T> Abs(const Vec<2, T>& v) { return Vec4(Abs(v.x), Abs(v.y)); }
+		template <typename T>
+		inline T Dot(const Vec<2, T>& u, const Vec<2, T>& v) { return u.x * v.x + u.y * v.y; }
+		template <typename T>
+		inline T AbsDot(const Vec<2, T>& u, const Vec<2, T>& v) { return Abs(Dot(u, v)); }
+		template <typename T>
+		inline T LengthSqr(const Vec<2, T>& v) { return Dot(v, v); }
+		template <typename T>
+		inline float Length(const Vec<2, T>& v) { return Sqrt(LengthSqr(v)); }
+		template <typename T>
+		inline T DistSqr(const Vec<2, T>& u, const Vec<2, T>& v){ return LengthSqr(u - v); }
+		template <typename T>
+		inline float Dist(const Vec<2, T>& u, const Vec<2, T>& v){ return Length(u - v); }
+		template <typename T>
+		inline Vec<2, T> Normalize(const Vec<2, T>& v) { return v * Rsqrt(LengthSqr(v)); }
+		template <typename T>
+		inline Vec<2, T> Min(const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Min(v1.x, v2.x), Min(v1.y, v2.y)); }
+		template <typename T>
+		inline Vec<2, T> Max(const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Max(v1.x, v2.x), Max(v1.y, v2.y)); }
+		template <typename T>
+		inline Vec<2, T> Lerp(float t, const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y)); }
 	}
 
-	class Vector3 {
+	typedef Vec<2, float> Vec2;
+	typedef Vec<2, int> Vec2i;
+
+	template <typename T>
+	class Vec <3, T> {
 	public:
 		union{
-			struct{ float x, y, z; };
-			float f[3];
+			struct{ T x, y, z; };
+			T data[3];
 		};
-		static const Vector3 X;
-		static const Vector3 Y;
-		static const Vector3 Z;
-		static const Vector3 UNIT[3];
-		static const Vector3 ZERO;
-		static const Vector3 ONE;
-		static const Vector3 PI;
-		static const Vector3 QTR_PI;
-		static const Vector3 HALF_PI;
-		static const Vector3 TWO_PI;
-		static const Vector3 FOUR_PI;
-		static const Vector3 PI_RCP;
-		static const Vector3 HALF_PI_RCP;
-		static const Vector3 TWO_PI_RCP;
-		static const Vector3 FOUR_PI_RCP;
+		static const Vec X;
+		static const Vec Y;
+		static const Vec Z;
+		static const Vec UNIT[3];
+		static const Vec ZERO;
+		static const Vec ONE;
+		static const Vec PI;
+		static const Vec PI_RCP;
+		static const Vec BACK;
+		static const Vec DOWN;
+		static const Vec FORWARD;
+		static const Vec LEFT;
+		static const Vec RIGHT;
+		static const Vec UP;
 	public:
-		__forceinline Vector3() : x(0.f), y(0.f), z(0.f){}
-		__forceinline Vector3(float f) : x(f), y(f), z(f){}
-		__forceinline Vector3(float x, float y, float z) : x(x), y(y), z(z){}
-		__forceinline Vector3(const Vector3& ot) : x(ot.x), y(ot.y), z(ot.z){}
+		inline Vec() : x(Math::ZERO), y(Math::ZERO), z(Math::ZERO){}
+		explicit inline Vec(T val) : x(val), y(val), z(val){}
+		inline Vec(T x, T y, T z) : x(x), y(y), z(z){}
+		inline Vec(const Vec& ot) : x(ot.x), y(ot.y), z(ot.z){}
+		inline Vec& operator = (const Vec& ot) { x = ot.x, y = ot.y, z = ot.z; return *this; }
+		template<typename U>
+		inline Vec(const Vec<3, U>& ot) : x(T(ot.x)), y(T(ot.y)), z(T(ot.z)) {}
+		template<typename U>
+		inline Vec& operator = (const Vec<3, U>& ot) { x = T(ot.x), y = T(ot.y), z = T(ot.z); return *this; }
 
-		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
-		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
+		inline const T& operator [] (const size_t i) const { return data[i]; }
+		inline		 T& operator [] (const size_t i)	   { return data[i]; }
 
-		__forceinline explicit operator const float*() const { return f; }
-		__forceinline explicit operator		  float*()       { return f; }
+		inline explicit operator const T*() const { return data; }
+		inline explicit operator	   T*()       { return data; }
 
-		__forceinline bool operator == (const Vector3& ot) const { return x == ot.x && y == ot.y && z == ot.z; }
-		__forceinline bool operator != (const Vector3& ot) const { return x != ot.x || y != ot.y || z != ot.z; }
+		inline bool operator == (const Vec& ot) const { return x == ot.x && y == ot.y && z == ot.z; }
+		inline bool operator != (const Vec& ot) const { return x != ot.x || y != ot.y || z != ot.z; }
 
-		__forceinline Vector3& operator = (const Vector3& ot){ x = ot.x; y = ot.y; z = ot.z; return *this; }
-		__forceinline Vector3 operator + () const { return Vector3(+x, +y, +z); }
-		__forceinline Vector3 operator - () const { return Vector3(-x, -y, -z); }
-
-		__forceinline Vector3 operator + (const Vector3& ot) const { return Vector3(x + ot.x, y + ot.y, z + ot.z); }
-		__forceinline Vector3 operator - (const Vector3& ot) const { return Vector3(x - ot.x, y - ot.y, z - ot.z); }
-		__forceinline Vector3 operator * (const Vector3& ot) const { return Vector3(x * ot.x, y * ot.y, z * ot.z); }
-		__forceinline Vector3 operator * (float s) const { return Vector3(x * s, y * s, z * s); }
-		__forceinline Vector3 operator / (const Vector3& ot) const { return Vector3(x / ot.x, y / ot.y, z / ot.z); }
-		__forceinline Vector3 operator / (float d) const { return Vector3(x / d, y / d, z / d); }
-		__forceinline const Vector3& operator += (const Vector3& ot) { x += ot.x; y += ot.y; z += ot.z; return *this; }
-		__forceinline const Vector3& operator -= (const Vector3& ot) { x -= ot.x; y -= ot.y; z -= ot.z; return *this; }
-		__forceinline const Vector3& operator *= (const Vector3& ot) { x *= ot.x; y *= ot.y; z *= ot.z; return *this; }
-		__forceinline const Vector3& operator *= (float s) { x *= s; y *= s; z *= s; return *this; }
-		__forceinline const Vector3& operator /= (const Vector3& ot) { x /= ot.x; y /= ot.y; z /= ot.z; return *this; }
-		__forceinline const Vector3& operator /= (float d) { x /= d; y /= d; z /= d; return *this; }
-
-		__forceinline float LengthSqr() const;
-		__forceinline float Length() const;
-		__forceinline Vector3& Normalize();
-
+		inline Vec operator + () const { return Vec(+x, +y, +z); }
+		inline Vec operator - () const { return Vec(-x, -y, -z); }
+		inline Vec operator + (const Vec& ot) const { return Vec(x + ot.x, y + ot.y, z + ot.z); }
+		inline Vec operator - (const Vec& ot) const { return Vec(x - ot.x, y - ot.y, z - ot.z); }
+		inline Vec operator * (T s) const { return Vec(x * s, y * s, z * s); }
+		inline Vec operator * (const Vec& ot) const { return Vec(x * ot.x, y * ot.y, z * ot.z); }
+		inline Vec operator / (T s) const { return operator*(T(Math::ONE) / s); }
+		inline Vec operator / (const Vec& ot) const { return Vec(x / ot.x, y / ot.y, z / ot.z); }
+		inline const Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; z += ot.z; return *this; }
+		inline const Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; z -= ot.z; return *this; }
+		inline const Vec& operator *= (T s) { x *= s; y *= s; z *= s; return *this; }
+		inline const Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; z *= ot.z; return *this; }
+		inline const Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline const Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; z /= ot.z; return *this; }
 	};
-	__forceinline std::ostream& operator << (std::ostream& os, const Vector3& v)
-	{
-		return os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+
+	template <typename T> const Vec<3, T> Vec<3, T>::ZERO(Math::ZERO);
+	template <typename T> const Vec<3, T> Vec<3, T>::ONE(Math::ONE);
+	template <typename T> const Vec<3, T> Vec<3, T>::X(Math::ONE, Math::ZERO, Math::ZERO);
+	template <typename T> const Vec<3, T> Vec<3, T>::Y(Math::ZERO, Math::ONE, Math::ZERO);
+	template <typename T> const Vec<3, T> Vec<3, T>::Z(Math::ZERO, Math::ZERO, Math::ONE);
+	template <typename T> const Vec<3, T> Vec<3, T>::UNIT[3] = {
+		Vec<3, T>(Math::ONE, Math::ZERO, Math::ZERO),
+		Vec<3, T>(Math::ZERO, Math::ONE, Math::ZERO),
+		Vec<3, T>(Math::ZERO, Math::ZERO, Math::ONE)
+	};
+	template <typename T> const Vec<3, T> Vec<3, T>::BACK(Math::ZERO, Math::ZERO, Math::ONE);
+	template <typename T> const Vec<3, T> Vec<3, T>::FORWARD(Math::ZERO, Math::ZERO, -T(Math::ONE));
+	template <typename T> const Vec<3, T> Vec<3, T>::LEFT(-T(Math::ONE), Math::ZERO, Math::ZERO);
+	template <typename T> const Vec<3, T> Vec<3, T>::RIGHT(Math::ONE, Math::ZERO, Math::ZERO);
+	template <typename T> const Vec<3, T> Vec<3, T>::DOWN(Math::ZERO, -T(Math::ONE), Math::ZERO);
+	template <typename T> const Vec<3, T> Vec<3, T>::UP(Math::ZERO, Math::ONE, Math::ZERO);
+
+	template <typename T>
+	inline std::ostream& operator << (std::ostream& os, const Vec<3, T>& v){ return os << "(" << v.x << ", " << v.y << ", " << v.z << ")"; }
+	template <typename T>
+	inline Vec<3, T> operator * (const T& s, const Vec<3, T>& v) { return v * s; }
+
+	namespace Math {
+		template <typename T>
+		inline Vec<3, T> Abs(const Vec<3, T>& v) { return Vec4(Abs(v.x), Abs(v.y), Abs(v.z)); }
+		template <typename T>
+		inline Vec<3, T> Cross(const Vec<3, T>& lhs, const Vec<3, T>& rhs) {
+			return Vec3(
+				lhs.y * rhs.z - lhs.z * rhs.y,
+				lhs.z * rhs.x - lhs.x * rhs.z,
+				lhs.x * rhs.y - lhs.y * rhs.x);
+		}
+		template <typename T>
+		inline T Dot(const Vec<3, T>& u, const Vec<3, T>& v) { return u.x * v.x + u.y * v.y + u.z * v.z; }
+		template <typename T>
+		inline T AbsDot(const Vec<3, T>& u, const Vec<3, T>& v) { return Abs(Dot(u, v)); }
+		template <typename T>
+		inline T LengthSqr(const Vec<3, T>& v) { return Dot(v, v); }
+		template <typename T>
+		inline float Length(const Vec<3, T>& v) { return Sqrt(LengthSqr(v)); }
+		template <typename T>
+		inline T DistSqr(const Vec<3, T>& u, const Vec<3, T>& v) { return LengthSqr(u - v); }
+		template <typename T>
+		inline float Dist(const Vec<3, T>& u, const Vec<3, T>& v) { return Length(u - v); }
+		template <typename T>
+		inline Vec<3, T> Normalize(const Vec<3, T>& v) { return v * Rsqrt(LengthSqr(v)); }
+		template <typename T>
+		inline Vec<3, T> Min(const Vec<3, T>& v1, const Vec<3, T>& v2) { return Vec<3, T>(Min(v1.x, v2.x), Min(v1.y, v2.y), Min(v1.z, v2.z)); }
+		template <typename T>
+		inline Vec<3, T> Max(const Vec<3, T>& v1, const Vec<3, T>& v2) { return Vec<3, T>(Max(v1.x, v2.x), Max(v1.y, v2.y), Max(v1.z, v2.z)); }
+		template <typename T>
+		inline Vec<3, T> ToRad(const Vec<3, T>& v) { return Vec<3, T>(ToRad(v.x), ToRad(v.y), ToRad(v.z)); }
+		template <typename T>
+		inline Vec<3, T> ToDeg(const Vec<3, T>& v) { return Vec<3, T>(ToDeg(v.x), ToDeg(v.y), ToDeg(v.z)); }
+		template <typename T>
+		inline Vec<3, T> Lerp(float t, const Vec<3, T>& v1, const Vec<3, T>& v2) { return Vec<3, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y), Lerp(t, v1.z, v2.z)); }
 	}
-	__forceinline Vector3 operator * (float s, const Vector3& v) { return v * s; }
 
-	__forceinline float Dot(const Vector3& u, const Vector3& v){ return u.x * v.x + u.y*v.y + u.z*v.z; }
-	__forceinline float AbsDot(const Vector3& u, const Vector3& v){ return Math::Abs(Dot(u, v)); }
-	__forceinline Vector3 Normalized(const Vector3& v) { return v * Math::Rsqrt(v.LengthSqr()); }
-	__forceinline Vector3 Cross(const Vector3& u, const Vector3& v){
-		return Vector3(
-			u.y * v.z - u.z * v.y,
-			u.z * v.x - u.x * v.z,
-			u.x * v.y - u.y * v.x);
-	}
-	__forceinline float Vector3::LengthSqr() const { return Dot(*this, *this); }
-	__forceinline float Vector3::Length() const { return Math::Sqrt(LengthSqr()); }
-	__forceinline Vector3& Vector3::Normalize() { (*this) *= Math::Rsqrt(LengthSqr()); return *this; }
+	typedef Vec<3, float> Vec3;
+	typedef Vec<3, int> Vec3i;
 
-
-	class Vector4 {
+	template <typename T>
+	class Vec <4, T> {
 	public:
 		union{
-			struct { float x, y, z, w; };
-			float f[4];
+			struct { T x, y, z, w; };
+			T data[4];
 		};
-		static const Vector4 X;
-		static const Vector4 Y;
-		static const Vector4 Z;
-		static const Vector4 W;
-		static const Vector4 UNIT[4];
-		static const Vector4 ZERO;
-		static const Vector4 ONE;
-		static const Vector4 PI;
-		static const Vector4 QTR_PI;
-		static const Vector4 HALF_PI;
-		static const Vector4 TWO_PI;
-		static const Vector4 FOUR_PI;
-		static const Vector4 PI_RCP;
-		static const Vector4 HALF_PI_RCP;
-		static const Vector4 TWO_PI_RCP;
-		static const Vector4 FOUR_PI_RCP;
+		static const Vec X;
+		static const Vec Y;
+		static const Vec Z;
+		static const Vec W;
+		static const Vec UNIT[4];
+		static const Vec ZERO;
+		static const Vec ONE;
+		static const Vec PI;
+		static const Vec PI_RCP;
 	public:
-		__forceinline Vector4() : x(0.f), y(0.f), z(0.f), w(0.f){}
-		__forceinline Vector4(float f) : x(f), y(f), z(f), w(f){}
-		__forceinline Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w){}
-		__forceinline Vector4(const float *arr) : x(arr[0]), y(arr[1]), z(arr[2]), w(arr[3]){}
-		__forceinline Vector4(const Vector4& ot) : x(ot.x), y(ot.y), z(ot.z), w(ot.w){}
+		inline Vec() : x(Math::ZERO), y(Math::ZERO), z(Math::ZERO), w(Math::ZERO){}
+		explicit inline Vec(T val) : x(val), y(val), z(val), w(val){}
+		inline Vec(T x, T y, T z, T w) : x(x), y(y), z(z), w(w){}
+		inline Vec(const T *arr) : x(arr[0]), y(arr[1]), z(arr[2]), w(arr[3]){}
+		inline Vec(const Vec& ot) : x(ot.x), y(ot.y), z(ot.z), w(ot.w){}
+		inline Vec& operator = (const Vec& ot) { x = ot.x, y = ot.y, z = ot.z, w = ot.w; return *this; }
+		template<typename U>
+		inline Vec(const Vec<4, U>& ot) : x(T(ot.x)), y(T(ot.y)), z(T(ot.z)), w(T(ot.w)) {}
+		template<typename U>
+		inline Vec& operator = (const Vec<4, U>& ot) { x = T(ot.x), y = T(ot.y), z = T(ot.z), w = T(ot.w); return *this; }
 
-		__forceinline const float& operator [] (const size_t i) const { return f[i]; }
-		__forceinline		float& operator [] (const size_t i)		  { return f[i]; }
-		
-		__forceinline explicit operator const float*() const { return f; }
-		__forceinline explicit operator float*()       { return f; }
+		inline const T& operator [] (const size_t i) const { return data[i]; }
+		inline		 T& operator [] (const size_t i)	   { return data[i]; }
 
-		__forceinline bool operator == (const Vector4& ot) const { return x == ot.x && y == ot.y && z == ot.z && w == ot.w; }
-		__forceinline bool operator != (const Vector4& ot) const { return x != ot.x || y != ot.y || z != ot.z || w != ot.w; }
+		inline explicit operator const T*() const { return data; }
+		inline explicit operator       T*()       { return data; }
 
-		__forceinline Vector4& operator = (const Vector4& ot){ x = ot.x; y = ot.y; z = ot.z; w = ot.w; return *this; }
-		__forceinline const Vector4 operator + () const { return Vector4(+x, +y, +z, +w); }
-		__forceinline const Vector4 operator - () const { return Vector4(-x, -y, -z, -w); }
+		inline bool operator == (const Vec& ot) const { return x == ot.x && y == ot.y && z == ot.z && w == ot.w; }
+		inline bool operator != (const Vec& ot) const { return x != ot.x || y != ot.y || z != ot.z || w != ot.w; }
 
-		__forceinline const Vector4 operator + (const Vector4& ot) const { return Vector4(x + ot.x, y + ot.y, z + ot.z, w + ot.w); }
-		__forceinline const Vector4 operator - (const Vector4& ot) const { return Vector4(x - ot.x, y - ot.y, z - ot.z, w - ot.w); }
-		__forceinline const Vector4 operator * (const Vector4& ot) const { return Vector4(x * ot.x, y * ot.y, z * ot.z, w * ot.w); }
-		__forceinline const Vector4 operator * (float s) const { return Vector4(x * s, y * s, z * s, w * s); }
-		__forceinline const Vector4 operator / (const Vector4& ot) const { return Vector4(x / ot.x, y / ot.y, z / ot.z, w / ot.w); }
-		__forceinline const Vector4 operator / (float d) const { return Vector4(x / d, y / d, z / d, w / d); }
-		__forceinline Vector4& operator += (const Vector4& ot) { x += ot.x; y += ot.y; z += ot.z; w += ot.w; return *this; }
-		__forceinline Vector4& operator -= (const Vector4& ot) { x -= ot.x; y -= ot.y; z -= ot.z; w -= ot.w; return *this; }
-		__forceinline Vector4& operator *= (const Vector4& ot) { x *= ot.x; y *= ot.y; z *= ot.z; w *= ot.w; return *this; }
-		__forceinline Vector4& operator *= (float s) { x *= s; y *= s; z *= s; w *= s; return *this; }
-		__forceinline Vector4& operator /= (const Vector4& ot) { x /= ot.x; y /= ot.y; z /= ot.z; w /= ot.w; return *this; }
-		__forceinline Vector4& operator /= (float d) { x /= d; y /= d; z /= d; z /= d; return *this; }
-
-		__forceinline float LengthSqr() const;
-		__forceinline float Length() const;
+		inline const Vec operator + () const { return Vec(+x, +y, +z, +w); }
+		inline const Vec operator - () const { return Vec(-x, -y, -z, -w); }
+		inline const Vec operator + (const Vec& ot) const { return Vec(x + ot.x, y + ot.y, z + ot.z, w + ot.w); }
+		inline const Vec operator - (const Vec& ot) const { return Vec(x - ot.x, y - ot.y, z - ot.z, w - ot.w); }
+		inline const Vec operator * (T s) const { return Vec(x * s, y * s, z * s, w * s); }
+		inline const Vec operator * (const Vec& ot) const { return Vec(x * ot.x, y * ot.y, z * ot.z, w * ot.w); }
+		inline const Vec operator / (T s) const { return operator*(T(Math::ONE) / s); }
+		inline const Vec operator / (const Vec& ot) const { return Vec(x / ot.x, y / ot.y, z / ot.z, w / ot.w); }
+		inline Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; z += ot.z; w += ot.w; return *this; }
+		inline Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; z -= ot.z; w -= ot.w; return *this; }
+		inline Vec& operator *= (T s) { x *= s; y *= s; z *= s; w *= s; return *this; }
+		inline Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; z *= ot.z; w *= ot.w; return *this; }
+		inline Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; z /= ot.z; w /= ot.w; return *this; }
 	};
-	__forceinline std::ostream& operator << (std::ostream& os, const Vector4& v)
-	{
-		return os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
-	}
-	__forceinline Vector4 operator * (float s, const Vector4& v) { return v * s; }
+	template <typename T>
+	inline std::ostream& operator << (std::ostream& os, const Vec<4, T>& v)	{ return os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")"; }
+	template <typename T>
+	inline Vec<4, T> operator * (T s, const Vec<4, T>& v) { return v * s; }
 
-	__forceinline float Dot(const Vector4& u, const Vector4& v){ return u.x * v.x + u.y * v.y + u.z * v.z + u.w * v.w; }
-	__forceinline float AbsDot(const Vector4& u, const Vector4& v){ return Math::Abs(Dot(u, v)); }
-	__forceinline float Vector4::LengthSqr() const { return Dot(*this, *this); }
-	__forceinline float Vector4::Length() const { return Math::Sqrt(LengthSqr()); }
+	template <typename T> const Vec<4, T> Vec<4, T>::ZERO(Math::ZERO);
+	template <typename T> const Vec<4, T> Vec<4, T>::ONE(Math::ONE);
+	template <typename T> const Vec<4, T> Vec<4, T>::X(Math::ONE, Math::ZERO, Math::ZERO, Math::ZERO);
+	template <typename T> const Vec<4, T> Vec<4, T>::Y(Math::ZERO, Math::ONE, Math::ZERO, Math::ZERO);
+	template <typename T> const Vec<4, T> Vec<4, T>::Z(Math::ZERO, Math::ZERO, Math::ONE, Math::ZERO);
+	template <typename T> const Vec<4, T> Vec<4, T>::W(Math::ZERO, Math::ZERO, Math::ZERO, Math::ONE);
+	template <typename T> const Vec<4, T> Vec<4, T>::UNIT[4] = {
+		Vec<4, T>(Math::ONE, Math::ZERO, Math::ZERO, Math::ZERO),
+		Vec<4, T>(Math::ZERO, Math::ONE, Math::ZERO, Math::ZERO),
+		Vec<4, T>(Math::ZERO, Math::ZERO, Math::ONE, Math::ZERO),
+		Vec<4, T>(Math::ZERO, Math::ZERO, Math::ZERO, Math::ONE)
+	};
+
+	namespace Math {
+		template <typename T>
+		inline Vec<4, T> Abs(const Vec<4, T>& v) { return Vec4(Abs(v.x), Abs(v.y), Abs(v.z), Abs(v.w)); }
+		template <typename T>
+		inline T Dot(const Vec<4, T>& u, const Vec<4, T>& v) { return u.x * v.x + u.y * v.y + u.z * v.z + u.w * v.w; }
+		template <typename T>
+		inline T AbsDot(const Vec<4, T>& u, const Vec<4, T>& v) { return Abs(Dot(u, v)); }
+		template <typename T>
+		inline T LengthSqr(const Vec<4, T>& v) { return Dot(v, v); }
+		template <typename T>
+		inline float Length(const Vec<4, T>& v) { return Sqrt(LengthSqr(v)); }
+		template <typename T>
+		inline T DistSqr(const Vec<4, T>& u, const Vec<4, T>& v) { return LengthSqr(u - v); }
+		template <typename T>
+		inline float Dist(const Vec<4, T>& u, const Vec<4, T>& v) { return Length(u - v); }
+		template <typename T>
+		inline Vec<4, T> Normalize(const Vec<4, T>& v) { return v * Rsqrt(LengthSqr(v)); }
+		template <typename T>
+		inline Vec<4, T> Min(const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Min(v1.x, v2.x), Min(v1.y, v2.y), Min(v1.z, v2.z), Min(v1.w, v2.w)); }
+		template <typename T>
+		inline Vec<4, T> Max(const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Max(v1.x, v2.x), Max(v1.y, v2.y), Max(v1.z, v2.z), Max(v1.w, v2.w)); }
+		template <typename T>
+		inline Vec<4, T> Lerp(float t, const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y), Lerp(t, v1.z, v2.z), Lerp(t, v1.w, v2.w)); }
+	}
+
+	typedef Vec<4, float> Vec4;
+	typedef Vec<4, int> Vec4i;
 }
