@@ -1,4 +1,4 @@
-﻿#include "UtilStdAfx.h"
+#include "UtilStdAfx.h"
 #include "System/Application.h"
 #include <thread>
 #include <chrono>
@@ -71,7 +71,7 @@ namespace TX
 		const char *		Application::GetVersion(){ return (const char *)glGetString(GL_VERSION); }
 		float				Application::GetTime() { return (float)glfwGetTime(); }
 		float				Application::GetDeltaTime() { return deltaTime; };
-		float				Application::GetFrameRate() { return 1 / deltaTime; }
+		float				Application::GetFrameRate() { return fps; }
 		void				Application::GetCursorPos(float *x, float *y){ double dx, dy; glfwGetCursorPos(window, &dx, &dy); *x = float(dx); *y = float(dy); }
 		void				Application::Refresh(){ glfwPostEmptyEvent(); }
 		bool				Application::IsWindowVisible(){ return glfwGetWindowAttrib(window, GLFW_VISIBLE); }
@@ -107,19 +107,30 @@ namespace TX
 		void Application::GLFWWindowPos(GLFWwindow *window, int x, int y) { This(window)->OnWindowPos(x, y); }
 		void Application::GLFWWindowIconify(GLFWwindow *window, int iconified) { This(window)->OnWindowMinimize(); }
 		void Application::GLFWError(int error, const char* desc){
-			std::cout << "GLFWError " << error << ": " << desc << std::endl;
+			std::cerr << "GLFWError " << error << ": " << desc << std::endl;
 		}
 
 		void Application::FrameStart() {
 			float now = GetTime();
 			deltaTime = now - frameStart;
+			fps = Math::Lerp(0.95f, 1.f / deltaTime, fps);
 			frameStart = now;
+			//glfwSetWindowTitle(window, (config.title + '[' + std::to_string(int(GetFrameRate())) + ']').c_str());
 		}
 
 		void Application::FrameEnd() {
-			frameEnd = GetTime();
-			int waitTime = int((frameStart + 1 / config.fps - frameEnd) * 1000);
-			std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
+			float now = GetTime();
+			frameEnd = now;
+
+			// limit fps
+			float deadLine = frameStart + 1.f / config.fps;
+			while (deadLine > now) {
+				float waitTime = (deadLine - now) * 0.6f;
+				if (waitTime > 0.005f) {
+					std::this_thread::sleep_for(std::chrono::milliseconds(int(waitTime * 1000)));
+				}
+				now = GetTime();
+			}
 		}
 	}
 }

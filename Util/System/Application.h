@@ -80,6 +80,7 @@ namespace TX{
 			float frameStart;
 			float frameEnd;
 			float deltaTime;
+			float fps;
 		};
 	}
 }
