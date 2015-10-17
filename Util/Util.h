@@ -41,6 +41,14 @@ namespace TX
 	class Sample; class CameraSample;
 	class Sampler;
 
+	template<size_t N, typename T> class Vec;
+	typedef Vec<2, float> Vec2;
+	typedef Vec<2, int> Vec2i;
+	typedef Vec<3, float> Vec3;
+	typedef Vec<3, int> Vec3i;
+	typedef Vec<4, float> Vec4;
+	typedef Vec<4, int> Vec4i;
+
 	// SSE
 	namespace SSE{
 		struct V4Bool;

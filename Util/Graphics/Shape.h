@@ -24,7 +24,7 @@ namespace TX {
 		/// <summary>
 		/// Pdf of a point on this shape.
 		/// </summary>
-		virtual float Pdf(const Vec3& localpoint) const { return 1.f / Area(); }
+		virtual float Pdf(const Vec3& localpoint) const;
 		/// <summary>
 		/// Pdf of a ray emitting from this shape.
 		/// </summary>
@@ -48,8 +48,7 @@ namespace TX {
 		void PostIntersect(const Ray& localray, LocalGeo& geo) const;
 		bool Occlude(const Ray& localray) const;
 
-		float Area() const { return 4 * Math::PI; }
-		float Pdf(const Vec3& point) const { return 1.f / Area(); }
+		float Area() const;
 		void SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal) const;
 		void SamplePoint(const Sample *sample, const Vec3& localeye, Vec3 *out, Vec3 *normal) const;
 
@@ -65,8 +64,8 @@ namespace TX {
 		void PostIntersect(const Ray& localray, LocalGeo& geo) const;
 		bool Occlude(const Ray& localray) const;
 
-		float Area() const { return 1.f; }
-		float Pdf(const Vec3& point) const { return 1.f; }
+		float Area() const;
+		float Pdf(const Vec3& point) const;
 		void SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal) const;
 	};
 }

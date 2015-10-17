@@ -66,7 +66,7 @@ namespace TX
 			camera_ctrl = std::make_unique<CameraController>(camera->transform);
 
 			// load object data
-			LoadObj(shapes, materials, "teapot.obj", "./");
+			ObjLoader::Load(shapes, materials, "teapot.obj", "./");
 
 			// create buffers for each mesh object
 			meshes.resize(shapes.size());

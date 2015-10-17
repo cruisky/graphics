@@ -33,6 +33,7 @@
     <ClCompile Include="UtilStdAfx.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Graphics\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
@@ -81,5 +82,6 @@
     <ClInclude Include="Math\Base.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Graphics\CameraController.h" />
+    <ClInclude Include="Graphics\Mesh.h" />
   </ItemGroup>
 </Project>

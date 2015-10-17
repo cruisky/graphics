@@ -104,6 +104,7 @@
     <ClInclude Include="Graphics\CameraController.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Drawing.h" />
+    <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\Obj.h" />
     <ClInclude Include="Graphics\BSDF.h" />
     <ClInclude Include="Graphics\Camera.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Graphics\GLUtils.cpp" />
     <ClCompile Include="Graphics\GUI.cpp" />
     <ClCompile Include="Graphics\Image.cpp" />
+    <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\Obj.cpp" />
     <ClCompile Include="Graphics\BSDF.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />

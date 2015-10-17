@@ -1,8 +1,7 @@
 #pragma once
 #include "Util.h"
-#include <vector>
-#include "Graphics/Color.h"
-#include "Math/Vector.h"
+#include "Color.h"
+#include "Mesh.h"
 
 namespace TX {
 	class ObjMaterial {
@@ -36,14 +35,11 @@ namespace TX {
 			dissolve(1.f){}
 	};
 
-	class ObjMesh {
+	class ObjMesh : public Mesh {
 	public:
-		std::vector<Vec3>		vertices;
-		std::vector<Vec3>		normals;
-		std::vector<Vec2>		uvs;
-		std::vector<uint>			indices;
-		std::vector<uint>			materials;
-
+		std::vector<uint>		materials;
+	public:
+		ObjMesh() : Mesh() {}
 		void LoadQuad(
 			float length = 1.f,
 			const Vec3& position = Vec3::ZERO,
@@ -57,11 +53,9 @@ namespace TX {
 		void Clear();
 
 		const uint* GetIndexOfTriangle(uint triIdx) const;
-
-		inline int TriangleCount() const { return indices.size() / 3; }
 	};
 
-	class ObjShape{
+	class ObjShape {
 	public:
 		std::string		name;
 		ObjMesh			mesh;
@@ -70,8 +64,13 @@ namespace TX {
 			name(name){}
 	};
 
-	void LoadObj(
-		std::vector<ObjShape>& objects,
-		std::vector<ObjMaterial>& materials,
-		const char *objFile, const char *mtlDir = nullptr);
+	class ObjLoader {
+	public:
+		static void Load(
+			std::vector<ObjShape>& objects,
+			std::vector<ObjMaterial>& materials,
+			const char *objFile, const char *mtlDir = nullptr);
+		static void ConvertObj(const void *src, ObjShape& dest);
+		static void ConvertMtl(const void *src, ObjMaterial& dest);
+	};
 }

@@ -13,15 +13,13 @@ namespace TX
 	}
 
 	void ObjMesh::Clear(){
-		vertices.clear();
-		normals.clear();
-		uvs.clear();
-		indices.clear();
+		Mesh::Clear();
 		materials.clear();
 	}
 
 
-	void ConvertObj(const tinyobj::shape_t& origin, ObjShape& dest){
+	void ObjLoader::ConvertObj(const void * src, ObjShape& dest){
+		const tinyobj::shape_t& origin = *static_cast<const tinyobj::shape_t *>(src);
 		dest.mesh.Clear();
 		dest.name = origin.name;
 
@@ -44,23 +42,24 @@ namespace TX
 		}
 
 		assert((origin.mesh.texcoords.size() % 2) == 0);
-		dest.mesh.uvs.reserve(origin.mesh.texcoords.size() / 2);
+		dest.mesh.uv.reserve(origin.mesh.texcoords.size() / 2);
 		for (uint i = 0; i < origin.mesh.texcoords.size(); i += 2){
-			dest.mesh.uvs.emplace_back(
+			dest.mesh.uv.emplace_back(
 				origin.mesh.texcoords[i],
 				origin.mesh.texcoords[i + 1]);
 		}
 
 		assert((origin.mesh.indices.size() % 3) == 0);
-		dest.mesh.indices.reserve(origin.mesh.indices.size());
-		dest.mesh.indices.assign(origin.mesh.indices.begin(), origin.mesh.indices.end());
+		dest.mesh.triangles.reserve(origin.mesh.indices.size());
+		dest.mesh.triangles.assign(origin.mesh.indices.begin(), origin.mesh.indices.end());
 
 		assert(origin.mesh.material_ids.size() == origin.mesh.indices.size() / 3);
 		dest.mesh.materials.reserve(origin.mesh.material_ids.size());
 		dest.mesh.materials.assign(origin.mesh.material_ids.begin(), origin.mesh.material_ids.end());
 	}
 
-	void ConvertMtl(const tinyobj::material_t& origin, ObjMaterial& dest){
+	void ObjLoader::ConvertMtl(const void * src, ObjMaterial& dest){
+		const tinyobj::material_t& origin = *static_cast<const tinyobj::material_t *>(src);
 		dest.ambient = Color(origin.ambient[0], origin.ambient[1], origin.ambient[2]);
 		dest.diffuse = Color(origin.diffuse[0], origin.diffuse[1], origin.diffuse[2]);
 		dest.specular = Color(origin.specular[0], origin.specular[1], origin.specular[2]);
@@ -80,7 +79,7 @@ namespace TX
 		dest.texAlpha = origin.alpha_texname;
 	}
 
-	void LoadObj(std::vector<ObjShape>& objects, std::vector<ObjMaterial>& materials, const char *objFile, const char *mtlDir){
+	void ObjLoader::Load(std::vector<ObjShape>& objects, std::vector<ObjMaterial>& materials, const char *objFile, const char *mtlDir){
 		std::vector<tinyobj::shape_t> objs;
 		std::vector<tinyobj::material_t> mtls;
 		std::string error = tinyobj::LoadObj(objs, mtls, objFile, mtlDir);
@@ -90,10 +89,10 @@ namespace TX
 
 		objects.resize(objs.size());
 		for (uint i = 0; i < objs.size(); i++)
-			ConvertObj(objs[i], objects[i]);
+			ConvertObj(&objs[i], objects[i]);
 
 		materials.resize(mtls.size());
 		for (uint i = 0; i < mtls.size(); i++)
-			ConvertMtl(mtls[i], materials[i]);
+			ConvertMtl(&mtls[i], materials[i]);
 	}
 }

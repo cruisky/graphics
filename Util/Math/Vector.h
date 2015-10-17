@@ -139,9 +139,6 @@ namespace TX
 		inline Vec<2, T> Lerp(float t, const Vec<2, T>& v1, const Vec<2, T>& v2) { return Vec<2, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y)); }
 	}
 
-	typedef Vec<2, float> Vec2;
-	typedef Vec<2, int> Vec2i;
-
 	template <typename T>
 	class Vec <3, T> {
 	public:
@@ -257,9 +254,6 @@ namespace TX
 		inline Vec<3, T> Lerp(float t, const Vec<3, T>& v1, const Vec<3, T>& v2) { return Vec<3, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y), Lerp(t, v1.z, v2.z)); }
 	}
 
-	typedef Vec<3, float> Vec3;
-	typedef Vec<3, int> Vec3i;
-
 	template <typename T>
 	class Vec <4, T> {
 	public:
@@ -354,7 +348,4 @@ namespace TX
 		template <typename T>
 		inline Vec<4, T> Lerp(float t, const Vec<4, T>& v1, const Vec<4, T>& v2) { return Vec<4, T>(Lerp(t, v1.x, v2.x), Lerp(t, v1.y, v2.y), Lerp(t, v1.z, v2.z), Lerp(t, v1.w, v2.w)); }
 	}
-
-	typedef Vec<4, float> Vec4;
-	typedef Vec<4, int> Vec4i;
 }

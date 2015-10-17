@@ -170,6 +170,7 @@ namespace TX{ namespace UI{
 		KeyState keyState;
 		Modifiers mods;
 
+		Input() {}
 		inline bool HasText() const { return text != 0; }
 		inline bool HasKeyCode() const { return key != KeyCode::NONE; }
 		inline Vec2 GetCursorMovement() const { return cursor - prevCursor; }
