@@ -179,21 +179,25 @@ namespace TX
 
 		inline bool operator == (const Vec& ot) const { return x == ot.x && y == ot.y && z == ot.z; }
 		inline bool operator != (const Vec& ot) const { return x != ot.x || y != ot.y || z != ot.z; }
+		inline bool operator < (const Vec& ot)	const { return x < ot.x && y < ot.y && z < ot.z; }
+		inline bool operator > (const Vec& ot)	const { return x > ot.x && y > ot.y && z > ot.z; }
+		inline bool operator <= (const Vec& ot) const { return x <= ot.x && y <= ot.y && z <= ot.z; }
+		inline bool operator >= (const Vec& ot) const { return x >= ot.x && y >= ot.y && z >= ot.z; }
 
-		inline Vec operator + () const { return Vec(+x, +y, +z); }
-		inline Vec operator - () const { return Vec(-x, -y, -z); }
-		inline Vec operator + (const Vec& ot) const { return Vec(x + ot.x, y + ot.y, z + ot.z); }
-		inline Vec operator - (const Vec& ot) const { return Vec(x - ot.x, y - ot.y, z - ot.z); }
-		inline Vec operator * (T s) const { return Vec(x * s, y * s, z * s); }
-		inline Vec operator * (const Vec& ot) const { return Vec(x * ot.x, y * ot.y, z * ot.z); }
-		inline Vec operator / (T s) const { return operator*(T(Math::ONE) / s); }
-		inline Vec operator / (const Vec& ot) const { return Vec(x / ot.x, y / ot.y, z / ot.z); }
-		inline const Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; z += ot.z; return *this; }
-		inline const Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; z -= ot.z; return *this; }
-		inline const Vec& operator *= (T s) { x *= s; y *= s; z *= s; return *this; }
-		inline const Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; z *= ot.z; return *this; }
-		inline const Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
-		inline const Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; z /= ot.z; return *this; }
+		inline Vec operator + ()				const { return Vec(+x, +y, +z); }
+		inline Vec operator - ()				const { return Vec(-x, -y, -z); }
+		inline Vec operator + (const Vec& ot)	const { return Vec(x + ot.x, y + ot.y, z + ot.z); }
+		inline Vec operator - (const Vec& ot)	const { return Vec(x - ot.x, y - ot.y, z - ot.z); }
+		inline Vec operator * (T s)				const { return Vec(x * s, y * s, z * s); }
+		inline Vec operator * (const Vec& ot)	const { return Vec(x * ot.x, y * ot.y, z * ot.z); }
+		inline Vec operator / (T s)				const { return operator*(T(Math::ONE) / s); }
+		inline Vec operator / (const Vec& ot)	const { return Vec(x / ot.x, y / ot.y, z / ot.z); }
+		inline Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; z += ot.z; return *this; }
+		inline Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; z -= ot.z; return *this; }
+		inline Vec& operator *= (T s) { x *= s; y *= s; z *= s; return *this; }
+		inline Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; z *= ot.z; return *this; }
+		inline Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; z /= ot.z; return *this; }
 	};
 
 	template <typename T> const Vec<3, T> Vec<3, T>::ZERO(Math::ZERO);

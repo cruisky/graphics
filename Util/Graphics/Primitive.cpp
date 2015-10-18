@@ -21,7 +21,7 @@ namespace TX {
 		geo.bsdf = GetBSDF();
 		shape_->PostIntersect(geo.localray, geo);
 		// transform the normal to world space
-		geo.normal = Matrix4x4::TNormal(transform.WorldToLocalMatrix(), geo.normal);
+		geo.normal = Math::Normalize(Matrix4x4::TNormal(transform.WorldToLocalMatrix(), geo.normal));
 	}
 
 	bool Primitive::Occlude(const Ray& ray) const {

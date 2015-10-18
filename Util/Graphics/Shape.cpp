@@ -90,7 +90,7 @@ namespace TX{
 	}
 
 	void UnitPlane::PostIntersect(const Ray& lcr, LocalGeo& geo) const {
-		geo.normal = Vec3::Z;// .Normalize();
+		geo.normal = Vec3::Z;
 	}
 
 	bool UnitPlane::Occlude(const Ray& lcr) const {

@@ -7,6 +7,7 @@ namespace TX {
 		///////////////////////////////////////////////////////////////////////
 		// Constants
 		///////////////////////////////////////////////////////////////////////
+
 		static struct {
 			template <typename T> constexpr operator T() const { return T(0); }
 		} ZERO;
@@ -25,21 +26,21 @@ namespace TX {
 		static struct {
 			constexpr operator float() const { return std::numeric_limits<float>::infinity(); }
 		} INF;
-		/*
-		 * The smallest increment from 1.0
-		 */
+		/// <summary>
+		/// The smallest increment from 1.
+		/// </summary>
 		static struct {
 			constexpr operator float() const { return std::numeric_limits<float>::epsilon(); }
 		} EPSILON;
-		/*
-		 * The minimum positive normalized value.
-		 */
+		/// <summary>
+		/// The minimum positive normalized value.
+		/// </summary>
 		static struct {
 			template <typename T> constexpr operator T() const { return std::numeric_limits<T>::min(); }
 		} MIN;
-		/*
-		* The maximum finite value.
-		*/
+		/// <summary>
+		/// The maximum finite value.
+		/// </summary>
 		static struct {
 			template <typename T> constexpr operator T() const { return std::numeric_limits<T>::max(); }
 		} MAX;
@@ -47,6 +48,7 @@ namespace TX {
 		///////////////////////////////////////////////////////////////////////
 		// Functions
 		///////////////////////////////////////////////////////////////////////
+
 		template <typename T>
 		inline bool IsNAN(const T& num) { return _isnan(num) != 0; }
 		template <typename T>

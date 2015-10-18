@@ -83,5 +83,6 @@
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Graphics\CameraController.h" />
     <ClInclude Include="Graphics\Mesh.h" />
+    <ClInclude Include="Math\BBox.h" />
   </ItemGroup>
 </Project>

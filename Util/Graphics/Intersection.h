@@ -16,6 +16,7 @@ namespace TX{
 		Ray localray;
 		float dist;
 		const Primitive *prim;
+		uint triId;
 	};
 
 	class LocalGeo : public Intersection {
@@ -46,8 +47,8 @@ namespace TX{
 	public:
 		const BSDF *bsdf;
 		Vec3 point;
-		Vec3 normal;			// from surface
-		//Vec3 normal;		// from normal map
+		Vec3 normal;		// calculated geometry normal
+		//Vec3 normal;		// from model data
 		Vec3 u, v;			// local coordinate system (u, v, normal)
 		//Vec3 dpdu, dpdv;		// partial derivatives at the point
 		//Vec3 dndu, dndv;		// partial derivatives of the change in normal
