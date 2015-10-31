@@ -8,19 +8,33 @@ namespace TX {
 	public:
 		std::vector<Vec3> vertices;
 		std::vector<Vec3> normals;
-		std::vector<uint> triangles;
+		std::vector<uint> indices;
 		std::vector<Vec2> uv;
 	public:
 		Mesh() {}
 		~Mesh() {}
 
 		inline uint VertexCount() const { return vertices.size(); }
-		inline uint TriangleCount() const { return triangles.size() / 3; }
+		inline uint IndexCount() const { return indices.size(); }
+		inline uint TriangleCount() const { return indices.size() / 3; }
 
 		/// <summary>
 		/// Clear the vertices, normals, texcoords and triangle indices.
 		/// </summary>
 		virtual void Clear();
+		/// <summary>
+		/// Load a sphere to this mesh.
+		/// </summary>
+		/// <param name="radius"> Radius of the sphere </param>
+		/// <param name="slices"> Number of slices (meridian) </param>
+		/// <param name="stacks"> Number of stacks (ring of latitude on xz plane) </param>
+		void LoadSphere(float radius, uint slices = 64, uint stacks = 64);
+		/// <summary>
+		/// Load a plane to this mesh.
+		/// The plane faces towards z-axis.
+		/// </summary>
+		/// <param name="size"> Edge size </param>
+		void LoadPlane(float size);
 
 		bool Intersect(const Ray& localray) const;
 		void PostIntersect(const Ray& localray, LocalGeo& geo) const;
