@@ -7,7 +7,7 @@
 namespace TX{
 	class Scene{
 	public:
-		Scene();
+		Scene(std::unique_ptr<PrimitiveManager> primmgr);
 
 		void AddPrimitive(std::shared_ptr<Primitive> prim);
 		void AddLight(std::shared_ptr<Light> light);
@@ -24,7 +24,7 @@ namespace TX{
 	public:
 		std::vector<std::shared_ptr<Light>> lights;
 	private:
-		std::unique_ptr<PrimitiveManager> primmgr_;
 		std::vector<std::shared_ptr<Primitive>> prims_;
+		std::unique_ptr<PrimitiveManager> primmgr_;
 	};
 }

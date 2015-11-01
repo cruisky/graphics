@@ -118,7 +118,7 @@ void GUIMain(){
 	/////////////////////////////////////
 	// Scene
 	shared_ptr<Film> film(new Film(FilterType::GaussianFilter));
-	shared_ptr<Scene> scene(new Scene);
+	shared_ptr<Scene> scene(new Scene(std::make_unique<PrimitiveManager>()));
 
 	scene->AddPrimitive(w_bottom);
 	scene->AddPrimitive(w_top);

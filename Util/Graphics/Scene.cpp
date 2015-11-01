@@ -5,23 +5,19 @@
 #include "Intersection.h"
 
 namespace TX {
-	Scene::Scene() {
-		primmgr_ = std::unique_ptr<PrimitiveManager>(new PrimitiveManager(&prims_));
+	Scene::Scene(std::unique_ptr<PrimitiveManager> primmgr){
+		primmgr_ = std::move(primmgr);
 	}
 	void Scene::AddPrimitive(std::shared_ptr<Primitive> prim){
+		prim->transform.UpdateMatrix();
 		prims_.push_back(prim);
 	}
 	void Scene::AddLight(std::shared_ptr<Light> light){
+		light->transform.UpdateMatrix();
 		lights.push_back(light);
 	}
 	void Scene::Construct(){
-		for (auto& obj : prims_) {
-			obj->transform.UpdateMatrix();
-		}
-		for (auto& obj : lights) {
-			obj->transform.UpdateMatrix();
-		}
-		primmgr_->Construct();
+		primmgr_->Construct(prims_);
 	}
 	bool Scene::Intersect(const Ray& ray, Intersection& intxn) const {
 		return primmgr_->Intersect(ray, intxn);
