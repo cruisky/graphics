@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include "Util.h"
 #include "Math/Geometry.h"
@@ -8,7 +8,7 @@
 namespace TX
 {
 	typedef uint16 DrawIdx;
-	
+
 	struct DrawCmd{
 		DrawIdx	idxCount;
 		Rect	clipRect;
@@ -48,18 +48,18 @@ namespace TX
 		inline void PathReserve(int vtxCount)									{ path.reserve(path.size() + vtxCount); }
 		inline void PathFill(const Color& c)									{ AddPolyFilled(path.data(), path.size(), c); PathClear(); }
 		inline void PathStroke(const Color& c, bool closed, float thick = 1.f)	{ AddPolyLine(path.data(), path.size(), c, true, thick); PathClear(); }
-		inline void PathPoint(const Vec2& p)									{ 
+		inline void PathPoint(const Vec2& p)									{
 			path.push_back(p);
 		}
-		inline void PathRect(const Vec2& tl, const Vec2& br)				{ 
+		inline void PathRect(const Vec2& tl, const Vec2& br)				{
 			PathReserve(4);
-			PathPoint(tl); 
-			PathPoint(Vec2(br.x, tl.y)); 
-			PathPoint(br); 
-			PathPoint(Vec2(tl.x, br.y)); 
+			PathPoint(tl);
+			PathPoint(Vec2(br.x, tl.y));
+			PathPoint(br);
+			PathPoint(Vec2(tl.x, br.y));
 		}
 		void PathArc(const Vec2& center, float radius, int clockPos1, int clockPos2);
-	
+
 		void PrimReserve(int idxCount, int vtxCount);
 		void PrimTriangle(const Vec2& v1, const Vec2& v2, const Vec2& v3, const Color& c);
 		void PrimRect(const Vec2& tl, const Vec2& br, const Color& c);

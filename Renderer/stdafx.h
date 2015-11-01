@@ -27,8 +27,3 @@
 #include "Util/Math/Ray.h"
 #include "Util/Math/Geometry.h"
 #include "Util/Math/Vector.h"
-
-using std::shared_ptr;
-using std::string;
-using std::unique_ptr;
-using std::vector;

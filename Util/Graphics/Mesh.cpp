@@ -50,7 +50,7 @@ namespace TX {
 		//TODO
 	}
 
-	void Mesh::LoadSphere(float radius, uint slices, uint stacks) {
+	Mesh& Mesh::LoadSphere(float radius, uint slices, uint stacks) {
 		Clear();
 
 		#pragma region vertices
@@ -123,9 +123,11 @@ namespace TX {
 			indices.push_back(vertices.size() - lon - 3);
 		}
 		#pragma endregion
+
+		return *this;
 	}
 
-	void Mesh::LoadPlane(float size) {
+	Mesh& Mesh::LoadPlane(float size) {
 		Clear();
 		const float halfSize = size * 0.5f;
 
@@ -152,5 +154,7 @@ namespace TX {
 		indices.push_back(0);
 		indices.push_back(2);
 		indices.push_back(3);
+
+		return *this;
 	}
 }

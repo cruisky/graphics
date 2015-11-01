@@ -53,7 +53,7 @@ namespace TX {
 			*normal = Matrix4x4::TNormal(transform.WorldToLocalMatrix(), *normal);	// use inverse when transforming normal
 		}
 
-
+		const Shape* GetShape() const;
 		const BSDF* GetBSDF() const;
 		const AreaLight* GetAreaLight() const;
 	private:

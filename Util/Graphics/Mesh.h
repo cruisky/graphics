@@ -28,13 +28,13 @@ namespace TX {
 		/// <param name="radius"> Radius of the sphere </param>
 		/// <param name="slices"> Number of slices (meridian) </param>
 		/// <param name="stacks"> Number of stacks (ring of latitude on xz plane) </param>
-		void LoadSphere(float radius, uint slices = 64, uint stacks = 64);
+		Mesh& LoadSphere(float radius = 1.f, uint slices = 64, uint stacks = 64);
 		/// <summary>
 		/// Load a plane to this mesh.
 		/// The plane faces towards z-axis.
 		/// </summary>
 		/// <param name="size"> Edge size </param>
-		void LoadPlane(float size);
+		Mesh& LoadPlane(float size = 1.f);
 
 		bool Intersect(const Ray& localray) const;
 		void PostIntersect(const Ray& localray, LocalGeo& geo) const;

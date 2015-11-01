@@ -30,6 +30,10 @@ namespace TX {
 		return shape_->Occlude(loc_ray);
 	}
 
+	const Shape* Primitive::GetShape() const {
+		return shape_.get();
+	}
+
 	const BSDF* Primitive::GetBSDF() const {
 		return bsdf_.get();
 	}

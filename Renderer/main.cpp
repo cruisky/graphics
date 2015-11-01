@@ -10,6 +10,7 @@
 #include "Graphics/Scene.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Primitive.h"
+#include "Graphics/Mesh.h"
 #include "Graphics/Light.h"
 
 #include "Core/RendererConfig.h"

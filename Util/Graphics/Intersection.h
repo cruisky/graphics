@@ -17,6 +17,7 @@ namespace TX{
 		float dist;
 		const Primitive *prim;
 		uint triId;
+		Vec2 uv;
 	};
 
 	class LocalGeo : public Intersection {
