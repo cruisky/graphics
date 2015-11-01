@@ -9,10 +9,10 @@ namespace TX {
 		///////////////////////////////////////////////////////////////////////
 
 		static struct {
-			template <typename T> constexpr operator T() const { return T(0); }
+			template <typename T> constexpr operator T() const { return T(0.0); }
 		} ZERO;
 		static struct {
-			template <typename T> constexpr operator T() const { return T(1); }
+			template <typename T> constexpr operator T() const { return T(1.0); }
 		} ONE;
 		static struct {
 			constexpr operator float() const { return 3.14159265358979323846f; }
@@ -83,8 +83,14 @@ namespace TX {
 		inline float Acos(float c) { return acosf(c); }
 		inline float Atan2(float y, float x) { return atan2f(y, x); }
 
-		template <typename T1, typename T2> inline auto Max(const T1& n1, const T2& n2) -> decltype(n1 + n2) { return n1 > n2 ? n1 : n2; }
-		template <typename T1, typename T2> inline auto Min(const T1& n1, const T2& n2) -> decltype(n1 + n2) { return n1 < n2 ? n1 : n2; }
+		template <typename T1, typename T2>
+		inline auto Max(const T1& n1, const T2& n2) -> decltype(n1 + n2) { return n1 > n2 ? n1 : n2; }
+		template <typename T1, typename T2, typename... Rest>
+		inline auto Max(const T1& n1, const T2& n2, Rest&&... rest) -> decltype(n1 + n2) { return Max(Max(n1, n2), std::forward<Rest>(rest)...); }
+		template <typename T1, typename T2>
+		inline auto Min(const T1& n1, const T2& n2) -> decltype(n1 + n2) { return n1 < n2 ? n1 : n2; }
+		template <typename T1, typename T2, typename... Rest>
+		inline auto Min(const T1& n1, const T2& n2, Rest&&... rest) -> decltype(n1 + n2) { return Min(Min(n1, n2), std::forward<Rest>(rest)...); }
 		template <typename T> inline int Sign(const T& n){ return (T(0) < val) - (val < T(0)); }
 		template <typename T> inline bool InBounds(const T& n, const T& min, const T& max) { return min <= n && n <= max; }
 		template <typename T> inline T Clamp(const T& val, const T& min, const T& max){

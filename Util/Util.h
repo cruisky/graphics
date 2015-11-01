@@ -2,6 +2,12 @@
 #pragma warning(disable: 4800)
 #pragma warning(disable: 4005)
 
+#include <cassert>
+#include <memory>
+#include <vector>
+#include <cstring>
+#include <iostream>
+
 namespace TX
 {
 	typedef unsigned int	 uint;
@@ -44,10 +50,13 @@ namespace TX
 	template<size_t N, typename T> class Vec;
 	typedef Vec<2, float> Vec2;
 	typedef Vec<2, int> Vec2i;
+	typedef Vec<2, uint> Vec2u;
 	typedef Vec<3, float> Vec3;
 	typedef Vec<3, int> Vec3i;
+	typedef Vec<3, uint> Vec3u;
 	typedef Vec<4, float> Vec4;
 	typedef Vec<4, int> Vec4i;
+	typedef Vec<4, uint> Vec4u;
 
 	// SSE
 	namespace SSE{

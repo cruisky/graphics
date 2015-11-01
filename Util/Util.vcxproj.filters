@@ -24,7 +24,6 @@
     <ClCompile Include="Graphics\Scene.cpp" />
     <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Graphics\Tracer.cpp" />
-    <ClCompile Include="SSE\Bool.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />
     <ClCompile Include="System\Application.cpp" />
@@ -84,5 +83,6 @@
     <ClInclude Include="Graphics\CameraController.h" />
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Math\BBox.h" />
+    <ClInclude Include="SSE\SSE.h" />
   </ItemGroup>
 </Project>

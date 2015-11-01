@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Math/Random.h"
 #include "Graphics/Color.h"
 #include "Math/Ray.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
-#include "Math/Random.h"
+#include "SSE/SSE.h"
 
 namespace TX
 {
@@ -58,5 +59,26 @@ namespace TX
 				);
 		}
 
+		inline SSE::V4Float RandomV4Float(float absmin = 1e-6f, float absmax = 1e2f, bool bothsign = true) {
+			return SSE::V4Float(
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign),
+				RandomFloat(absmin, absmax, bothsign));
+		}
+		inline SSE::V4Int RandomV4Int(int min = 0, int max = Math::MAX) {
+			return SSE::V4Int(
+				RandomInt(min, max),
+				RandomInt(min, max),
+				RandomInt(min, max),
+				RandomInt(min, max));
+		}
+		inline SSE::V4Bool RandomV4Bool() {
+			return SSE::V4Bool(
+				RandomFloat(0.f, 1.f, true) < 0.f,
+				RandomFloat(0.f, 1.f, true) < 0.f,
+				RandomFloat(0.f, 1.f, true) < 0.f,
+				RandomFloat(0.f, 1.f, true) < 0.f);
+		}
 	}
 }

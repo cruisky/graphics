@@ -137,6 +137,7 @@
     <ClInclude Include="SSE\Bool.h" />
     <ClInclude Include="SSE\Float.h" />
     <ClInclude Include="SSE\Int.h" />
+    <ClInclude Include="SSE\SSE.h" />
     <ClInclude Include="System\Application.h" />
     <ClInclude Include="System\Input.h" />
     <ClInclude Include="System\Memory.h" />
@@ -172,7 +173,6 @@
     <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Graphics\Tracer.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
-    <ClCompile Include="SSE\Bool.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />
     <ClCompile Include="System\Application.cpp" />

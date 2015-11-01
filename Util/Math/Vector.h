@@ -61,7 +61,7 @@ namespace TX
 		inline Vec() : x(Math::ZERO), y(Math::ZERO){}
 		inline Vec(const Vec& ot) : x(ot.x), y(ot.y){}
 		explicit inline Vec(T val) : x(val), y(val){}
-		inline Vec(T x, T y) : x(x), y(y){}
+		inline Vec(const T& x, const T& y) : x(x), y(y){}
 		inline Vec& operator = (const Vec& ot) { x = ot.x, y = ot.y; return *this; }
 		template<typename U>
 		inline Vec(const Vec<2, U>& ot) : x(T(ot.x)), y(T(ot.y)){}
@@ -83,20 +83,20 @@ namespace TX
 
 		inline Vec operator + () const { return Vec(+x, +y); }
 		inline Vec operator - () const { return Vec(-x, -y); }
-		inline Vec operator + (T s) const { return Vec(x + s, y + s); }
+		inline Vec operator + (const T& s) const { return Vec(x + s, y + s); }
 		inline Vec operator + (const Vec& ot) const { return Vec(x + ot.x, y + ot.y); }
-		inline Vec operator - (T s) const { return Vec(x - s, y - s); }
+		inline Vec operator - (const T& s) const { return Vec(x - s, y - s); }
 		inline Vec operator - (const Vec& ot) const { return Vec(x - ot.x, y - ot.y); }
-		inline Vec operator * (T s) const { return Vec(x * s, y * s); }
+		inline Vec operator * (const T& s) const { return Vec(x * s, y * s); }
 		inline Vec operator * (const Vec& ot) const { return Vec(x * ot.x, y * ot.y); }
-		inline Vec operator / (T s) const { return operator*(T(Math::ONE) / s); }
+		inline Vec operator / (const T& s) const { return operator*(T(Math::ONE) / s); }
 		inline Vec operator / (const Vec& ot) const { return Vec(x / ot.x, y / ot.y); }
 
 		inline const Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; return *this; }
 		inline const Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; return *this; }
-		inline const Vec& operator *= (T s) { x *= s; y *= s; return *this; }
+		inline const Vec& operator *= (const T& s) { x *= s; y *= s; return *this; }
 		inline const Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; return *this; }
-		inline const Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline const Vec& operator /= (const T& s) { return operator*=(T(Math::ONE) / s); }
 		inline const Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; return *this; }
 	};
 
@@ -112,7 +112,7 @@ namespace TX
 	template <typename T>
 	inline std::ostream& operator << (std::ostream& os, const Vec<2, T>& v){ return os << "(" << v.x << ", " << v.y << ")"; }
 	template <typename T>
-	inline Vec<2, T> operator * (T s, const Vec<2, T>& v) { return v * s; }
+	inline Vec<2, T> operator * (const T& s, const Vec<2, T>& v) { return v * s; }
 
 	namespace Math {
 		template <typename T>
@@ -162,8 +162,8 @@ namespace TX
 		static const Vec UP;
 	public:
 		inline Vec() : x(Math::ZERO), y(Math::ZERO), z(Math::ZERO){}
-		explicit inline Vec(T val) : x(val), y(val), z(val){}
-		inline Vec(T x, T y, T z) : x(x), y(y), z(z){}
+		explicit inline Vec(const T& val) : x(val), y(val), z(val){}
+		inline Vec(const T& x, const T& y, const T& z) : x(x), y(y), z(z){}
 		inline Vec(const Vec& ot) : x(ot.x), y(ot.y), z(ot.z){}
 		inline Vec& operator = (const Vec& ot) { x = ot.x, y = ot.y, z = ot.z; return *this; }
 		template<typename U>
@@ -188,15 +188,15 @@ namespace TX
 		inline Vec operator - ()				const { return Vec(-x, -y, -z); }
 		inline Vec operator + (const Vec& ot)	const { return Vec(x + ot.x, y + ot.y, z + ot.z); }
 		inline Vec operator - (const Vec& ot)	const { return Vec(x - ot.x, y - ot.y, z - ot.z); }
-		inline Vec operator * (T s)				const { return Vec(x * s, y * s, z * s); }
+		inline Vec operator * (const T& s)				const { return Vec(x * s, y * s, z * s); }
 		inline Vec operator * (const Vec& ot)	const { return Vec(x * ot.x, y * ot.y, z * ot.z); }
-		inline Vec operator / (T s)				const { return operator*(T(Math::ONE) / s); }
+		inline Vec operator / (const T& s)				const { return operator*(T(Math::ONE) / s); }
 		inline Vec operator / (const Vec& ot)	const { return Vec(x / ot.x, y / ot.y, z / ot.z); }
 		inline Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; z += ot.z; return *this; }
 		inline Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; z -= ot.z; return *this; }
-		inline Vec& operator *= (T s) { x *= s; y *= s; z *= s; return *this; }
+		inline Vec& operator *= (const T& s) { x *= s; y *= s; z *= s; return *this; }
 		inline Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; z *= ot.z; return *this; }
-		inline Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline Vec& operator /= (const T& s) { return operator*=(T(Math::ONE) / s); }
 		inline Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; z /= ot.z; return *this; }
 	};
 
@@ -227,7 +227,7 @@ namespace TX
 		inline Vec<3, T> Abs(const Vec<3, T>& v) { return Vec4(Abs(v.x), Abs(v.y), Abs(v.z)); }
 		template <typename T>
 		inline Vec<3, T> Cross(const Vec<3, T>& lhs, const Vec<3, T>& rhs) {
-			return Vec3(
+			return Vec<3, T>(
 				lhs.y * rhs.z - lhs.z * rhs.y,
 				lhs.z * rhs.x - lhs.x * rhs.z,
 				lhs.x * rhs.y - lhs.y * rhs.x);
@@ -276,8 +276,8 @@ namespace TX
 		static const Vec PI_RCP;
 	public:
 		inline Vec() : x(Math::ZERO), y(Math::ZERO), z(Math::ZERO), w(Math::ZERO){}
-		explicit inline Vec(T val) : x(val), y(val), z(val), w(val){}
-		inline Vec(T x, T y, T z, T w) : x(x), y(y), z(z), w(w){}
+		explicit inline Vec(const T& val) : x(val), y(val), z(val), w(val){}
+		inline Vec(const T& x, const T& y, const T& z, const T& w) : x(x), y(y), z(z), w(w){}
 		inline Vec(const T *arr) : x(arr[0]), y(arr[1]), z(arr[2]), w(arr[3]){}
 		inline Vec(const Vec& ot) : x(ot.x), y(ot.y), z(ot.z), w(ot.w){}
 		inline Vec& operator = (const Vec& ot) { x = ot.x, y = ot.y, z = ot.z, w = ot.w; return *this; }
@@ -299,21 +299,21 @@ namespace TX
 		inline const Vec operator - () const { return Vec(-x, -y, -z, -w); }
 		inline const Vec operator + (const Vec& ot) const { return Vec(x + ot.x, y + ot.y, z + ot.z, w + ot.w); }
 		inline const Vec operator - (const Vec& ot) const { return Vec(x - ot.x, y - ot.y, z - ot.z, w - ot.w); }
-		inline const Vec operator * (T s) const { return Vec(x * s, y * s, z * s, w * s); }
+		inline const Vec operator * (const T& s) const { return Vec(x * s, y * s, z * s, w * s); }
 		inline const Vec operator * (const Vec& ot) const { return Vec(x * ot.x, y * ot.y, z * ot.z, w * ot.w); }
-		inline const Vec operator / (T s) const { return operator*(T(Math::ONE) / s); }
+		inline const Vec operator / (const T& s) const { return operator*(T(Math::ONE) / s); }
 		inline const Vec operator / (const Vec& ot) const { return Vec(x / ot.x, y / ot.y, z / ot.z, w / ot.w); }
 		inline Vec& operator += (const Vec& ot) { x += ot.x; y += ot.y; z += ot.z; w += ot.w; return *this; }
 		inline Vec& operator -= (const Vec& ot) { x -= ot.x; y -= ot.y; z -= ot.z; w -= ot.w; return *this; }
-		inline Vec& operator *= (T s) { x *= s; y *= s; z *= s; w *= s; return *this; }
+		inline Vec& operator *= (const T& s) { x *= s; y *= s; z *= s; w *= s; return *this; }
 		inline Vec& operator *= (const Vec& ot) { x *= ot.x; y *= ot.y; z *= ot.z; w *= ot.w; return *this; }
-		inline Vec& operator /= (T s) { return operator*=(T(Math::ONE) / s); }
+		inline Vec& operator /= (const T& s) { return operator*=(T(Math::ONE) / s); }
 		inline Vec& operator /= (const Vec& ot) { x /= ot.x; y /= ot.y; z /= ot.z; w /= ot.w; return *this; }
 	};
 	template <typename T>
 	inline std::ostream& operator << (std::ostream& os, const Vec<4, T>& v)	{ return os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")"; }
 	template <typename T>
-	inline Vec<4, T> operator * (T s, const Vec<4, T>& v) { return v * s; }
+	inline Vec<4, T> operator * (const T& s, const Vec<4, T>& v) { return v * s; }
 
 	template <typename T> const Vec<4, T> Vec<4, T>::ZERO(Math::ZERO);
 	template <typename T> const Vec<4, T> Vec<4, T>::ONE(Math::ONE);
