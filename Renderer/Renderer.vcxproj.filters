@@ -26,6 +26,9 @@
     <Filter Include="Source Files\Samplers">
       <UniqueIdentifier>{9bd813e1-e750-4287-b000-42c24f7a68b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Accelerators">
+      <UniqueIdentifier>{e41e4909-8345-44a6-9fd2-5947c62b88e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Renderer.h">
@@ -58,6 +61,12 @@
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Accelerators\BVH.h">
+      <Filter>Source Files\Accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="Accelerators\Common.h">
+      <Filter>Source Files\Accelerators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -89,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Accelerators\BVH.cpp">
+      <Filter>Source Files\Accelerators</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
