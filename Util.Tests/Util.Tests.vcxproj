@@ -94,6 +94,7 @@
     <ClCompile Include="MatrixTests.cpp" />
     <ClCompile Include="QuaternionTests.cpp" />
     <ClCompile Include="RayTests.cpp" />
+    <ClCompile Include="SIMDTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

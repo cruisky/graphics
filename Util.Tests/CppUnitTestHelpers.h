@@ -10,11 +10,12 @@
 #include "Math/Quaternion.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
+#include "SSE/SSE.h"
 
-#define repeat(i,n) for(int (i)=0;(i)<(n);++(i))
-#define repeat_r(i,a,b) for(int (i)=(a);(i)<(b);++(i))
-#define repeat_s(i,n,s) for(int (i)=0;(i)<(n);(i)+=(s))
-#define repeat_rs(i,a,b,s) for(int (i)=(a);(i)<(b);(i)+=(s))
+#define repeat(i,n) for(auto (i)=0;(i)<(n);++(i))
+#define repeat_r(i,a,b) for(auto (i)=(a);(i)<(b);++(i))
+#define repeat_s(i,n,s) for(auto (i)=0;(i)<(n);(i)+=(s))
+#define repeat_rs(i,a,b,s) for(auto (i)=(a);(i)<(b);(i)+=(s))
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -65,42 +66,66 @@ namespace TX
 			} TOLERANCE;
 
 			inline void AreClose(float expected, float actual, const std::string& msg = std::string()) {
-				Assert::AreEqual(expected, actual, float(TOLERANCE), Msg::EQ_(expected, actual, msg), NULL);
+				Assert::AreEqual(expected, actual, float(TOLERANCE), Msg::EQ_(expected, actual, msg));
 			}
-			inline void AreClose(const Quaternion& expected, const Quaternion& actual, const std::string& msg = std::string()) {
+
+			inline void AreClose(double expected, double actual, const std::string& msg = std::string()) {
+				Assert::AreEqual(expected, actual, double(TOLERANCE), Msg::EQ_(expected, actual, msg));
+			}
+
+			template <typename T>
+			inline void AreEqual(const T& expected, const T& actual, const std::string& msg = std::string()) {
+				Assert::AreEqual(expected, actual, WStr(msg).c_str());
+			}
+
+			template <typename T>
+			inline void AreClose(const T& expected, const T& actual, const std::string& msg = std::string()) {
+				throw "not implemented";
+			}
+
+			template<typename T>
+			inline void AreClose(const T& expected, const T& actual, const uint elemCount, const std::string& msg = std::string()) {
+				repeat(i, elemCount)
+					Assertions::AreClose(expected[i], actual[i], Msg::EQ(expected, actual, msg));
+			}
+			template<typename T>
+			inline void AreEqual(const T& expected, const T& actual, const uint elemCount, const std::string& msg = std::string()) {
+				repeat(i, elemCount)
+					Assertions::AreEqual(expected[i], actual[i], Msg::EQ(expected, actual, msg));
+			}
+
+			template<> inline void AreClose<Quaternion>(const Quaternion& expected, const Quaternion& actual, const std::string& msg) {
 #define signof(f) ((f) >= 0 ? 1 : -1)
 				// might get a negative version, but they are still equivalent
 				bool negate = false;
-				repeat(i, 4) {
-					if (Math::Abs(expected.q[i] - actual.q[i]) > float(TOLERANCE) && signof(expected.w) != signof(actual.w)){
-					negate = true;
-					}
-				}
+				repeat(i, 4)
+					if (Math::Abs(expected.q[i] - actual.q[i]) > float(TOLERANCE) && signof(expected.w) != signof(actual.w))
+						negate = true;
 #undef signof
-				repeat(i, 4) {
+				repeat(i, 4)
 					Assert::AreEqual(
 						negate ? -expected.q[i] : expected.q[i],
 						actual.q[i], TOLERANCE, Msg::EQ_(expected, actual, msg));
-				}
 			}
-			inline void AreClose(const Vec4& expected, const Vec4& actual, const std::string& msg = std::string()){
-				repeat(i, 4)
-					Assert::AreEqual(expected[i], actual[i], TOLERANCE, Msg::EQ_(expected, actual, msg));
+			template<> inline void AreClose<Vec4>(const Vec4& expected, const Vec4& actual, const std::string& msg){
+				Assertions::AreClose(expected, actual, 4, msg);
+			}
+			template<> inline void AreClose<Color>(const Color& expected, const Color& actual, const std::string& msg) {
+				Assertions::AreClose(expected, actual, 3, msg);
+			}
+			template<> inline void AreClose<Vec3>(const Vec3& expected, const Vec3& actual, const std::string& msg){
+				Assertions::AreClose(expected, actual, 3, msg);
+			}
+			template<> inline void AreClose<Matrix4x4>(const Matrix4x4& expected, const Matrix4x4& actual, const std::string& msg){
+				Assertions::AreClose(expected, actual, 4, msg);
+			}
 
+
+			template<> inline void AreEqual<SSE::V4Int>(const SSE::V4Int& expected, const SSE::V4Int& actual, const std::string& msg) {
+				Assertions::AreEqual(expected, actual, 4, msg);
 			}
-			inline void AreClose(const Color& expected, const Color& actual, const std::string& msg = std::string()) {
-				Assert::AreEqual(expected.r, actual.r, TOLERANCE, Msg::EQ_(expected, actual, msg));
-				Assert::AreEqual(expected.g, actual.g, TOLERANCE, Msg::EQ_(expected, actual, msg));
-				Assert::AreEqual(expected.b, actual.b, TOLERANCE, Msg::EQ_(expected, actual, msg));
-			}
-			inline void AreClose(const Vec3& expected, const Vec3& actual, const std::string& msg = std::string()){
-				repeat(i, 3)
-					Assert::AreEqual(expected[i], actual[i], TOLERANCE, Msg::EQ_(expected, actual, msg));
-			}
-			inline void AreClose(const Matrix4x4& expected, const Matrix4x4& actual, const std::string& msg = std::string()){
-				repeat(i, 4){
-					Assertions::AreClose(expected[i], actual[i], Msg::EQ(expected, actual, msg));
-				}
+			template<> inline void AreClose<SSE::V4Float>(const SSE::V4Float& expected, const SSE::V4Float& actual, const std::string& msg) {
+				Assertions::AreClose(expected, actual, 4, msg);
 			}
 		}
 	}

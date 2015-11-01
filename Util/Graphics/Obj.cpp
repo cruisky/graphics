@@ -50,8 +50,8 @@ namespace TX
 		}
 
 		assert((origin.mesh.indices.size() % 3) == 0);
-		dest.mesh.triangles.reserve(origin.mesh.indices.size());
-		dest.mesh.triangles.assign(origin.mesh.indices.begin(), origin.mesh.indices.end());
+		dest.mesh.indices.reserve(origin.mesh.indices.size());
+		dest.mesh.indices.assign(origin.mesh.indices.begin(), origin.mesh.indices.end());
 
 		assert(origin.mesh.material_ids.size() == origin.mesh.indices.size() / 3);
 		dest.mesh.materials.reserve(origin.mesh.material_ids.size());

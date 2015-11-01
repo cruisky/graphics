@@ -87,8 +87,8 @@ namespace TX
 			if (mesh.normals.size() > 0){
 				normals.Data(mesh.normals.size() * sizeof(mesh.normals[0]), mesh.normals.data());
 			}
-			if (mesh.triangles.size() > 0){
-				indices.Data(mesh.triangles.size() * sizeof(mesh.triangles[0]), mesh.triangles.data());
+			if (mesh.indices.size() > 0){
+				indices.Data(mesh.indices.size() * sizeof(mesh.indices[0]), mesh.indices.data());
 			}
 		}
 	}

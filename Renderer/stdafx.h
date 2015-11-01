@@ -1,14 +1,9 @@
 #pragma once
 #pragma warning(disable: 4800)
 
-#include <cassert>
 #include <cctype>
 #include <cmath>
 #include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include <vector>
-#include <memory>
 #include <utility>
 
 #include "Util/Util.h"
