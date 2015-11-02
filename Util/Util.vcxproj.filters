@@ -14,7 +14,6 @@
     <ClCompile Include="Graphics\Intersection.cpp" />
     <ClCompile Include="Graphics\Light.cpp" />
     <ClCompile Include="Graphics\Primitive.cpp" />
-    <ClCompile Include="Graphics\PrimitiveManager.cpp" />
     <ClCompile Include="Math\Ray.cpp" />
     <ClCompile Include="Libs\tiny_obj_loader.cpp" />
     <ClCompile Include="Math\Geometry.cpp" />

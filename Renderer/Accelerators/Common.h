@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Util.h"
 #include "SSE/SSE.h"
 #include "Graphics/Intersection.h"
-
+#include "Graphics/Primitive.h"		// temp
 namespace TX {
 	struct BuildVertex {
 		Vec3 pos;
@@ -67,6 +68,18 @@ namespace TX {
 				primId[i] = prims[i]->primId;
 				triId[i] = prims[i]->triId;
 			}
+			for (uint i = count; i < 4; i++) {
+				vert0.x[i]
+					= vert0.y[i]
+					= vert0.z[i]
+					= edge1.x[i]
+					= edge1.y[i]
+					= edge1.z[i]
+					= edge2.x[i]
+					= edge2.y[i]
+					= edge2.z[i] = 0.f;
+				primId[i] = triId[i] = -1;
+			}
 		}
 
 		inline bool Intersect(const Ray& ray, Intersection& intxn, const std::vector<std::shared_ptr<Primitive>>& prims) const {
@@ -104,7 +117,6 @@ namespace TX {
 			// update intersection and ray length
 			ray.t_max = rayT;
 			intxn.dist = rayT;
-			intxn.localray = ray;
 			intxn.uv.u = barycentricU;
 			intxn.uv.v = barycentricV;
 			intxn.prim = prims[primId[idx]].get();

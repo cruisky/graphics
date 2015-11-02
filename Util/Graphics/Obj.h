@@ -51,8 +51,6 @@ namespace TX {
 			const Vec3& rotation = Vec3::ZERO,
 			const Vec3& scale = Vec3::ONE);
 		void Clear();
-
-		const uint* GetIndexOfTriangle(uint triIdx) const;
 	};
 
 	class ObjShape {

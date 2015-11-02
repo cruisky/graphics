@@ -35,17 +35,6 @@ namespace TX {
 	bool BVH::Intersect(const Ray& ray, Intersection& intxn) const {
 		if (!root) return false;
 
-		//const SSE::V4Int flipRightHalf(0x00000000, 0x00000000, 0x80000000, 0x80000000);
-		//const SSE::Vec3V4F negOrigin(-ray.origin.x, -ray.origin.y, -ray.origin.z);
-
-		//// reciprocal of direction, the second half of the 4 packed floats are negated
-		//const SSE::Vec3V4F invDir(
-		//	SSE::V4Float(1.f / ray.dir.x) ^ flipRightHalf,
-		//	SSE::V4Float(1.f / ray.dir.y) ^ flipRightHalf,
-		//	SSE::V4Float(1.f / ray.dir.z) ^ flipRightHalf);
-
-		//SSE::V4Float nearFar(ray.t_min, ray.t_min, -ray.t_max, -ray.t_max);
-
 		Vec3 invDir(1.f / ray.dir.x, 1.f / ray.dir.y, 1.f / ray.dir.z);
 		Vec3u dirSign(invDir.x >= 0, invDir.y >= 0, invDir.z >= 0);
 
@@ -92,7 +81,49 @@ namespace TX {
 	}
 
 	bool BVH::Occlude(const Ray& ray) const {
-		// TODO
+		if (!root) return false;
+
+		Vec3 invDir(1.f / ray.dir.x, 1.f / ray.dir.y, 1.f / ray.dir.z);
+		Vec3u dirSign(invDir.x >= 0, invDir.y >= 0, invDir.z >= 0);
+
+		uint todoStack[64];
+		uint todoStackTop = 0, nodeId = 0;	// start from root
+
+		while (true) {
+			const LinearNode *currNode = &root[nodeId];
+
+			// test ray intersection against the bound box of current node
+			if (IntersectBounds(currNode->bounds, ray, invDir, dirSign)) {
+				// leaf
+				if (currNode->primCount) {
+					// test ray intersection against each primitive
+					for (uint i = 0; i < currNode->primCount; i++) {
+						if (prims[currNode->tri4Id + i].Occlude(ray))
+							return true;
+					}
+					if (todoStackTop == 0) break;
+					nodeId = todoStack[--todoStackTop];
+				}
+				// interior
+				else {
+					// let first child be the next node and push the second child
+					if (dirSign[currNode->axis]) {
+						todoStack[todoStackTop++] = currNode->secondChildId;
+						nodeId++;
+					}
+					else {
+						todoStack[todoStackTop++] = nodeId + 1;
+						nodeId = currNode->secondChildId;
+					}
+				}
+			}
+			// missed
+			else {
+				// pop one node from todo stack
+				if (todoStackTop == 0) break;
+				nodeId = todoStack[--todoStackTop];
+			}
+		}
 		return false;
 	}
 
@@ -141,7 +172,7 @@ namespace TX {
 		uint vertCount = 0;
 		uint triCount = 0;
 		for (auto& prim : *prims_) {
-			const Mesh *mesh = static_cast<const Mesh *>(prim->GetShape());
+			const Mesh *mesh = static_cast<const Mesh *>(prim->GetMesh());
 			vertCount += mesh->VertexCount();
 			triCount += mesh->TriangleCount();
 		}
@@ -153,7 +184,7 @@ namespace TX {
 		for (uint primId = 0; primId < prims_->size(); primId++) {
 			const Primitive* currPrim = (*prims_)[primId].get();
 			const Matrix4x4& local2world = currPrim->transform.LocalToWorldMatrix();
-			const Mesh *mesh = static_cast<const Mesh *>(currPrim->GetShape());
+			const Mesh *mesh = static_cast<const Mesh *>(currPrim->GetMesh());
 
 			// Triangles
 			const uint *indices = mesh->indices.data();

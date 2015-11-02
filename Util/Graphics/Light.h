@@ -1,10 +1,13 @@
 #pragma once
 #include "Util.h"
 #include "Graphics/Color.h"
+#include "Math/Sample.h"
 #include "SceneObject.h"
 
 namespace TX {
 	class Light : public SceneObject {
+		// Allows the scene to update this object's pointer to the scene
+		friend class Scene;
 	public:
 		Light(int sample_count = 1) : sample_count(sample_count){}
 		virtual ~Light(){};
@@ -18,7 +21,7 @@ namespace TX {
 		/// <param name="lightcolor">Light color</param>
 		/// <param name="pdf">Pdf</param>
 		virtual void Illuminate(const Vec3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const = 0;
-		virtual float Pdf(const Vec3& pos, const Vec3& dir) const = 0;
+		virtual float Pdf(const Vec3& eye, const Vec3& dir) const = 0;
 
 		/// <summary>
 		/// Indicate whether this light is described by a delta distribution (if it is, it cannot be randomly sampled)
@@ -26,16 +29,18 @@ namespace TX {
 		virtual bool IsDelta() const = 0;
 	public:
 		const int sample_count;
+	protected:
+		const Scene *scene_;
 	};
 
 
 	class AreaLight : public Light {
 	public:
-		AreaLight(const Color& intensity, Primitive *primitive, int sample_count = 1);
+		AreaLight(const Color& intensity, Primitive *primitive, std::shared_ptr<MeshSampler> sampler, int sample_count = 1);
 		inline bool IsDelta() const { return false; }
 		virtual void Illuminate(const Vec3& pos, const Sample *lightsamples, Ray *wi, Color *lightcolor, float *pdf) const;
 		virtual void Emit(const Vec3& pos, const Vec3& normal, const Vec3& wo, Color *out) const;
-		virtual float Pdf(const Vec3& pos, const Vec3& dir) const;
+		virtual float Pdf(const Vec3& eye, const Vec3& dir) const;
 	public:
 		Color intensity;
 		const Primitive * const primitive;

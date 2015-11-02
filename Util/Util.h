@@ -30,6 +30,7 @@ namespace TX
 	class Image;
 	class Intersection; class LocalGeo;
 	class Light;
+	class Mesh; class MeshSampler;
 	class ObjMaterial; class ObjMesh; class ObjShape;
 	class Primitive;
 	class PrimitiveManager;
@@ -44,7 +45,7 @@ namespace TX
 	class Matrix3x3; class Matrix4x4;
 	class RNG;
 	class Ray;
-	class Sample; class CameraSample;
+	class Sample; class CameraSample; class Distribution1D;
 	class Sampler;
 
 	template<size_t N, typename T> class Vec;

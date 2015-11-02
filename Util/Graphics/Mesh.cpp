@@ -11,18 +11,41 @@ namespace TX {
 		indices.clear();
 	}
 
-	bool Mesh::Intersect(const Ray& localray) const {
-		//TODO
-		return false;
-	}
-	void Mesh::PostIntersect(const Ray& localray, LocalGeo& geom) const {
-		const uint vId1 = 3 * geom.triId;
-		const uint vId2 = vId1 + 1;
-		const uint vId3 = vId1 + 2;
+	bool Mesh::Intersect(uint triId, const Ray& localray) const {
+		// Moller-Trumbore algorithm
+		const uint* idx = GetIndexOfTriangle(triId);
+		const Vec3& v0 = vertices[*idx];
+		const Vec3 e1 = vertices[*(++idx)] - v0;
+		const Vec3 e2 = vertices[*(++idx)] - v0;
 
-		const Vec3& vert1 = vertices[vId1];
-		const Vec3& vert2 = vertices[vId2];
-		const Vec3& vert3 = vertices[vId3];
+		const Vec3 P = Math::Cross(localray.dir, e2);
+		const float det = Math::Dot(e1, P);
+		if (Math::Abs(det) < Ray::EPSILON)
+			return false;
+		const float invDet = 1.f / det;
+		const Vec3 T = localray.origin - v0;
+		const float u = Math::Dot(T, P) * invDet;
+		if (!Math::InBounds(u, 0.f, 1.f))
+			return false;
+		const Vec3 Q = Math::Cross(T, e1);
+		const float v = Math::Dot(localray.dir, Q) * invDet;
+		if (!Math::InBounds(v, 0.f, 1.f))
+			return false;
+
+		const float t = Math::Dot(e2, Q) * invDet;
+
+		if (!Math::InBounds(t, localray.t_min, localray.t_max))
+			return false;
+
+		localray.t_max = t;
+		return true;
+	}
+	void Mesh::PostIntersect(LocalGeo& geom) const {
+		const uint* idx = GetIndexOfTriangle(geom.triId);
+
+		const Vec3& vert1 = vertices[*idx];
+		const Vec3& vert2 = vertices[*(++idx)];
+		const Vec3& vert3 = vertices[*(++idx)];
 
 		//const Vec3& norm1 = normals[vId1];
 		//const Vec3& norm2 = normals[vId2];
@@ -30,26 +53,38 @@ namespace TX {
 
 		geom.normal = Math::Cross(vert2 - vert1, vert3 - vert1);
 	}
-	bool Mesh::Occlude(const Ray& localray) const {
-		//TODO
-		return false;
+	bool Mesh::Occlude(uint triId, const Ray& localray) const {
+		const uint* idx = GetIndexOfTriangle(triId);
+		const Vec3& v0 = vertices[*idx];
+		const Vec3 e1 = vertices[*(++idx)] - v0;
+		const Vec3 e2 = vertices[*(++idx)] - v0;
+
+		const Vec3 P = Math::Cross(localray.dir, e2);
+		const float det = Math::Dot(e1, P);
+		if (Math::Abs(det) < Ray::EPSILON)
+			return false;
+		const float invDet = 1 / det;
+		const Vec3 T = localray.origin - v0;
+		const float u = Math::Dot(T, P) * invDet;
+		if (!Math::InBounds(u, 0.f, 1.f))
+			return false;
+		const Vec3 Q = Math::Cross(T, e1);
+		const float v = Math::Dot(localray.dir, Q) * invDet;
+
+		return Math::InBounds(Math::Dot(e2, Q) * invDet, localray.t_min, localray.t_max);
 	}
 	float Mesh::Area() const {
 		float area = 0.f;
-		for (auto i = 0U; i < indices.size(); i += 3) {
-			area += 0.5f * Math::Length(Math::Cross(vertices[indices[i + 1]] - vertices[indices[i]],
-				vertices[indices[i + 2]] - vertices[indices[i]]));
+		for (uint i = 0; i < indices.size(); i += 3) {
+			area += Area(i);
 		}
 		return area;
 	}
-	float Mesh::Pdf(const Ray& localwi) const {
-		//TODO
-		return 0.f;
+	float Mesh::Area(uint triId) const {
+		assert(triId % 3 == 0);
+		return 0.5f * Math::Length(Math::Cross(vertices[indices[triId + 1]] - vertices[indices[triId]],
+			vertices[indices[triId + 2]] - vertices[indices[triId]]));
 	}
-	void Mesh::SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal/* = nullptr*/) const {
-		//TODO
-	}
-
 	Mesh& Mesh::LoadSphere(float radius, uint slices, uint stacks) {
 		Clear();
 
@@ -156,5 +191,41 @@ namespace TX {
 		indices.push_back(3);
 
 		return *this;
+	}
+
+
+	MeshSampler::MeshSampler(std::shared_ptr<const Mesh> mesh) : mesh(mesh){
+		sumArea = 0.f;
+		const uint idxCount = mesh->indices.size();
+		const uint triCount = idxCount / 3;
+		assert(idxCount % 3 == 0);
+
+		areas.reserve(triCount);
+		for (uint i = 0; i < idxCount; i += 3) {
+			float a = mesh->Area(i);
+			areas.push_back(a);
+			sumArea += a;
+		}
+		sumAreaRcp = 1.f / sumArea;
+		areaDistro = std::make_unique<Distribution1D>(&areas[0], triCount);
+	}
+	void MeshSampler::SamplePoint(const Sample *sample, Vec3 *outLocal, uint *id, Vec3 *normal) const {
+		int triId = areaDistro->SampleDiscrete(sample->w, nullptr);
+		float barycentricU, barycentricV;
+		Sampling::UniformTriangle(sample->u, sample->v, &barycentricU, &barycentricV);
+		mesh->GetPoint(triId, barycentricU, barycentricV, outLocal, normal);
+		if (id) *id = triId;
+	}
+
+	float MeshSampler::Pdf(uint triId, const Ray& localwi) const {
+		if (!mesh->Intersect(triId, localwi))
+			return 0.f;
+		Vec3 normal;
+		mesh->GetPoint(triId, 0.f, 0.f, nullptr, &normal);
+		float pdf = localwi.t_max * localwi.t_max / (Math::AbsDot(normal, -localwi.dir) * sumArea);
+		return Math::IsINF(pdf) ? 0.f : pdf;
+	}
+	float MeshSampler::Pdf(uint triId, const Vec3& point) const {
+		return sumAreaRcp;
 	}
 }

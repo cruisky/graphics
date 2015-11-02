@@ -4,6 +4,10 @@
 #include "Math/Sample.h"
 
 namespace TX{
+	bool Shape::Intersect(const Ray& localray) const { return false; }
+	void Shape::PostIntersect(const Ray& localray, LocalGeo& geo) const {}
+	bool Shape::Occlude(const Ray& localray) const { return false; }
+
 	float Shape::Pdf(const Vec3& localpoint) const { return 1.f / Area(); }
 
 	float Shape::Pdf(const Ray& localwi) const {
@@ -13,6 +17,9 @@ namespace TX{
 		PostIntersect(localwi, geom);
 		float pdf = localwi.t_max * localwi.t_max / (Math::AbsDot(geom.normal, -localwi.dir) * Area());
 		return Math::IsINF(pdf) ? 0.f : pdf;
+	}
+	void Shape::SamplePoint(const Sample *sample, Vec3 *out, Vec3 *normal/* = nullptr*/) const {
+		throw "not implemented";
 	}
 
 

@@ -13,7 +13,6 @@ namespace TX{
 		Intersection(){}
 		inline const AreaLight *GetAreaLight() const { return prim->GetAreaLight(); }
 	public:
-		Ray localray;
 		float dist;
 		const Primitive *prim;
 		uint triId;

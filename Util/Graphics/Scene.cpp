@@ -13,6 +13,7 @@ namespace TX {
 		prims_.push_back(prim);
 	}
 	void Scene::AddLight(std::shared_ptr<Light> light){
+		light->scene_ = this;
 		light->transform.UpdateMatrix();
 		lights.push_back(light);
 	}
