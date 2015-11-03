@@ -29,30 +29,35 @@ namespace TX{
 
 	Distribution1D::Distribution1D(const float *f, uint n) : count(n) {
 		func = new float[n];
-		memcpy_s(func, n, f, n);
+		memcpy_s(func, n*sizeof(float), f, n*sizeof(float));
 
 		// calculate cdf
 		cdf = new float[n + 1];
 		cdf[0] = 0.f;
 		for (int i = 1; i < count + 1; i++)
-			cdf[i] = cdf[i - 1] + func[i - 1] / n;
+			cdf[i] = cdf[i - 1] + func[i - 1];
 
 		// normalize cdf
 		funcInt = cdf[count];
-		if (funcInt == 0.f)
+		if (funcInt == 0.f) {
+			float nRcp = 1.f / n;
 			for (uint i = 1; i < n + 1; i++)
-				cdf[i] = float(i) / float(n);
-		else
+				cdf[i] = float(i) * nRcp;
+		}
+		else if (funcInt != 1.f){
+			float funcIntRcp = 1.f / funcInt;
 			for (uint i = 1; i < n + 1; i++)
-				cdf[i] /= funcInt;
+				cdf[i] *= funcIntRcp;
+		}
+
 	}
 	Distribution1D::~Distribution1D() {
 		MemDeleteArray(func);
 		MemDeleteArray(cdf);
 	}
 	float Distribution1D::SampleContinuous(float u, float *pdf, uint *off) {
-		float *ptr = std::upper_bound(cdf, cdf + count + 1, u);
-		uint offset = Math::Max(0, uint(ptr - cdf - 1));
+		float *ptr = std::upper_bound(cdf, cdf + count, u);
+		uint offset = Math::Max(0, int(ptr - cdf - 1));
 		if (off) *off = offset;
 		assert(offset < count);
 		assert(u >= cdf[offset] && u < cdf[offset + 1]);
@@ -66,8 +71,8 @@ namespace TX{
 	}
 
 	uint Distribution1D::SampleDiscrete(float u, float *pdf) {
-		float *ptr = std::upper_bound(cdf, cdf + count + 1, u);
-		uint offset = Math::Max(0U, uint(ptr - cdf - 1));
+		float *ptr = std::upper_bound(cdf, cdf + count, u);
+		uint offset = Math::Max(0, int(ptr - cdf - 1));
 		assert(offset < count);
 		assert(u >= cdf[offset] && u < cdf[offset + 1]);
 		if (pdf) *pdf = func[offset] / funcInt * count;
