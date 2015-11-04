@@ -39,7 +39,7 @@ namespace TX {
 		/// <param name="radius"> Radius of the sphere </param>
 		/// <param name="slices"> Number of slices (meridian) </param>
 		/// <param name="stacks"> Number of stacks (ring of latitude on xz plane) </param>
-		Mesh& LoadSphere(float radius = 1.f, uint slices = 64, uint stacks = 64);
+		Mesh& LoadSphere(float radius = 1.f, uint slices = 48, uint stacks = 32);
 		/// <summary>
 		/// Load a plane to this mesh.
 		/// The plane faces towards z-axis.

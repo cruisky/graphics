@@ -115,11 +115,11 @@ namespace TX {
 
 		#pragma region uvs
 		uv.reserve(vertices.size());
-		uv.emplace_back(0, 1);
+		uv.emplace_back(0.f, 1.f);
 		for (uint lat = 0; lat < stacks; lat++)
 			for (uint lon = 0; lon <= slices; lon++)
 				uv.emplace_back(float(lon) / slices, 1.f - float(lat + 1) / (stacks + 1));
-		uv.emplace_back(0, 0);
+		uv.emplace_back(0.f, 0.f);
 		#pragma endregion
 
 		#pragma region indices
@@ -222,7 +222,7 @@ namespace TX {
 			return 0.f;
 		Vec3 normal;
 		mesh->GetPoint(triId, 0.f, 0.f, nullptr, &normal);
-		float pdf = localwi.t_max * localwi.t_max / (Math::AbsDot(normal, -localwi.dir) * sumArea);
+		float pdf = localwi.t_max * localwi.t_max / (Math::AbsDot(normal, localwi.dir) * sumArea);
 		return Math::IsINF(pdf) ? 0.f : pdf;
 	}
 	float MeshSampler::Pdf(uint triId, const Vec3& point) const {

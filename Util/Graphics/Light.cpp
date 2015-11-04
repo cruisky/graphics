@@ -26,6 +26,7 @@ namespace TX
 		// compute pdf & color of the ray
 		*pdf = primitive->Pdf(triId, eye, wi->dir);
 		Emit(lightpoint, normal, -wi->dir, lightcolor);
+		*lightcolor /= *pdf;
 	}
 	void AreaLight::Emit(const Vec3& pos, const Vec3& normal, const Vec3& wo, Color *out) const {
 		*out = Math::Dot(normal, wo) > 0.f ? intensity : 0.f;
