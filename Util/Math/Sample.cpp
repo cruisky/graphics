@@ -60,7 +60,7 @@ namespace TX{
 		uint offset = Math::Max(0, int(ptr - cdf - 1));
 		if (off) *off = offset;
 		assert(offset < count);
-		assert(u >= cdf[offset] && u < cdf[offset + 1]);
+		assert(u >= cdf[offset] && u <= cdf[offset + 1]);
 
 		float du = (u - cdf[offset]) / (cdf[offset + 1] - cdf[offset]);
 		assert(Math::Valid(du));
@@ -74,7 +74,7 @@ namespace TX{
 		float *ptr = std::upper_bound(cdf, cdf + count, u);
 		uint offset = Math::Max(0, int(ptr - cdf - 1));
 		assert(offset < count);
-		assert(u >= cdf[offset] && u < cdf[offset + 1]);
+		assert(u >= cdf[offset] && u <= cdf[offset + 1]);
 		if (pdf) *pdf = func[offset] / funcInt * count;
 		return offset;
 	}

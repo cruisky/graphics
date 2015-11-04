@@ -107,11 +107,12 @@ namespace TX {
 				return false;
 
 			const SSE::V4Float t = Math::Dot(edge2, Q) * invDet;
-			const size_t idx = SSE::SelectMin(valid, t);
-			float rayT = t[idx];
-			if (!Math::InBounds(rayT, ray.t_min, ray.t_max))
+			valid &= (t > SSE::V4Float(ray.t_min)) & (t < SSE::V4Float(ray.t_max));
+			if (None(valid))
 				return false;
 
+			const size_t idx = SSE::SelectMin(valid, t);
+			float rayT = t[idx];
 			float barycentricU = u[idx], barycentricV = v[idx];
 
 			// update intersection and ray length
