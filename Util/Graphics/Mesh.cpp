@@ -90,7 +90,7 @@ namespace TX {
 
 		#pragma region vertices
 		vertices.reserve((slices+1) * stacks + 2);
-		vertices.push_back(Vec3::UP * radius);
+		vertices.push_back(Vec3::Z * radius);
 		for (uint lat = 0; lat < stacks; lat++) {
 			float a1 = Math::PI * float(lat + 1) / (stacks + 1);
 			float rsin1 = Math::Sin(a1) * radius;
@@ -100,10 +100,10 @@ namespace TX {
 				float sin2 = Math::Sin(a2);
 				float cos2 = Math::Cos(a2);
 				//vertices[lat * (slices+1) + 1 + lon]
-				vertices.emplace_back(rsin1 * cos2, rcos1, rsin1 * sin2);
+				vertices.emplace_back(rsin1 * cos2, rsin1 * sin2, rcos1);
 			}
 		}
-		vertices.push_back(Vec3::DOWN * radius);
+		vertices.push_back(-Vec3::Z * radius);
 		#pragma endregion
 
 		#pragma region normals
@@ -115,11 +115,11 @@ namespace TX {
 
 		#pragma region uvs
 		uv.reserve(vertices.size());
-		uv.push_back(Vec2::Y);
+		uv.emplace_back(0, 1);
 		for (uint lat = 0; lat < stacks; lat++)
 			for (uint lon = 0; lon <= slices; lon++)
 				uv.emplace_back(float(lon) / slices, 1.f - float(lat + 1) / (stacks + 1));
-		uv.push_back(Vec2::ZERO);
+		uv.emplace_back(0, 0);
 		#pragma endregion
 
 		#pragma region indices
