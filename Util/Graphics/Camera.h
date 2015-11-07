@@ -4,7 +4,7 @@
 
 namespace TX
 {
-	class Camera : public SceneObject {
+	class Camera {
 	public:
 		Camera(int width, int height, float fov = 90.f, float near = 0.1f, float far = 1000.f, bool is_ortho = false);
 
@@ -41,6 +41,9 @@ namespace TX
 		inline const Matrix4x4& ViewportToScreen() const { return viewport_screen_; }
 		inline const Matrix4x4& CameraToViewport() const { return cam_viewport_; }
 		inline const Matrix4x4& ViewportToCamera() const { return viewport_cam_; }
+
+	public:
+		Transform transform;
 
 	private:
 		/// <summary>

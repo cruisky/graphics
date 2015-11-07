@@ -29,13 +29,13 @@ namespace TX
 	class FontMap;
 	class Image;
 	class Intersection; class LocalGeo;
-	class Light;
+	class Light; class AreaLight;
 	class Mesh; class MeshSampler;
 	class ObjMaterial; class ObjMesh; class ObjShape;
 	class Primitive;
 	class PrimitiveManager;
 	class Scene;
-	class SceneObject;
+	class SceneObject; class DynamicSceneObject;
 	class Shape;
 	class Tracer;
 	class Transform;

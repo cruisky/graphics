@@ -11,37 +11,51 @@ namespace TX {
 		indices.clear();
 	}
 
-	bool Mesh::Intersect(uint triId, const Ray& localray) const {
+	void Mesh::ApplyTransform(const Transform& transform) {
+		transform.UpdateMatrix();
+		const Matrix4x4& world2local = transform.WorldToLocalMatrix();
+		const Matrix4x4& local2world = transform.LocalToWorldMatrix();
+		if (local2world == Matrix4x4::IDENTITY)
+			return;
+		for (auto vert = vertices.begin(); vert < vertices.end(); vert++) {
+			*vert = Matrix4x4::TPoint(local2world, *vert);
+		}
+		for (auto norm = normals.begin(); norm < normals.end(); norm++) {
+			*norm = Matrix4x4::TNormal(world2local, *norm);
+		}
+	}
+
+	bool Mesh::Intersect(uint triId, const Ray& ray) const {
 		// Moller-Trumbore algorithm
-		const uint* idx = GetIndexOfTriangle(triId);
+		const uint* idx = GetIndicesOfTriangle(triId);
 		const Vec3& v0 = vertices[*idx];
 		const Vec3 e1 = vertices[*(++idx)] - v0;
 		const Vec3 e2 = vertices[*(++idx)] - v0;
 
-		const Vec3 P = Math::Cross(localray.dir, e2);
+		const Vec3 P = Math::Cross(ray.dir, e2);
 		const float det = Math::Dot(e1, P);
 		if (Math::Abs(det) < Ray::EPSILON)
 			return false;
 		const float invDet = 1.f / det;
-		const Vec3 T = localray.origin - v0;
+		const Vec3 T = ray.origin - v0;
 		const float u = Math::Dot(T, P) * invDet;
 		if (!Math::InBounds(u, 0.f, 1.f))
 			return false;
 		const Vec3 Q = Math::Cross(T, e1);
-		const float v = Math::Dot(localray.dir, Q) * invDet;
+		const float v = Math::Dot(ray.dir, Q) * invDet;
 		if (!Math::InBounds(v, 0.f, 1.f))
 			return false;
 
 		const float t = Math::Dot(e2, Q) * invDet;
 
-		if (!Math::InBounds(t, localray.t_min, localray.t_max))
+		if (!Math::InBounds(t, ray.t_min, ray.t_max))
 			return false;
 
-		localray.t_max = t;
+		ray.t_max = t;
 		return true;
 	}
 	void Mesh::PostIntersect(LocalGeo& geom) const {
-		const uint* idx = GetIndexOfTriangle(geom.triId);
+		const uint* idx = GetIndicesOfTriangle(geom.triId);
 
 		const Vec3& vert1 = vertices[*idx];
 		const Vec3& vert2 = vertices[*(++idx)];
@@ -51,27 +65,27 @@ namespace TX {
 		//const Vec3& norm2 = normals[vId2];
 		//const Vec3& norm3 = normals[vId3];
 
-		geom.normal = Math::Cross(vert2 - vert1, vert3 - vert1);
+		geom.normal = Math::Normalize(Math::Cross(vert2 - vert1, vert3 - vert1));
 	}
-	bool Mesh::Occlude(uint triId, const Ray& localray) const {
-		const uint* idx = GetIndexOfTriangle(triId);
+	bool Mesh::Occlude(uint triId, const Ray& ray) const {
+		const uint* idx = GetIndicesOfTriangle(triId);
 		const Vec3& v0 = vertices[*idx];
 		const Vec3 e1 = vertices[*(++idx)] - v0;
 		const Vec3 e2 = vertices[*(++idx)] - v0;
 
-		const Vec3 P = Math::Cross(localray.dir, e2);
+		const Vec3 P = Math::Cross(ray.dir, e2);
 		const float det = Math::Dot(e1, P);
 		if (Math::Abs(det) < Ray::EPSILON)
 			return false;
 		const float invDet = 1 / det;
-		const Vec3 T = localray.origin - v0;
+		const Vec3 T = ray.origin - v0;
 		const float u = Math::Dot(T, P) * invDet;
 		if (!Math::InBounds(u, 0.f, 1.f))
 			return false;
 		const Vec3 Q = Math::Cross(T, e1);
-		const float v = Math::Dot(localray.dir, Q) * invDet;
+		const float v = Math::Dot(ray.dir, Q) * invDet;
 
-		return Math::InBounds(Math::Dot(e2, Q) * invDet, localray.t_min, localray.t_max);
+		return Math::InBounds(Math::Dot(e2, Q) * invDet, ray.t_min, ray.t_max);
 	}
 	float Mesh::Area() const {
 		float area = 0.f;
@@ -209,20 +223,20 @@ namespace TX {
 		sumAreaRcp = 1.f / sumArea;
 		areaDistro = std::make_unique<Distribution1D>(&areas[0], triCount);
 	}
-	void MeshSampler::SamplePoint(const Sample *sample, Vec3 *outLocal, uint *id, Vec3 *normal) const {
+	void MeshSampler::SamplePoint(const Sample *sample, Vec3 *point, uint *id, Vec3 *normal) const {
 		int triId = areaDistro->SampleDiscrete(sample->w, nullptr);
 		float barycentricU, barycentricV;
 		Sampling::UniformTriangle(sample->u, sample->v, &barycentricU, &barycentricV);
-		mesh->GetPoint(triId, barycentricU, barycentricV, outLocal, normal);
+		mesh->GetPoint(triId, barycentricU, barycentricV, point, normal);
 		if (id) *id = triId;
 	}
 
-	float MeshSampler::Pdf(uint triId, const Ray& localwi) const {
-		if (!mesh->Intersect(triId, localwi))
+	float MeshSampler::Pdf(uint triId, const Ray& wi) const {
+		if (!mesh->Intersect(triId, wi))
 			return 0.f;
 		Vec3 normal;
 		mesh->GetPoint(triId, 0.f, 0.f, nullptr, &normal);
-		float pdf = localwi.t_max * localwi.t_max / (Math::AbsDot(normal, localwi.dir) * sumArea);
+		float pdf = wi.t_max * wi.t_max / (Math::AbsDot(normal, wi.dir) * sumArea);		// solid angle measure
 		return Math::IsINF(pdf) ? 0.f : pdf;
 	}
 	float MeshSampler::Pdf(uint triId, const Vec3& point) const {

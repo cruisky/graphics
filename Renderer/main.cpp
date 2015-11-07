@@ -55,7 +55,7 @@ void GUIMainMesh() {
 	shared_ptr<BSDF> diffuse_green(new Diffuse(Color(0.2, 0.7, 0.2)));
 	shared_ptr<BSDF> diffuse_yellow(new Diffuse(Color(0.7, 0.6, 0.3)));
 	shared_ptr<BSDF> diffuse_orange(new Diffuse(Color(0.7, 0.4, 0.1)));
-	shared_ptr<BSDF> diffuse_gray(new Diffuse(Color(0.75)));
+	shared_ptr<BSDF> diffuse_gray(new Diffuse(Color(0.8)));
 	shared_ptr<BSDF> diffuse_black(new Diffuse(Color::BLACK));
 	shared_ptr<BSDF> diffuse_white(new Diffuse(Color::WHITE));
 	shared_ptr<BSDF> mirror(new Mirror);
@@ -67,26 +67,24 @@ void GUIMainMesh() {
 
 	///////////////////////////////////////////
 	// Shapes & Primitives
-	shared_ptr<Mesh> sphere(new Mesh);
+	Mesh sphere;
 #ifdef _DEBUG
-	sphere->LoadSphere(1.f, 4, 1);
+	sphere.LoadSphere(1.f, 4, 1);
 #else
-	sphere->LoadSphere();
+	sphere.LoadSphere();
 #endif
-	shared_ptr<Mesh> plane(new Mesh); plane->LoadPlane();
-	shared_ptr<MeshSampler> sphereSampler(new MeshSampler(sphere));
-	shared_ptr<MeshSampler> planeSampler(new MeshSampler(plane));
+	Mesh plane; plane.LoadPlane();
 
 	int wall_size = 9;
-	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_white));
+	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_gray));
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_white));
+	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_gray));
 	w_forward->transform.SetRotation(Quaternion::AngleAxis(Math::PI / 2, Vec3::X));
 	w_forward->transform.Translate(0, 0, -wall_size / 2);
 	w_forward->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_white));
+	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_gray));
 	w_back->transform.SetRotation(Quaternion::AngleAxis(-Math::PI / 2, Vec3::X));
 	w_back->transform.Translate(0, 0, -wall_size / 2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
@@ -101,15 +99,10 @@ void GUIMainMesh() {
 	w_right->transform.Translate(0, 0, -wall_size / 2);
 	w_right->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse_white));
+	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse_gray));
 	w_top->transform.SetRotation(Quaternion::AngleAxis(Math::PI, Vec3::Y));
 	w_top->transform.Translate(0, 0, -wall_size / 2);
 	w_top->transform.Scale(wall_size, wall_size, 1);
-
-	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_black));
-	lamp->transform.SetRotation(Quaternion::AngleAxis(Math::PI, Vec3::Y));
-	lamp->transform.Translate(0, 0, -wall_size / 2 + 0.05);
-	lamp->transform.Scale(2, 2, 1);
 
 	shared_ptr<Primitive> ball1(new Primitive(sphere, diffuse_red));
 	ball1->transform.Translate(-2, 0, 3);
@@ -120,8 +113,13 @@ void GUIMainMesh() {
 
 	/////////////////////////////////////
 	// Lights
-	//shared_ptr<Light> light_main(new PointLight(Color(3), 200, Vec3(0, 0, wall_size / 2 - 0.1)));
-	shared_ptr<Light> light_lamp(new AreaLight(Color(30), lamp.get(), planeSampler));
+
+	//shared_ptr<Light> light_main(new PointLight(Color(3), 200, Vec3(0, 0, wall_size / 2 - 0.6)));
+	shared_ptr<Primitive> lamp(new Primitive(plane, diffuse_black));
+	lamp->transform.SetRotation(Quaternion::AngleAxis(Math::PI, Vec3::Y));
+	lamp->transform.Translate(0, 0, -wall_size / 2 + 0.05);
+	lamp->transform.Scale(2, 2, 1);
+	shared_ptr<Light> light_lamp(new AreaLight(Color(15), lamp));
 
 	/////////////////////////////////////
 	// Scene
@@ -135,14 +133,12 @@ void GUIMainMesh() {
 	scene->AddPrimitive(w_left);
 	scene->AddPrimitive(w_right);
 
-	scene->AddPrimitive(lamp);
-
 	scene->AddPrimitive(ball1);
 	scene->AddPrimitive(ball2);
 	scene->AddPrimitive(ball3);
 
 	//scene->AddLight(light_main);
-	scene->AddLight(light_lamp);
+	scene->AddPrimitive(lamp); scene->AddLight(light_lamp);
 
 	scene->Construct();
 	GUIViewer gui(scene, camera, film);
@@ -151,7 +147,7 @@ void GUIMainMesh() {
 	config.width = width;
 	config.height = height;
 #ifndef _DEBUG
-	config.samples_per_pixel = 500;
+	config.samples_per_pixel = 100;
 #else
 	config.samples_per_pixel = 4;
 #endif

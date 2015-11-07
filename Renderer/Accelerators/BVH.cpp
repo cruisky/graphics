@@ -182,9 +182,7 @@ namespace TX {
 		// Fetch triangles and vertices from primitives
 		vertCount = triCount = 0;
 		for (uint primId = 0; primId < prims_->size(); primId++) {
-			const Primitive* currPrim = (*prims_)[primId].get();
-			const Matrix4x4& local2world = currPrim->transform.LocalToWorldMatrix();
-			const Mesh *mesh = static_cast<const Mesh *>(currPrim->GetMesh());
+			const Mesh *mesh = (*prims_)[primId]->GetMesh();
 
 			// Triangles
 			const uint *indices = mesh->indices.data();
@@ -199,8 +197,7 @@ namespace TX {
 			}
 			// Vertices
 			for (auto& vert : mesh->vertices) {
-				// Apply transform
-				buildVerts.push_back(Matrix4x4::TPoint(local2world, vert));
+				buildVerts.push_back(vert);
 			}
 			vertCount += mesh->VertexCount();
 		}

@@ -20,7 +20,7 @@ namespace TX
 		Color color, lightcolor, surfacecolor;
 
 		// sample light sources with multiple importance sampling
-		light->Illuminate(geom.point, lightsample, &lightray, &lightcolor, &light_pdf);
+		light->SampleDirect(geom.point, lightsample, &lightray, &lightcolor, &light_pdf);
 		if (light_pdf > 0.f && lightcolor != Color::BLACK){
 			surfacecolor = geom.bsdf->Eval(lightray.dir, wo, geom, BSDFType(BSDF_ALL & ~BSDF_SPECULAR));
 			if (surfacecolor != Color::BLACK && !scene->Occlude(lightray)){
@@ -28,7 +28,7 @@ namespace TX
 					color = surfacecolor * lightcolor * (Math::AbsDot(lightray.dir, geom.normal));
 				else{
 					bsdf_pdf = geom.bsdf->Pdf(wo, lightray.dir, geom);
-					color = surfacecolor * lightcolor * (Math::AbsDot(lightray.dir, geom.normal) * PowerHeuristic(1, light_pdf, 1, bsdf_pdf));
+					color = surfacecolor * lightcolor * (Math::AbsDot(lightray.dir, geom.normal) / light_pdf * PowerHeuristic(1, light_pdf, 1, bsdf_pdf));
 				}
 			}
 		}
@@ -37,12 +37,12 @@ namespace TX
 			return color;
 
 		// sample bsdf with multiple importance sampling
-		surfacecolor = geom.bsdf->Scatter(wo, geom, *bsdfsample, &(lightray.dir), &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR));
+		surfacecolor = geom.bsdf->SampleDirect(wo, geom, *bsdfsample, &(lightray.dir), &bsdf_pdf, BSDFType(BSDF_ALL & ~BSDF_SPECULAR));
 		if (bsdf_pdf > 0.f && surfacecolor != Color::BLACK){
 			lightcolor = Color::BLACK;
 			LocalGeo geom_light;
 			if (scene->Intersect(lightray, geom_light)){
-				if (light == geom_light.GetAreaLight()){
+				if (light == geom_light.prim->GetAreaLight()){
 					scene->PostIntersect(lightray, geom_light);
 					light_pdf = geom_light.prim->Pdf(geom_light.triId, geom.point, lightray.dir);
 					geom_light.Emit(-lightray.dir, &lightcolor);
@@ -61,7 +61,7 @@ namespace TX
 		Vec3 wo = -ray.dir, wi;
 		float pdf;
 		Color color;
-		Color f = geom.bsdf->Scatter(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_REFLECTION | BSDF_SPECULAR));
+		Color f = geom.bsdf->SampleDirect(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_REFLECTION | BSDF_SPECULAR));
 		float absdot_wi_n = Math::AbsDot(wi, geom.normal);
 		if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 			Ray reflected(geom.point, wi);
@@ -75,7 +75,7 @@ namespace TX
 		Vec3 wo = -ray.dir, wi;
 		float pdf;
 		Color color;
-		Color f = geom.bsdf->Scatter(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR));
+		Color f = geom.bsdf->SampleDirect(wo, geom, Sample(), &wi, &pdf, BSDFType(BSDF_TRANSMISSION | BSDF_SPECULAR));
 		float absdot_wi_n = Math::AbsDot(wi, geom.normal);
 		if (pdf > 0.f && f != Color::BLACK && absdot_wi_n != 0.f){
 			Ray refracted(geom.point, wi);

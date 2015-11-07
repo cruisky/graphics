@@ -25,12 +25,12 @@ namespace TX{
 			t);
 	}
 
-	Color Diffuse::Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
+	Color Diffuse::SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
 		Vec3 localwo = Normalize(geom.WorldToLocal(wo));
 		Vec3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
 		if (localwo.z < 0.f)
 			localwi.z *= -1.f;
-		*wi = Normalize(geom.LocalToWorld(localwi));
+		*wi = geom.LocalToWorld(localwi);
 		if (!Valid(wo, *wi, geom.normal, &types)){
 			*pdf = 0.f;
 			return Color::BLACK;
@@ -56,7 +56,7 @@ namespace TX{
 	float Mirror::Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type) const {
 		return 0.f;
 	}
-	Color Mirror::Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const {
+	Color Mirror::SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const {
 		if (!SubtypeOf(types)){
 			*pdf = 0.f;
 			return Color::BLACK;
@@ -75,7 +75,7 @@ namespace TX{
 		return 0.f;
 	}
 
-	Color Dielectric::Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
+	Color Dielectric::SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
 		bool reflection = (types & (BSDF_REFLECTION | BSDF_SPECULAR)) == (BSDF_REFLECTION | BSDF_SPECULAR);
 		bool transmission = (types & (BSDF_TRANSMISSION | BSDF_SPECULAR)) == (BSDF_TRANSMISSION | BSDF_SPECULAR);
 		if (!reflection && !transmission){

@@ -23,7 +23,7 @@ namespace TX{
 		BSDF(BSDFType t, const Color& c = Color::WHITE) : type_(t), color_(c){}
 		virtual ~BSDF(){}
 
-		virtual Color Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const = 0;
+		virtual Color SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const = 0;
 		inline bool SubtypeOf(BSDFType t) const { return (type_ & t) == type_; }
 		inline bool IsSpecular() const { return (BSDFType(BSDF_SPECULAR | BSDF_DIFFUSE | BSDF_GLOSSY) & type_) == BSDFType(BSDF_SPECULAR); }
 		inline Color GetColor(const LocalGeo& geo) const {
@@ -55,7 +55,7 @@ namespace TX{
 	class Diffuse : public BSDF {
 	public:
 		Diffuse(const Color& c = Color::WHITE) : BSDF(BSDFType(BSDF_REFLECTION | BSDF_DIFFUSE), c){}
-		Color Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+		Color SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
 	protected:
 		float Eval(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
@@ -67,7 +67,7 @@ namespace TX{
 	class Mirror : public BSDF {
 	public:
 		Mirror(const Color& c = Color::WHITE) : BSDF(BSDFType(BSDF_REFLECTION | BSDF_SPECULAR), c){}
-		Color Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+		Color SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
 		Color Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 	protected:
@@ -83,7 +83,7 @@ namespace TX{
 		Dielectric(const Color& c = Color::WHITE, float etat = 1.5f, float etai = 1.f) :
 			BSDF(BSDFType(BSDF_REFLECTION | BSDF_TRANSMISSION | BSDF_SPECULAR), c),
 			etat_(etat), etai_(etai), eta_(etai / etat), eta_inv_(etat / etai){}
-		Color Scatter(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
+		Color SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
 		Color Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 	protected:
