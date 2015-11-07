@@ -9,15 +9,17 @@ namespace TX {
 		primmgr_ = std::move(primmgr);
 	}
 	void Scene::AddPrimitive(std::shared_ptr<Primitive> prim){
-		prim->transform.UpdateMatrix();
+		prim->scene = this;
 		prims_.push_back(prim);
 	}
 	void Scene::AddLight(std::shared_ptr<Light> light){
-		light->scene_ = this;
-		light->transform.UpdateMatrix();
+		light->scene = this;
 		lights.push_back(light);
 	}
 	void Scene::Construct(){
+		for (auto& prim : prims_) {
+			prim->Bake();
+		}
 		primmgr_->Construct(prims_);
 	}
 	bool Scene::Intersect(const Ray& ray, Intersection& intxn) const {

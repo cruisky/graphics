@@ -34,7 +34,10 @@ namespace TX{
 		~Transform(){}
 		inline Transform& operator = (const Transform& tr){
 			data_ = tr.data_;
-			dirty_ = true;
+			dirty_ = tr.dirty_;
+			local_world_ = tr.local_world_;
+			world_local_ = tr.world_local_;
+			return *this;
 		}
 		inline Vec3 Right() const { return Matrix4x4::TVec(local_world_, Vec3::X); }
 		inline Vec3 Up() const { return Matrix4x4::TVec(local_world_, Vec3::Y); }

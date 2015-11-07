@@ -169,7 +169,6 @@
     <ClCompile Include="Misc\RandomData.cpp" />
     <ClCompile Include="Math\Sample.cpp" />
     <ClCompile Include="Graphics\Scene.cpp" />
-    <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Graphics\Tracer.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="SSE\Float.cpp" />

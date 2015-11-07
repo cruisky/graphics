@@ -11,7 +11,6 @@ namespace TX{
 	class Intersection {
 	public:
 		Intersection(){}
-		inline const AreaLight *GetAreaLight() const { return prim->GetAreaLight(); }
 	public:
 		float dist;
 		const Primitive *prim;

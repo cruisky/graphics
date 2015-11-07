@@ -49,7 +49,7 @@ namespace TX{
 					L += pathThroughput * EstimateDirect(scene, pathRay, geom, scene->lights[lightIdx].get(), lightsample, bsdfsample);
 				}
 				scattersample = scatter_samples_[bounce](samplebuf);
-				Color f = geom.bsdf->Scatter(wo, geom, *scattersample, &wi, &pdf, BSDF_ALL, &sampled);
+				Color f = geom.bsdf->SampleDirect(wo, geom, *scattersample, &wi, &pdf, BSDF_ALL, &sampled);
 				if (f == Color::BLACK || pdf == 0.f)
 					break;
 				specBounce = (sampled & BSDF_SPECULAR) != 0;
