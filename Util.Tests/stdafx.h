@@ -14,18 +14,19 @@
 #include <string>
 #include <cstdarg>
 #include <cstdlib>
-#include "Misc/CppUnitTestHelpers.h"
-#include "Misc/TestHelpers.h"
+#include "CppUnitTestHelpers.h"
 #include "Misc/RandomData.h"
 #include "System/Tools.h"
 #include "Math/Random.h"
 
 // Area to test
-#include "Math/MathUtil.h"
+#include "Math/Base.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
-#include "Graphics/Ray.h"
+#include "Math/Quaternion.h"
+#include "Math/Ray.h"
 #include "Graphics/Color.h"
+#include "SSE/SSE.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

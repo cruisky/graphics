@@ -24,15 +24,15 @@ namespace TX
 			BM_BODY(){
 				__m128 a_line, b_line, r_line;
 				for (int i = 0, j; i < 4; i++) {
-					a_line = _mm_loadu_ps(a[0]);
+					a_line = _mm_loadu_ps((float *)a[0]);
 					b_line = _mm_set1_ps(b[i][0]);
 					r_line = _mm_mul_ps(a_line, b_line);
 					for (j = 1; j < 4; j++) {
-						a_line = _mm_loadu_ps(a[j]);
+						a_line = _mm_loadu_ps((float *)a[j]);
 						b_line = _mm_set1_ps(b[i][j]);
 						r_line = _mm_add_ps(_mm_mul_ps(a_line, b_line), r_line);
 					}
-					_mm_storeu_ps(a[i], r_line);
+					_mm_storeu_ps((float *)a[i], r_line);
 				}
 			}
 		};
@@ -42,7 +42,7 @@ namespace TX
 				a = RandomMatrix(), b = RandomMatrix();
 			}
 			BM_BODY(){
-				Vector4 temp;
+				Vec4 temp;
 				for (int i = 0; i < 4; i++){
 					for (int j = 0; j < 4; j++)
 						temp[j] =

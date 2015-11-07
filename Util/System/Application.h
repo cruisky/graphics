@@ -1,11 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/freeglut_ext.h>
-#include <cstdio>
-#include <string>
-#include "Math/Vector.h"
+#include "Util.h"
 #include "Input.h"
 
 namespace TX{
@@ -18,60 +13,74 @@ namespace TX{
 				int height = 600;
 				bool fullscreen = false;
 				bool fixsize = false;
+				float fps = 60;
 			};
 		public:
-			Application() : argc(1), argv(nullptr){ config.title = "Application"; }
-			Application(int argc, char **argv) : argc(argc), argv(argv){}
-			virtual ~Application(){}
+			Application();
+			~Application();
 			void Run();
 
-			// Configures the window property
+		protected:
+			/// <summary>
+			/// Configures the window property.
+			/// </summary>
 			virtual void Config(){}
-			// Called before main loop
+			/// <summary>
+			/// Called before main loop.
+			/// </summary>
 			virtual void Start(){}
-			// Rendering loop, returns true if need update
+			/// <summary>
+			/// Rendering loop, returns true if need update.
+			/// </summary>
 			virtual bool Render(){ return false; }
 
+			virtual void OnKey(KeyCode code, KeyState state, Modifiers modifiers){}
+			virtual void OnText(uint code, Modifiers modifiers){}
+			virtual void OnMouseMove(float x, float y){}
+			virtual void OnMouseScroll(float vx, float vy){}
+			virtual void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods){}
 			virtual void OnResize(){}
-			virtual void OnKey(unsigned char key, int mousex, int mousey){}						// ASCII keys
-			virtual void OnSpecialKey(KeyCode key, int mousex, int mousey){}					// special keys
-			virtual void OnMouseMove(int x, int y){}											// when mouse moves with/without any pressed button
-			virtual void OnMouseButton(MouseButton button, MouseButtonState state, int x, int y){}		// when a mouse button is pressed / release
+			virtual void OnWindowResize(int w, int h){}
+			virtual void OnWindowFocusChanged(bool focused){}
+			virtual void OnWindowPos(int x, int y){}
+			virtual void OnWindowMinimize(){}
 			virtual void OnExit(){}
 
 		protected:
-			float ElapsedTime(){ return glutGet(GLUT_ELAPSED_TIME) / 1000.f; }
-			void Exit(){ OnExit(); glutLeaveMainLoop(); }
-			// Wrappers
-		private:
 			static const char * GetVersion();
-			static inline void GLUTRender() {
-				if (app->Render()){
-					glutPostRedisplay();
-				}
-				glutSwapBuffers();
-			}
-			static inline void GLUTKey(unsigned char key, int x, int y)		{ app->OnKey(key, x, y); }
-			static inline void GLUTSpecial(int key, int x, int y)			{ app->OnSpecialKey(KeyCode(key), x, y); }
-			static inline void GLUTMouseDrag(int x, int y)					{ app->OnMouseMove(x, y); }
-			static inline void GLUTMouseMove(int x, int y)					{ app->OnMouseMove(x, y); }
-			static inline void GLUTMouseButton(int b, int s, int x, int y)	{ app->OnMouseButton(MouseButton(b), MouseButtonState(s), x, y); }
-			static inline void GLUTResize(int w, int h)	{
-				if (w != app->config.width || h != app->config.height){
-					if (!app->config.fixsize){
-						app->config.width = w;
-						app->config.height = h;
-						app->OnResize();
-					}
-					glutReshapeWindow(app->config.width, app->config.height);
-				}
-			}
+			MouseButtonState	Get(MouseButton button);
+			bool				Get(KeyCode code);
+			float				GetTime();
+			float				GetDeltaTime();
+			float				GetFrameRate();
+			void				GetCursorPos(float *x, float *y);
+			void				Refresh();
+			bool				IsWindowVisible();
+			void				Exit();
+		private:
+			static Application * This(GLFWwindow *window);
+			static void GLFWKey(GLFWwindow *window, int key, int scancode, int action, int mods);
+			static void GLFWCharMods(GLFWwindow *window, uint codepoint, int mods);
+			static void GLFWCursorPos(GLFWwindow *window, double x, double y);
+			static void GLFWMouseButton(GLFWwindow *window, int b, int s, int mods);
+			static void GLFWMouseScroll(GLFWwindow *window, double xoff, double yoff);
+			static void GLFWFramebufferSize(GLFWwindow *window, int w, int h);
+			static void GLFWWindowSize(GLFWwindow *window, int w, int h);
+			static void GLFWWindowFocus(GLFWwindow *window, int focused);
+			static void GLFWWindowPos(GLFWwindow *window, int x, int y);
+			static void GLFWWindowIconify(GLFWwindow *window, int iconified);
+			static void GLFWError(int error, const char* desc);
+
+			void FrameStart();
+			void FrameEnd();
 		protected:
 			AppConfig config;
 		private:
-			int argc;
-			char **argv;
-			static Application *app;
+			GLFWwindow *window;
+			float frameStart;
+			float frameEnd;
+			float deltaTime;
+			float fps;
 		};
 	}
 }

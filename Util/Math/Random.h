@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Util.h"
 #include <ctime>
+#include "Util.h"
 
 namespace TX{
 	class RNG {
@@ -18,7 +18,7 @@ namespace TX{
 				cur_seed_ = nullptr;
 			}
 		}
-			
+
 		inline uint32 UInt(){
 			__declspec(align(16)) uint32 result[4];
 			__declspec(align(16)) __m128i cur_seed_split;
@@ -57,7 +57,9 @@ namespace TX{
 			return result[0];
 		}
 
-		// [0, 1]
+		/// <summary>
+		/// [0, 1]
+		/// </summary>
 		inline float Float(){
 #ifdef COMPATABILITY
 			return UInt() / (float)(0xFFFF);

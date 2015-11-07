@@ -3,13 +3,15 @@
 #include "Util.h"
 #include "Thread.h"
 
-namespace TX{
+namespace TX {
+	std::string ReadAllLines(const std::string& file);
+
 	class Timer
 	{
 	public:
 		Timer() : beg_(clock_::now()) {}
-		__forceinline void reset() { beg_ = clock_::now(); }
-		__forceinline double elapsed() const {
+		inline void reset() { beg_ = clock_::now(); }
+		inline double elapsed() const {
 			return std::chrono::duration_cast<second_>
 				(clock_::now() - beg_).count();
 		}
@@ -36,7 +38,9 @@ namespace TX{
 	class ProgressMonitor : public IProgressMonitor {
 	public:
 		ProgressMonitor(){}
-		// Reset the total value, and start timer immediately
+		/// <summary>
+		/// Reset the <paramref name="total"/> and start the timer.
+		/// </summary>
 		void Reset(float total);
 		void Finish();
 		void Update(float current);
@@ -56,9 +60,7 @@ namespace TX{
 	};
 
 	template<typename T>
-	void Str_(std::ostringstream& ss, const T& obj){
-		ss << obj;
-	}
+	void Str_(std::ostringstream& ss, const T& obj){ ss << obj; }
 
 	template<typename T, typename... Args>
 	void Str_(std::ostringstream& ss, const T& obj, Args&&... args){
@@ -71,5 +73,11 @@ namespace TX{
 		std::ostringstream ss;
 		Str_(ss, std::forward<Args>(args)...);
 		return ss.str();
+	}
+
+	template<typename... Args>
+	std::wstring WStr(Args&&... args) {
+		auto str = Str(std::forward<Args>(args)...);
+		return std::wstring(str.begin(), str.end());
 	}
 }

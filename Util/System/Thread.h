@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Util.h"
+
+#define NOMINMAX
 #include <Windows.h>
 #undef near
 #undef far
 
+#include <vector>
 #include <thread>
 #include <deque>
 #include <atomic>
@@ -12,7 +15,9 @@
 namespace TX{
 	class ThreadScheduler;
 
-	// General thread
+	/// <summary>
+	/// General thread.
+	/// </summary>
 	class Thread{
 	public:
 		Thread();
@@ -38,7 +43,9 @@ namespace TX{
 		static DWORD WINAPI ThreadProc(LPVOID lpParam);
 	};
 
-	// Worker thread that gets tasks from scheduler
+	/// <summary>
+	/// Worker thread that gets tasks from the scheduler.
+	/// </summary>
 	class WorkerThread :public Thread{
 	public:
 		WorkerThread(){
@@ -56,7 +63,9 @@ namespace TX{
 		bool mWaiting;
 	};
 
-	// Process local lock. Wrapper for CRITICAL_SECTION
+	/// <summary>
+	/// Process local lock. Wrapper for CRITICAL_SECTION.
+	/// </summary>
 	class Lock {
 		friend class Condition;
 	public:
@@ -77,7 +86,9 @@ namespace TX{
 		CRITICAL_SECTION critical_sect;
 	};
 
-	// Apply the lock during the life time
+	/// <summary>
+	/// Apply the lock during the life time.
+	/// </summary>
 	class LockGuard{
 	public:
 		LockGuard(Lock& lock) :lock_(lock){
@@ -90,7 +101,9 @@ namespace TX{
 		Lock& lock_;
 	};
 
-	// Wrapper for CONDITION_VARIABLE
+	/// <summary>
+	/// Wrapper for CONDITION_VARIABLE.
+	/// </summary>
 	class Condition {
 	public:
 		Condition(){
@@ -110,7 +123,9 @@ namespace TX{
 		CONDITION_VARIABLE condition;
 	};
 
-	// Callable function
+	/// <summary>
+	/// Callable function.
+	/// </summary>
 	class Task {
 	public:
 		typedef void(*Func)(void *args, int idx);
@@ -122,10 +137,11 @@ namespace TX{
 		void *args;
 	};
 
-	// ThreadScheduler that assigns tasks to threads
+	/// <summary>
+	/// ThreadScheduler that assigns tasks to threads.
+	/// </summary>
 	class ThreadScheduler {
 	public:
-		// Singleton implementation
 		static ThreadScheduler *Instance();
 		static void DeleteInstance();
 	public:

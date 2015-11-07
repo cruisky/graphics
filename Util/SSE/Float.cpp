@@ -1,3 +1,4 @@
+#include "UtilStdAfx.h"
 #include "Float.h"
 
 namespace TX
@@ -17,14 +18,7 @@ namespace TX
 		const V4Float V4Float::ZERO(0.f);
 		const V4Float V4Float::ONE(1.f);
 		const V4Float V4Float::PI(Math::PI);
-		const V4Float V4Float::QTR_PI(Math::QTR_PI);
-		const V4Float V4Float::HALF_PI(Math::HALF_PI);
-		const V4Float V4Float::TWO_PI(Math::TWO_PI);
-		const V4Float V4Float::FOUR_PI(Math::FOUR_PI);
 		const V4Float V4Float::PI_RCP(Math::PI_RCP);
-		const V4Float V4Float::HALF_PI_RCP(Math::HALF_PI_RCP);
-		const V4Float V4Float::TWO_PI_RCP(Math::TWO_PI_RCP);
-		const V4Float V4Float::FOUR_PI_RCP(Math::FOUR_PI_RCP);
 		const V4Float V4Float::INF(Math::INF);
 		const V4Float V4Float::EPSILON(Math::EPSILON);
 	}
