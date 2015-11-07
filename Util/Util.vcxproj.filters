@@ -14,7 +14,6 @@
     <ClCompile Include="Graphics\Intersection.cpp" />
     <ClCompile Include="Graphics\Light.cpp" />
     <ClCompile Include="Graphics\Primitive.cpp" />
-    <ClCompile Include="Graphics\PrimitiveManager.cpp" />
     <ClCompile Include="Math\Ray.cpp" />
     <ClCompile Include="Libs\tiny_obj_loader.cpp" />
     <ClCompile Include="Math\Geometry.cpp" />
@@ -24,7 +23,6 @@
     <ClCompile Include="Graphics\Scene.cpp" />
     <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Graphics\Tracer.cpp" />
-    <ClCompile Include="SSE\Bool.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />
     <ClCompile Include="System\Application.cpp" />
@@ -33,6 +31,7 @@
     <ClCompile Include="UtilStdAfx.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Graphics\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
@@ -81,5 +80,8 @@
     <ClInclude Include="Math\Base.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Graphics\CameraController.h" />
+    <ClInclude Include="Graphics\Mesh.h" />
+    <ClInclude Include="Math\BBox.h" />
+    <ClInclude Include="SSE\SSE.h" />
   </ItemGroup>
 </Project>

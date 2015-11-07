@@ -59,14 +59,14 @@ namespace TX
 			std::string GetLog();
 		};
 
-		class Mesh{
+		class Mesh {
 		public:
 			Buffer<GL_ARRAY_BUFFER> vertices;
 			Buffer<GL_ARRAY_BUFFER> normals;
 			Buffer<GL_ELEMENT_ARRAY_BUFFER> indices;
 		public:
 			Mesh(){}
-			void Upload(const ObjMesh& mesh);
+			void Upload(const TX::Mesh& mesh);
 		};
 	}
 }

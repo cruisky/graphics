@@ -39,11 +39,11 @@ namespace TX
 			glDeleteProgram(id);
 		}
 		void Program::Use(){ glUseProgram(id); }
-		void Program::Attach(Shader& shader){ 
-			glAttachShader(id, shader); 
+		void Program::Attach(Shader& shader){
+			glAttachShader(id, shader);
 		}
-		void Program::Detach(Shader& shader){ 
-			glDetachShader(id, shader); 
+		void Program::Detach(Shader& shader){
+			glDetachShader(id, shader);
 		}
 		void Program::Link(){
 			glLinkProgram(id);
@@ -80,7 +80,7 @@ namespace TX
 			return log;
 		}
 
-		void Mesh::Upload(const ObjMesh& mesh){
+		void Mesh::Upload(const TX::Mesh& mesh){
 			if (mesh.vertices.size() > 0){
 				vertices.Data(mesh.vertices.size() * sizeof(mesh.vertices[0]), mesh.vertices.data());
 			}

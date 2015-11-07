@@ -9,7 +9,7 @@ namespace TX{
 
 	Color BSDF::Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType t) const {
 		if (!Valid(wo, wi, geom.normal, &t))
-			return 0.f;
+			return Color::BLACK;
 		return GetColor(geom) * Eval(
 			geom.WorldToLocal(wo),
 			geom.WorldToLocal(wi),
@@ -41,7 +41,7 @@ namespace TX{
 	}
 
 	float Diffuse::Eval(const Vec3& localwo, const Vec3& localwi, BSDFType type) const{
-		return 1.f / PI;
+		return PI_RCP;
 	}
 
 	float Diffuse::Pdf(const Vec3& localwo, const Vec3& localwi, BSDFType type) const{

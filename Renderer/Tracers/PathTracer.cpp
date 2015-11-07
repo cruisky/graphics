@@ -36,9 +36,10 @@ namespace TX{
 
 				wo = -pathRay.dir;
 
+				// Emit radiance if the intersection is emitter
 				if (specBounce){
 					geom.Emit(-pathRay.dir, &Le);
-					L += Le * pathThroughput;
+					L += pathThroughput * Le;
 				}
 
 				if (!geom.bsdf->IsSpecular()){

@@ -2,5 +2,5 @@
 #include "Ray.h"
 
 namespace TX{
-	const float Ray::EPSILON = 1e-4f;
+	const float Ray::EPSILON = 5e-3f;
 }

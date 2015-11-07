@@ -7,7 +7,7 @@
 
 namespace TX{
 	namespace UI{
-		GUIViewer::GUIViewer(shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film) :
+		GUIViewer::GUIViewer(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera, std::shared_ptr<Film> film) :
 			Application(), scene_(scene), camera_(camera), film_(film){
 			// Progress monitor
 			monitor_ = std::make_shared<ProgressMonitor>();

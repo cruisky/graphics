@@ -104,6 +104,7 @@
     <ClInclude Include="Graphics\CameraController.h" />
     <ClInclude Include="Graphics\Image.h" />
     <ClInclude Include="Graphics\Drawing.h" />
+    <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\Obj.h" />
     <ClInclude Include="Graphics\BSDF.h" />
     <ClInclude Include="Graphics\Camera.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Graphics\Light.h" />
     <ClInclude Include="Graphics\Primitive.h" />
     <ClInclude Include="Graphics\PrimitiveManager.h" />
+    <ClInclude Include="Math\BBox.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Ray.h" />
     <ClInclude Include="Libs\sse_mathfun.h" />
@@ -135,6 +137,7 @@
     <ClInclude Include="SSE\Bool.h" />
     <ClInclude Include="SSE\Float.h" />
     <ClInclude Include="SSE\Int.h" />
+    <ClInclude Include="SSE\SSE.h" />
     <ClInclude Include="System\Application.h" />
     <ClInclude Include="System\Input.h" />
     <ClInclude Include="System\Memory.h" />
@@ -150,6 +153,7 @@
     <ClCompile Include="Graphics\GLUtils.cpp" />
     <ClCompile Include="Graphics\GUI.cpp" />
     <ClCompile Include="Graphics\Image.cpp" />
+    <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\Obj.cpp" />
     <ClCompile Include="Graphics\BSDF.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
@@ -157,7 +161,6 @@
     <ClCompile Include="Graphics\Intersection.cpp" />
     <ClCompile Include="Graphics\Light.cpp" />
     <ClCompile Include="Graphics\Primitive.cpp" />
-    <ClCompile Include="Graphics\PrimitiveManager.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Ray.cpp" />
     <ClCompile Include="Libs\tiny_obj_loader.cpp" />
@@ -169,7 +172,6 @@
     <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Graphics\Tracer.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
-    <ClCompile Include="SSE\Bool.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />
     <ClCompile Include="System\Application.cpp" />

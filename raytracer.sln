@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util\Util.vcxproj", "{E3244CFF-B604-45FB-966F-66C48ABE586A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6AFB5AFF-2CFF-4321-9F6C-96C2F32E1FF5}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.txt = TODO.txt
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util.Tests", "Util.Tests\Util.Tests.vcxproj", "{E3751A35-A26F-438B-BC34-D7CC889EADF3}"
 	ProjectSection(ProjectDependencies) = postProject

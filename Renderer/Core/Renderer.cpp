@@ -7,7 +7,12 @@
 #include "Math/Sample.h"
 
 namespace TX {
-	Renderer::Renderer(const RendererConfig& config, shared_ptr<Scene> scene, shared_ptr<Camera> camera, shared_ptr<Film> film, shared_ptr<IProgressMonitor> monitor)
+	Renderer::Renderer(
+		const RendererConfig& config,
+		std::shared_ptr<Scene> scene,
+		std::shared_ptr<Camera> camera,
+		std::shared_ptr<Film> film,
+		std::shared_ptr<IProgressMonitor> monitor)
 		: scene(scene), camera(camera), film(film), monitor_(monitor) {
 		ThreadScheduler::Instance()->StartAll();
 		// Sample buffer

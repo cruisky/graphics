@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accelerators\BVH.h" />
+    <ClInclude Include="Accelerators\Common.h" />
     <ClInclude Include="Application\GUIViewer.h" />
     <ClInclude Include="Core\Renderer.h" />
     <ClInclude Include="Core\RendererConfig.h" />
@@ -23,6 +25,7 @@
     <ClInclude Include="Tracers\PathTracer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Accelerators\BVH.cpp" />
     <ClCompile Include="Application\GUIViewer.cpp" />
     <ClCompile Include="Core\Renderer.cpp" />
     <ClCompile Include="Core\Synchronizer.cpp" />
