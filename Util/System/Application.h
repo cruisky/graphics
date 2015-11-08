@@ -82,5 +82,36 @@ namespace TX{
 			float deltaTime;
 			float fps;
 		};
+
+		class InputHandledApplication : public Application {
+		protected:
+			void OnKey(KeyCode code, KeyState state, Modifiers modifiers) {
+				input.SetKeyCode(code, state);
+				input.AddModifiers(modifiers);
+			}
+			void OnText(uint code, Modifiers modifiers) {
+				input.SetText(code);
+				input.AddModifiers(modifiers);
+			}
+			void OnMouseMove(float x, float y) {
+				input.SetCursor(x, y);
+			}
+			void OnMouseScroll(float vx, float vy) {
+				input.scroll = vy;
+			}
+			void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods) {
+				input.SetButton(button, state);
+				input.AddModifiers(mods);
+			}
+			void OnResize() {
+				input.SetWindow(config.width, config.height);
+			}
+			//virtual void OnWindowResize(int w, int h) {}
+			//virtual void OnWindowFocusChanged(bool focused) {}
+			//virtual void OnWindowPos(int x, int y) {}
+			//virtual void OnWindowMinimize() {}
+		protected:
+			Input input;
+		};
 	}
 }

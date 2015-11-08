@@ -6,9 +6,8 @@
 using namespace TX;
 using namespace TX::UI;
 
-class GUIDemo : public Application {
+class GUIDemo : public InputHandledApplication {
 private:
-	Input input;
 	Rect window[3];
 	FontMap font;
 	float floatSliderValue1 = 10.f;
@@ -90,15 +89,6 @@ protected:
 		input.Clear();
 		return true;
 	}
-	void OnMouseMove(float x, float y){ input.SetCursor(x, y); }
-	void OnMouseScroll(float vx, float vy){ input.scroll = vy; }
-	void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods){ input.SetButton(button, state); }
-	void OnText(uint code, Modifiers modifiers){
-		input.SetText(code);
-		input.AddModifiers(modifiers);
-	}
-	void OnKey(KeyCode code, KeyState state, Modifiers modifiers){ input.SetKeyCode(code, state); input.AddModifiers(modifiers); }
-	void OnResize(){ input.SetWindow(config.width, config.height); }
 };
 
 int main(){
