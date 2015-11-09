@@ -20,10 +20,10 @@ public:
 	GUIDemo(){}
 protected:
 	void Start(){
+		InputHandledApplication::Start();
 		font.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
 		GUI::Init(font);
 
-		input.SetWindow(config.width, config.height);
 		window[0] = Rect(0, 0, 200, 200);
 		window[1] = Rect(200, 100, 500, 400);
 		window[2] = Rect(400, 300, 600, 600);
@@ -87,7 +87,7 @@ protected:
 
 		GUI::EndFrame();
 		input.Clear();
-		return true;
+		return false;
 	}
 };
 

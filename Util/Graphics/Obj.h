@@ -24,7 +24,7 @@ namespace TX {
 		std::string		texDisplacement;
 		std::string		texAlpha;
 
-		ObjMaterial(const char *name = "") :
+		ObjMaterial(const std::string& name = "") :
 			name(name),
 			ambient(0.75f, 0.75f, 0.75f),
 			specular(0.f, 0.f, 0.f),
@@ -58,7 +58,7 @@ namespace TX {
 		std::string		name;
 		ObjMesh			mesh;
 
-		ObjShape(const char *name = "") :
+		ObjShape(const std::string& name = "") :
 			name(name){}
 	};
 
@@ -67,7 +67,7 @@ namespace TX {
 		static void Load(
 			std::vector<ObjShape>& objects,
 			std::vector<ObjMaterial>& materials,
-			const char *objFile, const char *mtlDir = nullptr);
+			const std::string& objFile, const std::string& mtlDir = nullptr);
 		static void ConvertObj(const void *src, ObjShape& dest);
 		static void ConvertMtl(const void *src, ObjMaterial& dest);
 	};

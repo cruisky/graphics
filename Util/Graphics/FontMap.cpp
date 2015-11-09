@@ -2,7 +2,7 @@
 #include "FontMap.h"
 #include "System/Memory.h"
 
-#define STB_TRUETYPE_IMPLEMENTATION 
+#define STB_TRUETYPE_IMPLEMENTATION
 #include "Libs/stb_truetype.h"
 
 namespace TX
@@ -18,26 +18,25 @@ namespace TX
 	int GlyphPosMap::GetIndex(float offset) const {
 		auto ceiling = std::lower_bound(map.begin(), map.end(), offset);
 		if (ceiling != map.begin() && ceiling != map.end()){
-			return (*ceiling - offset) < (offset - *(ceiling - 1)) ? 
-				(ceiling - map.begin()) : 
+			return (*ceiling - offset) < (offset - *(ceiling - 1)) ?
+				(ceiling - map.begin()) :
 				(ceiling - 1 - map.begin());
 		}
 		else {
 			return Math::Clamp(
-				int(ceiling - map.begin()), 
-				0, 
+				int(ceiling - map.begin()),
+				0,
 				int(map.size() - 1));
 		}
 	}
 
-	void GlyphPosMap::Recalculate(const FontMap *font, const char *text){
+	void GlyphPosMap::Recalculate(const FontMap *font, const std::string& text){
 		Clear();
 		Vec2 pos;
-		int length = std::strlen(text);
-		map.reserve(length + 1);
+		map.reserve(text.length() + 1);
 
-		while (*text){
-			font->GetChar(text++, pos, nullptr, nullptr, this);
+		for (const char& c: text){
+			font->GetChar(c, pos, nullptr, nullptr, this);
 		}
 	}
 
@@ -52,7 +51,7 @@ namespace TX
 		MemDeleteArray(data);
 	}
 
-	void FontMap::Load(const char *file, float height){
+	void FontMap::Load(const std::string& file, float height){
 		fontHeight = height;
 		std::ifstream in(file, std::ifstream::ate | std::ifstream::binary);
 		if (in.is_open()){
@@ -79,13 +78,13 @@ namespace TX
 			throw "failed to open file: " + std::string(file);
 		}
 	}
-	bool FontMap::GetChar(const char *ch, Vec2& pos, Rect *rect, Rect *uv, GlyphPosMap *posMap) const {
-		if (*ch >= 32 && *ch < 128){
+	bool FontMap::GetChar(const char& ch, Vec2& pos, Rect *rect, Rect *uv, GlyphPosMap *posMap) const {
+		if (ch >= 32 && ch < 128){
 			float left = pos.x;
 			stbtt_aligned_quad q;
 			stbtt_GetBakedQuad(reinterpret_cast<stbtt_bakedchar*>(data),
 				bitmapSize, bitmapSize,
-				*ch - 32, &pos.x, &pos.y, &q, 1);
+				ch - 32, &pos.x, &pos.y, &q, 1);
 			if (posMap)
 				posMap->Append(pos.x - left);
 			if (uv){
@@ -104,17 +103,18 @@ namespace TX
 	}
 	float FontMap::GetWidth(char c) const {
 		Rect r; Vec2 pos;
-		if (GetChar(&c, pos, &r)){
+		if (GetChar(c, pos, &r)){
 			return pos.x;
 		}
 		else {
 			return 0.f;
 		}
 	}
-	float FontMap::GetWidth(const char *str) const {
-		Rect r;
+	float FontMap::GetWidth(const std::string& str) const {
 		Vec2 pos;
-		while (*str && GetChar(str++, pos, &r));
+		for (const char& c : str) {
+			GetChar(c, pos, nullptr);
+		}
 		return pos.x;
 	}
 }

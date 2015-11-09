@@ -57,7 +57,7 @@ namespace TX
 		memset(weights_.get(), 0, size_ * sizeof(float));
 	}
 
-	void Film::ResetAll(){
+	void Film::Clear(){
 		memset(pixels_.get(), 0, size_ * sizeof(Color));
 		Reset();
 	}

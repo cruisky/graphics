@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <limits>
+#include <functional>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

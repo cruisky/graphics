@@ -1,1 +1,6 @@
-
+- keep GUI dialogs inside the window
+- GUIViewer needs state transitions ie.:
+  preview -> rendering -> finished
+     ^           |
+	 |           |
+     *---abort---*

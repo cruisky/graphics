@@ -16,7 +16,7 @@ namespace TX
 		inline void Append(float width){ map.push_back(sum += width); }
 		float GetWidth(int index, int count) const;
 		int GetIndex(float offset) const;
-		void Recalculate(const FontMap *font, const char *text);
+		void Recalculate(const FontMap *font, const std::string& text);
 	private:
 		std::vector<float> map;
 		float sum;
@@ -27,10 +27,10 @@ namespace TX
 	public:
 		FontMap();
 		~FontMap();
-		void Load(const char* file, float fontHeight=12.f);
-		bool GetChar(const char *ch, Vec2& pos, Rect *rect, Rect *uv = nullptr, GlyphPosMap *posMap = nullptr) const;
+		void Load(const std::string& file, float fontHeight=12.f);
+		bool GetChar(const char& ch, Vec2& pos, Rect *rect, Rect *uv = nullptr, GlyphPosMap *posMap = nullptr) const;
 		float GetWidth(char c) const;
-		float GetWidth(const char *str) const;
+		float GetWidth(const std::string& str) const;
 		inline uint TexID() const { return texID; }
 		inline float Height() const { return fontHeight; }
 	private:

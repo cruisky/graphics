@@ -61,7 +61,7 @@ namespace TX
 			program->BindAttribLoc("normal", ATTRIB_NORMAL);
 
 			// set up camera and controller
-			camera = std::make_shared<Camera>(config.width, config.height);
+			camera = std::make_shared<Camera>(config.windowSize.x, config.windowSize.y);
 			camera->transform.Translate(0.f, 0.8f, 2.f);
 			camera_ctrl = std::make_unique<CameraController>(camera->transform);
 

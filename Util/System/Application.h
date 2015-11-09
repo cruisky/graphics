@@ -9,8 +9,7 @@ namespace TX{
 		public:
 			struct AppConfig {
 				std::string title;
-				int width = 800;
-				int height = 600;
+				Vec2i windowSize = Vec2i(800, 600);
 				bool fullscreen = false;
 				bool fixsize = false;
 				float fps = 60;
@@ -85,6 +84,10 @@ namespace TX{
 
 		class InputHandledApplication : public Application {
 		protected:
+			void Start() {
+				input.SetWindowSize(config.windowSize.x, config.windowSize.y);
+			}
+		protected:
 			void OnKey(KeyCode code, KeyState state, Modifiers modifiers) {
 				input.SetKeyCode(code, state);
 				input.AddModifiers(modifiers);
@@ -104,7 +107,7 @@ namespace TX{
 				input.AddModifiers(mods);
 			}
 			void OnResize() {
-				input.SetWindow(config.width, config.height);
+				input.SetWindowSize(config.windowSize.x, config.windowSize.y);
 			}
 			//virtual void OnWindowResize(int w, int h) {}
 			//virtual void OnWindowFocusChanged(bool focused) {}

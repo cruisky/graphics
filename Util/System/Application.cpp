@@ -15,8 +15,8 @@ namespace TX
 				throw std::runtime_error("glfwInit failed");
 
 			window = glfwCreateWindow(
-				config.width,
-				config.height,
+				config.windowSize.x,
+				config.windowSize.y,
 				config.title.c_str(),
 				config.fullscreen ? glfwGetPrimaryMonitor() : NULL,
 				NULL);
@@ -93,13 +93,13 @@ namespace TX
 		void Application::GLFWMouseScroll(GLFWwindow *window, double xoff, double yoff) { This(window)->OnMouseScroll(float(xoff), float(yoff)); }
 		void Application::GLFWFramebufferSize(GLFWwindow *window, int w, int h)	{
 			auto *app = This(window);
-			if (w != app->config.width || h != app->config.height){
+			Vec2i newSize(w, h);
+			if (app->config.windowSize != newSize){
 				if (!app->config.fixsize){
-					app->config.width = w;
-					app->config.height = h;
+					app->config.windowSize = newSize;
 					app->OnResize();
+					glViewport(0, 0, w, h);
 				}
-				glViewport(0, 0, w, h);
 			}
 		}
 		void Application::GLFWWindowSize(GLFWwindow *window, int w, int h)	{ This(window)->OnWindowResize(w, h); }
