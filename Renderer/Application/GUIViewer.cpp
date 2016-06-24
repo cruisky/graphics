@@ -48,11 +48,9 @@ namespace TX {
 
 			switch (state_) {
 			case State::Preview:
-				//glClearColor(0.3f, 0.3f, 0.3f, 0.f);
-				//glClear(GL_COLOR_BUFFER_BIT);
 				previewer_->Render();
 				break;
-			case  State::Render:
+			case State::Render:
 				glDrawPixels(config.windowSize.x, config.windowSize.y, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
 				break;
 			}
