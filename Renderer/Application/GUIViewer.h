@@ -4,6 +4,7 @@
 #include <future>
 #include <atomic>
 #include "Core/Renderer.h"
+#include "ObjViewer/ObjViewer.h"
 
 namespace TX {
 	namespace UI {
@@ -17,7 +18,6 @@ namespace TX {
 			GUIViewer& ConfigRenderer(RendererConfig config);
 		protected:
 			void Start();
-			void Config();
 			bool Render();
 			void OnExit();
 		private:
@@ -31,6 +31,7 @@ namespace TX {
 			std::shared_ptr<Camera> camera_;
 			std::shared_ptr<Film> film_;
 			std::unique_ptr<Renderer> renderer_;
+			std::unique_ptr<ObjViewer> previewer_;
 			std::shared_ptr<IProgressMonitor> monitor_;
 
 			// GUI

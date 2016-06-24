@@ -10,27 +10,29 @@ namespace TX {
 	namespace UI {
 		GUIViewer::GUIViewer(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera, std::shared_ptr<Film> film) :
 			InputHandledApplication(), scene_(scene), camera_(camera), film_(film) {
+			config.title = "Renderer";
+			config.windowSize.x = camera_->Width();
+			config.windowSize.y = camera_->Height();
+			config.fixsize = false;
+			config.fps = 60;
+
 			// Progress monitor
 			monitor_ = std::make_shared<ProgressMonitor>();
+
 			// Renderer
-			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, camera, film, monitor_);
+			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene_, camera_, film_, monitor_);
 		}
 
 		void GUIViewer::Start() {
+			// Previewer
+			previewer_ = std::make_unique<ObjViewer>(camera_, scene_);
+
 			InputHandledApplication::Start();
 #pragma	region GUI settings
 			font_.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
 			GUI::Init(font_);
 			windowMain_ = Rect(0.f, 0.f, 200.f, 180.f);
 #pragma endregion
-		}
-
-		void GUIViewer::Config() {
-			config.title = "Renderer";
-			config.windowSize.x = camera_->Width();
-			config.windowSize.y = camera_->Height();
-			config.fixsize = false;
-			config.fps = 60;
 		}
 
 		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config) {
@@ -46,8 +48,9 @@ namespace TX {
 
 			switch (state_) {
 			case State::Preview:
-				glClearColor(0.3f, 0.3f, 0.3f, 0.f);
-				glClear(GL_COLOR_BUFFER_BIT);
+				//glClearColor(0.3f, 0.3f, 0.3f, 0.f);
+				//glClear(GL_COLOR_BUFFER_BIT);
+				previewer_->Render();
 				break;
 			case  State::Render:
 				glDrawPixels(config.windowSize.x, config.windowSize.y, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());

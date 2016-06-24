@@ -155,17 +155,16 @@ void GUIMainMesh() {
 	gui.Run();
 }
 
-
-int main(){
+int main() {
 	bool succeeded = false;
-	try{
+	try {
 		GUIMainMesh();
 		succeeded = true;
 	}
-	catch (int ex){
+	catch (int ex) {
 		std::fprintf(stderr, "Uncaught Exception: \n\t%d\n", ex);
 	}
-	catch (char const *ex){
+	catch (char const *ex) {
 		std::fprintf(stderr, "Uncaught Exception: \n\t%s\n", ex);
 	}
 	catch (const std::exception& ex) {
