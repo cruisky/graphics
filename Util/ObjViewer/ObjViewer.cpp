@@ -41,6 +41,9 @@ namespace TX {
 	}
 
 	void ObjViewer::Render() {
+		glPushAttrib(GL_ENABLE_BIT);
+		glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+
 		static const GLfloat gray[] = { 0.15f, 0.15f, 0.15f, 1.f };
 		glClearBufferfv(GL_COLOR, 0, gray);
 		static const GLfloat one = 1.0f;
@@ -48,7 +51,6 @@ namespace TX {
 
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
-
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 
@@ -75,5 +77,8 @@ namespace TX {
 			int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 			glDrawElements(GL_TRIANGLES, size / sizeof(uint), GL_UNSIGNED_INT, 0);
 		}
+
+		glPopClientAttrib();
+		glPopAttrib();
 	}
 }

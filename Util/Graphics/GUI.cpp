@@ -371,6 +371,9 @@ namespace TX { namespace UI { namespace GUI {
 	}
 
 	void BeginFrame(Input& input){
+		glPushAttrib(GL_ENABLE_BIT);
+		glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+
 		G.input = &input;
 		G.current.Reset();
 		G.hot = G.hotToBe;
@@ -405,7 +408,6 @@ namespace TX { namespace UI { namespace GUI {
 		// backup program & texture
 		GLint lastProgram, lastTexture;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &lastProgram);
-		glGetIntegerv(GL_TEXTURE_BINDING_2D, &lastTexture);
 
 		// setup
 		auto& w = G.input->windowSize.x;
@@ -416,8 +418,6 @@ namespace TX { namespace UI { namespace GUI {
 			0.f,	0.f,	-1.f,	0.f,
 			-1.f,	1.f,	0.f,	1.f);
 
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
 		glEnable(GL_SCISSOR_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -455,13 +455,10 @@ namespace TX { namespace UI { namespace GUI {
 			}
 		}
 
-		// restore program texture
-		glDisable(GL_SCISSOR_TEST);
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		// restore program & settings
 		glUseProgram(lastProgram);
-		glBindTexture(GL_TEXTURE_2D, lastTexture);
+		glPopClientAttrib();
+		glPopAttrib();
 	}
 	//	+---------------------------------------+
 	//  |                 1                     |
