@@ -23,7 +23,7 @@ public:
 protected:
 	void Start() {
 		InputHandledApplication::Start();
-		font.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
+		font.LoadDefault();
 		GUI::Init(font);
 
 		window[0] = Rect(0, 0, 200, 200);

@@ -85,6 +85,7 @@
     <ClInclude Include="SSE\SSE.h" />
     <ClInclude Include="ObjViewer\ObjViewer.h" />
     <ClInclude Include="Misc\Const.h" />
+    <ClInclude Include="Graphics\Font\DroidSans.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ObjViewer\phong.fs.glsl" />

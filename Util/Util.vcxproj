@@ -99,6 +99,7 @@
     <ClInclude Include="Graphics\Color.h" />
     <ClInclude Include="Graphics\Filter.h" />
     <ClInclude Include="Graphics\FontMap.h" />
+    <ClInclude Include="Graphics\Font\DroidSans.h" />
     <ClInclude Include="Graphics\GLUtils.h" />
     <ClInclude Include="Graphics\GUI.h" />
     <ClInclude Include="Graphics\CameraController.h" />

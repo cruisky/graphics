@@ -29,7 +29,7 @@ namespace TX {
 
 			InputHandledApplication::Start();
 #pragma	region GUI settings
-			font_.Load("../Assets/DroidSans/DroidSans.ttf", 14.f);
+			font_.LoadDefault();
 			GUI::Init(font_);
 			windowMain_ = Rect(0.f, 0.f, 200.f, 180.f);
 #pragma endregion
