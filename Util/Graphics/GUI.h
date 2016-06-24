@@ -63,7 +63,7 @@ namespace TX {
 			Style& GetStyle();
 			void Init(FontMap& font);
 			void Shutdown();
-			void BeginFrame(const Input& input);
+			void BeginFrame(Input& input);
 			void EndFrame();
 			void BeginWindow(const std::string& name, Rect& window);
 			void EndWindow();

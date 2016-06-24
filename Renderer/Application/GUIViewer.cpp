@@ -60,7 +60,7 @@ namespace TX {
 
 			Vec2 cursor = input.cursor;
 			FlipY(&cursor.y);
-			if (input.buttonState == MouseButtonState::DOWN) {
+			if (input(MouseButtonState::DOWN)) {
 				switch (input.button) {
 				case MouseButton::LEFT:
 					Color c = film_->Get(int(cursor.x), int(cursor.y));
@@ -68,7 +68,7 @@ namespace TX {
 					break;
 				}
 			}
-			if (input.keyState == KeyState::DOWN || input.keyState == KeyState::HOLD) {
+			if (input(KeyState::DOWN) || input(KeyState::HOLD)) {
 				switch (input.key) {
 				case KeyCode::ESCAPE:
 					Exit(); break;
