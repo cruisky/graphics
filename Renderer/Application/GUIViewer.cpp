@@ -27,8 +27,8 @@ namespace TX {
 			// Previewer
 			previewer_ = std::make_unique<ObjViewer>(camera_, scene_);
 			previewer_->lightSource.constantAttenuation = 0;
-			previewer_->lightSource.linearAttenuation = 0.4f;
-			previewer_->lightSource.quadraticAttenuation = 0;
+			previewer_->lightSource.linearAttenuation = 0.1f;
+			previewer_->lightSource.quadraticAttenuation = 0.08f;
 
 			InputHandledApplication::Start();
 #pragma	region GUI settings

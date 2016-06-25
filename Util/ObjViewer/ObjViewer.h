@@ -7,8 +7,7 @@ namespace TX {
 	using namespace UI;
 	class ObjViewer {
 	public:
-		class LightSource {
-		public:
+		struct LightSource {
 			Color ambient;
 			Color diffuse;
 			Color specular;
@@ -19,7 +18,6 @@ namespace TX {
 			float constantAttenuation;
 			float linearAttenuation;
 			float quadraticAttenuation;
-		public:
 			LightSource() :
 				ambient(0.4, 0.4, 0.4, 1),
 				diffuse(Color::WHITE),
@@ -31,6 +29,10 @@ namespace TX {
 				linearAttenuation(0),
 				quadraticAttenuation(0) {
 			}
+		};
+		struct Prim {
+			GL::Mesh mesh;
+			std::shared_ptr<Primitive> prim;
 		};
 	public:
 		LightSource lightSource;
@@ -57,7 +59,7 @@ namespace TX {
 		};
 		std::shared_ptr<GL::Program>					program;
 		GLuint											uniform[UNIFORM_COUNT];
-		std::vector<GL::Mesh>							meshes;
+		std::vector<Prim>								prims;
 		std::shared_ptr<Camera>							camera;
 		std::shared_ptr<Scene>							scene;
 

@@ -11,7 +11,7 @@ struct LightSource
 	float constantAttenuation, linearAttenuation, quadraticAttenuation;
 };
 
-struct material
+struct Material
 {
 	vec4 ambient;
 	vec4 diffuse;
@@ -25,12 +25,7 @@ uniform mat4 m, v, p;
 uniform mat4 v_inv;
 uniform LightSource light0;
 
-material frontMaterial = material(
-	vec4(0.8, 0.8, 0.8, 1.0),
-	vec4(1.0, 1.0, 1.0, 1.0),
-	vec4(1.0, 1.0, 1.0, 1.0),
-	100.0
-);
+uniform Material material;
 
 void main()
 {
@@ -67,10 +62,10 @@ void main()
 		}
 	}
 
-	vec3 ambientLighting = vec3(light0.ambient) * vec3(frontMaterial.ambient);
+	vec3 ambientLighting = vec3(light0.ambient) * vec3(material.ambient);
 
 	vec3 diffuseReflection = attenuation
-		* vec3(light0.diffuse) * vec3(frontMaterial.diffuse)
+		* vec3(light0.diffuse) * vec3(material.diffuse)
 		* max(0.0, dot(normalDirection, lightDirection));
 
 	vec3 specularReflection;
@@ -80,8 +75,8 @@ void main()
 	}
 	else // lighting from the front face
 	{
-	specularReflection = attenuation * vec3(light0.specular) * vec3(frontMaterial.specular)
-		* pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), frontMaterial.shininess);
+	specularReflection = attenuation * vec3(light0.specular) * vec3(material.specular)
+		* pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
 	}
 
 	gl_FragColor = vec4(ambientLighting + diffuseReflection + specularReflection, 1.0);

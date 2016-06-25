@@ -34,9 +34,10 @@ namespace TX {
 		scene->GetPrimitives(primitives);
 
 		// create buffers for each mesh object
-		meshes.resize(primitives.size());
+		prims.resize(primitives.size());
 		for (uint i = 0; i < primitives.size(); i++) {
-			meshes[i].Upload(*primitives[i]->GetMesh());
+			prims[i].prim = primitives[i];
+			prims[i].mesh.Upload(*primitives[i]->GetMesh());
 		}
 	}
 
@@ -69,14 +70,20 @@ namespace TX {
 		// Light
 		UploadLight();
 
-		for (auto& mesh : meshes) {
-			mesh.vertices.Bind();
+		for (auto& prim : prims) {
+			const BSDF *bsdf = prim.prim->GetBSDF();
+			glUniform4fv(program->GetUniformLoc("material.ambient"), 1, (float *)&bsdf->GetAmbient());
+			glUniform4fv(program->GetUniformLoc("material.diffuse"), 1, (float *)&bsdf->GetDiffuse());
+			glUniform4fv(program->GetUniformLoc("material.specular"), 1, (float *)&bsdf->GetSpecular());
+			glUniform1f(program->GetUniformLoc("material.shininess"), bsdf->GetShininess());
+
+			prim.mesh.vertices.Bind();
 			glVertexAttribPointer(ATTRIB_POS, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-			mesh.normals.Bind();
+			prim.mesh.normals.Bind();
 			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-			mesh.indices.Bind();
+			prim.mesh.indices.Bind();
 			int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 			glDrawElements(GL_TRIANGLES, size / sizeof(uint), GL_UNSIGNED_INT, 0);
 		}

@@ -15,6 +15,7 @@ namespace TX{
 			Y = 1, YA, RGB, RGBA
 		};
 	public:
+		static const Color ZERO;
 		static const Color BLACK;
 		static const Color WHITE;
 		static const Color RED;
@@ -25,7 +26,7 @@ namespace TX{
 			struct{ float r, g, b, a; };
 			float v[4];
 		};
-		
+
 		Color() :
 			r(0.f), g(0.f), b(0.f), a(1.f) {}
 		Color(float gray, float a = 1.f) :
@@ -45,8 +46,8 @@ namespace TX{
 		inline Color operator + (const Color& ot) const { return Color(r + ot.r, g + ot.g, b + ot.b); }
 		inline Color operator - (const Color& ot) const { return Color(r - ot.r, g - ot.g, b - ot.b); }
 		inline Color operator * (const Color& ot) const { return Color(r * ot.r, g * ot.g, b * ot.b); }
-		inline Color operator * (const float s) const { return Color(r * s, g * s, b * s); }
-		inline Color operator / (const float d) const { return Color(r / d, g / d, b / d); }
+		inline Color operator * (const float s) const { return Color(r * s, g * s, b * s, a); }
+		inline Color operator / (const float d) const { return Color(r / d, g / d, b / d, a); }
 		inline Color& operator += (const Color& ot) { r += ot.r; g += ot.g; b += ot.b; return *this; }
 		inline Color& operator -= (const Color& ot) { r -= ot.r; g -= ot.g; b -= ot.b; return *this; }
 		inline Color& operator *= (const Color& ot) { r *= ot.r; g *= ot.g; b *= ot.b; return *this; }
