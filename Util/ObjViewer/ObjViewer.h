@@ -7,9 +7,39 @@ namespace TX {
 	using namespace UI;
 	class ObjViewer {
 	public:
+		class LightSource {
+		public:
+			Color ambient;
+			Color diffuse;
+			Color specular;
+			Vec4 position;
+			Vec3 spotDirection;
+			float spotExponent;
+			float spotCutoff;
+			float constantAttenuation;
+			float linearAttenuation;
+			float quadraticAttenuation;
+		public:
+			LightSource() :
+				ambient(0.4, 0.4, 0.4, 1),
+				diffuse(Color::WHITE),
+				specular(Color::WHITE),
+				position(0, 0, 1, 0),
+				spotDirection(0, 0, -1),
+				spotCutoff(180),
+				constantAttenuation(1),
+				linearAttenuation(0),
+				quadraticAttenuation(0) {
+			}
+		};
+	public:
+		LightSource lightSource;
+	public:
 		ObjViewer(std::shared_ptr<Camera> camera, std::shared_ptr<Scene> scene);
 	public:
 		void Render();
+	private:
+		void UploadLight();
 	private:
 		enum Attribute {
 			ATTRIB_POS,
@@ -22,6 +52,7 @@ namespace TX {
 			UNIFORM_P,
 			UNIFORM_M_3X3_INV_TRANSP,
 			UNIFORM_V_INV,
+
 			UNIFORM_COUNT
 		};
 		std::shared_ptr<GL::Program>					program;

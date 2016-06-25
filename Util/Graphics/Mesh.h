@@ -2,6 +2,7 @@
 #include "Util.h"
 #include "Shape.h"
 #include "Math/Vector.h"
+#include "Math/BBox.h"
 
 namespace TX {
 	class Mesh {
@@ -10,6 +11,9 @@ namespace TX {
 		std::vector<Vec3> normals;
 		std::vector<uint> indices;
 		std::vector<Vec2> uv;
+	private:
+		mutable BBox bbox_;
+		mutable bool bbox_dirty_ = true;
 	public:
 		Mesh() {}
 		Mesh(const Mesh& ot) :
@@ -40,7 +44,16 @@ namespace TX {
 			if (normal)
 				*normal = Math::Normalize(Math::Cross(e1, e2));
 		}
-
+		inline const BBox& Bounds() const {
+			if (!bbox_dirty_)
+				return bbox_;
+			bbox_ = BBox();
+			for (auto& v : vertices) {
+				bbox_ = Math::Union(bbox_, v);
+			}
+			bbox_dirty_ = false;
+			return bbox_;
+		}
 		/// <summary>
 		/// Clear the vertices, normals, texcoords and triangle indices.
 		/// </summary>

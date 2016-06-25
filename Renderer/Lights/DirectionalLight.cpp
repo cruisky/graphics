@@ -21,4 +21,8 @@ namespace TX {
 	bool DirectionalLight::IsDelta() const {
 		return true;
 	}
+
+	Color DirectionalLight::Intensity() const { return intensity; }
+	Vec4 DirectionalLight::Position() const { return Vec4::ZERO; }
+	Vec3 DirectionalLight::Direction() const { return dir; }
 }

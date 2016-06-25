@@ -7,6 +7,10 @@
 
 namespace TX
 {
+	Color Light::Intensity() const { return Color::WHITE; }
+	Vec3 Light::Direction() const { return Vec3(0, 0, -1); }
+
+
 	AreaLight::AreaLight(const Color& intensity, std::shared_ptr<Primitive> primitive, int sample_count)
 		: Light(sample_count), intensity(intensity), primitive(primitive) {
 		primitive->SetAreaLight(this);
@@ -33,5 +37,11 @@ namespace TX
 		if (!scene->Intersect(Ray(eye, dir), intxn) || primitive.get() != intxn.prim)
 			return 0.f;
 		return primitive->Pdf(intxn.triId, eye, dir);
+	}
+
+	Color AreaLight::Intensity() const { return intensity; }
+	Vec4 AreaLight::Position() const {
+		auto pos = primitive->GetMesh()->Bounds().Centroid();
+		return Vec4(pos.x, pos.y, pos.z, 1);	// non-zero w means this is not a directional light
 	}
 }

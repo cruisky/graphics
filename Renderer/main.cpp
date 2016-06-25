@@ -76,15 +76,15 @@ void GUIMainMesh() {
 	Mesh plane; plane.LoadPlane();
 
 	int wall_size = 9;
-	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_gray));
+	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_white));
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_gray));
+	shared_ptr<Primitive> w_forward(new Primitive(plane, diffuse_white));
 	w_forward->transform.SetRotation(Quaternion::AngleAxis(Math::PI / 2, Vec3::X));
 	w_forward->transform.Translate(0, 0, -wall_size / 2);
 	w_forward->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_gray));
+	shared_ptr<Primitive> w_back(new Primitive(plane, diffuse_white));
 	w_back->transform.SetRotation(Quaternion::AngleAxis(-Math::PI / 2, Vec3::X));
 	w_back->transform.Translate(0, 0, -wall_size / 2);
 	w_back->transform.Scale(wall_size, wall_size, 1);
@@ -99,7 +99,7 @@ void GUIMainMesh() {
 	w_right->transform.Translate(0, 0, -wall_size / 2);
 	w_right->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse_gray));
+	shared_ptr<Primitive> w_top(new Primitive(plane, diffuse_white));
 	w_top->transform.SetRotation(Quaternion::AngleAxis(Math::PI, Vec3::Y));
 	w_top->transform.Translate(0, 0, -wall_size / 2);
 	w_top->transform.Scale(wall_size, wall_size, 1);
@@ -119,11 +119,11 @@ void GUIMainMesh() {
 	lamp->transform.SetRotation(Quaternion::AngleAxis(Math::PI, Vec3::Y));
 	lamp->transform.Translate(0, 0, -wall_size / 2 + 0.05);
 	lamp->transform.Scale(2, 2, 1);
-	shared_ptr<Light> light_lamp(new AreaLight(Color(15), lamp));
+	shared_ptr<Light> light_lamp(new AreaLight(Color(9), lamp));
 
 	/////////////////////////////////////
 	// Scene
-	shared_ptr<Film> film(new Film(FilterType::GaussianFilter));
+	shared_ptr<Film> film(new Film(FilterType::BoxFilter));
 	shared_ptr<Scene> scene(new Scene(std::make_unique<BVH>()));
 
 	scene->AddPrimitive(w_bottom);

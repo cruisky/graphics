@@ -44,10 +44,8 @@ namespace TX {
 		glPushAttrib(GL_ENABLE_BIT);
 		glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
 
-		static const GLfloat gray[] = { 0.15f, 0.15f, 0.15f, 1.f };
-		glClearBufferfv(GL_COLOR, 0, gray);
-		static const GLfloat one = 1.0f;
-		glClearBufferfv(GL_DEPTH, 0, &one);
+		glClearColor(0.15f, 0.15f, 0.15f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
@@ -57,14 +55,19 @@ namespace TX {
 		camera->transform.UpdateMatrix();
 		program->Use();
 
+		// Model, View, Projection
 		glUniformMatrix4fv(uniform[UNIFORM_M], 1, GL_TRUE, Matrix4x4::IDENTITY);
 		glUniformMatrix4fv(uniform[UNIFORM_V], 1, GL_TRUE, camera->transform.WorldToLocalMatrix());
 		glUniformMatrix4fv(uniform[UNIFORM_P], 1, GL_TRUE, camera->CameraToViewport());
 		glUniformMatrix4fv(uniform[UNIFORM_V_INV], 1, GL_TRUE, camera->transform.LocalToWorldMatrix());
 		glUniformMatrix3fv(uniform[UNIFORM_M_3X3_INV_TRANSP], 1, GL_TRUE, Matrix3x3::IDENTITY);
 
+		// Vertex, Normal
 		glEnableVertexAttribArray(ATTRIB_POS);
 		glEnableVertexAttribArray(ATTRIB_NORMAL);
+
+		// Light
+		UploadLight();
 
 		for (auto& mesh : meshes) {
 			mesh.vertices.Bind();
@@ -80,5 +83,19 @@ namespace TX {
 
 		glPopClientAttrib();
 		glPopAttrib();
+	}
+
+	void ObjViewer::UploadLight() {
+
+		glUniform4fv(program->GetUniformLoc("light0.ambient"), 1, (float*)&lightSource.ambient);
+		glUniform4fv(program->GetUniformLoc("light0.diffuse"), 1, (float*)&lightSource.diffuse);
+		glUniform4fv(program->GetUniformLoc("light0.specular"), 1, (float*)&lightSource.specular);
+		glUniform4fv(program->GetUniformLoc("light0.position"), 1, (float*)&lightSource.position);
+		glUniform3fv(program->GetUniformLoc("light0.spotDirection"), 1, (float *)&lightSource.spotDirection);
+		glUniform1f(program->GetUniformLoc("light0.spotExponent"), lightSource.spotExponent);
+		glUniform1f(program->GetUniformLoc("light0.spotCutoff"), lightSource.spotCutoff);
+		glUniform1f(program->GetUniformLoc("light0.constantAttenuation"), lightSource.constantAttenuation);
+		glUniform1f(program->GetUniformLoc("light0.linearAttenuation"), lightSource.linearAttenuation);
+		glUniform1f(program->GetUniformLoc("light0.quadraticAttenuation"), lightSource.quadraticAttenuation);
 	}
 }

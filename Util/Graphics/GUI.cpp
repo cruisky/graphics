@@ -406,7 +406,7 @@ namespace TX { namespace UI { namespace GUI {
 
 		// ============================================================
 		// backup program & texture
-		GLint lastProgram, lastTexture;
+		GLint lastProgram;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &lastProgram);
 
 		// setup

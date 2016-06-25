@@ -26,6 +26,9 @@ namespace TX {
 		void GUIViewer::Start() {
 			// Previewer
 			previewer_ = std::make_unique<ObjViewer>(camera_, scene_);
+			previewer_->lightSource.constantAttenuation = 0;
+			previewer_->lightSource.linearAttenuation = 0.4f;
+			previewer_->lightSource.quadraticAttenuation = 0;
 
 			InputHandledApplication::Start();
 #pragma	region GUI settings
@@ -48,8 +51,15 @@ namespace TX {
 
 			switch (state_) {
 			case State::Preview:
+			{
+				std::shared_ptr<Light> light0 = scene_->lights[0];
+				previewer_->lightSource.ambient = Color(0.15, 0.15, 0.15, 1);
+				previewer_->lightSource.diffuse = light0->Intensity().Clamp();
+				previewer_->lightSource.position = light0->Position();
+				previewer_->lightSource.spotDirection = light0->Direction();
 				previewer_->Render();
 				break;
+			}
 			case State::Render:
 				glDrawPixels(config.windowSize.x, config.windowSize.y, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
 				break;

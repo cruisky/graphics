@@ -17,11 +17,14 @@ namespace TX{
 			return *this;
 		}
 
+		virtual Color Intensity() const;
+		virtual Vec4 Position() const;
+
 	public:
 		Color intensity;
+		Vec3 pos;
 
 	private:
-		Vec3 pos;
 		float radius;
 		float radiusSqRcp;
 	};
