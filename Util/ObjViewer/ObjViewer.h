@@ -33,6 +33,8 @@ namespace TX {
 		struct Prim {
 			GL::Mesh mesh;
 			std::shared_ptr<Primitive> prim;
+			void SetMaterial(GL::Program& program) const;
+			void Draw() const;
 		};
 	public:
 		LightSource lightSource;
@@ -57,7 +59,7 @@ namespace TX {
 
 			UNIFORM_COUNT
 		};
-		std::shared_ptr<GL::Program>					program;
+		GL::Program										program;
 		GLuint											uniform[UNIFORM_COUNT];
 		std::vector<Prim>								prims;
 		std::shared_ptr<Camera>							camera;

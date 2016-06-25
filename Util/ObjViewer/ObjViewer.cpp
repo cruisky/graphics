@@ -6,28 +6,45 @@
 #include "Graphics/Primitive.h"
 
 namespace TX {
-	using namespace UI;
+	void ObjViewer::Prim::SetMaterial(GL::Program& program) const {
+		const BSDF *bsdf = prim->GetBSDF();
+		program.SetUniform("material.ambient", bsdf->GetAmbient());
+		program.SetUniform("material.diffuse", bsdf->GetDiffuse());
+		program.SetUniform("material.specular", bsdf->GetSpecular());
+		program.SetUniform("material.shininess", bsdf->GetShininess());
+	}
+	void ObjViewer::Prim::Draw() const {
+		mesh.vertices.Bind();
+		glVertexAttribPointer(ATTRIB_POS, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+		mesh.normals.Bind();
+		glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+		mesh.indices.Bind();
+		int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
+		glDrawElements(GL_TRIANGLES, size / sizeof(uint), GL_UNSIGNED_INT, 0);
+	}
+
 	ObjViewer::ObjViewer(std::shared_ptr<Camera> camera, std::shared_ptr<Scene> scene) : camera(camera), scene(scene) {
 		// compile the program
 		GL::Shader vs(GL_VERTEX_SHADER, VertShaderSrc.c_str());
 		GL::Shader fs(GL_FRAGMENT_SHADER, FragShaderSrc.c_str());
-		program = std::make_shared<GL::Program>();
-		program->Attach(vs);
-		program->Attach(fs);
-		program->Link();
-		program->Detach(vs);
-		program->Detach(fs);
+		program.Attach(vs);
+		program.Attach(fs);
+		program.Link();
+		program.Detach(vs);
+		program.Detach(fs);
 
 		// uniforms
-		uniform[UNIFORM_M] = program->GetUniformLoc("m");
-		uniform[UNIFORM_V] = program->GetUniformLoc("v");
-		uniform[UNIFORM_P] = program->GetUniformLoc("p");
-		uniform[UNIFORM_M_3X3_INV_TRANSP] = program->GetUniformLoc("m_3x3_inv_transp");
-		uniform[UNIFORM_V_INV] = program->GetUniformLoc("v_inv");
+		uniform[UNIFORM_M] = program.GetUniformLoc("m");
+		uniform[UNIFORM_V] = program.GetUniformLoc("v");
+		uniform[UNIFORM_P] = program.GetUniformLoc("p");
+		uniform[UNIFORM_M_3X3_INV_TRANSP] = program.GetUniformLoc("m_3x3_inv_transp");
+		uniform[UNIFORM_V_INV] = program.GetUniformLoc("v_inv");
 
 		// bind attribute locations
-		program->BindAttribLoc("position", ATTRIB_POS);
-		program->BindAttribLoc("normal", ATTRIB_NORMAL);
+		program.BindAttribLoc("position", ATTRIB_POS);
+		program.BindAttribLoc("normal", ATTRIB_NORMAL);
 
 		// load object data
 		std::vector<std::shared_ptr<Primitive>> primitives;
@@ -54,14 +71,14 @@ namespace TX {
 		glDepthFunc(GL_LEQUAL);
 
 		camera->transform.UpdateMatrix();
-		program->Use();
+		program.Use();
 
 		// Model, View, Projection
-		glUniformMatrix4fv(uniform[UNIFORM_M], 1, GL_TRUE, Matrix4x4::IDENTITY);
-		glUniformMatrix4fv(uniform[UNIFORM_V], 1, GL_TRUE, camera->transform.WorldToLocalMatrix());
-		glUniformMatrix4fv(uniform[UNIFORM_P], 1, GL_TRUE, camera->CameraToViewport());
-		glUniformMatrix4fv(uniform[UNIFORM_V_INV], 1, GL_TRUE, camera->transform.LocalToWorldMatrix());
-		glUniformMatrix3fv(uniform[UNIFORM_M_3X3_INV_TRANSP], 1, GL_TRUE, Matrix3x3::IDENTITY);
+		GL::SetUniform(uniform[UNIFORM_M], Matrix4x4::IDENTITY);
+		GL::SetUniform(uniform[UNIFORM_V], camera->transform.WorldToLocalMatrix());
+		GL::SetUniform(uniform[UNIFORM_P], camera->CameraToViewport());
+		GL::SetUniform(uniform[UNIFORM_V_INV], camera->transform.LocalToWorldMatrix());
+		GL::SetUniform(uniform[UNIFORM_M_3X3_INV_TRANSP], Matrix3x3::IDENTITY);
 
 		// Vertex, Normal
 		glEnableVertexAttribArray(ATTRIB_POS);
@@ -71,21 +88,8 @@ namespace TX {
 		UploadLight();
 
 		for (auto& prim : prims) {
-			const BSDF *bsdf = prim.prim->GetBSDF();
-			glUniform4fv(program->GetUniformLoc("material.ambient"), 1, (float *)&bsdf->GetAmbient());
-			glUniform4fv(program->GetUniformLoc("material.diffuse"), 1, (float *)&bsdf->GetDiffuse());
-			glUniform4fv(program->GetUniformLoc("material.specular"), 1, (float *)&bsdf->GetSpecular());
-			glUniform1f(program->GetUniformLoc("material.shininess"), bsdf->GetShininess());
-
-			prim.mesh.vertices.Bind();
-			glVertexAttribPointer(ATTRIB_POS, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-			prim.mesh.normals.Bind();
-			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-			prim.mesh.indices.Bind();
-			int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-			glDrawElements(GL_TRIANGLES, size / sizeof(uint), GL_UNSIGNED_INT, 0);
+			prim.SetMaterial(program);
+			prim.Draw();
 		}
 
 		glPopClientAttrib();
@@ -93,16 +97,15 @@ namespace TX {
 	}
 
 	void ObjViewer::UploadLight() {
-
-		glUniform4fv(program->GetUniformLoc("light0.ambient"), 1, (float*)&lightSource.ambient);
-		glUniform4fv(program->GetUniformLoc("light0.diffuse"), 1, (float*)&lightSource.diffuse);
-		glUniform4fv(program->GetUniformLoc("light0.specular"), 1, (float*)&lightSource.specular);
-		glUniform4fv(program->GetUniformLoc("light0.position"), 1, (float*)&lightSource.position);
-		glUniform3fv(program->GetUniformLoc("light0.spotDirection"), 1, (float *)&lightSource.spotDirection);
-		glUniform1f(program->GetUniformLoc("light0.spotExponent"), lightSource.spotExponent);
-		glUniform1f(program->GetUniformLoc("light0.spotCutoff"), lightSource.spotCutoff);
-		glUniform1f(program->GetUniformLoc("light0.constantAttenuation"), lightSource.constantAttenuation);
-		glUniform1f(program->GetUniformLoc("light0.linearAttenuation"), lightSource.linearAttenuation);
-		glUniform1f(program->GetUniformLoc("light0.quadraticAttenuation"), lightSource.quadraticAttenuation);
+		program.SetUniform("light0.ambient", lightSource.ambient);
+		program.SetUniform("light0.diffuse", lightSource.diffuse);
+		program.SetUniform("light0.specular", lightSource.specular);
+		program.SetUniform("light0.position", lightSource.position);
+		program.SetUniform("light0.spotDirection", lightSource.spotDirection);
+		program.SetUniform("light0.spotExponent", lightSource.spotExponent);
+		program.SetUniform("light0.spotCutoff", lightSource.spotCutoff);
+		program.SetUniform("light0.constantAttenuation", lightSource.constantAttenuation);
+		program.SetUniform("light0.linearAttenuation", lightSource.linearAttenuation);
+		program.SetUniform("light0.quadraticAttenuation", lightSource.quadraticAttenuation);
 	}
 }

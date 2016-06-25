@@ -5,9 +5,8 @@ namespace TX
 	class NonCopyable{
 	protected:
 		NonCopyable(){}
+		NonCopyable(NonCopyable const &) = delete;
 		NonCopyable& operator = (NonCopyable const &) = delete;
-	private:
-		NonCopyable(NonCopyable const &);
 	};
 	template<typename T>
 	class AutoDelete : NonCopyable{

@@ -8,6 +8,13 @@ namespace TX
 {
 	namespace GL
 	{
+		void SetUniform(GLuint loc, const Vec2& v) { glUniform2fv(loc, 1, v.data); }
+		void SetUniform(GLuint loc, const Vec3& v) { glUniform3fv(loc, 1, v.data); }
+		void SetUniform(GLuint loc, const Vec4& v) { glUniform4fv(loc, 1, v.data); }
+		void SetUniform(GLuint loc, const Color& v) { glUniform4fv(loc, 1, v.v); }
+		void SetUniform(GLuint loc, const Matrix3x3& v, bool transpose) { glUniformMatrix3fv(loc, 1, transpose, v); }
+		void SetUniform(GLuint loc, const Matrix4x4& v, bool transpose) { glUniformMatrix4fv(loc, 1, transpose, v); }
+
 		Shader::Shader(GLenum type, const char *src){
 			id = glCreateShader(type);
 			glShaderSource(id, 1, &src, NULL);
@@ -38,7 +45,7 @@ namespace TX
 		Program::~Program(){
 			glDeleteProgram(id);
 		}
-		void Program::Use(){ glUseProgram(id); }
+		void Program::Use() const { glUseProgram(id); }
 		void Program::Attach(Shader& shader){
 			glAttachShader(id, shader);
 		}
@@ -61,14 +68,8 @@ namespace TX
 				throw "Failed to validate program";
 			}
 		}
-		GLuint Program::GetUniformLoc(const char *name) { return glGetUniformLocation(id, name); }
-		void Program::SetUniform(GLuint loc, int v) { glUniform1i(loc, v); }
-		void Program::SetUniform(GLuint loc, float v) { glUniform1f(loc, v); }
-		void Program::SetUniform(GLuint loc, const Vec2& v) { glUniform2f(loc, v.x, v.y); }
-		void Program::SetUniform(GLuint loc, const Vec3& v) { glUniform3f(loc, v.x, v.y, v.z); }
-		void Program::SetUniform(GLuint loc, const Vec4& v) { glUniform4f(loc, v.x, v.y, v.z, v.w); }
-		void Program::SetUniform(GLuint loc, const Matrix3x3& v, bool transpose) { glUniformMatrix3fv(loc, 9, transpose, (const float *)(v[0])); }
-		void Program::SetUniform(GLuint loc, const Matrix4x4& v, bool transpose) { glUniformMatrix4fv(loc, 16, transpose, (const float *)(v[0])); }
+		GLuint Program::GetUniformLoc(const char *name) const { return glGetUniformLocation(id, name); }
+
 		void Program::BindAttribLoc(const char *name, GLuint index){ glBindAttribLocation(id, index, name); }
 		std::string Program::GetLog(){
 			GLint length;

@@ -24,13 +24,9 @@ in vec3 normal;		// surface normal vector in world space
 uniform mat4 m, v, p;
 uniform mat4 v_inv;
 uniform LightSource light0;
-
 uniform Material material;
 
-void main()
-{
-	vec3 normalDirection = normalize(normal);
-	vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
+vec4 phong(vec3 normalDir, vec3 viewDir){
 	vec3 lightDirection;
 	float attenuation;
 
@@ -45,8 +41,8 @@ void main()
 		float distance = length(positionToLightSource);
 		lightDirection = normalize(positionToLightSource);
 		attenuation = 1.0 / (light0.constantAttenuation
-							 + light0.linearAttenuation * distance
-							 + light0.quadraticAttenuation * distance * distance);
+			+ light0.linearAttenuation * distance
+			+ light0.quadraticAttenuation * distance * distance);
 
 		if (light0.spotCutoff <= 90.0) // spotlight
 		{
@@ -66,19 +62,28 @@ void main()
 
 	vec3 diffuseReflection = attenuation
 		* vec3(light0.diffuse) * vec3(material.diffuse)
-		* max(0.0, dot(normalDirection, lightDirection));
+		* max(0.0, dot(normalDir, lightDirection));
 
 	vec3 specularReflection;
-	if (dot(normalDirection, lightDirection) < 0.0) // lighting from the back face
+	if (dot(normalDir, lightDirection) < 0.0) // lighting from the back face
 	{
 		specularReflection = vec3(0.0, 0.0, 0.0); // no specular reflection
 	}
 	else // lighting from the front face
 	{
-	specularReflection = attenuation * vec3(light0.specular) * vec3(material.specular)
-		* pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), material.shininess);
+		specularReflection = attenuation * vec3(light0.specular) * vec3(material.specular)
+			* pow(max(0.0, dot(reflect(-lightDirection, normalDir), viewDir)), material.shininess);
 	}
 
-	gl_FragColor = vec4(ambientLighting + diffuseReflection + specularReflection, 1.0);
+	return vec4(ambientLighting + diffuseReflection + specularReflection, 1.0);
+}
+
+
+void main()
+{
+	vec3 normalDir = normalize(normal);
+	vec3 viewDir = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
+
+	gl_FragColor = phong(normalDir, viewDir);
 }
 )"
