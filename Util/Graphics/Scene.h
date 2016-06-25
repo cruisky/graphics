@@ -4,13 +4,15 @@
 #include "Light.h"
 #include "PrimitiveManager.h"
 
-namespace TX{
-	class Scene{
+namespace TX {
+	class Scene {
 	public:
 		Scene(std::unique_ptr<PrimitiveManager> primmgr);
 
 		void AddPrimitive(std::shared_ptr<Primitive> prim);
 		void AddLight(std::shared_ptr<Light> light);
+
+		void GetPrimitives(std::vector<std::shared_ptr<Primitive>>& result) const;
 
 		/// <summary>
 		/// Initializes the scene after all lights & primitives are added

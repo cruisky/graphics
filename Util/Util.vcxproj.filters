@@ -31,6 +31,7 @@
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />
+    <ClCompile Include="ObjViewer\ObjViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
@@ -82,5 +83,12 @@
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Math\BBox.h" />
     <ClInclude Include="SSE\SSE.h" />
+    <ClInclude Include="ObjViewer\ObjViewer.h" />
+    <ClInclude Include="Misc\Const.h" />
+    <ClInclude Include="Graphics\Font\DroidSans.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ObjViewer\phong.fs.glsl" />
+    <None Include="ObjViewer\phong.vs.glsl" />
   </ItemGroup>
 </Project>

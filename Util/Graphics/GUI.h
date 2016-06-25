@@ -23,6 +23,7 @@ namespace TX {
 				float		StrokeWidth;
 				float		ScrollSpeed;
 				Color		Colors[Palette::COUNT];
+				FontMap*	Font;
 
 				// -------- auto adjusted -------
 				float		WindowPadding;
@@ -32,7 +33,6 @@ namespace TX {
 				float		FormWidgetRadius;		// radio button, checkbox
 				float		FormWidgetSelectedRadius;
 
-				FontMap		*Font;
 				Style(){
 					WindowPadding = 18;
 					LineHeight = 20;
@@ -63,21 +63,21 @@ namespace TX {
 			Style& GetStyle();
 			void Init(FontMap& font);
 			void Shutdown();
-			void BeginFrame(const Input& input);
+			void BeginFrame(Input& input);
 			void EndFrame();
-			void BeginWindow(const char *name, Rect& window);
+			void BeginWindow(const std::string& name, Rect& window);
 			void EndWindow();
 
 			void Divider();
-			void Text(const char *text, bool isHint = false);
-			bool Button(const char *name, bool enabled = true);
-			bool FloatSlider(const char *name, float& val, float min, float max, float step = 0.f);
-			bool IntSlider(const char *name, int& val, int min, int max, int step = 0);
-			bool ColorSlider(const char *name, Color &col, Color::Channel channel = Color::Channel::RGB);
-			bool RadioButton(const char *name, int& val, int itemVal);
-			bool CheckBox(const char *name, bool& val);
-			void ProgressBar(const char *name, const float& percent);
-			bool TextField(const char *name, std::string& text, bool selectAllOnActive = false);
+			void Text(const std::string& text, bool isHint = false);
+			bool Button(const std::string& name, bool enabled = true);
+			bool FloatSlider(const std::string& name, float& val, float min, float max, float step = 0.f);
+			bool IntSlider(const std::string& name, int& val, int min, int max, int step = 0);
+			bool ColorSlider(const std::string& name, Color &col, Color::Channel channel = Color::Channel::RGB);
+			bool RadioButton(const std::string& name, int& val, int itemVal);
+			bool CheckBox(const std::string& name, bool& val);
+			void ProgressBar(const std::string& name, const float& zero2One);
+			bool TextField(const std::string& name, std::string& text, bool selectAllOnActive = false);
 		}
 	}
 }

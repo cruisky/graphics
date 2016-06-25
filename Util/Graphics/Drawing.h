@@ -40,7 +40,7 @@ namespace TX
 		void AddRect(const Vec2& tl, const Vec2& br, const Color& color, bool fill = true, float thick = 1.f);
 		void AddTriangle(const Vec2& v1, const Vec2& v2, const Vec2& v3, const Color& color, bool fill = true, float thick = 1.f);
 		void AddCircle(const Vec2& center, float radius, const Color& color, bool fill = true, float thick = 1.f);
-		float AddText(float x, float y, const FontMap *font, const char *text, const Color& color, GlyphPosMap * posMap = nullptr);
+		float AddText(float x, float y, const FontMap *font, const std::string& text, const Color& color, GlyphPosMap * posMap = nullptr);
 		void AddPolyLine(const Vec2* points, const int count, const Color& color, bool closed, float thick = 1.f);
 		void AddPolyFilled(const Vec2* points, const int count, const Color& color);
 

@@ -4,141 +4,139 @@
 #include "Graphics/Film.h"
 #include "Graphics/Scene.h"
 #include "Graphics/Camera.h"
+#include "Graphics/GUI.h"
 
-namespace TX{
-	namespace UI{
+namespace TX {
+	namespace UI {
 		GUIViewer::GUIViewer(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera, std::shared_ptr<Film> film) :
-			Application(), scene_(scene), camera_(camera), film_(film){
+			InputHandledApplication(), scene_(scene), camera_(camera), film_(film) {
+			config.title = "Renderer";
+			config.windowSize.x = camera_->Width();
+			config.windowSize.y = camera_->Height();
+			config.fixsize = false;
+			config.fps = 60;
+
 			// Progress monitor
 			monitor_ = std::make_shared<ProgressMonitor>();
+
 			// Renderer
-			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene, camera, film, monitor_);
+			renderer_ = std::make_unique<Renderer>(RendererConfig(), scene_, camera_, film_, monitor_);
 		}
 
-		void GUIViewer::Start(){
-			progress_reporting = true;
-			progress_reporter_job_ = std::thread(&GUIViewer::ProgressReporterJob, this);
-			InvalidateFrame();
+		void GUIViewer::Start() {
+			// Previewer
+			previewer_ = std::make_unique<ObjViewer>(camera_, scene_);
+
+			InputHandledApplication::Start();
+#pragma	region GUI settings
+			font_.LoadDefault();
+			GUI::Init(font_);
+			windowMain_ = Rect(0.f, 0.f, 200.f, 180.f);
+#pragma endregion
 		}
 
-		void GUIViewer::Config(){
-			config.title = "Renderer";
-			config.width = camera_->Width();
-			config.height = camera_->Height();
-			config.fixsize = false;
-		}
-
-		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config){
+		GUIViewer& GUIViewer::ConfigRenderer(RendererConfig config) {
 			renderer_->Config(config);
 			return *this;
 		}
 
-		bool GUIViewer::Render(){
-			if (renderer_->Running()) {
-				glDrawPixels(config.width, config.height, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
-				return true;
+		bool GUIViewer::Render() {
+			if (input.windowChanged) {
+				renderer_->Resize(input.windowSize.x, input.windowSize.y);
+				this->Refresh();
 			}
-			return false;
-		}
-		void GUIViewer::OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods) {
-			Vec2 cursor;
-			GetCursorPos(&cursor.x, &cursor.y);
+
+			switch (state_) {
+			case State::Preview:
+				previewer_->Render();
+				break;
+			case State::Render:
+				glDrawPixels(config.windowSize.x, config.windowSize.y, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
+				break;
+			}
+
+			// let the GUI handle the input first
+			OnGUI();
+
+			Vec2 cursor = input.cursor;
 			FlipY(&cursor.y);
-			if (state == MouseButtonState::DOWN){
-				switch (button){
+			if (input(MouseButtonState::DOWN)) {
+				switch (input.button) {
 				case MouseButton::LEFT:
 					Color c = film_->Get(int(cursor.x), int(cursor.y));
 					std::printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b);
 					break;
 				}
 			}
-		}
-
-		void GUIViewer::OnKey(KeyCode code, KeyState state, Modifiers modifiers){
-			if (state == KeyState::DOWN || state == KeyState::HOLD) {
-				switch (code) {
-				case KeyCode::UP: AttemptPanTiltCamera(Direction::UP); break;
-				case KeyCode::DOWN: AttemptPanTiltCamera(Direction::DOWN); break;
-				case KeyCode::LEFT: AttemptPanTiltCamera(Direction::LEFT); break;
-				case KeyCode::RIGHT: AttemptPanTiltCamera(Direction::RIGHT); break;
-				case KeyCode::W: AttemptDollyCrabCamera(Direction::UP); break;
-				case KeyCode::S: AttemptDollyCrabCamera(Direction::DOWN); break;
-				case KeyCode::A: AttemptDollyCrabCamera(Direction::LEFT); break;
-				case KeyCode::D: AttemptDollyCrabCamera(Direction::RIGHT); break;
-				case KeyCode::Q: AttemptRollCamera(false); break;
-				case KeyCode::E: AttemptRollCamera(true); break;
-				case KeyCode::ESCAPE: Exit(); break;
+			if (input(KeyState::DOWN) || input(KeyState::HOLD)) {
+				switch (input.key) {
+				case KeyCode::ESCAPE:
+					Exit(); break;
 				}
 			}
+
+			input.Clear();
+			return true;
 		}
 
-		void GUIViewer::OnResize(){
-			renderer_->Resize(config.width, config.height);
-			InvalidateFrame();
-		}
-		void GUIViewer::OnExit(){
-			progress_reporting = false;
-			progress_reporter_job_.join();
-		}
+		void GUIViewer::OnExit() {}
 
+		void GUIViewer::OnGUI() {
+			bool rendering = renderer_->Running();
+			std::stringstream ss; ss.precision(3);
+			GUI::BeginFrame(input);
 
-		void GUIViewer::AttemptDollyCrabCamera(Direction dir){
-			float dist = 0.1f;
-			Vec3 movement;
-			switch (dir){
-			case Direction::UP: movement = Vec3(0.f, 0.f, -dist); break;
-			case Direction::DOWN: movement = Vec3(0.f, 0.f, dist); break;
-			case Direction::LEFT: movement = Vec3(-dist, 0.f, 0.f); break;
-			case Direction::RIGHT: movement = Vec3(dist, 0.f, 0.f); break;
+			if (rendering) {
+				GUI::BeginWindow("Rendering...", windowMain_);
+				{
+					float prog = monitor_->Progress();
+					ss << "Progress: " << prog * 100.f << '%';
+					GUI::ProgressBar(ss.str(), prog);
+					ss.str("");
+
+					ss << "Elapsed: " << monitor_->ElapsedTime() << 's';
+					GUI::Text(ss.str());
+					ss.str("");
+
+					ss << "ETA: " << monitor_->RemainingTime() << 's';
+					GUI::Text(ss.str());
+					ss.str("");
+
+					GUI::Divider();
+					if (GUI::Button("Abort")) {
+						ActionPreview();
+					}
+				}
+				GUI::EndWindow();
 			}
-			camera_->transform.Translate(movement);
-			InvalidateFrame();
-		}
-
-		void GUIViewer::AttemptPanTiltCamera(Direction dir){
-			float rad = Math::ToRad(2.f);
-			Vec3 axis;
-			switch (dir){
-			case Direction::UP: axis = Vec3::X; break;
-			case Direction::DOWN: axis = -Vec3::X; break;
-			case Direction::LEFT: axis = Vec3::Y; break;
-			case Direction::RIGHT: axis = -Vec3::Y; break;
+			else {
+				GUI::BeginWindow("Settings", windowMain_);
+				{
+					GUI::Divider();
+					if (GUI::Button("Render")) {
+						ActionRender();
+					}
+				}
+				GUI::EndWindow();
 			}
-			camera_->transform.Rotate(Quaternion::AngleAxis(rad, axis));
-			InvalidateFrame();
+
+			GUI::EndFrame();
 		}
 
-		void GUIViewer::AttemptRollCamera(bool clockwise){
-			float rad = Math::ToRad(clockwise ? 10.f : -10.f);
-			camera_->transform.Rotate(Quaternion::AngleAxis(rad, -Vec3::Z));
-			InvalidateFrame();
-		}
-
-
-		void GUIViewer::InvalidateFrame(){
+		void GUIViewer::ActionRender() {
 			camera_->transform.UpdateMatrix();
 			renderer_->Abort();
 			renderer_->NewTask();
+			state_ = State::Render;
 			this->Refresh();
 		}
 
-		void GUIViewer::ProgressReporterJob(){
-#ifndef _DEBUG
-			bool prev_status = false, status;
-			while (progress_reporting){
-				Sleep(100);
-				status = monitor_->InProgress();
-				if (status || prev_status){
-					system("CLS");
-					std::printf("Progress:\t %2.1f %%\n", monitor_->Progress() * 100.f);
-					std::printf("Remaining:\t %.1f s\n", monitor_->RemainingTime());
-					if (!status) std::printf("Render Time:\t %.6f s\n", monitor_->ElapsedTime());
-					prev_status = status;
-				}
-			}
-			std::printf("Terminated at %3.3f%%. \n", monitor_->Progress() * 100.f);
-#endif
+		void GUIViewer::ActionPreview() {
+			renderer_->Abort();
+			state_ = State::Preview;
+			this->Refresh();
 		}
+
 		void GUIViewer::FlipY(float *y) { *y = film_->Height() - *y - 1; }
 		void GUIViewer::FlipX(float *x) { *x = film_->Width() - *x - 1; }
 	}

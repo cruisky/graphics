@@ -96,16 +96,16 @@ namespace TX
 		}
 	}
 
-	float DrawList::AddText(float x, float y, const FontMap *font, const char *text, const Color& color, GlyphPosMap * posMap){
+	float DrawList::AddText(float x, float y, const FontMap *font, const std::string& text, const Color& color, GlyphPosMap * posMap){
 		if (color.a == 0.f) return x;
 		if (posMap)
 			posMap->Clear();
 		Vec2 pos(x, y);
 		Rect rect, uv;
-		int length = std::strlen(text);
+		int length = text.length();
 		PrimReserve(length * 6, length * 4);
-		while (*text){
-			if (font->GetChar(text++, pos, &rect, &uv, posMap)){
+		for (const char& c : text) {
+			if (font->GetChar(c, pos, &rect, &uv, posMap)){
 				PrimRectUV(rect.min, rect.max, uv.min, uv.max, color);
 			}
 		}
@@ -113,7 +113,7 @@ namespace TX
 	}
 	void DrawList::AddPolyLine(const Vec2* points, const int count, const Color& color, bool closed, float thick){
 		if (color.a == 0.f || count < 2) return;
-		
+
 		int lineCount = closed ? count : count - 1;
 		PrimReserve(lineCount * 6, lineCount * 4);
 		Vec2 uv(Vec2::ZERO);
@@ -125,7 +125,7 @@ namespace TX
 			Vec2 dir(p2 - p1);
 			dir = Math::Normalize(dir);
 			const Vec2 d = dir * (thick * 0.5f);
-			
+
 			vtxPtr[0].pos.x = p1.x + d.y; vtxPtr[0].pos.y = p1.y - d.x; vtxPtr[0].uv = uv; vtxPtr[0].col = color;
 			vtxPtr[1].pos.x = p2.x + d.y; vtxPtr[1].pos.y = p2.y - d.x; vtxPtr[1].uv = uv; vtxPtr[1].col = color;
 			vtxPtr[2].pos.x = p2.x - d.y; vtxPtr[2].pos.y = p2.y + d.x; vtxPtr[2].uv = uv; vtxPtr[2].col = color;
@@ -134,7 +134,7 @@ namespace TX
 
 			idxPtr[0] = vtxCurrIdx; idxPtr[1] = vtxCurrIdx + 2; idxPtr[2] = vtxCurrIdx + 1;
 			idxPtr[3] = vtxCurrIdx; idxPtr[4] = vtxCurrIdx + 3; idxPtr[5] = vtxCurrIdx + 2;
-			
+
 			idxPtr += 6;
 			vtxCurrIdx += 4;
 		}
@@ -189,11 +189,11 @@ namespace TX
 	void DrawList::PrimReserve(int idxCount, int vtxCount){
 		DrawCmd& cmd = cmdBuf.back();
 		cmd.idxCount += idxCount;
-		
+
 		int vtxBufSize = vtxBuf.size();
 		vtxBuf.resize(vtxBufSize + vtxCount);
 		vtxPtr = vtxBuf.data() + vtxBufSize;
-		
+
 		int idxBufSize = idxBuf.size();
 		idxBuf.resize(idxBufSize + idxCount);
 		idxPtr = idxBuf.data() + idxBufSize;
@@ -209,8 +209,8 @@ namespace TX
 	}
 
 	void DrawList::PrimRect(const Vec2& tl, const Vec2& br, const Color& c){
-		idxPtr[0] = vtxCurrIdx; 
-		idxPtr[1] = vtxCurrIdx + 2; 
+		idxPtr[0] = vtxCurrIdx;
+		idxPtr[1] = vtxCurrIdx + 2;
 		idxPtr[2] = vtxCurrIdx + 1;
 		idxPtr[3] = vtxCurrIdx;
 		idxPtr[4] = vtxCurrIdx + 3;

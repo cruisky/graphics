@@ -9,7 +9,7 @@ namespace TX{
 		// get bytes per pixel
 		const int pixel_size = static_cast<int>(channel);
 		const int image_size = width * height;
-		
+
 		if (width <= 0 || height <= 0)
 			return;
 

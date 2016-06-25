@@ -4,13 +4,13 @@
 #include <future>
 #include <atomic>
 #include "Core/Renderer.h"
+#include "ObjViewer/ObjViewer.h"
 
-namespace TX{
-	namespace UI
-	{
-		class GUIViewer : public Application {
+namespace TX {
+	namespace UI {
+		class GUIViewer : public InputHandledApplication {
 		public:
-			enum class Direction{
+			enum class Direction {
 				LEFT, RIGHT, UP, DOWN
 			};
 		public:
@@ -18,18 +18,12 @@ namespace TX{
 			GUIViewer& ConfigRenderer(RendererConfig config);
 		protected:
 			void Start();
-			void Config();
 			bool Render();
-			void OnMouseButton(MouseButton button, MouseButtonState state, Modifiers mods);
-			void OnKey(KeyCode code, KeyState state, Modifiers modifiers);
-			void OnResize();
 			void OnExit();
 		private:
-			void AttemptDollyCrabCamera(Direction dir);
-			void AttemptPanTiltCamera(Direction dir);
-			void AttemptRollCamera(bool clockwise);
-			void InvalidateFrame();
-			void ProgressReporterJob();
+			void OnGUI();
+			void ActionRender();
+			void ActionPreview();
 			void FlipY(float *y);
 			void FlipX(float *x);
 		private:
@@ -37,9 +31,18 @@ namespace TX{
 			std::shared_ptr<Camera> camera_;
 			std::shared_ptr<Film> film_;
 			std::unique_ptr<Renderer> renderer_;
+			std::unique_ptr<ObjViewer> previewer_;
 			std::shared_ptr<IProgressMonitor> monitor_;
-			std::thread progress_reporter_job_;
-			bool progress_reporting;
+
+			// GUI
+			FontMap font_;
+			Rect windowMain_;
+			Rect windowLog_;
+
+			enum class State {
+				Preview,
+				Render,
+			} state_;
 		};
 	}
 }

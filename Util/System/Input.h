@@ -25,7 +25,7 @@ namespace TX{ namespace UI{
 			SUPER = GLFW_MOD_SUPER
 		};
 		Modifiers(int mods=0) : value(mods){}
-		bool operator () (int mods){ return value & mods; }
+		bool operator () (int mods){ return (value & mods) == mods; }
 		Modifiers operator | (const Modifiers& ot){ return value | ot.value; }
 		void operator |= (const Modifiers& ot){ value |= ot.value; }
 	};
@@ -159,7 +159,8 @@ namespace TX{ namespace UI{
 		HOLD = GLFW_REPEAT
 	};
 	struct Input {
-		Vec2 window;
+		Vec2i windowSize;
+		bool windowChanged;
 		Vec2 cursor;
 		Vec2 prevCursor;
 		MouseButton button;
@@ -171,23 +172,43 @@ namespace TX{ namespace UI{
 		Modifiers mods;
 
 		Input() {}
+
+		inline bool operator ()(KeyCode k) { return key == k; }
+		inline bool operator ()(KeyState s) { return keyState == s; }
+		inline bool operator ()(KeyCode k, KeyState s) { return key == k && keyState == s; }
+		inline bool operator ()(MouseButton bt) { return button == bt; }
+		inline bool operator ()(MouseButtonState s) { return buttonState == s; }
+		inline bool operator ()(MouseButton bt, MouseButtonState s) { return button == bt && buttonState == s; }
+
 		inline bool HasText() const { return text != 0; }
 		inline bool HasKeyCode() const { return key != KeyCode::NONE; }
 		inline Vec2 GetCursorMovement() const { return cursor - prevCursor; }
 
 		inline void Clear(){
-			button = MouseButton::NONE;
-			scroll = 0.f;
-			text = 0;
-			key = KeyCode::NONE;
-			mods = 0;
+			windowChanged = false;
+			ClearButton();
+			ClearScroll();
+			ClearText();
+			ClearKeyCode();
+			ClearModifiers();
 		}
-		inline void SetWindow(int w, int h){ window.x = (float)w; window.y = (float)h; }
+		inline void SetWindowSize(int w, int h) {
+			Vec2i newSize(w, h);
+			if (windowSize != newSize) {
+				windowChanged = true;
+				windowSize = newSize;
+			}
+		}
 		inline void SetCursor(float x, float y) { prevCursor = cursor; cursor.x = x, cursor.y = y; }
 		inline void SetButton(MouseButton b, MouseButtonState s){ button = b; buttonState = s; }
 		inline void SetText(unsigned char c){ if (!HasText()) text = c; }
 		inline void SetKeyCode(KeyCode code, KeyState s){ key = code; keyState = s; }
 		inline void AddModifiers(const Modifiers& newmods){ mods |= newmods; }
 
+		inline void ClearButton() { button = MouseButton::NONE; buttonState = MouseButtonState(-1); }
+		inline void ClearScroll() { scroll = 0.f; }
+		inline void ClearText() { text = 0; }
+		inline void ClearKeyCode() { key = KeyCode::NONE; keyState = KeyState(-1); }
+		inline void ClearModifiers() { mods = 0; }
 	};
 }}

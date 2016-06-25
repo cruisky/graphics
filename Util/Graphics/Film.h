@@ -30,7 +30,7 @@ namespace TX{
 		/// Rresets weight and unscaled pixel buffer, and leave the scaled pixel buffer untouched.
 		/// </summary>
 		void Reset();
-		void ResetAll();
+		void Clear();
 		Color Get(int x, int y) const;
 		void ScalePixels();
 		const Color *Pixels() const;

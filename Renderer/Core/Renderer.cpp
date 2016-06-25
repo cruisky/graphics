@@ -40,12 +40,16 @@ config_ = config;
 
 	Renderer& Renderer::Resize(int width, int height) {
 		if (config_.width != width || config_.height != height){
+			bool wasRunning = this->Running();
 			Abort();
 			config_.width = width;
 			config_.height = height;
 			camera->Resize(width, height);
 			film->Resize(width, height);
 			thread_sync_.Init(width, height);
+			if (wasRunning) {
+				NewTask();
+			}
 		}
 		return *this;
 	}
@@ -61,7 +65,7 @@ config_ = config;
 
 	void Renderer::NewTask(){
 		if (monitor_) monitor_->Reset(float(config_.samples_per_pixel * thread_sync_.TileCount()));
-		film->Reset();
+		film->Clear();
 		thread_sync_.Resume();
 		for (auto i = 0; i < ThreadScheduler::Instance()->ThreadCount(); i++){
 			tasks_.push_back(std::make_shared<RenderTask>(this));

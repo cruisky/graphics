@@ -79,10 +79,10 @@ namespace TX
 		dest.texAlpha = origin.alpha_texname;
 	}
 
-	void ObjLoader::Load(std::vector<ObjShape>& objects, std::vector<ObjMaterial>& materials, const char *objFile, const char *mtlDir){
+	void ObjLoader::Load(std::vector<ObjShape>& objects, std::vector<ObjMaterial>& materials, const std::string& objFile, const std::string& mtlDir){
 		std::vector<tinyobj::shape_t> objs;
 		std::vector<tinyobj::material_t> mtls;
-		std::string error = tinyobj::LoadObj(objs, mtls, objFile, mtlDir);
+		std::string error = tinyobj::LoadObj(objs, mtls, objFile.c_str(), mtlDir.c_str());
 		if (!error.empty()){
 			throw error;
 		}
