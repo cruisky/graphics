@@ -87,8 +87,7 @@ namespace TX {
 			GUI::BeginFrame(input);
 
 			if (rendering) {
-				GUI::BeginWindow("Rendering...", windowMain_);
-				{
+				if (GUI::BeginWindow("Rendering...", windowMain_)) {
 					float prog = monitor_->Progress();
 					ss << "Progress: " << prog * 100.f << '%';
 					GUI::ProgressBar(ss.str(), prog);

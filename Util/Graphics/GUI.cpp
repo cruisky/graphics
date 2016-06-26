@@ -512,13 +512,17 @@ namespace TX { namespace UI { namespace GUI {
 			Vec2(rect.min.x, rect.max.y - padding),
 			Vec2(rect.max.x - padding, rect.max.y));
 
+		Rect dragArea(Vec2::ZERO, G.input.windowSize - Vec2(padding));
 		#pragma region window logic
+		// restrict window position to inside the actual window
+		if (G.input.windowChanged) {
+			rect.MoveTo(dragArea.ClosestPoint(rect.min));
+		}
 		if (IsActive()){
 			if (G.input(MouseButton::LEFT, MouseButtonState::UP)){
 				ClearActive();
 			}
 			else {
-				Rect dragArea(Vec2::ZERO, G.input.windowSize - Vec2(padding));
 				rect.MoveTo(dragArea.ClosestPoint(G.input.cursor - G.drag));
 			}
 		}
@@ -1323,14 +1327,14 @@ namespace TX { namespace UI { namespace GUI {
 
 		Rect folderSwitch(0, 0, G.style.WindowPadding, G.style.WindowPadding);
 		bool hovering = folderSwitch.Contains(G.input.cursor);
-		Color *color = &G.style.Colors[Style::Palette::Accent];
+		Color *color = &G.style.Colors[Style::Palette::AccentHighlight];
 		#pragma region logic
 		WidgetLogic(
 			[&hovering] { return hovering; },
 			[&] {
-				color = &G.style.Colors[Style::Palette::AccentHighlight];
+				color = &G.style.Colors[Style::Palette::AccentActive];
 				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
-					// clicked: unfolder all windows
+					// clicked: unfold all windows
 					if (hovering) {
 						for (Window *w : G.windows)
 							w->folded = false;
