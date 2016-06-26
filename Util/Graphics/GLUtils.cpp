@@ -46,10 +46,10 @@ namespace TX
 			glDeleteProgram(id);
 		}
 		void Program::Use() const { glUseProgram(id); }
-		void Program::Attach(Shader& shader){
+		void Program::Attach(const Shader& shader){
 			glAttachShader(id, shader);
 		}
-		void Program::Detach(Shader& shader){
+		void Program::Detach(const Shader& shader){
 			glDetachShader(id, shader);
 		}
 		void Program::Link(){
@@ -68,7 +68,6 @@ namespace TX
 				throw "Failed to validate program";
 			}
 		}
-		GLuint Program::GetUniformLoc(const char *name) const { return glGetUniformLocation(id, name); }
 
 		void Program::BindAttribLoc(const char *name, GLuint index){ glBindAttribLocation(id, index, name); }
 		std::string Program::GetLog(){
@@ -91,6 +90,18 @@ namespace TX
 			if (mesh.indices.size() > 0){
 				indices.Data(mesh.indices.size() * sizeof(mesh.indices[0]), mesh.indices.data());
 			}
+		}
+
+		void Mesh::Draw() const {
+			vertices.Bind();
+			glVertexAttribPointer(ATTRIB_POS, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+			normals.Bind();
+			glVertexAttribPointer(ATTRIB_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+			indices.Bind();
+			int size; glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
+			glDrawElements(GL_TRIANGLES, size / sizeof(uint), GL_UNSIGNED_INT, 0);
 		}
 	}
 }

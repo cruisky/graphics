@@ -19,14 +19,17 @@ struct Material
 	float shininess;
 };
 
-in vec4 position;   // position of the vertex (and fragment) in world space
-in vec3 normal;		// surface normal vector in world space
-uniform mat4 m, v, p;
-uniform mat4 v_inv;
+in vec4 position;
+in vec3 normal;
+uniform mat4 tx_V_Inv;
 uniform LightSource light0;
 uniform Material material;
 
-vec4 phong(vec3 normalDir, vec3 viewDir){
+void main()
+{
+	vec3 normalDir = normalize(normal);
+	vec3 viewDir = normalize(vec3(tx_V_Inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
+
 	vec3 lightDirection;
 	float attenuation;
 
@@ -75,15 +78,6 @@ vec4 phong(vec3 normalDir, vec3 viewDir){
 			* pow(max(0.0, dot(reflect(-lightDirection, normalDir), viewDir)), material.shininess);
 	}
 
-	return vec4(ambientLighting + diffuseReflection + specularReflection, 1.0);
-}
-
-
-void main()
-{
-	vec3 normalDir = normalize(normal);
-	vec3 viewDir = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - position));
-
-	gl_FragColor = phong(normalDir, viewDir);
+	gl_FragColor = vec4(ambientLighting + diffuseReflection + specularReflection, 1.0);
 }
 )"
