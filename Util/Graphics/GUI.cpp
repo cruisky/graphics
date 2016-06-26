@@ -53,7 +53,9 @@ namespace TX { namespace UI { namespace GUI {
 
 	struct State {
 		Style					style;
-		Input*					input;
+		Input					input;
+		Input*					inputPtr;
+		Vec2					cursorBackup;	// used to disable cursor if it's outside the current window
 		std::vector<Window*>	windows;
 		Widget					current;
 		Widget					hot;
@@ -266,6 +268,7 @@ namespace TX { namespace UI { namespace GUI {
 		}
 	};
 	static State G;
+	static Vec2 InvalidCursor(Math::INF);
 
 	////////////////////////////////////////////////////////////////////
 	// Helper declaration
@@ -385,7 +388,9 @@ namespace TX { namespace UI { namespace GUI {
 		glPushAttrib(GL_ENABLE_BIT);
 		glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
 
-		G.input = &input;
+		G.inputPtr = &input;
+		G.input = input;
+		G.cursorBackup = InvalidCursor;
 		G.current.Reset();
 		G.hot = G.hotToBe;
 		G.hotToBe.Reset();
@@ -398,8 +403,8 @@ namespace TX { namespace UI { namespace GUI {
 
 		// consume mouse actions if it is hovering on any window
 		if (G.hot.HasValue()) {
-			G.input->ClearButton();
-			G.input->ClearScroll();
+			G.inputPtr->ClearButton();
+			G.inputPtr->ClearScroll();
 		}
 		// focus on the window where the active widget is located
 		if (G.active.HasValue()){
@@ -428,8 +433,8 @@ namespace TX { namespace UI { namespace GUI {
 		glGetIntegerv(GL_CURRENT_PROGRAM, &lastProgram);
 
 		// setup
-		auto& w = G.input->windowSize.x;
-		auto& h = G.input->windowSize.y;
+		auto& w = G.input.windowSize.x;
+		auto& h = G.input.windowSize.y;
 		const Matrix4x4 orthoProjection(
 			2.f/w,	0.f,	0.f,	0.f,
 			0.f,	2.f/-h,	0.f,	0.f,
@@ -496,6 +501,7 @@ namespace TX { namespace UI { namespace GUI {
 			return false;
 
 		W->drawList.PushClipRect(rect);
+
 		float padding = G.style.WindowPadding;
 		float textPadding = G.style.TextPaddingY;
 		Rect header(rect.min, Vec2(rect.max.x, rect.min.y + padding));
@@ -508,27 +514,27 @@ namespace TX { namespace UI { namespace GUI {
 
 		#pragma region window logic
 		if (IsActive()){
-			if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)){
+			if (G.input(MouseButton::LEFT, MouseButtonState::UP)){
 				ClearActive();
 			}
 			else {
-				Rect dragArea(Vec2::ZERO, G.input->windowSize - Vec2(padding));
-				rect.MoveTo(dragArea.ClosestPoint(G.input->cursor - G.drag));
+				Rect dragArea(Vec2::ZERO, G.input.windowSize - Vec2(padding));
+				rect.MoveTo(dragArea.ClosestPoint(G.input.cursor - G.drag));
 			}
 		}
-		if (body.Contains(G.input->cursor) || header.Contains(G.input->cursor) || bottom.Contains(G.input->cursor)) {
+		if (body.Contains(G.input.cursor) || header.Contains(G.input.cursor) || bottom.Contains(G.input.cursor)) {
 			SetHot();
 		}
 		if (IsHot()){
-			if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)){
+			if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)){
 				SetActive();
-				G.drag = G.input->cursor - rect.min;
+				G.drag = G.input.cursor - rect.min;
 			}
-			else if ((*G.input)(MouseButton::MIDDLE, MouseButtonState::DOWN)) {
+			else if (G.input(MouseButton::MIDDLE, MouseButtonState::DOWN)) {
 				W->folded = true;
 			}
-			else if (G.input->scroll != 0.f){
-				Scroll(W->scroll, -G.input->scroll, W->contentHeight);
+			else if (G.input.scroll != 0.f){
+				Scroll(W->scroll, -G.input.scroll, W->contentHeight);
 			}
 		}
 
@@ -563,23 +569,23 @@ namespace TX { namespace UI { namespace GUI {
 		#pragma region resize handle logic
 		Color *resizeColor = &G.style.Colors[Style::Palette::Accent];
 		WidgetLogic(
-			[&] { return resize.Contains(G.input->cursor); },
+			[&] { return resize.Contains(G.input.cursor); },
 			[&] {
 				resizeColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					SetActive();
-					G.drag = G.input->cursor - rect.max;
+					G.drag = G.input.cursor - rect.max;
 				}
 			},
 			[&] {
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					resizeColor = &G.style.Colors[Style::Palette::AccentHighlight];
 					ClearActive();
 				}
 				else {
 					resizeColor = &G.style.Colors[Style::Palette::AccentActive];
-					rect.max.x = Math::Max(rect.min.x + 10 * padding, G.input->cursor.x - G.drag.x);
-					rect.max.y = Math::Max(rect.min.y + 5 * padding, G.input->cursor.y - G.drag.y);
+					rect.max.x = Math::Max(rect.min.x + 10 * padding, G.input.cursor.x - G.drag.x);
+					rect.max.y = Math::Max(rect.min.y + 5 * padding, G.input.cursor.y - G.drag.y);
 				}
 			});
 
@@ -609,11 +615,21 @@ namespace TX { namespace UI { namespace GUI {
 		// Update clip rect
 		W->drawList.PushClipRect(scrollRect);
 
+		// disable cursor/widget interaction if it's outside the window
+		if (!IsActive() && !rect.Contains(G.input.cursor)) {
+			G.cursorBackup = G.input.cursor;
+			G.input.cursor = InvalidCursor;
+		}
+
 		return true;
 	}
 
 	void EndWindow(){
 		G.current.window->contentHeight = G.widgetPos.y - G.initPos.y;
+
+		if (G.cursorBackup != InvalidCursor) {
+			G.input.cursor = G.cursorBackup;
+		}
 	}
 
 	void Divider(){
@@ -652,18 +668,18 @@ namespace TX { namespace UI { namespace GUI {
 		Color *bgColor = &G.style.Colors[Style::Palette::Accent];
 		float textWidth = G.style.Font->GetWidth(name);
 		Rect button(G.widgetPos, G.widgetPos + Vec2(textWidth + 2.f * G.style.TextPaddingX, G.style.LineHeight));
-		bool hovering = button.Contains(G.input->cursor);
+		bool hovering = button.Contains(G.input.cursor);
 		#pragma region logic
 		WidgetLogic(
 			[&hovering] { return hovering; },
 			[&] {
 				bgColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					SetActive();
 				}
 			},
 			[&] {
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					bgColor = &G.style.Colors[Style::Palette::AccentHighlight];
 					ClearActive();
 					if (hovering) {
@@ -703,15 +719,15 @@ namespace TX { namespace UI { namespace GUI {
 		float length = hotArea.Width() - sliderSize;
 		#pragma region logic
 		WidgetLogic(
-			[&] { return hotArea.Contains(G.input->cursor); },
+			[&] { return hotArea.Contains(G.input.cursor); },
 			[&] {
 				trackColor = sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN))
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN))
 					SetActive();
 			},
 			[&] {
 				trackColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				T newVal = T(Math::Lerp(Math::Clamp(G.input->cursor.x - slider.x, 0.f, length) / length, float(min), float(max)));
+				T newVal = T(Math::Lerp(Math::Clamp(G.input.cursor.x - slider.x, 0.f, length) / length, float(min), float(max)));
 				if (step > Math::EPSILON) {
 					newVal = Math::Clamp(Math::Round(float(newVal - min) / step) * step + min, min, max);
 				}
@@ -719,7 +735,7 @@ namespace TX { namespace UI { namespace GUI {
 					*val = newVal;
 					changed = true;
 				}
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					sliderColor = &G.style.Colors[Style::Palette::AccentHighlight];
 					ClearActive();
 				}
@@ -789,17 +805,17 @@ namespace TX { namespace UI { namespace GUI {
 		updateColor(temp);
 		if (IsActive()) {
 			// picking pixel color
-			glReadPixels(int(G.input->cursor.x), int(G.input->cursor.y), 1, 1, GL_RGB, GL_FLOAT, &temp);
+			glReadPixels(int(G.input.cursor.x), int(G.input.cursor.y), 1, 1, GL_RGB, GL_FLOAT, &temp);
 			std::cout << temp << std::endl;
 			updateColor(temp.Convert(channel, false));
-			if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP))
+			if (G.input(MouseButton::LEFT, MouseButtonState::UP))
 				ClearActive();
 		}
-		if (sampleArea.Contains(G.input->cursor)){
+		if (sampleArea.Contains(G.input.cursor)){
 			SetHot();
 		}
 		if (IsHot() && !IsActive()){
-			if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN))
+			if (G.input(MouseButton::LEFT, MouseButtonState::DOWN))
 				SetActive();
 		}
 		#pragma endregion
@@ -831,15 +847,15 @@ namespace TX { namespace UI { namespace GUI {
 		Rect hotArea(G.widgetPos, G.widgetPos + Vec2(G.style.LineHeight));
 		#pragma region logic
 		WidgetLogic(
-			[&] { return hotArea.Contains(G.input->cursor); },
+			[&] { return hotArea.Contains(G.input.cursor); },
 			[&] {
 				ringColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					SetActive();
 				}
 			},
 			[&] {
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					ringColor = &G.style.Colors[Style::Palette::AccentHighlight];
 					if (val != itemVal) {
 						val = itemVal;
@@ -882,15 +898,15 @@ namespace TX { namespace UI { namespace GUI {
 		Rect hotArea(G.widgetPos, G.widgetPos + Vec2(G.style.LineHeight));
 		#pragma region logic
 		WidgetLogic(
-			[&] {return hotArea.Contains(G.input->cursor); },
+			[&] {return hotArea.Contains(G.input.cursor); },
 			[&] {
 				boxColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					SetActive();
 				}
 			},
 			[&] {
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					boxColor = &G.style.Colors[Style::Palette::AccentHighlight];
 					ClearActive();
 					val = !val;
@@ -963,9 +979,9 @@ namespace TX { namespace UI { namespace GUI {
 
 		#pragma region logic
 		WidgetLogic(
-			[&] { return textArea.Contains(G.input->cursor); },
+			[&] { return textArea.Contains(G.input.cursor); },
 			[&] {
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					bool enteringFocus = !IsEditing();
 					G.textEdit.Set(G.current, *G.style.Font, text);
 
@@ -974,7 +990,7 @@ namespace TX { namespace UI { namespace GUI {
 							G.textEdit.SelectAll();
 						}
 						else {
-							G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input->cursor.x - textArea.min.x));
+							G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.cursor.x - textArea.min.x));
 							G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor);
 						}
 						G.textEdit.UpdateOffset(textArea.Width());
@@ -982,7 +998,7 @@ namespace TX { namespace UI { namespace GUI {
 					}
 					else {
 						// start selection
-						G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input->cursor.x - textArea.min.x));
+						G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.cursor.x - textArea.min.x));
 						G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor);
 						cursorUpdated = true;
 						SetActive();
@@ -991,15 +1007,15 @@ namespace TX { namespace UI { namespace GUI {
 			},
 			[&] {
 				// in the middle of selection by mouse
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					ClearActive();
 				}
 				else {
-					G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input->cursor.x - textArea.min.x));
+					G.textEdit.SetCursor(G.textEdit.LocateIndex(G.input.cursor.x - textArea.min.x));
 					G.textEdit.UpdateOffset(textArea.Width());
 				}
 			});
-		if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN) && !IsHot()) {
+		if (G.input(MouseButton::LEFT, MouseButtonState::DOWN) && !IsHot()) {
 			G.textEdit.Clear();
 		}
 
@@ -1007,15 +1023,15 @@ namespace TX { namespace UI { namespace GUI {
 		if (IsEditing()){
 			bool ignoreMouse = false;
 			// Special keys
-			if (G.input->HasKeyCode() && (G.input->keyState == KeyState::DOWN || G.input->keyState == KeyState::HOLD)){
-				if (G.input->key == KeyCode::LEFT || G.input->key == KeyCode::RIGHT){
+			if (G.input.HasKeyCode() && (G.input.keyState == KeyState::DOWN || G.input.keyState == KeyState::HOLD)){
+				if (G.input.key == KeyCode::LEFT || G.input.key == KeyCode::RIGHT){
 					ignoreMouse = true;
-					bool left = G.input->key == KeyCode::LEFT;
+					bool left = G.input.key == KeyCode::LEFT;
 					int step = (left ? -1 : 1);
 
 					if (G.textEdit.HasSelection()){
-						if (G.input->mods(Modifiers::SHIFT)){
-							if (G.input->mods(Modifiers::CTRL))
+						if (G.input.mods(Modifiers::SHIFT)){
+							if (G.input.mods(Modifiers::CTRL))
 								G.textEdit.SetCursor(G.textEdit.AdvanceWords(step));
 							else
 								G.textEdit.SetCursor(G.textEdit.cursor + step);
@@ -1026,15 +1042,15 @@ namespace TX { namespace UI { namespace GUI {
 						}
 					}
 					else {
-						if (G.input->mods(Modifiers::SHIFT)){
-							if (G.input->mods(Modifiers::CTRL))
+						if (G.input.mods(Modifiers::SHIFT)){
+							if (G.input.mods(Modifiers::CTRL))
 								G.textEdit.Select(G.textEdit.cursor, G.textEdit.AdvanceWords(step));
 							else
 								G.textEdit.Select(G.textEdit.cursor, G.textEdit.cursor + step);
 						}
 						else {
 							G.textEdit.ClearSelection();
-							if (G.input->mods(Modifiers::CTRL))
+							if (G.input.mods(Modifiers::CTRL))
 								G.textEdit.SetCursor(G.textEdit.AdvanceWords(step));
 							else
 								G.textEdit.SetCursor(G.textEdit.cursor + step);
@@ -1044,8 +1060,8 @@ namespace TX { namespace UI { namespace GUI {
 				}
 
 				// keys that work only with modifier
-				if (G.input->mods(Modifiers::CTRL)){
-					switch (G.input->key){
+				if (G.input.mods(Modifiers::CTRL)){
+					switch (G.input.key){
 					case KeyCode::A:
 						G.textEdit.SelectAll();
 						cursorUpdated = true;
@@ -1063,21 +1079,21 @@ namespace TX { namespace UI { namespace GUI {
 				}
 
 				// keys that work regardless of the modifier
-				switch (G.input->key){
+				switch (G.input.key){
 				case KeyCode::DELETE:
-					if (!G.textEdit.HasSelection() && G.input->mods(Modifiers::CTRL))
+					if (!G.textEdit.HasSelection() && G.input.mods(Modifiers::CTRL))
 						G.textEdit.Select(G.textEdit.cursor, G.textEdit.AdvanceWords(1));
 					changed |= G.textEdit.Del();
 					break;
 				case KeyCode::BACKSPACE:
-					if (!G.textEdit.HasSelection() && G.input->mods(Modifiers::CTRL))
+					if (!G.textEdit.HasSelection() && G.input.mods(Modifiers::CTRL))
 						G.textEdit.Select(G.textEdit.cursor, G.textEdit.AdvanceWords(-1));
 					changed |= G.textEdit.Backspace();
 				}
 			}
 			// text input
-			if (G.input->HasText())
-				changed |= G.textEdit.Edit(G.input->text);
+			if (G.input.HasText())
+				changed |= G.textEdit.Edit(G.input.text);
 
 			if (ignoreMouse){
 				ClearActive();
@@ -1252,26 +1268,26 @@ namespace TX { namespace UI { namespace GUI {
 
 		#pragma region logic
 		WidgetLogic(
-			[&] {return hotArea.Contains(G.input->cursor); },
+			[&] {return hotArea.Contains(G.input.cursor); },
 			[&] {
 				bool hovering = Math::InBounds(
-					G.input->cursor.y,
+					G.input.cursor.y,
 					barCenterY - barHalfHeight,
 					barCenterY + barHalfHeight);
 				if (hovering)
 					barColor = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					SetActive();
-					G.drag.y = hovering ? G.input->cursor.y - barCenterY : 0.f;
+					G.drag.y = hovering ? G.input.cursor.y - barCenterY : 0.f;
 				}
-				else if (G.input->scroll != 0.f) {
-					Scroll(scroll, -G.input->scroll, contentHeight);
+				else if (G.input.scroll != 0.f) {
+					Scroll(scroll, -G.input.scroll, contentHeight);
 				}
 			},
 			[&] {
-				barCenterY = Math::Clamp(G.input->cursor.y - G.drag.y, rangeStart, rangeEnd);
+				barCenterY = Math::Clamp(G.input.cursor.y - G.drag.y, rangeStart, rangeEnd);
 				scroll = Math::InvLerp(barCenterY, rangeStart, rangeEnd);
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::UP)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::UP)) {
 					ClearActive();
 					barColor = &G.style.Colors[Style::Palette::AccentHighlight];
 				}
@@ -1306,14 +1322,14 @@ namespace TX { namespace UI { namespace GUI {
 			return;
 
 		Rect folderSwitch(0, 0, G.style.WindowPadding, G.style.WindowPadding);
-		bool hovering = folderSwitch.Contains(G.input->cursor);
+		bool hovering = folderSwitch.Contains(G.input.cursor);
 		Color *color = &G.style.Colors[Style::Palette::Accent];
 		#pragma region logic
 		WidgetLogic(
 			[&hovering] { return hovering; },
 			[&] {
 				color = &G.style.Colors[Style::Palette::AccentHighlight];
-				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+				if (G.input(MouseButton::LEFT, MouseButtonState::DOWN)) {
 					// clicked: unfolder all windows
 					if (hovering) {
 						for (Window *w : G.windows)
