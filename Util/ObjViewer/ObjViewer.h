@@ -4,7 +4,6 @@
 #include "Shader/Phong.h"
 
 namespace TX {
-	using namespace UI;
 	class ObjViewer {
 	public:
 		struct Obj {
