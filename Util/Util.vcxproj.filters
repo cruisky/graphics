@@ -92,7 +92,8 @@
     <ClInclude Include="Shader\Base.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Phong\phong.fs.glsl" />
-    <None Include="Shader\default.vs.glsl" />
+    <None Include="Shader\Default.vs.glsl" />
+    <None Include="Shader\SingleColor.fs.glsl" />
+    <None Include="Shader\Phong\Phong.fs.glsl" />
   </ItemGroup>
 </Project>

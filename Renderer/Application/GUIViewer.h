@@ -39,10 +39,16 @@ namespace TX {
 			Rect windowMain_;
 			Rect windowLog_;
 
-			enum class State {
+			enum class ViewMode {
 				Preview,
-				Render,
+				Rendered,
+			};
+			struct {
+				ViewMode mode;
+				const Primitive *selected;
 			} state_;
+
+
 		};
 	}
 }

@@ -9,15 +9,16 @@ namespace TX{
 		Resize(res_x, res_y);
 	}
 
-	void Camera::GenerateRay(Ray *out, const CameraSample& sample) const {
+	void Camera::GenerateRay(Ray *out, float screenX, float screenY) const {
 		out->Reset();
 		// construct the ray in camera space
 		out->origin = Vec3::ZERO;
 		// direction to the point on near plane in camera space
-		out->dir = Matrix4x4::TPoint(screen_cam_, Vec3(sample.x, sample.y, -1.f));
+		out->dir = Matrix4x4::TPoint(screen_cam_, Vec3(screenX, screenY, -1.f));
 		// transforms the ray to the world space
 		transform.ToWorld(*out);
 	}
+
 
 	Vec3 Camera::ScreenToWorldPoint(const Vec3& pix) const{
 		return Matrix4x4::TPoint(transform.LocalToWorldMatrix(),
@@ -43,7 +44,7 @@ namespace TX{
 		UpdateMainMatrix();
 		return *this;
 	}
-		
+
 	Camera& Camera::SetNearClipPlane(float near) {
 		clip_near_ = near;
 		UpdateProjection();

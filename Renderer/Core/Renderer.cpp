@@ -106,7 +106,7 @@ config_ = config;
 					sample_buf.pix_y = y;
 					sample_buf.x += x;
 					sample_buf.y += y;
-					camera->GenerateRay(&ray, sample_buf);
+					camera->GenerateRay(&ray, sample_buf.x, sample_buf.y);
 					tracer_->Trace(scene.get(), ray, sample_buf, random, &c);
 					film->Commit(sample_buf.x, sample_buf.y, c);
 				}

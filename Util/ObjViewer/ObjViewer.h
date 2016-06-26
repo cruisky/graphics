@@ -8,19 +8,23 @@ namespace TX {
 	class ObjViewer {
 	public:
 		struct Obj {
+			Obj(const Primitive& prim) :
+				prim(prim) {
+			}
 			GL::Mesh mesh;
-			std::shared_ptr<Primitive> prim;
+			const Primitive& prim;
 		};
 	public:
 		Phong::LightSource lightSource;
 	public:
-		ObjViewer(std::shared_ptr<Camera> camera, std::shared_ptr<Scene> scene);
+		ObjViewer(const Camera& camera, const Scene& scene);
 	public:
-		void Render();
+		void Render(const Primitive *selected);
 	private:
-		Phong											program;
+		Phong											programPhong;
+		ShaderProgram									programSingleColor;
 		std::vector<Obj>								objs;
-		std::shared_ptr<Camera>							camera;
-		std::shared_ptr<Scene>							scene;
+		const Camera&									camera;
+		const Scene&									scene;
 	};
 }

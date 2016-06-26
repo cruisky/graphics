@@ -4,6 +4,7 @@
 #include "Graphics/Film.h"
 #include "Graphics/Scene.h"
 #include "Graphics/Camera.h"
+#include "Graphics/Intersection.h"
 #include "Graphics/GUI.h"
 
 namespace TX {
@@ -25,7 +26,7 @@ namespace TX {
 
 		void GUIViewer::Start() {
 			// Previewer
-			previewer_ = std::make_unique<ObjViewer>(camera_, scene_);
+			previewer_ = std::make_unique<ObjViewer>(*camera_, *scene_);
 			previewer_->lightSource.constantAttenuation = 0;
 			previewer_->lightSource.linearAttenuation = 0.1f;
 			previewer_->lightSource.quadraticAttenuation = 0.08f;
@@ -46,21 +47,21 @@ namespace TX {
 		bool GUIViewer::Render() {
 			if (input.windowChanged) {
 				renderer_->Resize(input.windowSize.x, input.windowSize.y);
-				this->Refresh();
+				ActionPreview();
 			}
 
-			switch (state_) {
-			case State::Preview:
+			switch (state_.mode) {
+			case ViewMode::Preview:
 			{
 				std::shared_ptr<Light> light0 = scene_->lights[0];
 				previewer_->lightSource.ambient = Color(0.15, 0.15, 0.15, 1);
 				previewer_->lightSource.diffuse = light0->Intensity().Clamp();
 				previewer_->lightSource.position = light0->Position();
 				previewer_->lightSource.spotDirection = light0->Direction();
-				previewer_->Render();
+				previewer_->Render(state_.selected);
 				break;
 			}
-			case State::Render:
+			case ViewMode::Rendered:
 				glDrawPixels(config.windowSize.x, config.windowSize.y, GL_RGBA, GL_FLOAT, (float *)film_->Pixels());
 				break;
 			}
@@ -72,10 +73,25 @@ namespace TX {
 			FlipY(&cursor.y);
 			if (input(MouseButtonState::DOWN)) {
 				switch (input.button) {
-				case MouseButton::LEFT:
+				case MouseButton::MIDDLE:
+				{
 					Color c = film_->Get(int(cursor.x), int(cursor.y));
 					std::printf("(%3f, %3f), (%1.3f, %1.3f, %1.3f)\n", cursor.x, cursor.y, c.r, c.g, c.b);
 					break;
+				}
+				case MouseButton::LEFT:
+				{
+					Ray r;
+					Intersection intxn;
+					camera_->GenerateRay(&r, cursor.x, cursor.y);
+					if (scene_->Intersect(r, intxn)) {
+						if (state_.selected == intxn.prim)
+							state_.selected = nullptr;
+						else
+							state_.selected = intxn.prim;
+					}
+					break;
+				}
 				}
 			}
 			if (input(KeyState::DOWN) || input(KeyState::HOLD)) {
@@ -137,13 +153,13 @@ namespace TX {
 			camera_->transform.UpdateMatrix();
 			renderer_->Abort();
 			renderer_->NewTask();
-			state_ = State::Render;
+			state_.mode = ViewMode::Rendered;
 			this->Refresh();
 		}
 
 		void GUIViewer::ActionPreview() {
 			renderer_->Abort();
-			state_ = State::Preview;
+			state_.mode = ViewMode::Preview;
 			this->Refresh();
 		}
 
