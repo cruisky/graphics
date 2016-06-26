@@ -110,8 +110,7 @@ namespace TX {
 				GUI::EndWindow();
 			}
 			else {
-				GUI::BeginWindow("Settings", windowMain_);
-				{
+				if (GUI::BeginWindow("Settings", windowMain_)) {
 					GUI::Divider();
 					if (GUI::Button("Render")) {
 						ActionRender();

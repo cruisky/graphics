@@ -65,7 +65,7 @@ namespace TX {
 			void Shutdown();
 			void BeginFrame(Input& input);
 			void EndFrame();
-			void BeginWindow(const std::string& name, Rect& window);
+			bool BeginWindow(const std::string& name, Rect& window);
 			void EndWindow();
 
 			void Divider();

@@ -11,6 +11,7 @@ namespace TX { namespace UI { namespace GUI {
 		const uint		id;
 		DrawList		drawList;
 		bool			accessed;
+		bool			folded;
 		float			contentHeight;
 		float			scroll;
 		void Reset(){ accessed = false; drawList.Clear(); }
@@ -24,7 +25,12 @@ namespace TX { namespace UI { namespace GUI {
 			return hash;
 		}
 	public:
-		Window(uint id) : id(id), accessed(false), scroll(0.f), contentHeight(1.f){}
+		Window(uint id) :
+			id(id),
+			accessed(false),
+			folded(false),
+			scroll(0.f),
+			contentHeight(1.f){}
 	};
 
 	// Ids that uniquely identify a widget inside a window
@@ -281,6 +287,7 @@ namespace TX { namespace UI { namespace GUI {
 	void WordWrap(const FontMap& font, const std::string& text, float maxWidth, StringCallback processLine);
 	void ScrollBar(const Rect& hotArea, float areaHeight, float contentHeight, float& scroll);
 	void Scroll(float& scroll, float step, float contentHeight);
+	void WindowFolder();
 	////////////////////////////////////////////////////////////////////
 	// API implementation
 	////////////////////////////////////////////////////////////////////
@@ -289,6 +296,10 @@ namespace TX { namespace UI { namespace GUI {
 	void Init(FontMap& font){
 		G.style.Font = &font;
 		G.style.Update();
+
+		// add root window
+		G.windows.push_back(new Window(0));
+
 		const GLchar *vertShaderSrc = R"(
 			#version 330
 			uniform mat4 proj;
@@ -381,6 +392,10 @@ namespace TX { namespace UI { namespace GUI {
 		for (Window *w : G.windows) w->Reset();
 	}
 	void EndFrame(){
+		G.current.Reset(G.windows[0]);
+		G.windows[0]->drawList.PushClipRectFullScreen();
+		WindowFolder();
+
 		// consume mouse actions if it is hovering on any window
 		if (G.hot.HasValue()) {
 			G.input->ClearButton();
@@ -389,19 +404,22 @@ namespace TX { namespace UI { namespace GUI {
 		// focus on the window where the active widget is located
 		if (G.active.HasValue()){
 			Window *window = G.active.window;
-			// move the window to the end
-			if (window != G.windows.back()){
-				for (uint i = 0; i < G.windows.size(); i++)
-					if (G.windows[i] == window)
+			// move the window to the end (skip root window)
+			if (window != G.windows.back() && window->id != 0) {
+				for (uint i = 1; i < G.windows.size(); i++) {
+					if (G.windows[i] == window) {
 						G.windows.erase(G.windows.begin() + i);
+						break;
+					}
+				}
 				G.windows.push_back(window);
 			}
 		}
-		// delete windows we didn't touch in this frame
+		// delete windows we didn't touch in this frame (skip root window)
 		G.windows.erase(
 			std::remove_if(
-				G.windows.begin(), G.windows.end(),
-				[](Window *w) {bool die = !w->accessed; if (die) delete w; return die; }),
+				G.windows.begin() + 1, G.windows.end(),
+				[](Window *w) {bool die = !w->accessed; if (die) MemDelete(w); return die; }),
 			G.windows.end());
 
 		// ============================================================
@@ -433,7 +451,7 @@ namespace TX { namespace UI { namespace GUI {
 		for (Window *w : G.windows){
 			const DrawIdx *idxBufOffset = 0;
 			DrawList& drawList = w->drawList;
-			if (drawList.cmdBuf.size() > 0){
+			if (!w->folded && drawList.cmdBuf.size() > 0){
 				glBindBuffer(GL_ARRAY_BUFFER, G.vbo);
 				glBufferData(GL_ARRAY_BUFFER,
 					(GLsizeiptr)drawList.vtxBuf.size() * sizeof(DrawVert),
@@ -469,9 +487,14 @@ namespace TX { namespace UI { namespace GUI {
 	//  +-----------------------------------+---+
 	//  |                 3                 | 4 |
 	//  +-----------------------------------+---+
-	//  1 - Header, 2 - Body(Scrollable), 3 - Bottom, 4 - Resize
-	void BeginWindow(const std::string& name, Rect& rect){
+	//  1 - Header, 2 - Body(Scrollable), 3 - Bottom, 4 - Resize handle
+	//
+	// - Middle-click on anywhere to minimize/fold the window
+	bool BeginWindow(const std::string& name, Rect& rect){
 		Window *W = G.NextWindow(name);
+		if (W->folded)
+			return false;
+
 		W->drawList.PushClipRect(rect);
 		float padding = G.style.WindowPadding;
 		float textPadding = G.style.TextPaddingY;
@@ -500,6 +523,9 @@ namespace TX { namespace UI { namespace GUI {
 			if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)){
 				SetActive();
 				G.drag = G.input->cursor - rect.min;
+			}
+			else if ((*G.input)(MouseButton::MIDDLE, MouseButtonState::DOWN)) {
+				W->folded = true;
 			}
 			else if (G.input->scroll != 0.f){
 				Scroll(W->scroll, -G.input->scroll, W->contentHeight);
@@ -582,6 +608,8 @@ namespace TX { namespace UI { namespace GUI {
 
 		// Update clip rect
 		W->drawList.PushClipRect(scrollRect);
+
+		return true;
 	}
 
 	void EndWindow(){
@@ -627,7 +655,7 @@ namespace TX { namespace UI { namespace GUI {
 		bool hovering = button.Contains(G.input->cursor);
 		#pragma region logic
 		WidgetLogic(
-			[&hovering] {return hovering; },
+			[&hovering] { return hovering; },
 			[&] {
 				bgColor = &G.style.Colors[Style::Palette::AccentHighlight];
 				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
@@ -1265,5 +1293,42 @@ namespace TX { namespace UI { namespace GUI {
 	}
 	void Scroll(float& scroll, float step, float contentHeight){
 		scroll = Math::Clamp(scroll + step * G.style.ScrollSpeed / contentHeight, 0.f, 1.f);
+	}
+	void WindowFolder() {
+		G.NextItem();
+
+		bool hasFoldedWindow = false;
+		for (Window *w : G.windows)
+			if (w->folded)
+				hasFoldedWindow = true;
+
+		if (!hasFoldedWindow)
+			return;
+
+		Rect folderSwitch(0, 0, G.style.WindowPadding, G.style.WindowPadding);
+		bool hovering = folderSwitch.Contains(G.input->cursor);
+		Color *color = &G.style.Colors[Style::Palette::Accent];
+		#pragma region logic
+		WidgetLogic(
+			[&hovering] { return hovering; },
+			[&] {
+				color = &G.style.Colors[Style::Palette::AccentHighlight];
+				if ((*G.input)(MouseButton::LEFT, MouseButtonState::DOWN)) {
+					// clicked: unfolder all windows
+					if (hovering) {
+						for (Window *w : G.windows)
+							w->folded = false;
+					}
+				}
+			},
+			[&] {});
+		#pragma endregion
+		#pragma region rendering
+		G.current.window->drawList.AddTriangle(
+			folderSwitch.min,
+			folderSwitch.BL(),
+			folderSwitch.TR(),
+			*color);
+		#pragma endregion
 	}
 }}}
