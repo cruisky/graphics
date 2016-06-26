@@ -428,8 +428,8 @@ namespace TX { namespace UI { namespace GUI {
 			G.windows.end());
 
 		// ============================================================
-		// backup program & texture
-		GLint lastProgram, lastTexture;
+		// backup program
+		GLint lastProgram;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &lastProgram);
 
 		// setup
@@ -523,7 +523,18 @@ namespace TX { namespace UI { namespace GUI {
 				ClearActive();
 			}
 			else {
-				rect.MoveTo(dragArea.ClosestPoint(G.input.cursor - G.drag));
+				if (G.input.cursor.x < 0) {
+					// dock left
+					rect.min = Vec2::ZERO;
+					rect.max = Vec2(rect.Width(), (float)G.input.windowSize.y);
+				} else if (G.input.cursor.x > G.input.windowSize.x){
+					// dock right
+					rect.min = Vec2(G.input.windowSize.x - rect.Width(), 0);
+					rect.max = G.input.windowSize;
+				}
+				else {
+					rect.MoveTo(dragArea.ClosestPoint(G.input.cursor - G.drag));
+				}
 			}
 		}
 		if (body.Contains(G.input.cursor) || header.Contains(G.input.cursor) || bottom.Contains(G.input.cursor)) {
