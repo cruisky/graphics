@@ -131,8 +131,8 @@ namespace TX {
 					if (GUI::Button("Abort")) {
 						ActionPreview();
 					}
+					GUI::EndWindow();
 				}
-				GUI::EndWindow();
 			}
 			else {
 				if (GUI::BeginWindow("Settings", windowMain_)) {
@@ -140,8 +140,8 @@ namespace TX {
 					if (GUI::Button("Render")) {
 						ActionRender();
 					}
+					GUI::EndWindow();
 				}
-				GUI::EndWindow();
 			}
 
 			GUI::EndFrame();
