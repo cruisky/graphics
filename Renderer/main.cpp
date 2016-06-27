@@ -123,7 +123,7 @@ void GUIMainMesh() {
 
 	/////////////////////////////////////
 	// Scene
-	shared_ptr<Film> film(new Film(FilterType::BoxFilter));
+	shared_ptr<Film> film(new Film(FilterType::GaussianFilter));
 	shared_ptr<Scene> scene(new Scene(std::make_unique<BVH>()));
 
 	scene->AddPrimitive(w_bottom);
@@ -141,7 +141,6 @@ void GUIMainMesh() {
 	scene->AddPrimitive(lamp); scene->AddLight(light_lamp);
 
 	scene->Construct();
-	GUIViewer gui(scene, camera, film);
 	RendererConfig config;
 	//config.tracer_t = TracerType::DirectLighting;
 	config.width = width;
@@ -151,7 +150,8 @@ void GUIMainMesh() {
 #else
 	config.samples_per_pixel = 4;
 #endif
-	gui.ConfigRenderer(config);
+	config.tracer_maxdepth = 12;
+	GUIViewer gui(config, *scene, *camera, *film);
 	gui.Run();
 }
 

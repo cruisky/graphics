@@ -9,43 +9,30 @@
 namespace TX {
 	Renderer::Renderer(
 		const RendererConfig& config,
-		std::shared_ptr<Scene> scene,
-		std::shared_ptr<Camera> camera,
-		std::shared_ptr<Film> film,
-		std::shared_ptr<IProgressMonitor> monitor)
-		: scene(scene), camera(camera), film(film), monitor_(monitor) {
+		const Scene& scene,
+		Camera& camera,
+		Film& film,
+		IProgressMonitor *monitor)
+		: config(config), scene(scene), camera(camera), film(film), monitor_(monitor) {
 		ThreadScheduler::Instance()->StartAll();
 		// Sample buffer
 		sample_buf_ = std::make_unique<CameraSample>(10);	// should be enough to trace a ray
-		// Config renderer
-		Config(config);
 		// Init tiled rendering synchronizer
-		thread_sync_.Init(config_.width, config_.height);
+		thread_sync_.Init(config.width, config.height);
 	}
 	Renderer::~Renderer(){
 		Abort();
 		ThreadScheduler::Instance()->StopAll();
 	}
 
-	Renderer& Renderer::Config(const RendererConfig& config){
-		Resize(config.width, config.height);
-		tracer_.reset(config.NewTracer());
-		sampler_.reset(config.NewSampler());
-		// generate sample offset for current tracer
-		tracer_->BakeSamples(scene.get(), sample_buf_.get());
 
-config_ = config;
-		return *this;
-	}
 
 	Renderer& Renderer::Resize(int width, int height) {
-		if (config_.width != width || config_.height != height){
+		if (runtimeConfig.width != width || runtimeConfig.height != height){
 			bool wasRunning = this->Running();
 			Abort();
-			config_.width = width;
-			config_.height = height;
-			camera->Resize(width, height);
-			film->Resize(width, height);
+			camera.Resize(width, height);
+			film.Resize(width, height);
 			thread_sync_.Init(width, height);
 			if (wasRunning) {
 				NewTask();
@@ -64,9 +51,18 @@ config_ = config;
 	}
 
 	void Renderer::NewTask(){
-		if (monitor_) monitor_->Reset(float(config_.samples_per_pixel * thread_sync_.TileCount()));
-		film->Clear();
+		if (monitor_) monitor_->Reset(float(config.samples_per_pixel * thread_sync_.TileCount()));
+		film.Clear();
 		thread_sync_.Resume();
+		runtimeConfig = config;
+
+		Resize(config.width, config.height);
+		tracer_.reset(config.NewTracer());
+		sampler_.reset(config.NewSampler());
+
+		// generate sample offset for the current tracer
+		tracer_->BakeSamples(&scene, sample_buf_.get());
+
 		for (auto i = 0; i < ThreadScheduler::Instance()->ThreadCount(); i++){
 			tasks_.push_back(std::make_shared<RenderTask>(this));
 			ThreadScheduler::Instance()->AddTask(Task((Task::Func)&RenderTask::Run, tasks_[i].get()));
@@ -76,19 +72,19 @@ config_ = config;
 	void Renderer::Render(int workerId, RNG& random) {
 		// duplicate sample buffer in each thread
 		CameraSample sample_buf_dup(*sample_buf_);
-		for (int i = 0; thread_sync_.Running() && i < config_.samples_per_pixel; i++){
+		for (int i = 0; thread_sync_.Running() && i < runtimeConfig.samples_per_pixel; i++){
 			// sync threads before and after each sample frame
 			thread_sync_.PreRenderSync(workerId);
 			RenderTiles(sample_buf_dup, random);
 			thread_sync_.PostRenderSync(workerId);
 
 			if (workerId == 0){
-				film->ScalePixels();
+				film.ScalePixels();
 				thread_sync_.ResetTiles();
 			}
 		}
 		if (workerId == 0){
-			film->ScalePixels();
+			film.ScalePixels();
 			if (monitor_) monitor_->Finish();
 		}
 	}
@@ -106,9 +102,9 @@ config_ = config;
 					sample_buf.pix_y = y;
 					sample_buf.x += x;
 					sample_buf.y += y;
-					camera->GenerateRay(&ray, sample_buf.x, sample_buf.y);
-					tracer_->Trace(scene.get(), ray, sample_buf, random, &c);
-					film->Commit(sample_buf.x, sample_buf.y, c);
+					camera.GenerateRay(&ray, sample_buf.x, sample_buf.y);
+					tracer_->Trace(&scene, ray, sample_buf, random, &c);
+					film.Commit(sample_buf.x, sample_buf.y, c);
 				}
 			}
 			if (monitor_) monitor_->UpdateInc();
