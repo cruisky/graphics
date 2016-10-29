@@ -75,6 +75,12 @@ void GUIMainMesh() {
 #endif
 	Mesh plane; plane.LoadPlane();
 
+	// load teapot
+	std::vector<ObjShape> teapot_shapes;
+	std::vector<ObjMaterial> teapot_mat;
+	ObjLoader::Load(teapot_shapes, teapot_mat, "../ObjViewer/teapot.obj", "./");
+	Mesh& teapot = teapot_shapes.front().mesh;
+
 	int wall_size = 9;
 	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_gray));
 	w_bottom->transform.Scale(wall_size, wall_size, 1);
@@ -104,12 +110,18 @@ void GUIMainMesh() {
 	w_top->transform.Translate(0, 0, -wall_size / 2);
 	w_top->transform.Scale(wall_size, wall_size, 1);
 
-	shared_ptr<Primitive> ball1(new Primitive(sphere, diffuse_red));
-	ball1->transform.Translate(-2, 0, 3);
-	shared_ptr<Primitive> ball2(new Primitive(sphere, glass));
-	ball2->transform.Translate(2.5, 0, 2);
-	shared_ptr<Primitive> ball3(new Primitive(sphere, mirror));
-	ball3->transform.Translate(-0.5, 0.5, 1);
+	shared_ptr<Primitive> ball1(new Primitive(teapot, diffuse_red));
+	ball1->transform.Translate(-2, 0, 2.5);
+	ball1->transform.SetRotation(Quaternion::AngleAxis(Math::PI / 2, Vec3::X));
+	shared_ptr<Primitive> ball2(new Primitive(teapot, glass));
+	ball2->transform.Translate(2.5, 0, 0);
+	ball2->transform.SetRotation(Quaternion::AngleAxis(Math::PI / 2, Vec3::X));
+	ball2->transform.Rotate(Quaternion::AngleAxis(-Math::PI * 0.9, Vec3::Y));
+	ball2->transform.Scale(1.5, 1.5, 1.5);
+	shared_ptr<Primitive> ball3(new Primitive(teapot, mirror));
+	ball3->transform.Translate(-0.5, 0.5, 0);
+	ball3->transform.SetRotation(Quaternion::AngleAxis(Math::PI / 2, Vec3::X));
+	ball3->transform.Scale(2, 2, 2);
 
 	/////////////////////////////////////
 	// Lights
