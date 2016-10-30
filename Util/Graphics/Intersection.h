@@ -15,6 +15,7 @@ namespace TX{
 		float dist;
 		const Primitive *prim;
 		uint triId;
+		// Barycentric coordinates in the triangle
 		Vec2 uv;
 	};
 

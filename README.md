@@ -3,11 +3,8 @@ Renderer
 This is my toy raytracer.
 
 ### Sample Images
-###### Teapots, 1000 spp
-![](images/teapot_1000.PNG)
-
-###### UV spheres, 1000 spp
-![](images/sphere_1000.PNG)
+###### Teapots; 5000 spp; 3 hours
+![](images/teapot.PNG)
 
 ###### Scene preview (WIP indefinitely...)
 ![](images/previewer.PNG)
