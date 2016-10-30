@@ -8,7 +8,7 @@ namespace TX
 	public:
 		Camera(int width, int height, float fov = 90.f, float near = 0.1f, float far = 1000.f, bool is_ortho = false);
 
-		void GenerateRay(Ray *out, const CameraSample& sample) const;
+		void GenerateRay(Ray *out, float screenX, float screenY) const;
 
 		inline int Width() const { return width_; }
 		inline int Height() const { return height_; }

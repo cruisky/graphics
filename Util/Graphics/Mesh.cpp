@@ -9,6 +9,7 @@ namespace TX {
 		normals.clear();
 		uv.clear();
 		indices.clear();
+		bbox_dirty_ = true;
 	}
 
 	void Mesh::ApplyTransform(const Transform& transform) {
@@ -23,6 +24,7 @@ namespace TX {
 		for (auto norm = normals.begin(); norm < normals.end(); norm++) {
 			*norm = Math::Normalize(Matrix4x4::TNormal(world2local, *norm));
 		}
+		bbox_dirty_ = true;
 	}
 
 	bool Mesh::Intersect(uint triId, const Ray& ray) const {
@@ -176,6 +178,7 @@ namespace TX {
 		}
 		#pragma endregion
 
+		bbox_ = BBox(Vec3(-radius), Vec3(radius));
 		return *this;
 	}
 
@@ -206,6 +209,10 @@ namespace TX {
 		indices.push_back(0);
 		indices.push_back(2);
 		indices.push_back(3);
+
+		bbox_ = BBox(
+			Vec3(-halfSize, -halfSize, 0),
+			Vec3(halfSize, halfSize, 0));
 
 		return *this;
 	}

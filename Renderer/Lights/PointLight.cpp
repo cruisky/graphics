@@ -21,4 +21,7 @@ namespace TX {
 	bool PointLight::IsDelta() const {
 		return true;
 	}
+
+	Color PointLight::Intensity() const { return intensity; }
+	Vec4 PointLight::Position() const { return Vec4(pos.x, pos.y, pos.z, 1); }
 }

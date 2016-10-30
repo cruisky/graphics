@@ -50,8 +50,9 @@ protected:
 			GUI::ColorSlider("Style: Accent", GUI::GetStyle().Colors[GUI::Style::Palette::Accent], Color::Channel::RGB);
 			GUI::ColorSlider("Style: Highlight", GUI::GetStyle().Colors[GUI::Style::Palette::AccentHighlight], Color::Channel::RGB);
 			GUI::ColorSlider("Style: Active", GUI::GetStyle().Colors[GUI::Style::Palette::AccentActive], Color::Channel::RGB);
+
+			GUI::EndWindow();
 		}
-		GUI::EndWindow();
 
 		if (GUI::BeginWindow("Window 1", window[1])) {
 
@@ -77,8 +78,9 @@ protected:
 			GUI::Divider();
 
 			GUI::Button("Button 1");
+
+			GUI::EndWindow();
 		}
-		GUI::EndWindow();
 
 		if (GUI::BeginWindow("IMGUI", window[2])) {
 			GUI::TextField("TextField", textValue, true);
@@ -86,8 +88,8 @@ protected:
 				The GUI toolkit is responsible for drawing and reporting i/o, but does not retain a model of widget structures itself. It may or may not track internal state over time, or have a stateful interface (like OpenGL), or be object-oriented, but in all cases the GUI structure and i/o is driven by application-side processes at runtime.
 				A typical use might be to attach GUI elements to 3d objects during rendering, interleaving calls to the IMGUI widgets with the 3d rendering calls, so as to produce all graphical output with a single traversal of the data structures. In cases where organization is needed across multiple GUI elements (for example, name labels that should not overlap), the toolkit may build a representation over time and then be asked to draw everything at once.
 				)", true);
+			GUI::EndWindow();
 		}
-		GUI::EndWindow();
 
 		GUI::EndFrame();
 		input.Clear();

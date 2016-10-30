@@ -32,6 +32,8 @@
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="ObjViewer\ObjViewer.cpp" />
+    <ClCompile Include="Shader\Phong\Phong.cpp" />
+    <ClCompile Include="Shader\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Color.h" />
@@ -86,9 +88,12 @@
     <ClInclude Include="ObjViewer\ObjViewer.h" />
     <ClInclude Include="Misc\Const.h" />
     <ClInclude Include="Graphics\Font\DroidSans.h" />
+    <ClInclude Include="Shader\Phong.h" />
+    <ClInclude Include="Shader\Base.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ObjViewer\phong.fs.glsl" />
-    <None Include="ObjViewer\phong.vs.glsl" />
+    <None Include="Shader\Default.vs.glsl" />
+    <None Include="Shader\SingleColor.fs.glsl" />
+    <None Include="Shader\Phong\Phong.fs.glsl" />
   </ItemGroup>
 </Project>

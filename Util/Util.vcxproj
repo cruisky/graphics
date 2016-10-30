@@ -137,6 +137,8 @@
     <ClInclude Include="Graphics\Tracer.h" />
     <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="ObjViewer\ObjViewer.h" />
+    <ClInclude Include="Shader\Base.h" />
+    <ClInclude Include="Shader\Phong.h" />
     <ClInclude Include="SSE\Bool.h" />
     <ClInclude Include="SSE\Float.h" />
     <ClInclude Include="SSE\Int.h" />
@@ -175,6 +177,8 @@
     <ClCompile Include="Graphics\Tracer.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="ObjViewer\ObjViewer.cpp" />
+    <ClCompile Include="Shader\Phong\Phong.cpp" />
+    <ClCompile Include="Shader\ShaderProgram.cpp" />
     <ClCompile Include="SSE\Float.cpp" />
     <ClCompile Include="SSE\Int.cpp" />
     <ClCompile Include="System\Application.cpp" />
@@ -186,8 +190,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ObjViewer\phong.fs.glsl" />
-    <None Include="ObjViewer\phong.vs.glsl" />
+    <None Include="Shader\Phong\Phong.fs.glsl" />
+    <None Include="Shader\Default.vs.glsl" />
+    <None Include="Shader\SingleColor.fs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

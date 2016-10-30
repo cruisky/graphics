@@ -25,6 +25,11 @@ namespace TX{
 			t);
 	}
 
+	Color BSDF::GetAmbient() const { return Color::BLACK; }
+	Color BSDF::GetDiffuse() const { return color_; }
+	Color BSDF::GetSpecular() const { return Color::BLACK; }
+	float BSDF::GetShininess() const { return 1e7; }
+
 	Color Diffuse::SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
 		Vec3 localwo = Normalize(geom.WorldToLocal(wo));
 		Vec3 localwi = Sampling::CosineHemisphere(sample.u, sample.v);
@@ -50,6 +55,8 @@ namespace TX{
 		return LocalCoord::AbsCosTheta(localwi) * PI_RCP;
 	}
 
+	Color Diffuse::GetAmbient() const { return color_; }
+
 	Color Mirror::Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type) const {
 		return Color::BLACK;
 	}
@@ -74,6 +81,10 @@ namespace TX{
 	float Mirror::Pdf(const Vec3& wo, const Vec3& wi, BSDFType type) const {
 		return 0.f;
 	}
+
+	Color Mirror::GetDiffuse() const { return Color(0.1f); }
+	Color Mirror::GetSpecular() const { return Color::WHITE; }
+	float Mirror::GetShininess() const { return 1; }
 
 	Color Dielectric::SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types, BSDFType *sampled_types) const{
 		bool reflection = (types & (BSDF_REFLECTION | BSDF_SPECULAR)) == (BSDF_REFLECTION | BSDF_SPECULAR);
@@ -120,6 +131,12 @@ namespace TX{
 	float Dielectric::Pdf(const Vec3& wo, const Vec3& wi, BSDFType type) const{
 		return 0.f;
 	}
+
+	Color Dielectric::GetAmbient() const { return Color(0.1f); }
+	Color Dielectric::GetDiffuse() const { return Color(color_.r, color_.g, color_.b, 0.3f); }
+	Color Dielectric::GetSpecular() const { return Color(0.8f); }
+	float Dielectric::GetShininess() const { return 1; }
+
 	float Dielectric::Refract(float cosi, float *eta) const{
 		float e = (cosi > 0.f) ? eta_ : eta_inv_;	// determine whether the ray is entering the surface
 		if (eta) *eta = e;

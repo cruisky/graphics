@@ -29,9 +29,14 @@ namespace TX{
 		inline Color GetColor(const LocalGeo& geo) const {
 			return color_;
 		}
-
 		virtual Color Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		virtual float Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+
+		// clumsy approximation of phong components
+		virtual Color GetAmbient() const;
+		virtual Color GetDiffuse() const;
+		virtual Color GetSpecular() const;
+		virtual float GetShininess() const;
 
 	protected:
 		virtual float Eval(const Vec3& localwo, const Vec3& localwi, BSDFType type = BSDF_ALL) const = 0;
@@ -59,6 +64,8 @@ namespace TX{
 	protected:
 		float Eval(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
+
+		virtual Color GetAmbient() const;
 	};
 
 	/// <summary>
@@ -70,6 +77,10 @@ namespace TX{
 		Color SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
 		Color Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+
+		virtual Color GetDiffuse() const;
+		virtual Color GetSpecular() const;
+		virtual float GetShininess() const;
 	protected:
 		float Eval(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
@@ -86,6 +97,11 @@ namespace TX{
 		Color SampleDirect(const Vec3& wo, const LocalGeo& geom, const Sample& sample, Vec3 *wi, float *pdf, BSDFType types = BSDF_ALL, BSDFType *sampled_types = nullptr) const;
 		Color Eval(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, const LocalGeo& geom, BSDFType type = BSDF_ALL) const;
+
+		virtual Color GetAmbient() const;
+		virtual Color GetDiffuse() const;
+		virtual Color GetSpecular() const;
+		virtual float GetShininess() const;
 	protected:
 		float Eval(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;
 		float Pdf(const Vec3& wo, const Vec3& wi, BSDFType type = BSDF_ALL) const;

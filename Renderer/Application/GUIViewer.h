@@ -14,8 +14,11 @@ namespace TX {
 				LEFT, RIGHT, UP, DOWN
 			};
 		public:
-			GUIViewer(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera, std::shared_ptr<Film> film);
-			GUIViewer& ConfigRenderer(RendererConfig config);
+			GUIViewer(
+				RendererConfig& config,
+				Scene& scene,
+				Camera& camera,
+				Film& film);
 		protected:
 			void Start();
 			bool Render();
@@ -27,22 +30,29 @@ namespace TX {
 			void FlipY(float *y);
 			void FlipX(float *x);
 		private:
-			std::shared_ptr<Scene> scene_;
-			std::shared_ptr<Camera> camera_;
-			std::shared_ptr<Film> film_;
+			Scene& scene_;
+			Camera& camera_;
+			Film& film_;
 			std::unique_ptr<Renderer> renderer_;
+			RendererConfig& rendererConfig_;
 			std::unique_ptr<ObjViewer> previewer_;
-			std::shared_ptr<IProgressMonitor> monitor_;
+			std::unique_ptr<IProgressMonitor> monitor_;
 
 			// GUI
 			FontMap font_;
 			Rect windowMain_;
 			Rect windowLog_;
 
-			enum class State {
+			enum class ViewMode {
 				Preview,
-				Render,
+				Rendered,
+			};
+			struct {
+				ViewMode mode;
+				const Primitive *selected;
 			} state_;
+
+
 		};
 	}
 }
