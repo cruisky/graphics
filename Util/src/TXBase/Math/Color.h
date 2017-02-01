@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "TXBase/fwddecl.h"
-#include "TXBase/Math/Base.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/base.h"
 
 #ifdef RGB
 	#undef RGB

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TXBase/OpenGL/GLUtils.h"
+#include "txbase/opengl/opengl.h"
 
 namespace TX {
 	class ShaderProgram : public GL::Program {

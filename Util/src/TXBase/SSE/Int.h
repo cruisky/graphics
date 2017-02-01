@@ -1,8 +1,8 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
+#include "txbase/fwddecl.h"
 #include <intrin.h>
-#include "Bool.h"
+#include "txbase/sse/bool.h"
 
 namespace TX
 {

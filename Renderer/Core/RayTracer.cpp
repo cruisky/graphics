@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "txbase/math/sample.h"
+
 #include "RayTracer.h"
-#include "TXBase/Math/Sample.h"
 #include "Scene.h"
 #include "Intersection.h"
 #include "BSDF.h"

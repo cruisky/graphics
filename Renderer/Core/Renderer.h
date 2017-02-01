@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "TXBase/Math/Sample.h"
+#include "txbase/math/sample.h"
 #include "Synchronizer.h"
 #include "RendererConfig.h"
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "TXBase/Math/Random.h"
-#include "TXBase/Math/Color.h"
-#include "TXBase/Math/Ray.h"
-#include "TXBase/Math/Vector.h"
-#include "TXBase/Math/Matrix.h"
-#include "TXBase/SSE/SSE.h"
+#include "txbase/math/random.h"
+#include "txbase/math/color.h"
+#include "txbase/math/ray.h"
+#include "txbase/math/vector.h"
+#include "txbase/math/matrix.h"
+#include "txbase/sse/sse.h"
 
 namespace TX
 {

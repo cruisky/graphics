@@ -1,7 +1,7 @@
 #pragma once
-#include "TXBase/fwddecl.h"
 #include <iostream>
-#include "TXBase/Math/Random.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/random.h"
 
 namespace TX
 {

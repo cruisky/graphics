@@ -1,7 +1,8 @@
 #include "stdafx.h"
+#include "txbase/math/sample.h"
+#include "txbase/math/random.h"
+
 #include "PathTracing.h"
-#include "TXBase/Math/Sample.h"
-#include "TXBase/Math/Random.h"
 #include "Core/Intersection.h"
 #include "Core/Scene.h"
 #include "Core/BSDF.h"

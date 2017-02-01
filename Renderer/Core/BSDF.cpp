@@ -1,8 +1,9 @@
 #include "stdafx.h"
+#include "txbase/math/sample.h"
+
 #include "BSDF.h"
 #include "Intersection.h"
 #include "Primitive.h"
-#include "TXBase/Math/Sample.h"
 
 namespace TX{
 	using namespace Math;

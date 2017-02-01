@@ -1,7 +1,7 @@
 #pragma once
-#include "TXBase/System/Thread.h"
-#include "TXBase/Math/Base.h"
-#include "TXBase/Math/Random.h"
+#include "txbase/sys/thread.h"
+#include "txbase/math/base.h"
+#include "txbase/math/random.h"
 
 namespace TX
 {

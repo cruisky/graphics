@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
-#include "TXBase/Math/Vector.h"
-#include "TXBase/Math/Random.h"
-#include "TXBase/System/Memory.h"
+#include "txbase/math/vector.h"
+#include "txbase/math/random.h"
+#include "txbase/sys/memory.h"
 
 namespace TX{
 	class Sample {

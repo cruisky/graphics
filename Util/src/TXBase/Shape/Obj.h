@@ -1,7 +1,7 @@
 #pragma once
-#include "TXBase/fwddecl.h"
-#include "TXBase/Math/Color.h"
-#include "TXBase/Shape/Mesh.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/color.h"
+#include "txbase/shape/mesh.h"
 
 namespace TX {
 

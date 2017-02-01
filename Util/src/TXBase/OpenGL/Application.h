@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
-#include "Input.h"
+#include "txbase/fwddecl.h"
+#include "txbase/opengl/input.h"
 
 namespace TX {
 	namespace UI {

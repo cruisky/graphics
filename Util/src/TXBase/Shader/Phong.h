@@ -1,9 +1,9 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
-#include "TXBase/OpenGL/GLUtils.h"
-#include "TXBase/Misc/Const.h"
-#include "TXBase/Shader/Base.h"
+#include "txbase/fwddecl.h"
+#include "txbase/opengl/opengl.h"
+#include "txbase/misc/const.h"
+#include "txbase/shader/base.h"
 
 namespace TX {
 	class Phong : public ShaderProgram {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
-#include "Base.h"
-#include "Vector.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/base.h"
+#include "txbase/math/vector.h"
 
 namespace TX{
 	class Matrix3x3 {

@@ -1,7 +1,8 @@
 #include "stdafx.h"
+#include "txbase/scene/camera.h"
+#include "txbase/sys/tools.h"
+
 #include "ObjViewer.h"
-#include "TXBase/Scene/Camera.h"
-#include "TXBase/System/Tools.h"
 #include "Core/Scene.h"
 #include "Core/Primitive.h"
 #include "Core/BSDF.h"
@@ -13,10 +14,10 @@ namespace TX {
 		programPhong.Compile();
 		programSingleColor.Compile({
 			GL::Shader(GL_VERTEX_SHADER,
-#include "TXBase/Shader/Default.vs.glsl"
+#include "txbase/shader/default.vs.glsl"
 			),
 			GL::Shader(GL_FRAGMENT_SHADER,
-#include "TXBase/Shader/SingleColor.fs.glsl"
+#include "txbase/shader/singlecolor.fs.glsl"
 			)
 		});
 

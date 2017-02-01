@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TXBase/Math/Color.h"
+#include "txbase/math/color.h"
 
 namespace TX{
 	class Image {

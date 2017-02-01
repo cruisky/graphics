@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "txbase/math/sample.h"
+
 #include "DirectLighting.h"
-#include "TXBase/Math/Sample.h"
 #include "Core/Intersection.h"
 #include "Core/BSDF.h"
 #include "Core/Scene.h"

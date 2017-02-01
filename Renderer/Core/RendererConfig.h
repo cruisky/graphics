@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TXBase/Image/Filter.h"
-#include "TXBase/Math/Sample.h"
+#include "txbase/image/filter.h"
+#include "txbase/math/sample.h"
 
 #include "RayTracer.h"
 #include "Methods/DirectLighting.h"

@@ -1,11 +1,11 @@
 #pragma once
-#include "TXBase/fwddecl.h"
-#include "Shape.h"
-#include "TXBase/Math/Vector.h"
-#include "TXBase/Math/BBox.h"
-#include "TXBase/Math/Ray.h"
-#include "TXBase/Math/Transform.h"
-#include "TXBase/Math/Sample.h"
+#include "txbase/fwddecl.h"
+#include "txbase/shape/shape.h"
+#include "txbase/math/vector.h"
+#include "txbase/math/bbox.h"
+#include "txbase/math/ray.h"
+#include "txbase/math/transform.h"
+#include "txbase/math/sample.h"
 
 namespace TX {
 	class Mesh {

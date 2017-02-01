@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "TXBase/Shape/Mesh.h"
+#include "txbase/shape/mesh.h"
 #include "Light.h"
 #include "Primitive.h"
 #include "Intersection.h"

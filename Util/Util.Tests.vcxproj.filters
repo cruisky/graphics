@@ -15,39 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TXBaseTests\ColorTests.cpp">
+    <ClCompile Include="src\txbase_tests\color_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\MathUtilTests.cpp">
+    <ClCompile Include="src\txbase_tests\math_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\MatrixTests.cpp">
+    <ClCompile Include="src\txbase_tests\matrix_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\QuaternionTests.cpp">
+    <ClCompile Include="src\txbase_tests\quaternion_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\RayTests.cpp">
+    <ClCompile Include="src\txbase_tests\ray_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\SIMDTests.cpp">
+    <ClCompile Include="src\txbase_tests\sse_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\stdafx.cpp">
+    <ClCompile Include="src\txbase_tests\vector_tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TXBaseTests\VectorTests.cpp">
+    <ClCompile Include="src\txbase_tests\stdafx.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\TXBaseTests\CppUnitTestHelpers.h">
+    <ClInclude Include="src\txbase_tests\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TXBaseTests\stdafx.h">
+    <ClInclude Include="src\txbase_tests\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TXBaseTests\targetver.h">
+    <ClInclude Include="src\txbase_tests\cpp_unittest_helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

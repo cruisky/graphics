@@ -1,5 +1,6 @@
 #pragma once
-#include "TXBase/fwddecl.h"
+#include "txbase/fwddecl.h"
+
 namespace TX {
 	class Shape {
 	public:

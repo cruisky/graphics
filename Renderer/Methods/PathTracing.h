@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TXBase/Math/Sample.h"
+#include "txbase/math/sample.h"
 #include "Core/RayTracer.h"
 
 namespace TX{

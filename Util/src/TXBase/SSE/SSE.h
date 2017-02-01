@@ -1,12 +1,12 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
+#include "txbase/fwddecl.h"
 #include <intrin.h>
 //#include <smmintrin.h>
 
-#include "Bool.h"
-#include "Int.h"
-#include "Float.h"
+#include "txbase/sse/bool.h"
+#include "txbase/sse/int.h"
+#include "txbase/sse/float.h"
 
 namespace TX {
 	namespace SSE {

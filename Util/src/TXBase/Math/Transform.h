@@ -1,8 +1,8 @@
 #pragma once
-#include "TXBase/fwddecl.h"
-#include "TXBase/Math/Quaternion.h"
-#include "TXBase/Math/Matrix.h"
-#include "TXBase/Math/Ray.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/quaternion.h"
+#include "txbase/math/matrix.h"
+#include "txbase/math/ray.h"
 
 namespace TX{
 	enum class Space {

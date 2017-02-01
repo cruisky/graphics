@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "TXBase/Shape/Shape.h"
+#include "txbase/shape/shape.h"
 #include "Primitive.h"
 #include "Intersection.h"
 

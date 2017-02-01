@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TXBase/Math/Vector.h"
+#include "txbase/math/vector.h"
 #include "Light.h"
 #include "Primitive.h"
 

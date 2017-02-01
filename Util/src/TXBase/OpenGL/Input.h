@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
-#include "TXBase/Math/Vector.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/vector.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 

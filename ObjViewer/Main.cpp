@@ -1,9 +1,9 @@
-#include "TXBase/Shape/Obj.h"
-#include "TXBase/OpenGL/Application.h"
-#include "TXBase/OpenGL/GLUtils.h"
-#include "TXBase/Scene/Camera.h"
-#include "TXBase/Scene/CameraController.h"
-#include "TXBase/System/Tools.h"
+#include "txbase/shape/obj.h"
+#include "txbase/opengl/application.h"
+#include "txbase/opengl/opengl.h"
+#include "txbase/scene/camera.h"
+#include "txbase/scene/camera_controller.h"
+#include "txbase/sys/tools.h"
 
 #include <memory>
 

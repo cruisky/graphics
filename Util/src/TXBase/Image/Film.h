@@ -1,7 +1,7 @@
 #pragma once
-#include "TXBase/fwddecl.h"
+#include "txbase/fwddecl.h"
 #include <memory>
-#include "TXBase/Math/Color.h"
+#include "txbase/math/color.h"
 
 namespace TX{
 	enum class FilterType{

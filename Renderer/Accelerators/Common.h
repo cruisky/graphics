@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TXBase/SSE/SSE.h"
+#include "txbase/sse/sse.h"
 #include "Core/Intersection.h"
 
 namespace TX {

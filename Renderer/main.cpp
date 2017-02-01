@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-#include "TXBase/Math/Color.h"
-#include "TXBase/Math/Transform.h"
-#include "TXBase/Math/Sample.h"
-#include "TXBase/Image/Image.h"
-#include "TXBase/Image/Film.h"
-#include "TXBase/Scene/Camera.h"
+#include "txbase/math/color.h"
+#include "txbase/math/transform.h"
+#include "txbase/math/sample.h"
+#include "txbase/image/image.h"
+#include "txbase/image/film.h"
+#include "txbase/scene/camera.h"
 
 #include "Core/BSDF.h"
 #include "Core/RayTracer.h"

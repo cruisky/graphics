@@ -3,11 +3,11 @@
 #define USE_SSE2
 
 #include <intrin.h>
-#include "TXBase/fwddecl.h"
-#include "TXBase/Math/Base.h"
-#include "TXBase/Libs/sse_mathfun.h"
-#include "Bool.h"
-#include "Int.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/base.h"
+#include "txbase/libs/sse_mathfun.h"
+#include "txbase/sse/bool.h"
+#include "txbase/sse/int.h"
 
 namespace TX {
 	namespace SSE {

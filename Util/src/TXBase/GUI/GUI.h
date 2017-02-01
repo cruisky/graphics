@@ -1,9 +1,9 @@
 #pragma once
 
-#include "TXBase/OpenGL/Input.h"
-#include "TXBase/Math/Geometry.h"
-#include "TXBase/Math/Color.h"
-#include "TXBase/GUI/FontMap.h"
+#include "txbase/opengl/input.h"
+#include "txbase/math/geometry.h"
+#include "txbase/math/color.h"
+#include "txbase/gui/fontmap.h"
 
 namespace TX {
 	namespace UI {

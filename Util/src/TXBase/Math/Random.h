@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ctime>
-#include "TXBase/fwddecl.h"
+#include "txbase/fwddecl.h"
 
 namespace TX{
 	class RNG {

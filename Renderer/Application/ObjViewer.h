@@ -1,7 +1,8 @@
 #pragma once
-#include "TXBase/Shape/Obj.h"
-#include "TXBase/OpenGL/GLUtils.h"
-#include "TXBase/Shader/Phong.h"
+#include "txbase/shape/obj.h"
+#include "txbase/opengl/opengl.h"
+#include "txbase/shader/phong.h"
+
 #include "Core/Primitive.h"
 
 namespace TX {

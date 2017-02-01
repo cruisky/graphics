@@ -1,9 +1,9 @@
 #pragma once
 
-#include "TXBase/fwddecl.h"
-#include "TXBase/Math/Geometry.h"
-#include "TXBase/Math/Color.h"
-#include "FontMap.h"
+#include "txbase/fwddecl.h"
+#include "txbase/math/geometry.h"
+#include "txbase/math/color.h"
+#include "fontmap.h"
 
 namespace TX
 {

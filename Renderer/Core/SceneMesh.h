@@ -1,8 +1,8 @@
 #pragma once
 
-#include "TXBase/Shape/Mesh.h"
-#include "TXBase/Math/Vector.h"
-#include "TXBase/Math/BBox.h"
+#include "txbase/shape/mesh.h"
+#include "txbase/math/vector.h"
+#include "txbase/math/bbox.h"
 
 namespace TX {
 	class LocalGeo;

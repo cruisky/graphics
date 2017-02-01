@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "TXBase/fwddecl.h"
-#include "Vector.h"
+#include "txbase/fwddecl.h"
+#include "vector.h"
 
 namespace TX
 {
