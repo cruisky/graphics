@@ -1,18 +1,17 @@
 #pragma once
 
+#include "txbase/image/filter.h"
+#include "txbase/math/sample.h"
 
-#include "Graphics/Filter.h"
-#include "Graphics/Tracer.h"
-#include "Math/Sampler.h"
-#include "Math/Sample.h"
-
-#include "Tracers/DirectLighting.h"
-#include "Tracers/PathTracer.h"
+#include "RayTracer.h"
+#include "Methods/DirectLighting.h"
+#include "Methods/PathTracing.h"
+#include "Sampler.h"
 #include "Samplers/RandomSampler.h"
 
 namespace TX
 {
-	enum class TracerType{
+	enum class RenderMethod{
 		DirectLighting,
 		PathTracing
 	};
@@ -24,16 +23,16 @@ namespace TX
 		RendererConfig(){}
 		int samples_per_pixel;
 		int width = 0, height = 0;
-		TracerType tracer_t = TracerType::PathTracing;
+		RenderMethod tracer_t = RenderMethod::PathTracing;
 		int tracer_maxdepth = 5;
 		SamplerType sampler_t = SamplerType::Random;
 
-		Tracer* NewTracer() const {
+		RayTracer* NewMethod() const {
 			switch (tracer_t){
-			case TracerType::DirectLighting:
+			case RenderMethod::DirectLighting:
 				return new DirectLighting(tracer_maxdepth);
-			case TracerType::PathTracing:
-				return new PathTracer(tracer_maxdepth);
+			case RenderMethod::PathTracing:
+				return new PathTracing(tracer_maxdepth);
 			default:
 				throw "unimplemented";
 			}

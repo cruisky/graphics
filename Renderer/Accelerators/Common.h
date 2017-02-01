@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Util.h"
-#include "SSE/SSE.h"
-#include "Graphics/Intersection.h"
-#include "Graphics/Primitive.h"		// temp
+#include "txbase/sse/sse.h"
+#include "Core/Intersection.h"
+
 namespace TX {
 	struct BuildVertex {
 		Vec3 pos;

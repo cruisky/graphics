@@ -1,10 +1,11 @@
 #pragma once
-#include "Util/System/Application.h"
 #include <memory>
 #include <future>
 #include <atomic>
+#include "txbase/opengl/application.h"
+
 #include "Core/Renderer.h"
-#include "ObjViewer/ObjViewer.h"
+#include "Application/ObjViewer.h"
 
 namespace TX {
 	namespace UI {

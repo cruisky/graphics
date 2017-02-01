@@ -1,10 +1,12 @@
 #include "stdafx.h"
+
+#include "txbase/image/film.h"
+#include "txbase/scene/camera.h"
+#include "txbase/math/sample.h"
+
 #include "Renderer.h"
 #include "RendererConfig.h"
-#include "Graphics/Scene.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Film.h"
-#include "Math/Sample.h"
+#include "Core/Scene.h"
 
 namespace TX {
 	Renderer::Renderer(
@@ -57,7 +59,7 @@ namespace TX {
 		runtimeConfig = config;
 
 		Resize(config.width, config.height);
-		tracer_.reset(config.NewTracer());
+		tracer_.reset(config.NewMethod());
 		sampler_.reset(config.NewSampler());
 
 		// generate sample offset for the current tracer

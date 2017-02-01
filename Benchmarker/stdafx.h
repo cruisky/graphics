@@ -10,12 +10,12 @@
 #include <stdio.h>
 #include <tchar.h>
 
-#include "Misc/RandomData.h"
-#include "Math/Base.h"
-#include "Math/Matrix.h"
-#include "Math/Random.h"
-#include "Math/Vector.h"
-#include "SSE/SSE.h"
+#include "txbase/misc/randomdata.h"
+#include "txbase/math/base.h"
+#include "txbase/math/matrix.h"
+#include "txbase/math/random.h"
+#include "txbase/math/vector.h"
+#include "txbase/sse/sse.h"
 
 
 // TODO: reference additional headers your program requires here

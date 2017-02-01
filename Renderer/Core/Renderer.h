@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
+#include "txbase/math/sample.h"
 #include "Synchronizer.h"
-#include "Math/Sample.h"
 #include "RendererConfig.h"
 
 namespace TX {
@@ -27,7 +27,7 @@ namespace TX {
 		const RendererConfig& config;
 	private:
 		RendererConfig runtimeConfig;
-		std::unique_ptr<Tracer> tracer_;
+		std::unique_ptr<RayTracer> tracer_;
 		std::unique_ptr<Sampler> sampler_;
 		std::unique_ptr<CameraSample> sample_buf_;
 		Synchronizer thread_sync_;

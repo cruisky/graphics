@@ -1,9 +1,9 @@
-#include "Graphics/Obj.h"
-#include "Graphics/Camera.h"
-#include "System/Application.h"
-#include "System/Tools.h"
-#include "Graphics/GLUtils.h"
-#include "Graphics/CameraController.h"
+#include "txbase/shape/obj.h"
+#include "txbase/opengl/application.h"
+#include "txbase/opengl/opengl.h"
+#include "txbase/scene/camera.h"
+#include "txbase/scene/camera_controller.h"
+#include "txbase/sys/tools.h"
 
 #include <memory>
 

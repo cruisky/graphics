@@ -1,11 +1,12 @@
 #include "stdafx.h"
-#include "GUIViewer.h"
 
-#include "Graphics/Film.h"
-#include "Graphics/Scene.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Intersection.h"
-#include "Graphics/GUI.h"
+#include "txbase/image/film.h"
+#include "txbase/scene/camera.h"
+#include "txbase/gui/gui.h"
+
+#include "GUIViewer.h"
+#include "Core/Scene.h"
+#include "Core/Intersection.h"
 
 namespace TX {
 	namespace UI {

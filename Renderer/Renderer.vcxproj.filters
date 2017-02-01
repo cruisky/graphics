@@ -52,12 +52,6 @@
     <ClInclude Include="Samplers\RandomSampler.h">
       <Filter>Source Files\Samplers</Filter>
     </ClInclude>
-    <ClInclude Include="Tracers\DirectLighting.h">
-      <Filter>Source Files\Tracers</Filter>
-    </ClInclude>
-    <ClInclude Include="Tracers\PathTracer.h">
-      <Filter>Source Files\Tracers</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -67,6 +61,23 @@
     <ClInclude Include="Accelerators\Common.h">
       <Filter>Source Files\Accelerators</Filter>
     </ClInclude>
+    <ClInclude Include="Core\BSDF.h" />
+    <ClInclude Include="Core\Intersection.h" />
+    <ClInclude Include="Core\Light.h" />
+    <ClInclude Include="Core\RayTracer.h" />
+    <ClInclude Include="Core\SceneMesh.h" />
+    <ClInclude Include="Core\Primitive.h" />
+    <ClInclude Include="Core\PrimitiveManager.h" />
+    <ClInclude Include="Core\Scene.h" />
+    <ClInclude Include="Core\SceneObject.h" />
+    <ClInclude Include="Methods\DirectLighting.h">
+      <Filter>Source Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="Methods\PathTracing.h">
+      <Filter>Source Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\ObjViewer.h" />
+    <ClInclude Include="Core\Sampler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,14 +95,8 @@
     <ClCompile Include="Application\GUIViewer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Tracers\DirectLighting.cpp">
-      <Filter>Source Files\Tracers</Filter>
-    </ClCompile>
     <ClCompile Include="Samplers\RandomSampler.cpp">
       <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tracers\PathTracer.cpp">
-      <Filter>Source Files\Tracers</Filter>
     </ClCompile>
     <ClCompile Include="Core\Synchronizer.cpp">
       <Filter>Source Files\Core</Filter>
@@ -101,6 +106,36 @@
     </ClCompile>
     <ClCompile Include="Accelerators\BVH.cpp">
       <Filter>Source Files\Accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\BSDF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Intersection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\RayTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\SceneMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Primitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Methods\DirectLighting.cpp">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Methods\PathTracing.cpp">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\ObjViewer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

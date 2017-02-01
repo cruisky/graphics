@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util/Graphics/PrimitiveManager.h"
+#include "Core/PrimitiveManager.h"
 #include "Common.h"
 
 namespace TX {
