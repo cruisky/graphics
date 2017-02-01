@@ -3,6 +3,8 @@
 #include "Shape.h"
 #include "Math/Vector.h"
 #include "Math/BBox.h"
+#include "Math/Ray.h"
+#include "Math/Transform.h"
 
 namespace TX {
 	class Mesh {
@@ -59,10 +61,6 @@ namespace TX {
 		/// </summary>
 		virtual void Clear();
 		/// <summary>
-		/// Apply a transform to this mesh.
-		/// </summary>
-		virtual void ApplyTransform(const Transform& transform);
-		/// <summary>
 		/// Load a sphere to this mesh.
 		/// </summary>
 		/// <param name="radius"> Radius of the sphere </param>
@@ -75,12 +73,14 @@ namespace TX {
 		/// </summary>
 		/// <param name="size"> Edge size </param>
 		Mesh& LoadPlane(float size = 1.f);
-
-		bool Intersect(uint triId, const Ray& ray) const;
-		bool Occlude(uint triId, const Ray& ray) const;
-		void PostIntersect(LocalGeo& geo) const;
+		/// <summary>
+		/// Apply a transform to this mesh.
+		/// </summary>
+		virtual void ApplyTransform(const Transform& transform);
 		float Area() const;
 		float Area(uint triId) const;
+		bool Intersect(uint triId, const Ray& ray) const;
+		bool Occlude(uint triId, const Ray& ray) const;
 	};
 
 	class MeshSampler {

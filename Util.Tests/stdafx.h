@@ -25,7 +25,7 @@
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
 #include "Math/Ray.h"
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 #include "SSE/SSE.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

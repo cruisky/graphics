@@ -1,12 +1,12 @@
 #pragma once
 #include "Util.h"
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 
 namespace TX{
-	class Tracer {
+	class RayTracer {
 	public:
-		Tracer(int maxdepth = 5) : maxdepth_(maxdepth){}
-		virtual ~Tracer(){}
+		RayTracer(int maxdepth = 5) : maxdepth_(maxdepth){}
+		virtual ~RayTracer(){}
 
 		void Trace(const Scene *scene, const Ray& ray, const CameraSample& samples, RNG& rng, Color *color);
 

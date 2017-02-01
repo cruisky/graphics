@@ -1,7 +1,7 @@
 #include "UtilStdAfx.h"
 #include "Mesh.h"
-#include "Intersection.h"
 #include "Obj.h"
+#include "Math/Sample.h"
 
 namespace TX {
 	void Mesh::Clear() {
@@ -55,22 +55,6 @@ namespace TX {
 
 		ray.t_max = t;
 		return true;
-	}
-	void Mesh::PostIntersect(LocalGeo& geom) const {
-		const uint* idx = GetIndicesOfTriangle(geom.triId);
-
-		const Vec3& vert1 = vertices[idx[0]];
-		const Vec3& vert2 = vertices[idx[1]];
-		const Vec3& vert3 = vertices[idx[2]];
-
-		//geom.normal = Math::Normalize(Math::Cross(vert2 - vert1, vert3 - vert1));
-
-		const Vec3& norm1 = normals[idx[0]];
-		const Vec3& norm2 = normals[idx[1]];
-		const Vec3& norm3 = normals[idx[2]];
-		geom.normal = norm1 * (1.f-geom.uv.u-geom.uv.v) +
-			norm2 * geom.uv.u +
-			norm3 * geom.uv.v;
 	}
 	bool Mesh::Occlude(uint triId, const Ray& ray) const {
 		const uint* idx = GetIndicesOfTriangle(triId);

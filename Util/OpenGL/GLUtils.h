@@ -2,7 +2,7 @@
 
 #include "Util.h"
 #include <GL/glew.h>
-#include "Graphics/Obj.h"
+#include "Shape/Obj.h"
 #include "System/Memory.h"
 
 namespace TX

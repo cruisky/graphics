@@ -20,13 +20,14 @@ namespace TX {
 	void Scene::GetPrimitives(std::vector<std::shared_ptr<Primitive>>& result) const {
 		result = prims_;
 	}
-
 	void Scene::Construct() {
 		for (auto& prim : prims_) {
 			prim->Bake();
 		}
 		primmgr_->Construct(prims_);
 	}
+
+
 	bool Scene::Intersect(const Ray& ray, Intersection& intxn) const {
 		return primmgr_->Intersect(ray, intxn);
 	}

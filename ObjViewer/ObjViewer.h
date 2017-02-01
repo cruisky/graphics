@@ -1,6 +1,6 @@
 #pragma once
-#include "Graphics/Obj.h"
-#include "Graphics/GLUtils.h"
+#include "Shape/Obj.h"
+#include "OpenGL/GLUtils.h"
 #include "Shader/Phong.h"
 
 namespace TX {

@@ -1,9 +1,9 @@
 #include "UtilStdAfx.h"
 #include "ObjViewer/ObjViewer.h"
-#include "Graphics/Camera.h"
+#include "RayTracing/Camera.h"
 #include "System/Tools.h"
-#include "Graphics/Scene.h"
-#include "Graphics/Primitive.h"
+#include "RayTracing/Scene.h"
+#include "RayTracing/Primitive.h"
 
 namespace TX {
 

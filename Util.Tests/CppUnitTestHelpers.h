@@ -5,7 +5,7 @@
 #include <cstdarg>
 
 #include "System/Tools.h"
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 #include "Math/Ray.h"
 #include "Math/Quaternion.h"
 #include "Math/Vector.h"

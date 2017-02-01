@@ -1,7 +1,7 @@
 #include "UtilStdAfx.h"
+#include "Shape/Mesh.h"
 #include "Light.h"
 #include "Primitive.h"
-#include "Mesh.h"
 #include "Intersection.h"
 #include "Scene.h"
 

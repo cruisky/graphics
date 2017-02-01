@@ -2,7 +2,7 @@
 #include "Film.h"
 #include "Math/Sampler.h"
 #include "Math/Sample.h"
-#include "Graphics/Filter.h"
+#include "Image/Filter.h"
 
 namespace TX
 {

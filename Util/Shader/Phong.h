@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Util.h"
-#include "Graphics/GLUtils.h"
+#include "OpenGL/GLUtils.h"
 #include "Misc/Const.h"
 #include "Shader/Base.h"
 

@@ -1,5 +1,5 @@
 #include "UtilStdAfx.h"
-#include "System/Application.h"
+#include "OpenGL/Application.h"
 #include <thread>
 #include <chrono>
 

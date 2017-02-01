@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Util.h"
-#include "Color.h"
+#include "Math/Color.h"
 
 namespace TX{
 	class Image {

@@ -40,9 +40,6 @@ namespace TX {
 				(dim.y > dim.z) ? 1 :
 				2;
 		}
-
-		bool Occlude(const Ray& ray) const;
-		bool Intersect(const Ray& ray, Intersection& intxn) const;
 	};
 
 	namespace Math {

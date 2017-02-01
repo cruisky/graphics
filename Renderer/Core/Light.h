@@ -1,6 +1,6 @@
 #pragma once
 #include "Util.h"
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 #include "Math/Sample.h"
 #include "SceneObject.h"
 

@@ -1,6 +1,6 @@
 #include "UtilStdAfx.h"
 #include "Primitive.h"
-#include "Shape.h"
+#include "Shape/Shape.h"
 #include "Intersection.h"
 
 namespace TX {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Util.h"
 #include <memory>
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 
 namespace TX{
 	enum class FilterType{

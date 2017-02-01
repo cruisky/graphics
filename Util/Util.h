@@ -37,7 +37,7 @@ namespace TX
 	class Scene;
 	class SceneObject; class DynamicSceneObject;
 	class Shape;
-	class Tracer;
+	class RayTracer;
 	class Transform;
 
 	// Math

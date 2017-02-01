@@ -1,5 +1,5 @@
 #include "UtilStdAfx.h"
-#include "Graphics/Image.h"
+#include "Image/Image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "Libs/stb_image_write.h"

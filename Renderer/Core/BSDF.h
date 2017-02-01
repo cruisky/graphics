@@ -1,5 +1,5 @@
 #pragma once
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 #include "Math/Vector.h"
 
 namespace TX{

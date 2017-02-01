@@ -2,18 +2,18 @@
 #include "Util.h"
 #include "SceneObject.h"
 #include "BSDF.h"
-#include "Mesh.h"
+#include "SceneMesh.h"
 
 namespace TX {
 	class Primitive : public DynamicSceneObject {
 	public:
-		Primitive(const Mesh& mesh, std::shared_ptr<const BSDF> bsdf) : bsdf(bsdf), areaLight(nullptr){
-			this->mesh = std::make_shared<Mesh>(mesh);	// copy the mesh locally
+		Primitive(const SceneMesh& mesh, std::shared_ptr<const BSDF> bsdf) : bsdf(bsdf), areaLight(nullptr){
+			this->mesh = std::make_shared<SceneMesh>(mesh);	// copy the mesh locally
 		};
 		virtual ~Primitive(){}
 
 		inline Primitive& SetAreaLight(const AreaLight *light) { areaLight = light; return *this; }
-		inline const Mesh* GetMesh() const { return mesh.get(); }
+		inline const SceneMesh* GetMesh() const { return mesh.get(); }
 		inline const BSDF* GetBSDF() const { return bsdf.get(); }
 		inline const AreaLight* GetAreaLight() const { return areaLight; }
 
@@ -46,7 +46,7 @@ namespace TX {
 		}
 	private:
 		std::shared_ptr<const BSDF>		bsdf;
-		std::shared_ptr<Mesh>			mesh;
+		std::shared_ptr<SceneMesh>		mesh;
 
 		/// <summary>
 		/// If this primitive is associated with an area light,

@@ -1,7 +1,6 @@
 #pragma once
 #include "Util.h"
 #include <memory>
-#include "Light.h"
 #include "PrimitiveManager.h"
 
 namespace TX {
@@ -11,7 +10,6 @@ namespace TX {
 
 		void AddPrimitive(std::shared_ptr<Primitive> prim);
 		void AddLight(std::shared_ptr<Light> light);
-
 		void GetPrimitives(std::vector<std::shared_ptr<Primitive>>& result) const;
 
 		/// <summary>
@@ -22,7 +20,6 @@ namespace TX {
 		bool Intersect(const Ray& ray, Intersection& intxn) const;
 		void PostIntersect(const Ray& ray, LocalGeo& geo) const;
 		bool Occlude(const Ray& ray) const;
-
 	public:
 		std::vector<std::shared_ptr<Light>> lights;
 	private:

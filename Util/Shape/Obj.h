@@ -1,7 +1,7 @@
 #pragma once
 #include "Util.h"
-#include "Color.h"
-#include "Mesh.h"
+#include "Math/Color.h"
+#include "Shape/Mesh.h"
 
 namespace TX {
 	class ObjMaterial {

@@ -1,5 +1,5 @@
 #include "UtilStdAfx.h"
-#include "Graphics/Color.h"
+#include "Math/Color.h"
 
 namespace TX{
 	const Color Color::ZERO = Color(0, 0, 0, 0);

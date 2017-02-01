@@ -1,5 +1,5 @@
 #include "UtilStdAfx.h"
-#include "Tracer.h"
+#include "RayTracer.h"
 #include "Scene.h"
 #include "Intersection.h"
 #include "BSDF.h"
@@ -7,13 +7,13 @@
 
 namespace TX
 {
-	void Tracer::Trace(const Scene *scene, const Ray& ray, const CameraSample& samples, RNG& rng, Color *color)
+	void RayTracer::Trace(const Scene *scene, const Ray& ray, const CameraSample& samples, RNG& rng, Color *color)
 	{
 		rng_ = &rng;
 		*color = Li(scene, ray, maxdepth_, samples);
 	}
 
-	Color Tracer::EstimateDirect(const Scene *scene, const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
+	Color RayTracer::EstimateDirect(const Scene *scene, const Ray& ray, const LocalGeo& geom, const Light *light, const Sample *lightsample, const Sample *bsdfsample){
 		Vec3 wo = -ray.dir;		// dir to camera
 		Ray lightray;
 		float light_pdf, bsdf_pdf;
@@ -57,7 +57,7 @@ namespace TX
 		return color;
 	}
 
-	Color Tracer::TraceSpecularReflect(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
+	Color RayTracer::TraceSpecularReflect(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
 		Vec3 wo = -ray.dir, wi;
 		float pdf;
 		Color color;
@@ -71,7 +71,7 @@ namespace TX
 		return color;
 	}
 
-	Color Tracer::TraceSpecularTransmit(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
+	Color RayTracer::TraceSpecularTransmit(const Scene *scene, const Ray& ray, const LocalGeo& geom, int depth, const CameraSample& samplebuf){
 		Vec3 wo = -ray.dir, wi;
 		float pdf;
 		Color color;

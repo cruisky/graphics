@@ -67,6 +67,15 @@
     <ClInclude Include="Accelerators\Common.h">
       <Filter>Source Files\Accelerators</Filter>
     </ClInclude>
+    <ClInclude Include="Core\BSDF.h" />
+    <ClInclude Include="Core\Intersection.h" />
+    <ClInclude Include="Core\Light.h" />
+    <ClInclude Include="Core\RayTracer.h" />
+    <ClInclude Include="Core\SceneMesh.h" />
+    <ClInclude Include="Core\Primitive.h" />
+    <ClInclude Include="Core\PrimitiveManager.h" />
+    <ClInclude Include="Core\Scene.h" />
+    <ClInclude Include="Core\SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,6 +110,27 @@
     </ClCompile>
     <ClCompile Include="Accelerators\BVH.cpp">
       <Filter>Source Files\Accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\BSDF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Intersection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\RayTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\SceneMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Primitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Scene.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
