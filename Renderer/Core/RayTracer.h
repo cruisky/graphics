@@ -1,6 +1,7 @@
 #pragma once
 #include "Util.h"
 #include "Math/Color.h"
+#include "Core/Scene.h"
 
 namespace TX{
 	class RayTracer {

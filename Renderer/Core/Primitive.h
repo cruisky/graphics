@@ -1,10 +1,12 @@
 #pragma once
 #include "Util.h"
 #include "SceneObject.h"
-#include "BSDF.h"
 #include "SceneMesh.h"
 
 namespace TX {
+	class BSDF;
+	class AreaLight;
+
 	class Primitive : public DynamicSceneObject {
 	public:
 		Primitive(const SceneMesh& mesh, std::shared_ptr<const BSDF> bsdf) : bsdf(bsdf), areaLight(nullptr){

@@ -5,6 +5,7 @@
 #include "Primitive.h"
 
 namespace TX{
+
 	/// <summary>
 	/// Basic info of a intersection.
 	/// </summary>
@@ -19,6 +20,7 @@ namespace TX{
 		Vec2 uv;
 	};
 
+	class BSDF;
 	class LocalGeo : public Intersection {
 	public:
 		LocalGeo(){}

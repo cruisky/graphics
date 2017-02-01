@@ -5,6 +5,8 @@
 #include "Math/BBox.h"
 
 namespace TX {
+	class LocalGeo;
+
 	class SceneMesh : public Mesh {
 	public:
 		SceneMesh() {}

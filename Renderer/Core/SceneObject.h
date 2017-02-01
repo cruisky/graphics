@@ -2,6 +2,8 @@
 #include "Math/Transform.h"
 
 namespace TX{
+	class Scene;
+
 	class SceneObject {
 	public:
 		Scene *scene;

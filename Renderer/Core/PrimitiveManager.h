@@ -1,6 +1,9 @@
 #pragma once
 #include "Util.h"
 #include <memory>
+#include "Primitive.h"
+#include "Intersection.h"
+
 namespace TX
 {
 	class PrimitiveManager {

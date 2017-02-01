@@ -20,29 +20,21 @@ namespace TX
 	typedef	signed	 __int64 int64;
 	typedef unsigned __int64 uint64;
 
-	// Graphics
-	class BSDF;
-	class Camera;
-	class Color;
-	class Film;
 	class Filter;
-	class FontMap;
 	class Image;
-	class Intersection; class LocalGeo;
-	class Light; class AreaLight;
-	class Mesh; class MeshSampler;
+	class Film;
+
+	class Camera;
+	class Shape; class Mesh;
 	class ObjMaterial; class ObjMesh; class ObjShape;
-	class Primitive;
-	class PrimitiveManager;
-	class Scene;
-	class SceneObject; class DynamicSceneObject;
-	class Shape;
-	class RayTracer;
-	class Transform;
+	class FontMap;
+
 
 	// Math
+	class Color;
 	struct Rect; class Polygon;
 	class Matrix3x3; class Matrix4x4;
+	class Transform;
 	class RNG;
 	class Ray;
 	class Sample; class CameraSample; class Distribution1D;
@@ -66,7 +58,7 @@ namespace TX
 		struct V4Int;
 	}
 
-	// System
+	// GUI
 	namespace UI{
 		class Application;
 		struct Input;

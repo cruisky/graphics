@@ -5,6 +5,8 @@
 #include "SceneObject.h"
 
 namespace TX {
+	class Primitive;
+
 	class Light : public SceneObject {
 	public:
 		Light(int sample_count = 1) : sample_count(sample_count){}

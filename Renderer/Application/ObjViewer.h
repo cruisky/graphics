@@ -2,6 +2,7 @@
 #include "Shape/Obj.h"
 #include "OpenGL/GLUtils.h"
 #include "Shader/Phong.h"
+#include "Core/Primitive.h"
 
 namespace TX {
 	class ObjViewer {

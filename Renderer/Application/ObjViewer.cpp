@@ -2,6 +2,7 @@
 #include "ObjViewer.h"
 #include "Core/Scene.h"
 #include "Core/Primitive.h"
+#include "Core/BSDF.h"
 #include "Scene/Camera.h"
 #include "System/Tools.h"
 
