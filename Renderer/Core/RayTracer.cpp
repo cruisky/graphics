@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "RayTracer.h"
+#include "TXBase/Math/Sample.h"
 #include "Scene.h"
 #include "Intersection.h"
 #include "BSDF.h"
-#include "Math/Sample.h"
 
 namespace TX
 {

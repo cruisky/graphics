@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "Renderer.h"
 #include "RendererConfig.h"
-#include "Image/Film.h"
-#include "Scene/Camera.h"
-#include "Math/Sample.h"
+#include "TXBase/Image/Film.h"
+#include "TXBase/Scene/Camera.h"
+#include "TXBase/Math/Sample.h"
 #include "Core/Scene.h"
 
 namespace TX {

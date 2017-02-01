@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "RandomSampler.h"
-#include "Math/Sample.h"
+#include "TXBase/Math/Sample.h"
 
 namespace TX{
 	void RandomSampler::GetSamples(CameraSample *sample){

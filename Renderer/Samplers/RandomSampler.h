@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/Sampler.h"
+#include "Core/Sampler.h"
 
 namespace TX{
 	class RandomSampler : public Sampler {

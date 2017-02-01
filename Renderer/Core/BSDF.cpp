@@ -2,7 +2,7 @@
 #include "BSDF.h"
 #include "Intersection.h"
 #include "Primitive.h"
-#include "Math/Sample.h"
+#include "TXBase/Math/Sample.h"
 
 namespace TX{
 	using namespace Math;

@@ -1,13 +1,12 @@
 #pragma once
 
+#include "TXBase/Image/Filter.h"
+#include "TXBase/Math/Sample.h"
 
 #include "RayTracer.h"
-#include "Image/Filter.h"
-#include "Math/Sampler.h"
-#include "Math/Sample.h"
-
 #include "Methods/DirectLighting.h"
 #include "Methods/PathTracing.h"
+#include "Sampler.h"
 #include "Samplers/RandomSampler.h"
 
 namespace TX

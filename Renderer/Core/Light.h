@@ -1,7 +1,7 @@
 #pragma once
-#include "Util.h"
-#include "Math/Color.h"
-#include "Math/Sample.h"
+
+#include "TXBase/Math/Color.h"
+#include "TXBase/Math/Sample.h"
 #include "SceneObject.h"
 
 namespace TX {

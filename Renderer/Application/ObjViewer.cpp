@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "ObjViewer.h"
+#include "TXBase/Scene/Camera.h"
+#include "TXBase/System/Tools.h"
 #include "Core/Scene.h"
 #include "Core/Primitive.h"
 #include "Core/BSDF.h"
-#include "Scene/Camera.h"
-#include "System/Tools.h"
+
 
 namespace TX {
 
@@ -12,10 +13,10 @@ namespace TX {
 		programPhong.Compile();
 		programSingleColor.Compile({
 			GL::Shader(GL_VERTEX_SHADER,
-#include "Shader/Default.vs.glsl"
+#include "TXBase/Shader/Default.vs.glsl"
 			),
 			GL::Shader(GL_FRAGMENT_SHADER,
-#include "Shader/SingleColor.fs.glsl"
+#include "TXBase/Shader/SingleColor.fs.glsl"
 			)
 		});
 

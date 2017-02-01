@@ -1,7 +1,7 @@
 #pragma once
-#include "Math/Color.h"
-#include "Math/Vector.h"
-#include "Math/Sample.h"
+#include "TXBase/Math/Color.h"
+#include "TXBase/Math/Vector.h"
+#include "TXBase/Math/Sample.h"
 #include "Core/Intersection.h"
 
 namespace TX{

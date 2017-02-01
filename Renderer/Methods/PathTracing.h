@@ -1,7 +1,7 @@
 #pragma once
 
+#include "TXBase/Math/Sample.h"
 #include "Core/RayTracer.h"
-#include "Util/Math/Sample.h"
 
 namespace TX{
 	class PathTracing : public RayTracer {

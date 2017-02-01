@@ -30,6 +30,7 @@
     <ClInclude Include="Lights\DirectionalLight.h" />
     <ClInclude Include="Lights\PointLight.h" />
     <ClInclude Include="Samplers\RandomSampler.h" />
+    <ClInclude Include="Core\Sampler.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Methods\DirectLighting.h" />
     <ClInclude Include="Methods\PathTracing.h" />

@@ -15,18 +15,18 @@
 #include <cstdarg>
 #include <cstdlib>
 #include "CppUnitTestHelpers.h"
-#include "Misc/RandomData.h"
-#include "System/Tools.h"
-#include "Math/Random.h"
+#include "TXBase/Misc/RandomData.h"
+#include "TXBase/System/Tools.h"
+#include "TXBase/Math/Random.h"
 
 // Area to test
-#include "Math/Base.h"
-#include "Math/Matrix.h"
-#include "Math/Vector.h"
-#include "Math/Quaternion.h"
-#include "Math/Ray.h"
-#include "Math/Color.h"
-#include "SSE/SSE.h"
+#include "TXBase/Math/Base.h"
+#include "TXBase/Math/Matrix.h"
+#include "TXBase/Math/Vector.h"
+#include "TXBase/Math/Quaternion.h"
+#include "TXBase/Math/Ray.h"
+#include "TXBase/Math/Color.h"
+#include "TXBase/SSE/SSE.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

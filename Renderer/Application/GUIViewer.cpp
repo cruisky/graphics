@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "GUIViewer.h"
 
-#include "Image/Film.h"
-#include "Scene/Camera.h"
-#include "GUI/GUI.h"
+#include "TXBase/Image/Film.h"
+#include "TXBase/Scene/Camera.h"
+#include "TXBase/GUI/GUI.h"
 #include "Core/Scene.h"
 #include "Core/Intersection.h"
 

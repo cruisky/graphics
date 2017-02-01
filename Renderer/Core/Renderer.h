@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
+#include "TXBase/Math/Sample.h"
 #include "Synchronizer.h"
-#include "Math/Sample.h"
 #include "RendererConfig.h"
 
 namespace TX {

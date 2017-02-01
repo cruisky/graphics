@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util\Util.vcxproj", "{E3244CFF-B604-45FB-966F-66C48ABE586A}"
 EndProject
@@ -24,7 +24,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GUIDemo", "GUIDemo\GUIDemo.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjViewer", "ObjViewer\ObjViewer.vcxproj", "{08C86FEF-9393-44D2-AD56-1789565B84A6}"
 	ProjectSection(ProjectDependencies) = postProject
-		{AA8FDED1-49CA-4DE4-B304-960A9B373B55} = {AA8FDED1-49CA-4DE4-B304-960A9B373B55}
 		{E3244CFF-B604-45FB-966F-66C48ABE586A} = {E3244CFF-B604-45FB-966F-66C48ABE586A}
 	EndProjectSection
 EndProject

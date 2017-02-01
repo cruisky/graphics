@@ -4,13 +4,13 @@
 #include "CppUnitTest.h"
 #include <cstdarg>
 
-#include "System/Tools.h"
-#include "Math/Color.h"
-#include "Math/Ray.h"
-#include "Math/Quaternion.h"
-#include "Math/Vector.h"
-#include "Math/Matrix.h"
-#include "SSE/SSE.h"
+#include "TXBase/System/Tools.h"
+#include "TXBase/Math/Color.h"
+#include "TXBase/Math/Ray.h"
+#include "TXBase/Math/Quaternion.h"
+#include "TXBase/Math/Vector.h"
+#include "TXBase/Math/Matrix.h"
+#include "TXBase/SSE/SSE.h"
 
 #define repeat(i,n) for(auto (i)=0;(i)<(n);++(i))
 #define repeat_r(i,a,b) for(auto (i)=(a);(i)<(b);++(i))

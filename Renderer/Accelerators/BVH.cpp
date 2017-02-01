@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "BVH.h"
 #include "Core/Primitive.h"
-#include "Shape/Mesh.h"
-#include "Math/BBox.h"
+#include "TXBase/Shape/Mesh.h"
+#include "TXBase/Math/BBox.h"
 #include <algorithm>
 
 namespace TX {

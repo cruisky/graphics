@@ -54,7 +54,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ShowIncludes>false</ShowIncludes>
-      <PrecompiledHeaderFile>UtilStdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>TXBase/stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,7 +82,7 @@
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <ShowIncludes>false</ShowIncludes>
-      <PrecompiledHeaderFile>UtilStdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>TXBase/stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -96,87 +96,86 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Image\Film.h" />
-    <ClInclude Include="Image\Filter.h" />
-    <ClInclude Include="Image\Image.h" />
-    <ClInclude Include="Math\Color.h" />
-    <ClInclude Include="GUI\Drawing.h" />
-    <ClInclude Include="GUI\FontMap.h" />
-    <ClInclude Include="GUI\Font\DroidSans.h" />
-    <ClInclude Include="GUI\GUI.h" />
-    <ClInclude Include="Scene\Camera.h" />
-    <ClInclude Include="Scene\CameraController.h" />
-    <ClInclude Include="Shape\Mesh.h" />
-    <ClInclude Include="Shape\Obj.h" />
-    <ClInclude Include="OpenGL\Application.h" />
-    <ClInclude Include="OpenGL\GLUtils.h" />
-    <ClInclude Include="OpenGL\Input.h" />
-    <ClInclude Include="Math\BBox.h" />
-    <ClInclude Include="Math\Quaternion.h" />
-    <ClInclude Include="Math\Ray.h" />
-    <ClInclude Include="Libs\sse_mathfun.h" />
-    <ClInclude Include="Libs\stb_image.h" />
-    <ClInclude Include="Libs\stb_image_write.h" />
-    <ClInclude Include="Libs\stb_truetype.h" />
-    <ClInclude Include="Libs\tiny_obj_loader.h" />
-    <ClInclude Include="Math\Base.h" />
-    <ClInclude Include="Math\Matrix.h" />
-    <ClInclude Include="Math\Geometry.h" />
-    <ClInclude Include="Math\Random.h" />
-    <ClInclude Include="Math\Vector.h" />
-    <ClInclude Include="Misc\Const.h" />
-    <ClInclude Include="Misc\RandomData.h" />
-    <ClInclude Include="Math\Sample.h" />
-    <ClInclude Include="Math\Sampler.h" />
-    <ClInclude Include="Math\Transform.h" />
-    <ClInclude Include="Shape\Shape.h" />
-    <ClInclude Include="Shader\Base.h" />
-    <ClInclude Include="Shader\Phong.h" />
-    <ClInclude Include="SSE\Bool.h" />
-    <ClInclude Include="SSE\Float.h" />
-    <ClInclude Include="SSE\Int.h" />
-    <ClInclude Include="SSE\SSE.h" />
-    <ClInclude Include="System\Memory.h" />
-    <ClInclude Include="System\Thread.h" />
-    <ClInclude Include="System\Tools.h" />
-    <ClInclude Include="Util.h" />
-    <ClInclude Include="UtilStdAfx.h" />
+    <ClInclude Include="TXBase\Image\Film.h" />
+    <ClInclude Include="TXBase\Image\Filter.h" />
+    <ClInclude Include="TXBase\Image\Image.h" />
+    <ClInclude Include="TXBase\Math\Color.h" />
+    <ClInclude Include="TXBase\GUI\Drawing.h" />
+    <ClInclude Include="TXBase\GUI\FontMap.h" />
+    <ClInclude Include="TXBase\GUI\Font\DroidSans.h" />
+    <ClInclude Include="TXBase\GUI\GUI.h" />
+    <ClInclude Include="TXBase\Scene\Camera.h" />
+    <ClInclude Include="TXBase\Scene\CameraController.h" />
+    <ClInclude Include="TXBase\Shape\Mesh.h" />
+    <ClInclude Include="TXBase\Shape\Obj.h" />
+    <ClInclude Include="TXBase\OpenGL\Application.h" />
+    <ClInclude Include="TXBase\OpenGL\GLUtils.h" />
+    <ClInclude Include="TXBase\OpenGL\Input.h" />
+    <ClInclude Include="TXBase\Math\BBox.h" />
+    <ClInclude Include="TXBase\Math\Quaternion.h" />
+    <ClInclude Include="TXBase\Math\Ray.h" />
+    <ClInclude Include="TXBase\Libs\sse_mathfun.h" />
+    <ClInclude Include="TXBase\Libs\stb_image.h" />
+    <ClInclude Include="TXBase\Libs\stb_image_write.h" />
+    <ClInclude Include="TXBase\Libs\stb_truetype.h" />
+    <ClInclude Include="TXBase\Libs\tiny_obj_loader.h" />
+    <ClInclude Include="TXBase\Math\Base.h" />
+    <ClInclude Include="TXBase\Math\Matrix.h" />
+    <ClInclude Include="TXBase\Math\Geometry.h" />
+    <ClInclude Include="TXBase\Math\Random.h" />
+    <ClInclude Include="TXBase\Math\Vector.h" />
+    <ClInclude Include="TXBase\Misc\Const.h" />
+    <ClInclude Include="TXBase\Misc\RandomData.h" />
+    <ClInclude Include="TXBase\Math\Sample.h" />
+    <ClInclude Include="TXBase\Math\Transform.h" />
+    <ClInclude Include="TXBase\Shape\Shape.h" />
+    <ClInclude Include="TXBase\Shader\Base.h" />
+    <ClInclude Include="TXBase\Shader\Phong.h" />
+    <ClInclude Include="TXBase\SSE\Bool.h" />
+    <ClInclude Include="TXBase\SSE\Float.h" />
+    <ClInclude Include="TXBase\SSE\Int.h" />
+    <ClInclude Include="TXBase\SSE\SSE.h" />
+    <ClInclude Include="TXBase\System\Memory.h" />
+    <ClInclude Include="TXBase\System\Thread.h" />
+    <ClInclude Include="TXBase\System\Tools.h" />
+    <ClInclude Include="txbase\fwddecl.h" />
+    <ClInclude Include="txbase\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Image\Film.cpp" />
-    <ClCompile Include="Image\Image.cpp" />
-    <ClCompile Include="Math\Color.cpp" />
-    <ClCompile Include="GUI\Drawing.cpp" />
-    <ClCompile Include="GUI\FontMap.cpp" />
-    <ClCompile Include="GUI\GUI.cpp" />
-    <ClCompile Include="Scene\Camera.cpp" />
-    <ClCompile Include="Shape\Mesh.cpp" />
-    <ClCompile Include="Shape\Obj.cpp" />
-    <ClCompile Include="OpenGL\Application.cpp" />
-    <ClCompile Include="OpenGL\GLUtils.cpp" />
-    <ClCompile Include="Math\Quaternion.cpp" />
-    <ClCompile Include="Math\Ray.cpp" />
-    <ClCompile Include="Libs\tiny_obj_loader.cpp" />
-    <ClCompile Include="Math\Geometry.cpp" />
-    <ClCompile Include="Math\Matrix.cpp" />
-    <ClCompile Include="Misc\RandomData.cpp" />
-    <ClCompile Include="Math\Sample.cpp" />
-    <ClCompile Include="Math\Transform.cpp" />
-    <ClCompile Include="Shader\Phong\Phong.cpp" />
-    <ClCompile Include="Shader\ShaderProgram.cpp" />
-    <ClCompile Include="SSE\Float.cpp" />
-    <ClCompile Include="SSE\Int.cpp" />
-    <ClCompile Include="System\Thread.cpp" />
-    <ClCompile Include="System\Tools.cpp" />
-    <ClCompile Include="UtilStdAfx.cpp">
+    <ClCompile Include="TXBase\Image\Film.cpp" />
+    <ClCompile Include="TXBase\Image\Image.cpp" />
+    <ClCompile Include="TXBase\Math\Color.cpp" />
+    <ClCompile Include="TXBase\GUI\Drawing.cpp" />
+    <ClCompile Include="TXBase\GUI\FontMap.cpp" />
+    <ClCompile Include="TXBase\GUI\GUI.cpp" />
+    <ClCompile Include="TXBase\Scene\Camera.cpp" />
+    <ClCompile Include="TXBase\Shape\Mesh.cpp" />
+    <ClCompile Include="TXBase\Shape\Obj.cpp" />
+    <ClCompile Include="TXBase\OpenGL\Application.cpp" />
+    <ClCompile Include="TXBase\OpenGL\GLUtils.cpp" />
+    <ClCompile Include="TXBase\Math\Quaternion.cpp" />
+    <ClCompile Include="TXBase\Math\Ray.cpp" />
+    <ClCompile Include="TXBase\Libs\tiny_obj_loader.cpp" />
+    <ClCompile Include="TXBase\Math\Geometry.cpp" />
+    <ClCompile Include="TXBase\Math\Matrix.cpp" />
+    <ClCompile Include="TXBase\Misc\RandomData.cpp" />
+    <ClCompile Include="TXBase\Math\Sample.cpp" />
+    <ClCompile Include="TXBase\Math\Transform.cpp" />
+    <ClCompile Include="TXBase\Shader\Phong\Phong.cpp" />
+    <ClCompile Include="TXBase\Shader\ShaderProgram.cpp" />
+    <ClCompile Include="TXBase\SSE\Float.cpp" />
+    <ClCompile Include="TXBase\SSE\Int.cpp" />
+    <ClCompile Include="TXBase\System\Thread.cpp" />
+    <ClCompile Include="TXBase\System\Tools.cpp" />
+    <ClCompile Include="txbase\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Phong\Phong.fs.glsl" />
-    <None Include="Shader\Default.vs.glsl" />
-    <None Include="Shader\SingleColor.fs.glsl" />
+    <None Include="TXBase\Shader\Phong\Phong.fs.glsl" />
+    <None Include="TXBase\Shader\Default.vs.glsl" />
+    <None Include="TXBase\Shader\SingleColor.fs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #pragma once
-#include "Util.h"
-#include "Math/Color.h"
+
+#include "TXBase/Math/Color.h"
 #include "Core/Scene.h"
 
 namespace TX{

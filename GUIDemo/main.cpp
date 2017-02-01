@@ -1,7 +1,7 @@
-#include "OpenGL/Application.h"
-#include "GUI/GUI.h"
-#include "GUI/FontMap.h"
-#include "Math/Geometry.h"
+#include "TXBase/OpenGL/Application.h"
+#include "TXBase/GUI/GUI.h"
+#include "TXBase/GUI/FontMap.h"
+#include "TXBase/Math/Geometry.h"
 
 using namespace TX;
 using namespace TX::UI;

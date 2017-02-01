@@ -1,5 +1,5 @@
 #pragma once
-#include "Util.h"
+
 #include "SceneObject.h"
 #include "SceneMesh.h"
 
