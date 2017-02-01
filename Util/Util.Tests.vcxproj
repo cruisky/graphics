@@ -55,7 +55,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;txbase</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <DisableSpecificWarnings>4244;4305;4018</DisableSpecificWarnings>
@@ -74,7 +74,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;txbase</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <DisableSpecificWarnings>4244;4305;4018</DisableSpecificWarnings>
@@ -94,19 +94,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\txbase_tests\color_tests.cc" />
-    <ClCompile Include="src\txbase_tests\math_tests.cc" />
-    <ClCompile Include="src\txbase_tests\matrix_tests.cc" />
-    <ClCompile Include="src\txbase_tests\quaternion_tests.cc" />
-    <ClCompile Include="src\txbase_tests\ray_tests.cc" />
-    <ClCompile Include="src\txbase_tests\sse_tests.cc" />
-    <ClCompile Include="src\txbase_tests\stdafx.cc" />
-    <ClCompile Include="src\txbase_tests\vector_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\color_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\math_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\matrix_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\quaternion_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\ray_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\sse_tests.cc" />
+    <ClCompile Include="txbase\txbase_tests\stdafx.cc" />
+    <ClCompile Include="txbase\txbase_tests\vector_tests.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\txbase_tests\cpp_unittest_helper.h" />
-    <ClInclude Include="src\txbase_tests\stdafx.h" />
-    <ClInclude Include="src\txbase_tests\targetver.h" />
+    <ClInclude Include="txbase\txbase_tests\cpp_unittest_helper.h" />
+    <ClInclude Include="txbase\txbase_tests\stdafx.h" />
+    <ClInclude Include="txbase\txbase_tests\targetver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
