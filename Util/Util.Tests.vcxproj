@@ -14,6 +14,7 @@
     <ProjectGuid>{E3751A35-A26F-438B-BC34-D7CC889EADF3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>UtilTests</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -43,19 +44,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;..\Util</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <DisableSpecificWarnings>4244;4305;4018</DisableSpecificWarnings>
+      <PrecompiledHeaderFile>TXBaseTests\stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -66,14 +70,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;..\Util</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <DisableSpecificWarnings>4244;4305;4018</DisableSpecificWarnings>
+      <PrecompiledHeaderFile>TXBaseTests\stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -84,27 +89,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CppUnitTestHelpers.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ColorTests.cpp" />
-    <ClCompile Include="MathUtilTests.cpp" />
-    <ClCompile Include="MatrixTests.cpp" />
-    <ClCompile Include="QuaternionTests.cpp" />
-    <ClCompile Include="RayTests.cpp" />
-    <ClCompile Include="SIMDTests.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="VectorTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Util\Util.vcxproj">
       <Project>{e3244cff-b604-45fb-966f-66c48abe586a}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\TXBaseTests\ColorTests.cpp" />
+    <ClCompile Include="src\TXBaseTests\MathUtilTests.cpp" />
+    <ClCompile Include="src\TXBaseTests\MatrixTests.cpp" />
+    <ClCompile Include="src\TXBaseTests\QuaternionTests.cpp" />
+    <ClCompile Include="src\TXBaseTests\RayTests.cpp" />
+    <ClCompile Include="src\TXBaseTests\SIMDTests.cpp" />
+    <ClCompile Include="src\TXBaseTests\stdafx.cpp" />
+    <ClCompile Include="src\TXBaseTests\VectorTests.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\TXBaseTests\CppUnitTestHelpers.h" />
+    <ClInclude Include="src\TXBaseTests\stdafx.h" />
+    <ClInclude Include="src\TXBaseTests\targetver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "TXBaseTests/stdafx.h"
 
 using namespace TX::Math;
 

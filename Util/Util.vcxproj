@@ -14,6 +14,7 @@
     <ProjectGuid>{E3244CFF-B604-45FB-966F-66C48ABE586A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Util</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,7 +40,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -47,8 +53,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <AdditionalIncludeDirectories>$(ProjectDir)/src</AdditionalIncludeDirectories>
+      <AssemblerOutput>NoListing</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -74,8 +80,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <AdditionalIncludeDirectories>$(ProjectDir)/src</AdditionalIncludeDirectories>
+      <AssemblerOutput>NoListing</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -96,86 +102,86 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="TXBase\Image\Film.h" />
-    <ClInclude Include="TXBase\Image\Filter.h" />
-    <ClInclude Include="TXBase\Image\Image.h" />
-    <ClInclude Include="TXBase\Math\Color.h" />
-    <ClInclude Include="TXBase\GUI\Drawing.h" />
-    <ClInclude Include="TXBase\GUI\FontMap.h" />
-    <ClInclude Include="TXBase\GUI\Font\DroidSans.h" />
-    <ClInclude Include="TXBase\GUI\GUI.h" />
-    <ClInclude Include="TXBase\Scene\Camera.h" />
-    <ClInclude Include="TXBase\Scene\CameraController.h" />
-    <ClInclude Include="TXBase\Shape\Mesh.h" />
-    <ClInclude Include="TXBase\Shape\Obj.h" />
-    <ClInclude Include="TXBase\OpenGL\Application.h" />
-    <ClInclude Include="TXBase\OpenGL\GLUtils.h" />
-    <ClInclude Include="TXBase\OpenGL\Input.h" />
-    <ClInclude Include="TXBase\Math\BBox.h" />
-    <ClInclude Include="TXBase\Math\Quaternion.h" />
-    <ClInclude Include="TXBase\Math\Ray.h" />
-    <ClInclude Include="TXBase\Libs\sse_mathfun.h" />
-    <ClInclude Include="TXBase\Libs\stb_image.h" />
-    <ClInclude Include="TXBase\Libs\stb_image_write.h" />
-    <ClInclude Include="TXBase\Libs\stb_truetype.h" />
-    <ClInclude Include="TXBase\Libs\tiny_obj_loader.h" />
-    <ClInclude Include="TXBase\Math\Base.h" />
-    <ClInclude Include="TXBase\Math\Matrix.h" />
-    <ClInclude Include="TXBase\Math\Geometry.h" />
-    <ClInclude Include="TXBase\Math\Random.h" />
-    <ClInclude Include="TXBase\Math\Vector.h" />
-    <ClInclude Include="TXBase\Misc\Const.h" />
-    <ClInclude Include="TXBase\Misc\RandomData.h" />
-    <ClInclude Include="TXBase\Math\Sample.h" />
-    <ClInclude Include="TXBase\Math\Transform.h" />
-    <ClInclude Include="TXBase\Shape\Shape.h" />
-    <ClInclude Include="TXBase\Shader\Base.h" />
-    <ClInclude Include="TXBase\Shader\Phong.h" />
-    <ClInclude Include="TXBase\SSE\Bool.h" />
-    <ClInclude Include="TXBase\SSE\Float.h" />
-    <ClInclude Include="TXBase\SSE\Int.h" />
-    <ClInclude Include="TXBase\SSE\SSE.h" />
-    <ClInclude Include="TXBase\System\Memory.h" />
-    <ClInclude Include="TXBase\System\Thread.h" />
-    <ClInclude Include="TXBase\System\Tools.h" />
-    <ClInclude Include="txbase\fwddecl.h" />
-    <ClInclude Include="txbase\stdafx.h" />
+    <ClInclude Include="src\TXBase\Image\Film.h" />
+    <ClInclude Include="src\TXBase\Image\Filter.h" />
+    <ClInclude Include="src\TXBase\Image\Image.h" />
+    <ClInclude Include="src\TXBase\Math\Color.h" />
+    <ClInclude Include="src\TXBase\GUI\Drawing.h" />
+    <ClInclude Include="src\TXBase\GUI\FontMap.h" />
+    <ClInclude Include="src\TXBase\GUI\Font\DroidSans.h" />
+    <ClInclude Include="src\TXBase\GUI\GUI.h" />
+    <ClInclude Include="src\TXBase\Scene\Camera.h" />
+    <ClInclude Include="src\TXBase\Scene\CameraController.h" />
+    <ClInclude Include="src\TXBase\Shape\Mesh.h" />
+    <ClInclude Include="src\TXBase\Shape\Obj.h" />
+    <ClInclude Include="src\TXBase\OpenGL\Application.h" />
+    <ClInclude Include="src\TXBase\OpenGL\GLUtils.h" />
+    <ClInclude Include="src\TXBase\OpenGL\Input.h" />
+    <ClInclude Include="src\TXBase\Math\BBox.h" />
+    <ClInclude Include="src\TXBase\Math\Quaternion.h" />
+    <ClInclude Include="src\TXBase\Math\Ray.h" />
+    <ClInclude Include="src\TXBase\Libs\sse_mathfun.h" />
+    <ClInclude Include="src\TXBase\Libs\stb_image.h" />
+    <ClInclude Include="src\TXBase\Libs\stb_image_write.h" />
+    <ClInclude Include="src\TXBase\Libs\stb_truetype.h" />
+    <ClInclude Include="src\TXBase\Libs\tiny_obj_loader.h" />
+    <ClInclude Include="src\TXBase\Math\Base.h" />
+    <ClInclude Include="src\TXBase\Math\Matrix.h" />
+    <ClInclude Include="src\TXBase\Math\Geometry.h" />
+    <ClInclude Include="src\TXBase\Math\Random.h" />
+    <ClInclude Include="src\TXBase\Math\Vector.h" />
+    <ClInclude Include="src\TXBase\Misc\Const.h" />
+    <ClInclude Include="src\TXBase\Misc\RandomData.h" />
+    <ClInclude Include="src\TXBase\Math\Sample.h" />
+    <ClInclude Include="src\TXBase\Math\Transform.h" />
+    <ClInclude Include="src\TXBase\Shape\Shape.h" />
+    <ClInclude Include="src\TXBase\Shader\Base.h" />
+    <ClInclude Include="src\TXBase\Shader\Phong.h" />
+    <ClInclude Include="src\TXBase\SSE\Bool.h" />
+    <ClInclude Include="src\TXBase\SSE\Float.h" />
+    <ClInclude Include="src\TXBase\SSE\Int.h" />
+    <ClInclude Include="src\TXBase\SSE\SSE.h" />
+    <ClInclude Include="src\TXBase\System\Memory.h" />
+    <ClInclude Include="src\TXBase\System\Thread.h" />
+    <ClInclude Include="src\TXBase\System\Tools.h" />
+    <ClInclude Include="src\TXBase\fwddecl.h" />
+    <ClInclude Include="src\TXBase\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TXBase\Image\Film.cpp" />
-    <ClCompile Include="TXBase\Image\Image.cpp" />
-    <ClCompile Include="TXBase\Math\Color.cpp" />
-    <ClCompile Include="TXBase\GUI\Drawing.cpp" />
-    <ClCompile Include="TXBase\GUI\FontMap.cpp" />
-    <ClCompile Include="TXBase\GUI\GUI.cpp" />
-    <ClCompile Include="TXBase\Scene\Camera.cpp" />
-    <ClCompile Include="TXBase\Shape\Mesh.cpp" />
-    <ClCompile Include="TXBase\Shape\Obj.cpp" />
-    <ClCompile Include="TXBase\OpenGL\Application.cpp" />
-    <ClCompile Include="TXBase\OpenGL\GLUtils.cpp" />
-    <ClCompile Include="TXBase\Math\Quaternion.cpp" />
-    <ClCompile Include="TXBase\Math\Ray.cpp" />
-    <ClCompile Include="TXBase\Libs\tiny_obj_loader.cpp" />
-    <ClCompile Include="TXBase\Math\Geometry.cpp" />
-    <ClCompile Include="TXBase\Math\Matrix.cpp" />
-    <ClCompile Include="TXBase\Misc\RandomData.cpp" />
-    <ClCompile Include="TXBase\Math\Sample.cpp" />
-    <ClCompile Include="TXBase\Math\Transform.cpp" />
-    <ClCompile Include="TXBase\Shader\Phong\Phong.cpp" />
-    <ClCompile Include="TXBase\Shader\ShaderProgram.cpp" />
-    <ClCompile Include="TXBase\SSE\Float.cpp" />
-    <ClCompile Include="TXBase\SSE\Int.cpp" />
-    <ClCompile Include="TXBase\System\Thread.cpp" />
-    <ClCompile Include="TXBase\System\Tools.cpp" />
-    <ClCompile Include="txbase\stdafx.cpp">
+    <ClCompile Include="src\TXBase\Image\Film.cpp" />
+    <ClCompile Include="src\TXBase\Image\Image.cpp" />
+    <ClCompile Include="src\TXBase\Math\Color.cpp" />
+    <ClCompile Include="src\TXBase\GUI\Drawing.cpp" />
+    <ClCompile Include="src\TXBase\GUI\FontMap.cpp" />
+    <ClCompile Include="src\TXBase\GUI\GUI.cpp" />
+    <ClCompile Include="src\TXBase\Scene\Camera.cpp" />
+    <ClCompile Include="src\TXBase\Shape\Mesh.cpp" />
+    <ClCompile Include="src\TXBase\Shape\Obj.cpp" />
+    <ClCompile Include="src\TXBase\OpenGL\Application.cpp" />
+    <ClCompile Include="src\TXBase\OpenGL\GLUtils.cpp" />
+    <ClCompile Include="src\TXBase\Math\Quaternion.cpp" />
+    <ClCompile Include="src\TXBase\Math\Ray.cpp" />
+    <ClCompile Include="src\TXBase\Libs\tiny_obj_loader.cpp" />
+    <ClCompile Include="src\TXBase\Math\Geometry.cpp" />
+    <ClCompile Include="src\TXBase\Math\Matrix.cpp" />
+    <ClCompile Include="src\TXBase\Misc\RandomData.cpp" />
+    <ClCompile Include="src\TXBase\Math\Sample.cpp" />
+    <ClCompile Include="src\TXBase\Math\Transform.cpp" />
+    <ClCompile Include="src\TXBase\Shader\Phong\Phong.cpp" />
+    <ClCompile Include="src\TXBase\Shader\ShaderProgram.cpp" />
+    <ClCompile Include="src\TXBase\SSE\Float.cpp" />
+    <ClCompile Include="src\TXBase\SSE\Int.cpp" />
+    <ClCompile Include="src\TXBase\System\Thread.cpp" />
+    <ClCompile Include="src\TXBase\System\Tools.cpp" />
+    <ClCompile Include="src\TXBase\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TXBase\Shader\Phong\Phong.fs.glsl" />
-    <None Include="TXBase\Shader\Default.vs.glsl" />
-    <None Include="TXBase\Shader\SingleColor.fs.glsl" />
+    <None Include="src\TXBase\Shader\Phong\Phong.fs.glsl" />
+    <None Include="src\TXBase\Shader\Default.vs.glsl" />
+    <None Include="src\TXBase\Shader\SingleColor.fs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,8 +2,8 @@
 
 #define USE_SSE2
 
-#include "TXBase/fwddecl.h"
 #include <intrin.h>
+#include "TXBase/fwddecl.h"
 #include "TXBase/Math/Base.h"
 #include "TXBase/Libs/sse_mathfun.h"
 #include "Bool.h"

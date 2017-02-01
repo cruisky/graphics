@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "targetver.h"
+#include "TXBaseTests/targetver.h"
 
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
