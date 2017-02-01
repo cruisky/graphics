@@ -14,6 +14,7 @@
     <ClInclude Include="Accelerators\BVH.h" />
     <ClInclude Include="Accelerators\Common.h" />
     <ClInclude Include="Application\GUIViewer.h" />
+    <ClInclude Include="Application\ObjViewer.h" />
     <ClInclude Include="Core\BSDF.h" />
     <ClInclude Include="Core\Intersection.h" />
     <ClInclude Include="Core\Light.h" />
@@ -30,12 +31,13 @@
     <ClInclude Include="Lights\PointLight.h" />
     <ClInclude Include="Samplers\RandomSampler.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Tracers\DirectLighting.h" />
-    <ClInclude Include="Tracers\PathTracer.h" />
+    <ClInclude Include="Methods\DirectLighting.h" />
+    <ClInclude Include="Methods\PathTracing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Accelerators\BVH.cpp" />
     <ClCompile Include="Application\GUIViewer.cpp" />
+    <ClCompile Include="Application\ObjViewer.cpp" />
     <ClCompile Include="Core\BSDF.cpp" />
     <ClCompile Include="Core\Intersection.cpp" />
     <ClCompile Include="Core\Light.cpp" />
@@ -53,8 +55,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Tracers\DirectLighting.cpp" />
-    <ClCompile Include="Tracers\PathTracer.cpp" />
+    <ClCompile Include="Methods\DirectLighting.cpp" />
+    <ClCompile Include="Methods\PathTracing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.vcxproj">
@@ -96,7 +98,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;..;../Util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../Util</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
@@ -115,7 +117,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;..;../Util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;../Util</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>

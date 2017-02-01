@@ -1,4 +1,4 @@
-#include "UtilStdAfx.h"
+#include "stdafx.h"
 #include "Shape/Mesh.h"
 #include "Light.h"
 #include "Primitive.h"

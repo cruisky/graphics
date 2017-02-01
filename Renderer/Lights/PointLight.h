@@ -1,5 +1,5 @@
 #pragma once
-#include "Graphics/Light.h"
+#include "Core/Light.h"
 
 namespace TX{
 	class PointLight : public Light {

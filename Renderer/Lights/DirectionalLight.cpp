@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DirectionalLight.h"
-#include "Graphics/Intersection.h"
+#include "Core/Intersection.h"
 
 namespace TX {
 	DirectionalLight::DirectionalLight(const Color& intensity, int sample_count) : Light(sample_count), intensity(intensity){}

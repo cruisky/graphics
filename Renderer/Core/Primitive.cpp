@@ -1,4 +1,4 @@
-#include "UtilStdAfx.h"
+#include "stdafx.h"
 #include "Primitive.h"
 #include "Shape/Shape.h"
 #include "Intersection.h"

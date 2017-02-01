@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "Graphics/Color.h"
-#include "Graphics/Image.h"
+#include "Math/Color.h"
 #include "Math/Transform.h"
 #include "Math/Sampler.h"
 #include "Math/Sample.h"
-#include "Graphics/BSDF.h"
-#include "Graphics/Film.h"
-#include "Graphics/Tracer.h"
-#include "Graphics/Scene.h"
-#include "Graphics/Camera.h"
-#include "Graphics/Primitive.h"
-#include "Graphics/Mesh.h"
-#include "Graphics/Light.h"
+#include "Image/Image.h"
+#include "Image/Film.h"
+#include "Scene/Camera.h"
 
+#include "Core/BSDF.h"
+#include "Core/RayTracer.h"
+#include "Core/Scene.h"
+#include "Core/Primitive.h"
+#include "Core/Light.h"
+#include "Core/SceneMesh.h"
 #include "Core/RendererConfig.h"
 #include "Core/Renderer.h"
 #include "Accelerators/BVH.h"
@@ -67,19 +67,19 @@ void GUIMainMesh() {
 
 	///////////////////////////////////////////
 	// Shapes & Primitives
-	Mesh sphere;
+	SceneMesh sphere;
 #ifdef _DEBUG
 	sphere.LoadSphere(1.f, 4, 1);
 #else
 	sphere.LoadSphere();
 #endif
-	Mesh plane; plane.LoadPlane();
+	SceneMesh plane; plane.LoadPlane();
 
 	// load teapot
 	std::vector<ObjShape> teapot_shapes;
 	std::vector<ObjMaterial> teapot_mat;
 	ObjLoader::Load(teapot_shapes, teapot_mat, "../ObjViewer/teapot.obj", "./");
-	Mesh& teapot = teapot_shapes.front().mesh;
+	SceneMesh teapot(teapot_shapes.front().mesh);
 
 	int wall_size = 9;
 	shared_ptr<Primitive> w_bottom(new Primitive(plane, diffuse_white));

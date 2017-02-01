@@ -7,10 +7,10 @@
 namespace TX {
 	class SceneMesh : public Mesh {
 	public:
-		//SceneMesh() {}
-		//SceneMesh(const SceneMesh& ot) :
-		//	Mesh(ot) {
-		//}
+		SceneMesh() {}
+		SceneMesh(const Mesh& ot) :
+			Mesh(ot) {
+		}
 		//inline SceneMesh& operator = (const SceneMesh& ot) {
 		//	Mesh::operator=(ot);
 		//	return *this;

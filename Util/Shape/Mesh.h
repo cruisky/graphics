@@ -5,6 +5,7 @@
 #include "Math/BBox.h"
 #include "Math/Ray.h"
 #include "Math/Transform.h"
+#include "Math/Sample.h"
 
 namespace TX {
 	class Mesh {

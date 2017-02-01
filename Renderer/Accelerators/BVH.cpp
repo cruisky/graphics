@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BVH.h"
-#include "Graphics/Primitive.h"
-#include "Graphics/Mesh.h"
+#include "Core/Primitive.h"
+#include "Shape/Mesh.h"
 #include "Math/BBox.h"
 #include <algorithm>
 

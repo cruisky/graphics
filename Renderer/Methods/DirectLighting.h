@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Graphics/Tracer.h"
+#include "Core/RayTracer.h"
 #include <vector>
 
 namespace TX{
-	class DirectLighting : public Tracer {
+	class DirectLighting : public RayTracer {
 	public:
 		DirectLighting(int maxdepth = 5);
 		~DirectLighting(){}

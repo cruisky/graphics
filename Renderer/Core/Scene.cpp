@@ -1,4 +1,4 @@
-#include "UtilStdAfx.h"
+#include "stdafx.h"
 #include "Scene.h"
 #include "PrimitiveManager.h"
 #include "Primitive.h"

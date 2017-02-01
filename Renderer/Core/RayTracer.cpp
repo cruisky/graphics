@@ -1,4 +1,4 @@
-#include "UtilStdAfx.h"
+#include "stdafx.h"
 #include "RayTracer.h"
 #include "Scene.h"
 #include "Intersection.h"

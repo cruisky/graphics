@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "PathTracer.h"
+#include "PathTracing.h"
 #include "Math/Sample.h"
 #include "Math/Random.h"
-#include "Graphics/Intersection.h"
-#include "Graphics/Scene.h"
-#include "Graphics/BSDF.h"
+#include "Core/Intersection.h"
+#include "Core/Scene.h"
+#include "Core/BSDF.h"
 
 namespace TX{
-	const int PathTracer::SAMPLE_DEPTH = 3;
+	const int PathTracing::SAMPLE_DEPTH = 3;
 
-	PathTracer::PathTracer(int maxdepth) : Tracer(maxdepth){
+	PathTracing::PathTracing(int maxdepth) : RayTracer(maxdepth){
 		light_samples_.resize(maxdepth);
 		bsdf_samples_.resize(maxdepth);
 		scatter_samples_.resize(maxdepth);
 	}
 
-	Color PathTracer::Li(const Scene *scene, const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
+	Color PathTracing::Li(const Scene *scene, const Ray& ray, int ignoreddepth, const CameraSample& samplebuf){
 		Color Le, L, pathThroughput = Color::WHITE;
 		Vec3 wo, wi;
 		float pdf;
@@ -75,7 +75,7 @@ namespace TX{
 		return L;
 	}
 
-	void PathTracer::BakeSamples(const Scene *scene, const CameraSample *samplebuf){
+	void PathTracing::BakeSamples(const Scene *scene, const CameraSample *samplebuf){
 		for (auto i = 0; i < maxdepth_; ++i)
 		{
 			light_samples_[i].RequestSamples(1, samplebuf);

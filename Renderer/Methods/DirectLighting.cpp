@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "DirectLighting.h"
 #include "Math/Sample.h"
-#include "Graphics/Intersection.h"
-#include "Graphics/BSDF.h"
-#include "Graphics/Scene.h"
+#include "Core/Intersection.h"
+#include "Core/BSDF.h"
+#include "Core/Scene.h"
 
 namespace TX{
-	DirectLighting::DirectLighting(int maxdepth) : Tracer(maxdepth){}
+	DirectLighting::DirectLighting(int maxdepth) : RayTracer(maxdepth){}
 
 	Color DirectLighting::Li(const Scene *scene, const Ray& ray, int depth, const CameraSample& samplebuf){
 		if (depth < 0)

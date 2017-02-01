@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Graphics/Tracer.h"
-#include "Math/Sample.h"
+#include "Core/RayTracer.h"
+#include "Util/Math/Sample.h"
 
 namespace TX{
-	class PathTracer : public Tracer {
+	class PathTracing : public RayTracer {
 	public:
-		PathTracer(int maxdepth = 6);
-		~PathTracer(){}
+		PathTracing(int maxdepth = 6);
+		~PathTracing(){}
 		void BakeSamples(const Scene *scene, const CameraSample *samplebuf);
 	protected:
 		Color Li(const Scene *scene, const Ray& ray, int depth, const CameraSample& samplebuf);

@@ -9,17 +9,17 @@
 
 #include "Util/Util.h"
 
-#include "Util/System/Application.h"
-#include "Util/System/Input.h"
+#include "Util/OpenGL/Application.h"
+#include "Util/OpenGL/Input.h"
 #include "Util/System/Memory.h"
 #include "Util/System/Thread.h"
 #include "Util/System/Tools.h"
 
-#include "Util/Graphics/Color.h"
-#include "Util/Graphics/Drawing.h"
-#include "Util/Graphics/Filter.h"
-#include "Util/Graphics/GUI.h"
-#include "Util/Graphics/Image.h"
+#include "Util/Math/Color.h"
+#include "Util/Image/Image.h"
+#include "Util/Image/Filter.h"
+//#include "Util/GUI/Drawing.h"
+#include "Util/GUI/GUI.h"
 
 #include "Util/Math/Base.h"
 #include "Util/Math/BBox.h"

@@ -52,12 +52,6 @@
     <ClInclude Include="Samplers\RandomSampler.h">
       <Filter>Source Files\Samplers</Filter>
     </ClInclude>
-    <ClInclude Include="Tracers\DirectLighting.h">
-      <Filter>Source Files\Tracers</Filter>
-    </ClInclude>
-    <ClInclude Include="Tracers\PathTracer.h">
-      <Filter>Source Files\Tracers</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -76,6 +70,13 @@
     <ClInclude Include="Core\PrimitiveManager.h" />
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\SceneObject.h" />
+    <ClInclude Include="Methods\DirectLighting.h">
+      <Filter>Source Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="Methods\PathTracing.h">
+      <Filter>Source Files\Tracers</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\ObjViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,14 +94,8 @@
     <ClCompile Include="Application\GUIViewer.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Tracers\DirectLighting.cpp">
-      <Filter>Source Files\Tracers</Filter>
-    </ClCompile>
     <ClCompile Include="Samplers\RandomSampler.cpp">
       <Filter>Source Files\Samplers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tracers\PathTracer.cpp">
-      <Filter>Source Files\Tracers</Filter>
     </ClCompile>
     <ClCompile Include="Core\Synchronizer.cpp">
       <Filter>Source Files\Core</Filter>
@@ -130,6 +125,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Methods\DirectLighting.cpp">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Methods\PathTracing.cpp">
+      <Filter>Source Files\Tracers</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\ObjViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

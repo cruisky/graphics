@@ -2,8 +2,8 @@
 
 #include "Util.h"
 #include "SSE/SSE.h"
-#include "Graphics/Intersection.h"
-#include "Graphics/Primitive.h"		// temp
+#include "Core/Intersection.h"
+
 namespace TX {
 	struct BuildVertex {
 		Vec3 pos;

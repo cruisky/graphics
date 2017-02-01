@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "PointLight.h"
-#include "Graphics/Intersection.h"
+#include "Core/Intersection.h"
 
 namespace TX {
 	PointLight::PointLight(const Color& intensity, float radius, const Vec3& position, int sample_count) :
