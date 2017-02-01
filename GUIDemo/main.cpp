@@ -1,6 +1,6 @@
-#include "System/Application.h"
-#include "Graphics/GUI.h"
-#include "Graphics/FontMap.h"
+#include "OpenGL/Application.h"
+#include "GUI/GUI.h"
+#include "GUI/FontMap.h"
 #include "Math/Geometry.h"
 
 using namespace TX;

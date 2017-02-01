@@ -1,9 +1,9 @@
-#include "Graphics/Obj.h"
-#include "Graphics/Camera.h"
-#include "System/Application.h"
+#include "Shape/Obj.h"
+#include "OpenGL/Application.h"
+#include "OpenGL/GLUtils.h"
+#include "Scene/Camera.h"
+#include "Scene/CameraController.h"
 #include "System/Tools.h"
-#include "Graphics/GLUtils.h"
-#include "Graphics/CameraController.h"
 
 #include <memory>
 
